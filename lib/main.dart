@@ -2,18 +2,32 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/layout/home-layout/cubit/cubit.dart';
-import 'package:gp/layout/home-layout/cubit/states.dart';
-import 'package:gp/modules/add_Information/add_information.dart';
+import 'package:gp/layout/home-layout/home_layout.dart';
+import 'package:gp/modules/login/login_screen.dart';
 import 'package:gp/shared/bloc_observer.dart';
+import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'shared/styles/themes.dart';
 
-void main() {
+void main(context)
+{
   BlocOverrides.runZoned(
         () async {
           WidgetsFlutterBinding.ensureInitialized();
+          await CacheHelper.init();
           await Firebase.initializeApp();
-          runApp( MyApp()); //isDark!
+          Widget widget;
+          uId = CacheHelper.getData(key: 'uId');
+            if(uId != null)
+            {
+              widget = HomeLayout();
+            }else
+            {
+              widget = LoginScreen();
+            }
+          runApp( MyApp(
+            startWidget: widget,
+          )); //isDark!
 
 
 
@@ -26,21 +40,20 @@ void main() {
 
 class MyApp extends StatelessWidget
 {
+  final Widget? startWidget;
+  MyApp({
+    this.startWidget
+  });
   @override
   Widget build(BuildContext context)
   {
-
-
-
-             return MaterialApp(
-               debugShowCheckedModeBanner: false,
-               theme: lightTheme,
-               darkTheme: darkTheme ,
-               themeMode: ThemeMode.light,
-               home: AddInformation() ,
-             );
-
-
-      }
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      darkTheme: darkTheme ,
+      themeMode: ThemeMode.light,
+      home: startWidget,
+    );
+  }
 
 }

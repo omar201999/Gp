@@ -1,15 +1,32 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/register/cubit/states.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class RegisterCubit extends Cubit<RegisterStates>
 {
   RegisterCubit() : super(RegisterInitialState());
   
   static RegisterCubit get(context) => BlocProvider.of(context);
+
+  IconData suffix  = Icons.visibility_outlined;
+  bool obScure = true;
+  void changePasswordVisibility()
+  {
+    obScure = !obScure;
+    suffix = obScure ? Icons.visibility_outlined :  Icons.visibility_off_outlined;
+    emit(RegisterChangePasswordVisibilityState());
+  }
+
+
+
 
 
   void userRegister({
@@ -20,7 +37,13 @@ class RegisterCubit extends Cubit<RegisterStates>
     required double height,
     required double goalWeight,
     required String gender,
-})
+    required String? goal,
+    required String? active,
+    required int age,
+    required double weeklyGoal,
+
+
+  })
   {
     emit(RegisterLoadingState());
     FirebaseAuth.instance.
@@ -29,14 +52,18 @@ class RegisterCubit extends Cubit<RegisterStates>
         email: email.trim(),
         password: password,
     ).then((value) {
-      userCreate(
+      uploadProfileImage(
           name: name,
           email: email.trim(),
           uId: value.user!.uid,
           weight: weight,
           height: height,
           goalWeight: goalWeight,
-          gender: gender
+          gender: gender,
+          goal: goal,
+          active: active,
+          age:age,
+          weeklyGoal:weeklyGoal,
       );
 
     }).catchError((error){
@@ -56,8 +83,11 @@ class RegisterCubit extends Cubit<RegisterStates>
     required double height,
     required double goalWeight,
     required String gender,
-
-
+    required String? goal,
+    required String? active,
+    required double weeklyGoal,
+    required int age,
+    String? profileImage,
 
   })
   {
@@ -66,9 +96,15 @@ class RegisterCubit extends Cubit<RegisterStates>
       uId: uId,
       email: email.trim(),
       weight: weight,
-      gender: gender,
-      goalweight: goalWeight,
       height: height,
+      gender: gender,
+      goalWeight: goalWeight,
+      profileImage: profileImage != null ? profileImage : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' ,
+      active:active ,
+      goal: goal,
+      status: 'user',
+      age: age,
+      weeklyGoal: weeklyGoal,
     );
     FirebaseFirestore.instance.
     collection('users').
@@ -83,6 +119,64 @@ class RegisterCubit extends Cubit<RegisterStates>
       print(error.toString());
     });
 
+  }
+
+  File? profileImage;
+  ImagePicker? picker = ImagePicker();
+  Future? getProfileImage() async {
+    final pickedFile = await picker?.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(RegisterImagePickerSuccessState());
+    } else {
+      print('No Image Selected');
+      emit(RegisterImagePickerErrorState());
+    }
+  }
+
+  void uploadProfileImage ({
+        required String name,
+        required String email,
+        required String uId,
+        required double weight,
+        required double height,
+        required double goalWeight,
+        required String gender,
+        required String? goal,
+        required String? active,
+        required double weeklyGoal,
+        required int age,
+
+  })
+  {
+    emit(RegisterLoadingState());
+    firebase_storage.FirebaseStorage.instance.
+    ref().
+    child('users/${Uri.file(profileImage!.path).pathSegments.last}').
+    putFile(profileImage!).
+    then((value) {
+      value.ref.getDownloadURL().
+      then((value) {
+        userCreate(
+            name: name,
+            email: email,
+            uId: uId,
+            weight: weight,
+            height: height,
+            goalWeight: goalWeight,
+            gender: gender,
+            goal: goal,
+            active: active,
+            weeklyGoal: weeklyGoal,
+            age: age,
+            profileImage: value,
+        );
+      }).catchError((error){
+        emit(RegisterUploadProfileImageErrorState());
+      });
+    }).catchError((error){
+      emit(RegisterUploadProfileImageErrorState());
+    });
   }
 
 

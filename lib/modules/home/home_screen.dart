@@ -6,6 +6,7 @@ import 'package:gp/modules/nutrition/nutrition_screen.dart';
 import 'package:gp/modules/snacks/snacks_screen.dart';
 import 'package:gp/modules/water_tracker/water_tracker_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -259,7 +260,7 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height:10,
                   ),
-                  DefaultButton(
+                  defaultButton(
                     context,
                     onPreesed: ()
                     {
@@ -270,13 +271,27 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height:10,
                   ),
-                  DefaultButton(
+                  defaultButton(
                     context,
                     onPreesed: ()
                     {
 
                     },
                     text: 'Complete Diary',
+                  ),
+                  SizedBox(
+                    height:10,
+                  ),
+                  defaultButton(
+                    context,
+                    onPreesed: ()
+                    {
+                      signOut(
+                        context,
+                      );
+
+                    },
+                    text: 'Sing Out',
                   ),
 
 

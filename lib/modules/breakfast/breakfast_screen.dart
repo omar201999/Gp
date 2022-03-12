@@ -49,7 +49,7 @@ class BreakFastScreen extends StatelessWidget {
                       height: 50,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: defualtTextFormField(
+                        child: defaultTextFormField(
                           type: TextInputType.text,
                           prefix: Icons.search,
                           hintText: 'Search',

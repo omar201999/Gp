@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite: ^2.0.1
   intl: ^0.17.0
-  conditional_builder: ^1.0.2
+  conditional_builder_null_safety: ^0.0.6
   flutter_bloc: ^8.0.0
   bloc: ^8.0.1
   dio: ^4.0.4
@@ -46,12 +46,12 @@ dependencies:
   smooth_page_indicator: ^0.2.0
   fluttertoast: ^8.0.8
   carousel_slider: ^3.0.0
-  image_picker: ^0.7.4
+  image_picker: ^0.8.3+3
 
-  firebase_core: ^1.0.3
-  firebase_auth: ^1.0.3
-  cloud_firestore: ^1.0.4
-  firebase_storage: ^8.0.3
+  firebase_core: ^1.5.0
+  firebase_auth: ^3.0.2
+  cloud_firestore: ^2.5.3
+  firebase_storage: ^10.0.3
 
 
 dev_dependencies:

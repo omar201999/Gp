@@ -6,7 +6,14 @@ class UserModel
   double? weight;
   double? height;
   String? gender;
-  double? goalweight;
+  double? goalWeight;
+  String? goal;
+  String? active;
+  String? profileImage;
+  String? status ;
+  double? weeklyGoal;
+  int? age;
+
   UserModel({
     this.name,
     this.email,
@@ -14,8 +21,15 @@ class UserModel
     this.weight,
     this.height,
     this.gender,
-    this.goalweight,
-});
+    this.goalWeight,
+    this.active,
+    this.goal,
+    this.profileImage,
+    this.status,
+    this.weeklyGoal,
+    this.age,
+
+  });
   UserModel.fromJson(Map<String ,dynamic>? json)
   {
     uId=json!['uId'];
@@ -24,7 +38,17 @@ class UserModel
     weight=json['weight'];
     height=json['height'];
     gender=json['gender'];
-    goalweight=json['goalweight'];
+    goalWeight=json['goalWeight'];
+    goal=json['goal'];
+    active=json['active'];
+    profileImage=json['profileImage'];
+    status=json['status'];
+    weeklyGoal=json['weeklyGoal'];
+    age=json['age'];
+
+
+
+
   }
 
   Map<String ,dynamic> toMap()
@@ -37,10 +61,13 @@ class UserModel
         'weight':weight,
         'height':height,
         'gender':gender,
-        'goalweight':goalweight,
-
-
-
+        'goalWeight':goalWeight,
+        'goal':goal,
+        'active':active,
+        'profileImage':profileImage,
+        'status':status,
+        'weeklyGoal':weeklyGoal,
+        'age': age,
       };
   }
 

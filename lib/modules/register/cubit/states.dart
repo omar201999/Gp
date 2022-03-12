@@ -28,3 +28,11 @@ class CreateUserErrorState extends RegisterStates
 }
 
 class RegisterChangePasswordVisibilityState extends RegisterStates {}
+
+class RegisterImagePickerSuccessState extends RegisterStates {}
+
+class RegisterImagePickerErrorState extends RegisterStates {}
+
+class RegisterUploadProfileImageSuccessState extends RegisterStates {}
+
+class RegisterUploadProfileImageErrorState extends RegisterStates {}

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gp/modules/breakfast/cubit/cubit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gp/shared/styles/colors.dart';
 import '../../modules/recipe/recipe_item_screen.dart';
 
@@ -23,7 +23,7 @@ AppBar buildAppBar({
   ],
 );
 
-Widget defualtTextFormField({
+Widget defaultTextFormField({
 
   TextEditingController? controller,
   required TextInputType type,
@@ -42,7 +42,6 @@ Widget defualtTextFormField({
   String? hintText,
   InputBorder? border ,
 }) => TextFormField(
-
   controller: controller,
   keyboardType: type,
   onTap: onTap,
@@ -69,7 +68,7 @@ Widget defualtTextFormField({
 
 );
 
-Widget DefaultButton(BuildContext context,{
+Widget defaultButton(BuildContext context,{
   required void Function()? onPreesed,
   required String text ,
   double radius = 10 ,
@@ -84,7 +83,9 @@ Widget DefaultButton(BuildContext context,{
     onPressed: onPreesed,
     child: Text(
       text,
-      style: Theme.of(context).textTheme.headline1,
+      style: Theme.of(context).textTheme.headline1!.copyWith(
+        color: Colors.white,
+      ),
     ),
   ),
 );
@@ -129,16 +130,21 @@ Widget defaultGesterDetecter({
   required Widget child ,
 }) => GestureDetector(
   onTap: onTap,
-  child:defaultContainer(child: child),
+  child:child,
 );
 
 Widget defaultHeadLineText(BuildContext context, {
   TextOverflow? overflow = TextOverflow.ellipsis ,
   int? maxLines,
   required String text,
+  FontWeight? fontWeight ,
+  Color? color,
 }) => Text(
   text,
-  style: Theme.of(context).textTheme.headline1,
+  style: Theme.of(context).textTheme.headline1?.copyWith(
+    fontWeight: fontWeight,
+    color: color,
+  ),
   maxLines: maxLines,
   overflow: overflow,
 );
@@ -360,3 +366,48 @@ Widget afterTitleOfRecipeItem(BuildContext context, {
   ),
 );
 
+Widget defaultTextButton({
+  required void Function()? function,
+  required String text,
+}) =>
+    TextButton(
+      onPressed:function,
+      child: Text(
+        text.toUpperCase(),
+      ),
+    );
+
+void showToast({
+  required String text,
+  required ToastStates state,
+}) =>
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: chooseToastColor(state),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+// enum
+enum ToastStates { SUCCESS, ERROR, WARNING }
+
+Color chooseToastColor(ToastStates state) {
+  Color color;
+
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+      break;
+    case ToastStates.WARNING:
+      color = Colors.amber;
+      break;
+  }
+
+  return color;
+}

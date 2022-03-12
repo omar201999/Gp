@@ -28,5 +28,12 @@ class GetUserDataErrorState extends LoginStates
   //final String error;
   //GetUserDataErrorState(this.error);
 }
+class GetAllUsersSuccessState extends LoginStates{}
+
+class GetAllUsersErrorState extends LoginStates{
+  final String error;
+  GetAllUsersErrorState(this.error);
+}
+
 
 

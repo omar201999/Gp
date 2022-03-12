@@ -1,36 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:gp/modules/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
-
 class AddInformation extends StatefulWidget {
+
   @override
   State<AddInformation> createState() => _AddInformationState();
+
 }
+enum goalList {gain,maintain,loss}
+enum activeList {not,lightly,active,very}
+
 class _AddInformationState extends State<AddInformation>
 {
+  goalList? goalGroup ;
+  activeList? activeGroup ;
+  String chooseActiveValue(activeList state) {
+    String? active;
+
+    switch (state) {
+      case activeList.not:
+        active = 'not active';
+        break;
+      case activeList.lightly:
+        active = 'lightly active';
+        break;
+      case activeList.active:
+        active = 'active';
+        break;
+      case activeList.very:
+        active = 'very active';
+        break;
+    }
+
+    return active;
+  }
+  String chooseGoalValue(goalList state) {
+    String? goal;
+
+    switch (state) {
+      case goalList.gain:
+        goal = 'gain';
+        break;
+      case goalList.maintain:
+        goal = 'maintain';
+        break;
+      case goalList.loss:
+        goal = 'loss';
+        break;
+    }
+
+    return goal;
+  }
   var weightController = TextEditingController();
   var heightController = TextEditingController();
   var goalWeightController = TextEditingController();
-
-
   var formKey = GlobalKey<FormState>();
   bool isMale = true;
   String? goal;
   String? active;
-  Color? goalColor1 = Colors.white;
-  Color? goalColor2 = Colors.white;
-  Color? goalColor3 = Colors.white;
 
-  Color? activeColor1 = Colors.white;
-  Color? activeColor2 = Colors.white;
-  Color? activeColor3 = Colors.white;
-  Color? activeColor4 = Colors.white;
 
-  @override
+@override
   Widget build(BuildContext context)
   {
 
-    return Scaffold(
+
+  return Scaffold(
       appBar: buildAppBar(
           title: 'Add Information',
       ),
@@ -125,7 +160,61 @@ class _AddInformationState extends State<AddInformation>
                 SizedBox(
                   height: 5,
                 ),
-                Row(
+                defaultContainer(
+                  radius: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children:
+                      [
+                        RadioListTile<goalList>(
+                          contentPadding: EdgeInsets.zero,
+                          title:  Text('Gain'),
+                          value: goalList.gain,
+                          groupValue: goalGroup,
+                          onChanged: (goalList? value) {
+                            setState(() {
+                              goalGroup = value!;
+                              goal = chooseGoalValue(goalList.gain);
+                              print(goal.toString());
+                            });
+                          },
+                        ),
+                        RadioListTile<goalList>(
+                          contentPadding: EdgeInsets.zero,
+
+                          title:  Text('Maintain'),
+                          value: goalList.maintain,
+                          groupValue: goalGroup,
+                          onChanged: (goalList? value) {
+                            setState(() {
+                              goalGroup = value!;
+                              goal = chooseGoalValue(goalList.maintain);
+                              print(goal.toString());
+                            });
+                          },
+                        ),
+                        RadioListTile<goalList>(
+                          contentPadding: EdgeInsets.zero,
+
+                          title:  Text('Lose'),
+                          value: goalList.loss,
+                          groupValue: goalGroup,
+                          onChanged: (goalList? value) {
+                            setState(() {
+                              goalGroup = value!;
+                              goal = chooseGoalValue(goalList.loss);
+                              print(goal.toString());
+                            });
+                          },
+
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ),
+                /*Row(
                   children:
                   [
                     Expanded(
@@ -135,7 +224,7 @@ class _AddInformationState extends State<AddInformation>
                           setState(() {
                             goalColor1 = Colors.blue;
                             goal = 'Loss';
-                            print(goal..toString());
+                            print(goal.toString());
 
                           });
 
@@ -213,7 +302,7 @@ class _AddInformationState extends State<AddInformation>
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(
                   height: 15,
                 ),
@@ -224,7 +313,136 @@ class _AddInformationState extends State<AddInformation>
                 SizedBox(
                   height: 5,
                 ),
-                InkWell(
+                defaultContainer(
+                  radius: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children:
+                      [
+                        RadioListTile<activeList>(
+                          contentPadding: EdgeInsets.zero,
+                          title:  Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            [
+                              defaultBodyText(
+                                context,
+                                text: 'Not Active',
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Spend most of the day sitting (e.g., desk jop)',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                          value: activeList.not,
+                          groupValue: activeGroup,
+                          onChanged: (activeList? value) {
+                            setState(() {
+                              activeGroup = value!;
+                              active = chooseActiveValue(activeList.not);
+                              print(active.toString());
+                            });
+                          },
+                        ),
+                        RadioListTile<activeList>(
+                          contentPadding: EdgeInsets.zero,
+                          title:  Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            [
+                              defaultBodyText(
+                                context,
+                                text: 'Lightly Active',
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Spend a good part of the day on your feet and train from 1 to 3 days (e.g., teacher, salesperson)',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                          value: activeList.lightly,
+                          groupValue: activeGroup,
+                          onChanged: (activeList? value) {
+                            setState(() {
+                              activeGroup = value!;
+                              active = chooseActiveValue(activeList.lightly);
+                              print(active.toString());
+                            });
+                          },
+                        ),
+                        RadioListTile<activeList>(
+                        contentPadding: EdgeInsets.zero,
+                        title:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                          [
+                            defaultBodyText(
+                              context,
+                              text: 'Active',
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              'Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ],
+                        ),
+                        value: activeList.active,
+                        groupValue: activeGroup,
+                        onChanged: (activeList? value) {
+                          setState(() {
+                            activeGroup = value!;
+                            active = chooseActiveValue(activeList.active);
+                            print(active.toString());
+                          });
+                        },
+                      ),
+                        RadioListTile<activeList>(
+                          contentPadding: EdgeInsets.zero,
+                          title:  Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            [
+                              defaultBodyText(
+                                context,
+                                text: 'Very Active',
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                          value: activeList.very,
+                          groupValue: activeGroup,
+                          onChanged: (activeList? value) {
+                            setState(() {
+                              activeGroup = value!;
+                              active = chooseActiveValue(activeList.very);
+                              print(active.toString());
+                            });
+                          },
+                        ),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+                /*InkWell(
                   onTap: ()
                   {
                     setState(() {
@@ -348,7 +566,7 @@ class _AddInformationState extends State<AddInformation>
                     setState(() {
                       activeColor4 = Colors.blue;
                       active = 'very active';
-                      print(active..toString());
+                      print(active.toString());
 
                     });
 
@@ -381,9 +599,11 @@ class _AddInformationState extends State<AddInformation>
                 ),
                 SizedBox(
                   height: 15,
+                ),*/
+
+                SizedBox(
+                  height: 10,
                 ),
-
-
                    Container(
                      color: Colors.white,
                      child: defaultTextFormField(
@@ -404,7 +624,7 @@ class _AddInformationState extends State<AddInformation>
                    ),
 
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                  Container(
                    color: Colors.white,
@@ -426,28 +646,29 @@ class _AddInformationState extends State<AddInformation>
                  ),
 
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
-                 Container(
-                   color: Colors.white,
-                   child: defaultTextFormField(
-                      controller: goalWeightController,
-                      type: TextInputType.number,
-                      validate: (String? value)
-                      {
-                        if(value!.isEmpty)
+                Container(
+                  color: Colors.white,
+                  child: defaultTextFormField(
+                        controller: goalWeightController,
+                        type: TextInputType.number,
+                        validate: (String? value)
                         {
-                          return 'please enter Goal Weight';
-                        }
-                      },
-                      label: 'Goal Weight',
-                     border: OutlineInputBorder(),
-                      hintText: 'Goal Weight into Kg',
-                    ),
-                 ),
+                          if(value!.isEmpty)
+                          {
+                            return 'please enter Goal Weight';
+                          }
+                        },
+                        label: 'Goal Weight',
+                       border:OutlineInputBorder(),
+                        hintText: 'Goal Weight into Kg',
+                      ),
+                ),
+
 
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 defaultButton(
                   context,
@@ -463,9 +684,7 @@ class _AddInformationState extends State<AddInformation>
                           goalWeight: double.parse(goalWeightController.text),
                           goal: goal,
                           active: active,
-                        )
-
-                        );
+                        ));
 
                       }
 

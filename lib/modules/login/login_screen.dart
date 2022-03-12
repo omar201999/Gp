@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => LoginCubit()..getUserData(),
+      create: (BuildContext context) => LoginCubit()..getUsers(),
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context, state)
         {
@@ -33,30 +33,34 @@ class LoginScreen extends StatelessWidget
           }
           if(state is LoginSuccessState)
           {
-            if(LoginCubit.get(context).userModel!.status == 'admin')
+            LoginCubit.get(context).users.forEach((element)
             {
-              CacheHelper.saveData(
+              if(element.status == 'admin')
+              {
+                CacheHelper.saveData(
                   key: 'uId',
                   value: state.uId,
-              ).then((value) {
-                uId = state.uId;
-                navigateToAndReplacement(context, AdminDashBored());
-              }).catchError((error){
-                print(error.toString());
-              });
-            }
-            else
-            {
-              CacheHelper.saveData(
-                key: 'uId',
-                value: state.uId,
-              ).then((value) async {
-                uId = state.uId;
-                navigateToAndReplacement(context, HomeLayout());
-              }).catchError((error){
-                print(error.toString());
-              });
-            }
+                ).then((value) {
+                  uId = state.uId;
+                  navigateToAndReplacement(context, AdminDashBored());
+                }).catchError((error){
+                  print(error.toString());
+                });
+              }
+              else
+              {
+                CacheHelper.saveData(
+                  key: 'uId',
+                  value: state.uId,
+                ).then((value) async {
+                  uId = state.uId;
+                  navigateToAndReplacement(context, HomeLayout());
+                }).catchError((error){
+                  print(error.toString());
+                });
+              }
+            });
+
           }
         },
         builder:(context,state)

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,9 @@ class RegisterCubit extends Cubit<RegisterStates>
         email: email.trim(),
         password: password,
     ).then((value) {
-      uploadProfileImage(
+      if(profileImage == null)
+      {
+        userCreate(
           name: name,
           email: email.trim(),
           uId: value.user!.uid,
@@ -64,7 +65,24 @@ class RegisterCubit extends Cubit<RegisterStates>
           active: active,
           age:age,
           weeklyGoal:weeklyGoal,
-      );
+        );
+      }else
+      {
+        uploadProfileImage(
+            name: name,
+            email: email,
+            uId: value.user!.uid,
+            weight: weight,
+            height: height,
+            goalWeight: goalWeight,
+            gender: gender,
+            goal: goal,
+            active: active,
+            weeklyGoal: weeklyGoal,
+            age: age,
+        );
+      }
+
 
     }).catchError((error){
       emit(RegisterErrorState(error.toString()));
@@ -99,13 +117,14 @@ class RegisterCubit extends Cubit<RegisterStates>
       height: height,
       gender: gender,
       goalWeight: goalWeight,
-      profileImage: profileImage != null ? profileImage : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' ,
+      profileImage:profileImage??'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' ,
       active:active ,
       goal: goal,
-      status: 'user',
+      status: 'admin',
       age: age,
       weeklyGoal: weeklyGoal,
     );
+    print(profileImage.toString());
     FirebaseFirestore.instance.
     collection('users').
     doc(uId).
@@ -146,7 +165,6 @@ class RegisterCubit extends Cubit<RegisterStates>
         required String? active,
         required double weeklyGoal,
         required int age,
-
   })
   {
     emit(RegisterLoadingState());

@@ -17,10 +17,11 @@ class LoginScreen extends StatelessWidget
   var formKey = GlobalKey<FormState>();
 
 
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => LoginCubit()..getUsers(),
+      create: (BuildContext context) => LoginCubit()..getUsers(),//..getUsers()
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context, state)
         {

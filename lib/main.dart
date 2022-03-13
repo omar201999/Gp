@@ -8,6 +8,8 @@ import 'package:gp/modules/login/login_screen.dart';
 import 'package:gp/shared/bloc_observer.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
+import 'layout/home-layout/cubit/cubit.dart';
+import 'layout/home-layout/cubit/states.dart';
 import 'shared/styles/themes.dart';
 
 void main()
@@ -58,12 +60,22 @@ class MyApp extends StatelessWidget
   @override
   Widget build(BuildContext context)
   {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme ,
-      themeMode: ThemeMode.light,
-      home: startWidget,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => HomeCubit()..getUserData()),
+      ],
+      child: BlocConsumer<HomeCubit,HomeStates>(
+        listener:(context,state){} ,
+        builder: (context,state){
+          return  MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: lightTheme,
+            darkTheme: darkTheme ,
+            themeMode: ThemeMode.light,
+            home: startWidget,
+          );
+        },
+      ),
     );
   }
 

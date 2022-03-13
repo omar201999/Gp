@@ -55,8 +55,7 @@ class LoginCubit extends Cubit<LoginStates>
     });
   }*/
 
-  List<UserModel> users = [];
-
+ List<UserModel> users = [];
   void getUsers()
   {
     FirebaseFirestore.instance.collection('users').get().then((value)
@@ -72,4 +71,29 @@ class LoginCubit extends Cubit<LoginStates>
       emit(GetAllUsersErrorState(error.toString()));
     });
   }
+
+
+  /*List<UserModel> users1 = [];
+  void getUsers1()
+  {
+    FirebaseFirestore.instance.
+    collection('users').
+    where('status',isEqualTo: 'user').
+    get().
+    then((value)
+    {
+      value.docs.forEach((element)
+      {
+        users1.add(UserModel.fromJson(element.data()));
+      });
+
+      emit(GetAllUsersSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllUsersErrorState(error.toString()));
+    });
+  }*/
 }
+
+
+

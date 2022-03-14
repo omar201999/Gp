@@ -14,6 +14,20 @@ class GetUserDataErrorState extends HomeStates
   GetUserDataErrorState(this.error);
 }
 
+class GetProfileImageLoadingState extends HomeStates{}
 
+class GetProfileImageSuccessState extends HomeStates{}
+
+class GetProfileImageErrorState extends HomeStates{}
+
+class UpdateUserDataSuccessState extends HomeStates{}
+
+class UpdateUserDataErrorState extends HomeStates{}
+
+class UploadProfileImageLoadingState extends HomeStates{}
+
+class UploadProfileImageSuccessState extends HomeStates{}
+
+class UploadProfileImageErrorState extends HomeStates{}
 
 

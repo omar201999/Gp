@@ -23,15 +23,3 @@ class AdminDeleteUsersErrorState extends AdminStates
 
   AdminDeleteUsersErrorState(this.error);
 }
-
-//create recipe
-class CreateRecipeLoadingState extends AdminStates{}
-
-class CreateRecipeSuccessState extends AdminStates{}
-
-class CreateRecipeErrorState extends AdminStates{}
-
-class RecipeImagePickedSuccessState extends AdminStates{}
-
-class RecipeImagePickedErrorState extends AdminStates{}
-

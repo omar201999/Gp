@@ -11,7 +11,7 @@ import 'package:gp/shared/componants/constant.dart';
 
 class UsersManagementScreen extends StatelessWidget {
 
-  void deleteUser(){
+  void deleteUser(uId){
     var collection = FirebaseFirestore.instance.collection('users');
      collection.doc('uId').delete().then((value) {
        print('done');
@@ -23,27 +23,22 @@ class UsersManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocProvider(
-      create: (BuildContext context) => AdminCubit()..getUsers(),
-      child: BlocConsumer<AdminCubit, AdminStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
 
-        listener: (context , state ) {},
-        builder: (context , state ){
-          return Scaffold(
-            body: ConditionalBuilder(
-                condition: AdminCubit.get(context).users.length > 0,
-                builder: (context) => ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index]),
-                  separatorBuilder: (context, index) => myDivider(),
-                  itemCount: AdminCubit.get(context).users.length,
-                ),
-                fallback: (context) => Center(child: CircularProgressIndicator())
-            ),
-          );
-        }
+      listener: (context , state ) {},
+      builder: (context , state ){
+        return ConditionalBuilder(
+            condition: AdminCubit.get(context).users.length > 0,
+        builder: (context) => ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index]),
+        separatorBuilder: (context, index) => myDivider(),
+        itemCount: AdminCubit.get(context).users.length,
+        ),
+        fallback: (context) => Center(child: CircularProgressIndicator())
+        );
+      }
 
-      ),
     );
 
 
@@ -64,7 +59,7 @@ class UsersManagementScreen extends StatelessWidget {
           width: 20,),
         Expanded(
           child: Column(
-            //mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children:
             [
@@ -89,7 +84,7 @@ class UsersManagementScreen extends StatelessWidget {
               Icons.delete_forever
             ),
             onPressed: () {
-              //deleteUser();
+              deleteUser(uId);
             }
         ),
       ],

@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 class RecipeItemScreen extends StatelessWidget {
+    RecipeModel recipeModel;
+  RecipeItemScreen({
+   required this.recipeModel,
+});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +23,7 @@ class RecipeItemScreen extends StatelessWidget {
                   height: 350,
                   decoration:  BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/Recipe1.jpg'),
+                      image:NetworkImage('${recipeModel.image}'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -52,7 +56,7 @@ class RecipeItemScreen extends StatelessWidget {
                         children: [
                           defaultHeadLineText(
                               context,
-                              text: 'Chargrilled Broccolini with Blanco Queso',
+                              text: '${recipeModel.title}',
                               maxLines: 2
                           ),
                         ],
@@ -86,7 +90,7 @@ class RecipeItemScreen extends StatelessWidget {
                                           .center,
                                       children:
                                       [
-                                        defaultBodyText(context, text: '220',
+                                        defaultBodyText(context, text: '${recipeModel.calories}',
                                             fontWeight: FontWeight.bold),
                                         defaultBodyText(context, text: 'Cal',
                                             color: Colors.grey),
@@ -95,16 +99,16 @@ class RecipeItemScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              afterTitleOfRecipeItem(context, percentage: '17%',
-                                  numberOfGrams: '9.5g',
+                              afterTitleOfRecipeItem(context, //percentage: '17%',
+                                  numberOfGrams: '${recipeModel.carbs}',
                                   nameOfType: 'Carbs',
                                   color: Colors.grey),
-                              afterTitleOfRecipeItem(context, percentage: '5%',
-                                  numberOfGrams: '30g',
+                              afterTitleOfRecipeItem(context, //percentage: '5%',
+                                  numberOfGrams: '${recipeModel.protein}',
                                   nameOfType: 'Proteins',
                                   color: Colors.red),
-                              afterTitleOfRecipeItem(context, percentage: '2%',
-                                  numberOfGrams: '6g',
+                              afterTitleOfRecipeItem(context, //percentage: '2%',
+                                  numberOfGrams: '${recipeModel.fats}',
                                   nameOfType: 'Fats',
                                   color: defaultColor),
 
@@ -137,10 +141,11 @@ class RecipeItemScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
                                     defaultBodyText(context,
-                                        text: '1 pound broccolini stalks'),
+                                        text: '${recipeModel.ingredients}'
+                                    ),
                                 separatorBuilder: (context, index) =>
                                 const SizedBox(height: 5,),
-                                itemCount: 5
+                                itemCount: 1
                             ),
                           ],
                         ),
@@ -169,11 +174,11 @@ class RecipeItemScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
                                     defaultBodyText(context,
-                                      text: 'In a large saucepan over medium heat, combine marshmallow cream, sugar, evaporated milk, butter and salt. Bring to a full boil, and cook for 5 minutes, stirring constantly.',
+                                      text: '${recipeModel.directions}',
                                     ),
                                 separatorBuilder: (context, index) =>
                                 const SizedBox(height: 5,),
-                                itemCount: 10
+                                itemCount: 1
                             ),
                           ],
                         ),

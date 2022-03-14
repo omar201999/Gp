@@ -30,4 +30,29 @@ class UploadProfileImageSuccessState extends HomeStates{}
 
 class UploadProfileImageErrorState extends HomeStates{}
 
+class GetAllBreakFastRecipeSuccessState extends HomeStates {}
+
+class GetAllBreakFastRecipeErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllBreakFastRecipeErrorState(this.error);
+}
+class GetAllLunchRecipeSuccessState extends HomeStates {}
+
+class GetAllLunchRecipeErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllLunchRecipeErrorState(this.error);
+}
+class GetAllDinnerRecipeSuccessState extends HomeStates {}
+
+class GetAllDinnerRecipeErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllDinnerRecipeErrorState(this.error);
+}
+
 

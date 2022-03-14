@@ -34,3 +34,28 @@ class CreateRecipeErrorState extends AdminStates{}
 class RecipeImagePickedSuccessState extends AdminStates{}
 
 class RecipeImagePickedErrorState extends AdminStates{}
+
+class GetAllBreakFastRecipeSuccessState extends AdminStates {}
+
+class GetAllBreakFastRecipeErrorState extends AdminStates
+{
+  final String error;
+
+  GetAllBreakFastRecipeErrorState(this.error);
+}
+class GetAllLunchRecipeSuccessState extends AdminStates {}
+
+class GetAllLunchRecipeErrorState extends AdminStates
+{
+  final String error;
+
+  GetAllLunchRecipeErrorState(this.error);
+}
+class GetAllDinnerRecipeSuccessState extends AdminStates {}
+
+class GetAllDinnerRecipeErrorState extends AdminStates
+{
+  final String error;
+
+  GetAllDinnerRecipeErrorState(this.error);
+}

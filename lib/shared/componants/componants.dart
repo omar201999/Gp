@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -113,7 +114,7 @@ Widget defaultContainer({
   double? height,
   double radius = 15,
   Clip clip = Clip.antiAliasWithSaveLayer,
-  Color? color = constantColor5,
+  Color? color = constantColor1,
   required Widget child ,
 }) => Container(
   width: width,
@@ -163,10 +164,12 @@ Widget defaultBodyText(BuildContext context,{
   ),
 );
 
-Widget buildRecipeItem(context) => defaultGesterDetecter(
+Widget buildRecipeItem(RecipeModel model,context) => defaultGesterDetecter(
   onTap: ()
   {
-    navigateTo(context, RecipeItemScreen());
+    navigateTo(context, RecipeItemScreen(
+      recipeModel: model,
+    ));
   },
   child: defaultContainer(
     height: 250,
@@ -179,7 +182,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
         Expanded(
           flex: 4,
           child: Image(
-            image: AssetImage('assets/images/Recipe1.jpg'),
+            image: NetworkImage('${model.image}'),
             width: double.infinity,
             fit: BoxFit.cover,
           ),
@@ -193,7 +196,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
                 start: 10
             ),
             child: Text(''
-                'Chargrilled Broccolini with Blanco Queso',
+                '${model.title}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -208,7 +211,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
               children:
               [
                 Text(
-                  '220',
+                  '${model.calories}',
                   style: TextStyle(
                     letterSpacing: 1,
                   ),
@@ -352,7 +355,7 @@ Widget buildSelectItem(BuildContext context, int index, {
 );
 
 Widget afterTitleOfRecipeItem(BuildContext context, {
-  required String? percentage,
+   String? percentage,
   required String? numberOfGrams,
   required String? nameOfType,
   Color? color,
@@ -360,7 +363,7 @@ Widget afterTitleOfRecipeItem(BuildContext context, {
   child: Column(
     children:
     [
-      defaultBodyText(context, text: percentage! ,color: color),
+      //defaultBodyText(context, text: percentage! ,color: color),
       defaultBodyText(context, text: numberOfGrams! ),
       defaultBodyText(context, text: nameOfType! ),
     ],

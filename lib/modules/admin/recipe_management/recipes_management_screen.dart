@@ -1,4 +1,7 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:gp/layout/admin_layout/cubit/cubit.dart';
+import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/admin/recipe_management/edit_recipe/edit_recipe_screen.dart';
 import 'package:gp/modules/admin/recipe_management/new_recipe/new_recipe_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
@@ -14,6 +17,7 @@ class RecipesManagementScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Center(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:
@@ -65,7 +69,9 @@ class RecipesManagementScreen extends StatelessWidget {
                        const Spacer(),
                        IconButton(
                            onPressed: () {
-                             navigateTo(context, NewRecipeScreen());
+                             navigateTo(context, NewRecipeScreen(
+                               category: 'breakfast',
+                             ));
                            },
                            icon:  Icon(IconBroken.Paper_Upload)
                        )
@@ -73,11 +79,16 @@ class RecipesManagementScreen extends StatelessWidget {
                    ),
                    Container(
                      height: 280,
-                     child: ListView.separated(
-                         scrollDirection: Axis.horizontal,
-                         itemBuilder:(context,index) => buildRecipe(context),
-                         separatorBuilder: (context,index) => const SizedBox(width: 10,),
-                         itemCount: 15 ),
+                     child: ConditionalBuilder(
+                       condition: AdminCubit.get(context).breakfastRecipe.length > 0,
+                       builder: (context) => ListView.separated(
+                           scrollDirection: Axis.horizontal,
+                           itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context),
+                           separatorBuilder: (context,index) =>  SizedBox(width: 10,),
+                           itemCount: AdminCubit.get(context).breakfastRecipe.length ,
+                       ),
+                       fallback: (context) => Center(child: CircularProgressIndicator()),
+                     ),
                    ),
                  ],
                ),
@@ -96,7 +107,10 @@ class RecipesManagementScreen extends StatelessWidget {
                         const Spacer(),
                         IconButton(
                             onPressed: () {
-                              navigateTo(context, NewRecipeScreen());
+                              navigateTo(context, NewRecipeScreen(
+                                category: 'lunch',
+
+                              ));
                             },
                             icon: const Icon(
                                 IconBroken.Paper_Upload,
@@ -107,11 +121,15 @@ class RecipesManagementScreen extends StatelessWidget {
                     ),
                     Container(
                       height: 280,
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder:(context,index) => buildRecipe(context),
-                          separatorBuilder: (context,index) => const SizedBox(width: 10,),
-                          itemCount: 15 ),
+                      child: ConditionalBuilder(
+                        condition: AdminCubit.get(context).lunchRecipe.length > 0,
+                        builder: (context) => ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context),
+                            separatorBuilder: (context,index) =>  SizedBox(width: 10,),
+                            itemCount: AdminCubit.get(context).lunchRecipe.length  ),
+                        fallback: (context) => Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   ],
                 ),
@@ -130,7 +148,9 @@ class RecipesManagementScreen extends StatelessWidget {
                         const Spacer(),
                         IconButton(
                             onPressed: () {
-                              navigateTo(context, NewRecipeScreen());
+                              navigateTo(context, NewRecipeScreen(
+                                category: 'dinner',
+                              ));
                             },
                             icon: const Icon(IconBroken.Paper_Upload)
                         )
@@ -138,45 +158,23 @@ class RecipesManagementScreen extends StatelessWidget {
                     ),
                     Container(
                       height: 280,
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder:(context,index) => buildRecipe(context),
-                          separatorBuilder: (context,index) => const SizedBox(width: 10,),
-                          itemCount: 15 ),
+                      child: ConditionalBuilder(
+                        condition: AdminCubit.get(context).dinnerRecipe.length > 0,
+                        builder: (context) => ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context),
+                            separatorBuilder: (context,index) =>  SizedBox(width: 10,),
+                            itemCount: AdminCubit.get(context).dinnerRecipe.length,
+                        ),
+                        fallback: (context) => Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        //headOfRecipeItem(context,head: 'Snacks'),
-                        defaultHeadLineText(
-                          context,
-                          text: 'Snacks',
-                        ),
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {
-                              navigateTo(context, NewRecipeScreen());
-                            },
-                            icon: const Icon(IconBroken.Paper_Upload)
-                        )
-                      ],
-                    ),
-                    Container(
-                      height: 280,
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder:(context,index) => buildRecipe(context),
-                          separatorBuilder: (context,index) => const SizedBox(width: 10,),
-                          itemCount: 15 ),
-                    ),
-                  ],
-                ),
+
               ],
             ),
           ),
@@ -187,7 +185,7 @@ class RecipesManagementScreen extends StatelessWidget {
 
 }
 
-Widget buildRecipe(context) => defaultGesterDetecter(
+Widget buildRecipe(RecipeModel model,context) => defaultGesterDetecter(
   onTap: ()
   {
     navigateTo(context, EditRecipeScreen());
@@ -200,18 +198,18 @@ Widget buildRecipe(context) => defaultGesterDetecter(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
-        const Expanded(
+         Expanded(
           flex: 4,
           child: Image(
-            image: AssetImage('assets/images/Recipe1.jpg'),
+            image: NetworkImage('${model.image}'),
             width: double.infinity,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(
+         SizedBox(
           height: 10,
         ),
-        const Expanded(
+         Expanded(
           child: Padding(
             padding: /*EdgeInsetsDirectional.only(
                 start: 10,
@@ -220,8 +218,8 @@ Widget buildRecipe(context) => defaultGesterDetecter(
               vertical: 2.0,
               horizontal: 6.0,
             ),
-            child: Text(''
-                'Chargrilled Broccolini with Blanco Queso',
+            child: Text(
+              '${model.title}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -237,9 +235,9 @@ Widget buildRecipe(context) => defaultGesterDetecter(
             ),
             child: Row(
               children:
-              const [
+               [
                 Text(
-                  '220',
+                  '${model.calories}',
                   style: TextStyle(
                     letterSpacing: 1,
                   ),

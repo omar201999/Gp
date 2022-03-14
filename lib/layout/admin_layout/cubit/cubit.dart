@@ -125,7 +125,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-   //String? uId,
+     required int uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -135,8 +135,10 @@ class AdminCubit extends Cubit<AdminStates>
         .child('recipes/${Uri.file(recipeImage!.path).pathSegments.last}')
         .putFile(recipeImage!)
         .then((value){
-      value.ref.getDownloadURL().then((value) {
-        print(value);
+      value.ref.getDownloadURL().then((value)
+      {
+       //print(value);
+
         createRecipe(
             title: title,
             recipeImage: value,
@@ -148,9 +150,11 @@ class AdminCubit extends Cubit<AdminStates>
             ingredients: ingredients,
             directions: directions,
             category: category,
-            //docuId: uId,
+            uId: uId,
           //totalTime: totalTime
         );
+
+
       }).catchError((error)
       {
         emit(CreateRecipeErrorState());
@@ -174,7 +178,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-    //String? uId,
+    required int uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -188,7 +192,7 @@ class AdminCubit extends Cubit<AdminStates>
         weight: weight,
         ingredients: ingredients,
         directions: directions,
-        //uId:uId,
+         uId:uId,
         category: category
 
     );
@@ -198,6 +202,9 @@ class AdminCubit extends Cubit<AdminStates>
         .doc()
         .set(model.toMap())
         .then((value){
+      getBreakfastRecipe();
+      getLunchRecipe();
+      getDinnerRecipe();
           //print(uId1.toString());
       emit(CreateRecipeSuccessState());
     }).catchError((error)
@@ -206,4 +213,66 @@ class AdminCubit extends Cubit<AdminStates>
     });
 
   }
+
+  List<RecipeModel> breakfastRecipe = [];
+
+  void getBreakfastRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'breakfast')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllBreakFastRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllBreakFastRecipeErrorState(error.toString()));
+    });
+  }
+  List<RecipeModel> lunchRecipe = [];
+
+  void getLunchRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'lunch')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        lunchRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllLunchRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllLunchRecipeErrorState(error.toString()));
+    });
+  }
+  List<RecipeModel> dinnerRecipe = [];
+
+  void getDinnerRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'dinner')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        dinnerRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllDinnerRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllDinnerRecipeErrorState(error.toString()));
+    });
+  }
+
 }

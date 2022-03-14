@@ -7,16 +7,22 @@ import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class NewRecipeScreen extends StatelessWidget {
+  final String category;
+  NewRecipeScreen({
+    required this.category,
+});
 
  var titleController = TextEditingController();
  var ingredientsController = TextEditingController();
  var directionsController = TextEditingController();
- var categoryController = TextEditingController();
+ //var categoryController = TextEditingController();
  var carbsController = TextEditingController();
  var fatsController = TextEditingController();
  var proteinController = TextEditingController();
  var calsController = TextEditingController();
  var weightController = TextEditingController();
+ var uIdController = TextEditingController();
+
  //var timeController = TextEditingController();
 
   @override
@@ -45,8 +51,8 @@ class NewRecipeScreen extends StatelessWidget {
                              weight: double.parse(weightController.text),
                              ingredients: ingredientsController.text,
                              directions: directionsController.text,
-                             category: categoryController.text,
-                             //uId: '',
+                             category: category,
+                             uId:int.parse(uIdController.text),
                              //totalTime: totalTime
                          );
                         },
@@ -67,6 +73,22 @@ class NewRecipeScreen extends StatelessWidget {
                         const SizedBox(
                           height: 10.0,
                         ),
+                      defaultContainer(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextFormField(
+                              controller: uIdController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                hintText: 'Unique Id ',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          )
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       SizedBox(
                         height: 65,
                         child: TextFormField(
@@ -235,7 +257,7 @@ class NewRecipeScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      /*SizedBox(
                         height: 65,
                         child: TextFormField(
                           keyboardType: TextInputType.text,
@@ -253,7 +275,7 @@ class NewRecipeScreen extends StatelessWidget {
                               fillColor: constantColor5
                           ),
                         ),
-                      ),
+                      ),*/
                       const SizedBox(
                         height: 10.0,
                       ),

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
 import 'package:gp/modules/user/home/home_screen.dart';
@@ -140,4 +141,65 @@ class HomeCubit extends Cubit<HomeStates>
       emit(UpdateUserDataErrorState());
     });
   }
+  List<RecipeModel> breakfastRecipe = [];
+
+  void getBreakfastRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'breakfast')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllBreakFastRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllBreakFastRecipeErrorState(error.toString()));
+    });
+  }
+  List<RecipeModel> lunchRecipe = [];
+
+  void getLunchRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'lunch')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        lunchRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllLunchRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllLunchRecipeErrorState(error.toString()));
+    });
+  }
+  List<RecipeModel> dinnerRecipe = [];
+
+  void getDinnerRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'dinner')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        dinnerRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+
+      emit(GetAllDinnerRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllDinnerRecipeErrorState(error.toString()));
+    });
+  }
+
 }

@@ -12,7 +12,7 @@ class RecipeModel
   String? directions;
   String? category;
   //int? totalTime;
-  String? uId;
+  int? uId;
 
   RecipeModel({
     this.title,
@@ -33,7 +33,7 @@ class RecipeModel
     uId = json!['uId'];
     title = json['title'];
     image = json['image'];
-    carbs = json['crabs'];
+    carbs = json['carbs'];
     protein = json['protein'];
     fats = json['fats'];
     calories = json['calories'];

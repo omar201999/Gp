@@ -7,7 +7,7 @@ class RecipeItemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      //backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children:
@@ -18,7 +18,7 @@ class RecipeItemScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   height: 350,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('images/Recipe1.jpg'),
                       fit: BoxFit.cover,
@@ -60,9 +60,9 @@ class RecipeItemScreen extends StatelessWidget {
                       ),
                     ),
                     width: double.infinity,
-                    height: 70,
+                    height: 100,
                   ),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
 
                   defaultContainer(
                     child: Padding(
@@ -72,15 +72,15 @@ class RecipeItemScreen extends StatelessWidget {
                         children: [
                           defaultHeadLineText(
                               context, text: 'Nutrition Per Serving'),
-                          SizedBox(height: 5,),
+                          const SizedBox(height: 5,),
                           Row(
                             children: [
                               Expanded(
                                 child: CircleAvatar(
                                   backgroundColor: defaultColor,
-                                  radius: 30,
+                                  radius: 40,
                                   child: CircleAvatar(
-                                    radius: 25,
+                                    radius: 35,
                                     backgroundColor: Colors.white,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment
@@ -115,7 +115,7 @@ class RecipeItemScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
 
@@ -128,9 +128,9 @@ class RecipeItemScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             defaultHeadLineText(context, text: 'Ingredients'),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                             ListView.separated(
-                                padding: EdgeInsetsDirectional.only(
+                                padding: const EdgeInsetsDirectional.only(
                                     top: 5,
                                     start: 5
                                 ),
@@ -140,7 +140,7 @@ class RecipeItemScreen extends StatelessWidget {
                                     defaultBodyText(context,
                                         text: '1 pound broccolini stalks'),
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(height: 5,),
+                                const SizedBox(height: 5,),
                                 itemCount: 5
                             ),
                           ],
@@ -148,7 +148,7 @@ class RecipeItemScreen extends StatelessWidget {
                       )
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
 
@@ -160,20 +160,20 @@ class RecipeItemScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             defaultHeadLineText(context, text: 'Directions'),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                             ListView.separated(
-                                padding: EdgeInsetsDirectional.only(
+                                padding: const EdgeInsetsDirectional.only(
                                     top: 5,
                                     start: 5
                                 ),
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
                                     defaultBodyText(context,
                                       text: 'In a large saucepan over medium heat, combine marshmallow cream, sugar, evaporated milk, butter and salt. Bring to a full boil, and cook for 5 minutes, stirring constantly.',
                                     ),
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(height: 5,),
+                                const SizedBox(height: 5,),
                                 itemCount: 10
                             ),
                           ],

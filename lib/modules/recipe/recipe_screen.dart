@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/modules/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:iconsax/iconsax.dart';
 
 class RecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(title: 'Reciepe'),
+      appBar: buildAppBar(title: 'Recipe'),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
@@ -17,21 +20,41 @@ class RecipeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children:
               [
-                defaultContainer(
+                /*defaultContainer(
+
                   height: 50,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: defaultTextFormField(
                       type: TextInputType.text,
-                      prefix: Icons.search,
+                      prefix: IconBroken.Search,
                       hintText: 'Search',
                       border: InputBorder.none,
                     ),
                   ),
+                ),*/
+
+                defaultContainer(
+                  height: 65,
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
+                            ),
+                            borderSide: BorderSide.none
+                        ),
+                        prefixIcon: Icon(IconBroken.Search),
+                        filled: true,
+                        fillColor: constantColor5
+                    ),
+                  ),
                 ),
-                headOfRecipeItem(context,head: 'Breack Fast'),
+                headOfRecipeItem(context,head: 'Breakfast'),
                 Container(
-                  height: 250,
+                  height: 290,
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder:(context,index) => buildRecipeItem(context),
@@ -40,7 +63,7 @@ class RecipeScreen extends StatelessWidget {
                 ),
                 headOfRecipeItem(context,head: 'Lunch'),
                 Container(
-                  height: 250,
+                  height: 290,
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder:(context,index) => buildRecipeItem(context),
@@ -49,7 +72,7 @@ class RecipeScreen extends StatelessWidget {
                 ),
                 headOfRecipeItem(context,head: 'Dinner'),
                 Container(
-                  height: 250,
+                  height: 280,
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder:(context,index) => buildRecipeItem(context),
@@ -58,7 +81,7 @@ class RecipeScreen extends StatelessWidget {
                 ),
                 headOfRecipeItem(context,head: 'Snacks'),
                 Container(
-                  height: 250,
+                  height: 280,
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder:(context,index) => buildRecipeItem(context),

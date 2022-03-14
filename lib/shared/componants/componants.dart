@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 import '../../modules/recipe/recipe_item_screen.dart';
 
 AppBar buildAppBar({
@@ -34,7 +35,6 @@ Widget defaultTextFormField({
   String? Function(String?)? validate,
 
   //////////////////////////////////////
-
   String? label ,
   IconData? prefix,
   IconData? suffix,
@@ -71,7 +71,8 @@ Widget defaultTextFormField({
 Widget defaultButton(BuildContext context,{
   required void Function()? onPreesed,
   required String text ,
-  double radius = 10 ,
+  double radius = 10,
+  TextStyle? textStyle ,
 }
     ) => Container(
   decoration: BoxDecoration(
@@ -83,7 +84,7 @@ Widget defaultButton(BuildContext context,{
     onPressed: onPreesed,
     child: Text(
       text,
-      style: Theme.of(context).textTheme.headline1!.copyWith(
+      style: textStyle??Theme.of(context).textTheme.headline1!.copyWith(
         color: Colors.white,
       ),
     ),
@@ -110,9 +111,9 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 Widget defaultContainer({
   double? width ,
   double? height,
-  double radius = 10,
+  double radius = 15,
   Clip clip = Clip.antiAliasWithSaveLayer,
-  Color? color = Colors.white,
+  Color? color = constantColor5,
   required Widget child ,
 }) => Container(
   width: width,
@@ -314,9 +315,9 @@ Widget buildSelectItem(BuildContext context, int index, {
                     defaultHeadLineText(context, text: 'Egg'),
                     Spacer(),
                     Checkbox(
-                          value: value ,
-                          onChanged: onChanged
-                      ),
+                        value: value ,
+                        onChanged: onChanged
+                    ),
 
                   ],
                 ),
@@ -411,3 +412,46 @@ Color chooseToastColor(ToastStates state) {
 
   return color;
 }
+Widget myDivider() => Padding(
+  padding: const EdgeInsetsDirectional.only(
+    start: 20,
+  ),
+  child: Container(
+    width: double.infinity,
+    height: 1,
+    color: Colors.grey[300],
+  ),
+);
+
+Widget defaultTextButton1 ({
+  required void Function()? onPressed,
+  required String text,
+  required BuildContext context,
+  Color? color = defaultColor,
+}) => TextButton(
+    onPressed: onPressed,
+    child: defaultBodyText(
+        context,
+        text: text,
+        color: color
+    )
+);
+
+defaultAppBar( {
+  required BuildContext context,
+  required String title,
+  List<Widget>? actions
+}) => AppBar(
+  leading: IconButton(
+    onPressed: () {
+      Navigator.pop(context);
+    },
+    icon: const Icon(
+      IconBroken.Arrow___Left_2,
+    ),
+  ),
+  titleSpacing: 5.0,
+  title: Text(title),
+  actions: actions,
+
+);

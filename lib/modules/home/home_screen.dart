@@ -6,7 +6,7 @@ import 'package:gp/modules/nutrition/nutrition_screen.dart';
 import 'package:gp/modules/snacks/snacks_screen.dart';
 import 'package:gp/modules/water_tracker/water_tracker_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/styles/colors.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -188,7 +188,7 @@ class HomePage extends StatelessWidget {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          color: Colors.teal[400]
+                                          color: defaultColor
                                       ),
                                     ),
                                     SizedBox(
@@ -197,8 +197,8 @@ class HomePage extends StatelessWidget {
                                     Text(
                                       'Remaining',
                                       style: TextStyle(
-                                        color: Colors.grey[500],
-
+                                          color: Colors.grey[500],
+                                          fontSize: 13
                                       ),
                                     ),
 
@@ -217,9 +217,9 @@ class HomePage extends StatelessWidget {
                   ),
                   buildHomeScreenItem(
                     context,
-                      prefixIcon: Icons.breakfast_dining_outlined,
-                      text: 'Breakfast',
-                      screen: BreakFastScreen(),
+                    prefixIcon: Icons.breakfast_dining_outlined,
+                    text: 'Breakfast',
+                    screen: BreakFastScreen(),
                   ),
                   SizedBox(
                     height:10,
@@ -253,7 +253,7 @@ class HomePage extends StatelessWidget {
                   ),
                   buildHomeScreenItem(
                     context,
-                    prefixIcon: Icons.water_damage_outlined,
+                    prefixIcon: Icons.water_drop,
                     text: 'Water Tracker',
                     screen: WaterTrackerScreen(),
                   ),
@@ -267,6 +267,9 @@ class HomePage extends StatelessWidget {
                       navigateTo(context, NutritionScreen());
                     },
                     text: 'Nutrition',
+                    textStyle: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.white
+                    ),
                   ),
                   SizedBox(
                     height:10,
@@ -278,22 +281,10 @@ class HomePage extends StatelessWidget {
 
                     },
                     text: 'Complete Diary',
+                    textStyle: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.white
+                    ),
                   ),
-                  SizedBox(
-                    height:10,
-                  ),
-                  defaultButton(
-                    context,
-                    onPreesed: ()
-                    {
-                      signOut(
-                        context,
-                      );
-
-                    },
-                    text: 'Sing Out',
-                  ),
-
 
                 ],
               ),

@@ -22,7 +22,7 @@ void main()
       await Firebase.initializeApp();
       Widget widget;
       uId = CacheHelper.getData(key: 'uId');
-      if(uId == 'TQPBmSbjWGQcrDXqVzz8kW2Supg2')
+      if(uId == '60G1SVVEz9OulifBubcr6YdqAti1')
       {
         widget = AdminLayout();
         print(uId.toString());

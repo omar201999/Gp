@@ -275,16 +275,6 @@ class AdminCubit extends Cubit<AdminStates>
       print(error.toString());
     });
   }
-  Future<void> deleteUser1()
-  async {
-    try {
-      await FirebaseAuth.instance.currentUser!.delete();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'requires-recent-login') {
-        print(
-            'The user must reauthenticate before this operation can be executed.');
-      }
-    }
-  }
+
 
 }

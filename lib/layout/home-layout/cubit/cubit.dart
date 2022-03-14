@@ -6,15 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/user_model.dart';
-import 'package:gp/modules/customer_dashboard/CustomerDashBoard_Screen.dart';
-import 'package:gp/modules/home/home_screen.dart';
-import 'package:gp/modules/market/MarketScreen.dart';
-import 'package:gp/modules/recipe/recipe_screen.dart';
+import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
+import 'package:gp/modules/user/home/home_screen.dart';
+import 'package:gp/modules/user/market/MarketScreen.dart';
+import 'package:gp/modules/user/recipe/recipe_screen.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
 
-import '../../../modules/register/cubit/states.dart';
 
 class HomeCubit extends Cubit<HomeStates>
 {
@@ -75,8 +74,7 @@ class HomeCubit extends Cubit<HomeStates>
         required int age ,
         required double goalWeight ,
         required double weight,
-      }
-      )
+      })
   {
     emit(UploadProfileImageLoadingState());
     firebase_storage.FirebaseStorage.instance
@@ -117,7 +115,7 @@ class HomeCubit extends Cubit<HomeStates>
   }){
     UserModel model = UserModel(
       height: userModel!.height,
-      profileImage: profileImage?? userModel!.profileImage,
+      profileImage:profileImage??userModel!.profileImage,
       uId: userModel!.uId,
       name: name,
       email: userModel!.email,

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 class RecipeModel
 {
@@ -31,7 +30,8 @@ class RecipeModel
   });
 
   RecipeModel.fromJson(Map<String, dynamic>? json){
-    title = json!['title'];
+    uId = json!['uId'];
+    title = json['title'];
     image = json['image'];
     carbs = json['crabs'];
     protein = json['protein'];
@@ -41,7 +41,6 @@ class RecipeModel
     ingredients = json['ingredients'];
     directions = json['directions'];
     category = json['category'];
-    uId = json['uId'];
     //totalTime = json['totalTime'];
 
   }

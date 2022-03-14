@@ -421,3 +421,35 @@ Widget myDivider() => Padding(
     color: Colors.grey[300],
   ),
 );
+Widget defaultTextButton1 ({
+  required void Function()? onPressed,
+  required String text,
+  required BuildContext context,
+  Color? color = defaultColor,
+}) => TextButton(
+    onPressed: onPressed,
+    child: defaultBodyText(
+        context,
+        text: text,
+        color: color
+    )
+);
+
+defaultAppBar( {
+  required BuildContext context,
+  required String title,
+  List<Widget>? actions
+}) => AppBar(
+    leading: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: const Icon(
+        IconBroken.Arrow___Left_2,
+      ),
+    ),
+    titleSpacing: 5.0,
+    title: Text(title),
+    actions: actions,
+
+);

@@ -27,10 +27,10 @@ class LoginScreen extends StatelessWidget
         {
           if(state is LoginErrorState)
           {
-            showToast(
+           /* showToast(
               text: state.error,
               state: ToastStates.ERROR,
-            );
+            );*/
           }
           if(state is LoginSuccessState)
           {

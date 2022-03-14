@@ -97,7 +97,7 @@ class _AddInformationState extends State<AddInformation>
                             children:
                             [
                               Image(
-                                image: AssetImage('images/male-gender-icon-14.jpg'),
+                                image: AssetImage('assets/images/male-gender-icon-14.jpg'),
                                 height: 90,
                                 width: 90,
                               ),
@@ -132,7 +132,7 @@ class _AddInformationState extends State<AddInformation>
                             children:
                             [
                               Image(
-                                image: AssetImage('images/220px-Venus_symbol.svg.png'),
+                                image: AssetImage('assets/images/female.png'),
                                 height: 90,
                                 width: 90,
                               ),

@@ -7,18 +7,9 @@ import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/componants/constant.dart';
 
 class UsersManagementScreen extends StatelessWidget {
 
-  void deleteUser(uId){
-    var collection = FirebaseFirestore.instance.collection('users');
-     collection.doc('uId').delete().then((value) {
-       print('done');
-     }).catchError((error){
-       print(error.toString());
-     });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +22,7 @@ class UsersManagementScreen extends StatelessWidget {
             condition: AdminCubit.get(context).users.length > 0,
         builder: (context) => ListView.separated(
         physics: BouncingScrollPhysics(),
-        itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index]),
+        itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index],context),
         separatorBuilder: (context, index) => myDivider(),
         itemCount: AdminCubit.get(context).users.length,
         ),
@@ -44,7 +35,7 @@ class UsersManagementScreen extends StatelessWidget {
 
   }
 
-  Widget  BuildUserItem (UserModel model)=> Padding(
+  Widget  BuildUserItem (UserModel model,context)=> Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(
       children:
@@ -84,7 +75,8 @@ class UsersManagementScreen extends StatelessWidget {
               Icons.delete_forever
             ),
             onPressed: () {
-              deleteUser(uId);
+              AdminCubit.get(context).deleteUser(model.uId);
+              AdminCubit.get(context).deleteUser1();
             }
         ),
       ],

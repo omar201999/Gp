@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
@@ -10,7 +11,6 @@ import 'package:gp/modules/admin/admin_dashboard/dashboard_screen.dart';
 import 'package:gp/modules/admin/market_management/market_management.dart';
 import 'package:gp/modules/admin/recipe_management/recipes_management_screen.dart';
 import 'package:gp/modules/admin/users_management/users_management.dart';
-import 'package:gp/shared/componants/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -84,18 +84,7 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
-  void deleteUser()
-  {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId).delete().then((value)
-    {
-      emit(AdminDeleteUsersSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(AdminDeleteUsersErrorState(error.toString()));
-    });
-  }
+
 
   ImagePicker? picker = ImagePicker();
 
@@ -273,6 +262,29 @@ class AdminCubit extends Cubit<AdminStates>
       print(error.toString());
       emit(GetAllDinnerRecipeErrorState(error.toString()));
     });
+  }
+  void deleteUser(String? uId){
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .delete()
+        .then((value) {
+      print('done');
+    }).catchError((error){
+      print(error.toString());
+    });
+  }
+  Future<void> deleteUser1()
+  async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed.');
+      }
+    }
   }
 
 }

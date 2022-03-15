@@ -9,6 +9,7 @@ class RecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: buildAppBar(title: 'Recipe'),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Center(

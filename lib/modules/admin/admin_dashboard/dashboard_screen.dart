@@ -68,7 +68,8 @@ class DashboardScreen extends StatelessWidget {
                                 'Revenue Last Week',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: Colors.black45
+                                    color: Colors.black45,
+                                    height: 1
                                 ),
                               ),
                               defaultHeadLineText(context, text: '\$8200.99')

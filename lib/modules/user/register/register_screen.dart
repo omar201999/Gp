@@ -15,9 +15,9 @@ class RegisterScreen extends StatelessWidget
   final String gender;
   final double goalWeight;
   final String? goal;
-  final String? active;
-
-
+  final double? active;
+  final bool? isMale;
+  final int? age;
 
 
   RegisterScreen({
@@ -27,15 +27,24 @@ class RegisterScreen extends StatelessWidget
     required this.goalWeight,
     required this.goal,
     required this.active,
+    required this.isMale,
+    required this.age
+
 
 
   });
 
+
   var emailController = TextEditingController();
-  var ageController = TextEditingController();
   var passwordController = TextEditingController();
   var userNameController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+  int? totalCalorie;
+  int? totalProtein;
+  int? totalFats;
+  int? totalCarbs;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +68,26 @@ class RegisterScreen extends StatelessWidget
           },
           builder: (context,state)
           {
+            totalCalorie = isMale! ? ((10 * weight + 6.25 * height - 5 * age! + 5) * active!).round() :  ((10 * weight + 6.25 * height - 5 * age! - 161) * active!).round() ;
+            if(goal == 'maintain')
+            {
+              totalCalorie = totalCalorie;
+              totalProtein = (1.5 * weight).round();
+              totalFats = ((20/100) * totalCalorie!).round();
+              totalCarbs = ((totalCalorie! - (4 * totalProtein! + totalFats! )) / 4) .round();
+            }else if(goal == 'gain')
+            {
+              totalCalorie = totalCalorie! +  400;
+              totalProtein = (2 * weight).round();
+              totalFats = ((30/100) * totalCalorie!).round();
+              totalCarbs = ((totalCalorie! - (4 * totalProtein! + totalFats! )) / 4) .round();
+            }else
+            {
+              totalCalorie = totalCalorie! - 400;
+              totalProtein = (1.5 * weight).round();
+              totalFats = ((20/100) * totalCalorie!).round();
+              totalCarbs = ((totalCalorie! - (4 * totalProtein! + totalFats! )) / 4) .round();
+            }
             var profileImage = RegisterCubit.get(context).profileImage;
 
             return Scaffold(
@@ -176,23 +205,7 @@ class RegisterScreen extends StatelessWidget
                             suffix:RegisterCubit.get(context).suffix,
 
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          defaultTextFormField(
-                            controller: ageController,
-                            type: TextInputType.number,
-                            validate: (String? value)
-                            {
-                              if(value!.isEmpty)
-                              {
-                                return 'please enter your Age';
-                              }
-                            },
-                            label: 'Age',
-                            border: OutlineInputBorder(),
 
-                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -215,10 +228,14 @@ class RegisterScreen extends StatelessWidget
                                     height: height,
                                     goalWeight: goalWeight,
                                     gender: gender,
-                                    age: int.parse(ageController.text),
+                                    age: age,
                                     weeklyGoal: (goalWeight-weight)/4.round(),
                                     goal: goal,
                                     active: active,
+                                    totalCalorie: totalCalorie,
+                                    totalProtein: totalProtein,
+                                    totalFats: (totalFats! / 8).round(),
+                                    totalCarbs:totalCarbs,
                                   );
                                 }
 

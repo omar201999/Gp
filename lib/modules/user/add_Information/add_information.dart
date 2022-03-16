@@ -8,31 +8,34 @@ class AddInformation extends StatefulWidget {
 
 }
 enum goalList {gain,maintain,loss}
-enum activeList {not,lightly,active,very}
+enum activeList {not,lightly,active,very,hulk}
 
 class _AddInformationState extends State<AddInformation>
 {
   goalList? goalGroup ;
   activeList? activeGroup ;
-  String chooseActiveValue(activeList state) {
-    String? active;
+  double chooseActiveValue(activeList state) {
+    double? active;
 
     switch (state) {
       case activeList.not:
-        active = 'not active';
+        active = 1.2;
         break;
       case activeList.lightly:
-        active = 'lightly active';
+        active = 1.3;
         break;
       case activeList.active:
-        active = 'active';
+        active = 1.5;
         break;
       case activeList.very:
-        active = 'very active';
+        active = 1.7;
+        break;
+      case activeList.hulk:
+        active = 1.9;
         break;
     }
-
     return active;
+
   }
   String chooseGoalValue(goalList state) {
     String? goal;
@@ -54,10 +57,11 @@ class _AddInformationState extends State<AddInformation>
   var weightController = TextEditingController();
   var heightController = TextEditingController();
   var goalWeightController = TextEditingController();
+  var ageController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   bool isMale = true;
   String? goal;
-  String? active;
+  double? active;
 
 
 @override
@@ -436,6 +440,35 @@ class _AddInformationState extends State<AddInformation>
                             });
                           },
                         ),
+                        RadioListTile<activeList>(
+                          contentPadding: EdgeInsets.zero,
+                          title:  Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            [
+                              defaultBodyText(
+                                context,
+                                text: 'Hulk',
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Spend most of the day Hard training ',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                          value: activeList.not,
+                          groupValue: activeGroup,
+                          onChanged: (activeList? value) {
+                            setState(() {
+                              activeGroup = value!;
+                              active = chooseActiveValue(activeList.hulk);
+                              print(active.toString());
+                            });
+                          },
+                        ),
 
 
                       ],
@@ -665,6 +698,26 @@ class _AddInformationState extends State<AddInformation>
                         hintText: 'Goal Weight into Kg',
                       ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                 Container(
+                   color: Colors.white,
+                   child: defaultTextFormField(
+                     controller: ageController,
+                     type: TextInputType.number,
+                     validate: (String? value)
+                     {
+                       if(value!.isEmpty)
+                       {
+                         return 'please enter your Age';
+                       }
+                     },
+                     label: 'Age',
+                     border: OutlineInputBorder(),
+                   ),
+                 ),
+
 
 
                 SizedBox(
@@ -684,6 +737,8 @@ class _AddInformationState extends State<AddInformation>
                           goalWeight: double.parse(goalWeightController.text),
                           goal: goal,
                           active: active,
+                          isMale: isMale,
+                          age: int.parse(ageController.text),
                         ));
 
                       }

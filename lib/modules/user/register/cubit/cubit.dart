@@ -37,9 +37,13 @@ class RegisterCubit extends Cubit<RegisterStates>
     required double goalWeight,
     required String gender,
     required String? goal,
-    required String? active,
-    required int age,
+    required double? active,
+    required int? age,
     required double weeklyGoal,
+    required int? totalCalorie,
+    required int? totalCarbs,
+    required int? totalFats,
+    required int? totalProtein,
 
 
   })
@@ -65,6 +69,10 @@ class RegisterCubit extends Cubit<RegisterStates>
           active: active,
           age:age,
           weeklyGoal:weeklyGoal,
+          totalCalorie: totalCalorie,
+          totalCarbs:totalCarbs ,
+          totalFats:totalFats ,
+          totalProtein:totalProtein ,
         );
       }else
       {
@@ -80,6 +88,10 @@ class RegisterCubit extends Cubit<RegisterStates>
             active: active,
             weeklyGoal: weeklyGoal,
             age: age,
+          totalFats:totalFats ,
+          totalCarbs:totalCarbs ,
+          totalCalorie: totalCalorie,
+          totalProtein: totalProtein,
         );
       }
 
@@ -102,10 +114,14 @@ class RegisterCubit extends Cubit<RegisterStates>
     required double goalWeight,
     required String gender,
     required String? goal,
-    required String? active,
+    required double? active,
     required double weeklyGoal,
-    required int age,
+    required int? age,
     String? profileImage,
+    required int? totalCalorie,
+    required int? totalCarbs,
+    required int? totalFats,
+    required int? totalProtein,
 
   })
   {
@@ -123,6 +139,10 @@ class RegisterCubit extends Cubit<RegisterStates>
       status: 'user',
       age: age,
       weeklyGoal: weeklyGoal,
+      totalCalorie:totalCalorie ,
+      totalCarbs: totalCarbs,
+      totalFats: totalFats,
+      totalProtein:totalProtein,
     );
     print(profileImage.toString());
     FirebaseFirestore.instance.
@@ -162,9 +182,14 @@ class RegisterCubit extends Cubit<RegisterStates>
         required double goalWeight,
         required String gender,
         required String? goal,
-        required String? active,
+        required double? active,
         required double weeklyGoal,
-        required int age,
+        required int? age,
+        required int? totalCalorie,
+        required int? totalCarbs,
+        required int? totalFats,
+        required int? totalProtein,
+
   })
   {
     emit(RegisterLoadingState());
@@ -188,6 +213,10 @@ class RegisterCubit extends Cubit<RegisterStates>
             weeklyGoal: weeklyGoal,
             age: age,
             profileImage: value,
+            totalProtein:totalProtein ,
+            totalFats: totalFats,
+            totalCarbs:totalCarbs ,
+            totalCalorie: totalCalorie,
         );
       }).catchError((error){
         emit(RegisterUploadProfileImageErrorState());

@@ -90,7 +90,7 @@ class CustomerDashBoardScreen extends StatelessWidget {
                                           radius: 35,
                                         ),
                                         CircleAvatar(
-                                          child: defaultHeadLineText(context, text: '${userModel?.weight}',color: defaultColor),
+                                          child: defaultHeadLineText(context, text: '${userModel!.goalWeight}',color: defaultColor),
                                           backgroundColor: Colors.white,
                                           radius: 30,
                                         ),
@@ -126,15 +126,15 @@ class CustomerDashBoardScreen extends StatelessWidget {
                                 secondPart(
                                     context,
                                     subHeadLine: 'Current Weight' ,
-                                    subHeadLine2: '${userModel?.weight}',
-                                    caption: 'Gain .25 kg per week'
+                                    subHeadLine2: '${userModel.weight}',
+                                    caption: 'Gain ${userModel.weeklyGoal} kg per week'
                                 ),
                                 SizedBox(height: 20,),
                                 secondPart(
                                     context,
                                     subHeadLine: 'Daily Calories' ,
-                                    subHeadLine2: '2750g' ,
-                                    caption: 'Carbs 255g , fat 80g , protein 250g'
+                                    subHeadLine2: '${userModel.totalCalorie}g' ,
+                                    caption: 'Carbs ${userModel.totalCarbs}g , fat ${userModel.totalFats}g , protein ${userModel.totalProtein}g'
                                 ),
                               ],
                             ),

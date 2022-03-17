@@ -1,114 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/shared/componants/componants.dart';
 
-class NutritionScreen extends StatefulWidget
-{
-  @override
-  _NutritionScreenState createState() => _NutritionScreenState();
-}
-
-class _NutritionScreenState extends State<NutritionScreen>
-{
+class NutritionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.teal[400],
-        title: Text(
-          'Nutrition',
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children:
-          [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
+    return BlocConsumer<HomeCubit,HomeStates>(
+     listener: (context, state)
+     {
 
-              ),
-              child: Row(
+     },
+      builder:(context,state)
+      {
+        var userModel = HomeCubit.get(context).userModel;
+        return  Scaffold(
+          appBar: defaultAppBar(
+            context: context,
+            title: 'Nutrition',
+
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children:
                 [
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: (){},
-                      icon: Icon
-                        (
-                        Icons.arrow_back,
-                      ),
-                    ),
+                  buildNutritionItem(
+                    context,
+                    title: 'Protein Remaining',
+                    calorieText: '${userModel!.totalProtein}',
+                    foodText: '0',
+                    remainingText: '${userModel.totalProtein}',
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: TextButton(
-                      onPressed: (){},
-                      child: Text(
-                        'Today',
-                        textAlign: TextAlign.center,
-                        style: TextStyle
-                          (
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black
-                        ),
-                      ),
-                    ),
+                  SizedBox(
+                    height: 15,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: (){},
-                      icon: Icon
-                        (
-                        Icons.arrow_forward,
-                      ),
-                    ),
+                  buildNutritionItem(
+                    context,
+                    title: 'Fats Remaining',
+                    calorieText: '${userModel.totalFats}',
+                    foodText: '0',
+                    remainingText: '${userModel.totalFats}',
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  buildNutritionItem(
+                    context,
+                    title: 'Carbohydrates Remaining',
+                    calorieText: '${userModel.totalCarbs}',
+                    foodText: '0',
+                    remainingText: '${userModel.totalCarbs}',
+                  ),
+
                 ],
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children:
-              [
-                Expanded(
-                  flex: 3,
-                    child: Text('')),
-                Expanded(
-                    flex: 1,
-                    child: Text('Total')),
-                Expanded(
-                    flex: 1,
-                    child: Text('Total')),
-                Expanded(
-                    flex: 1,
-                    child: Text('Total')),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context,index) => buildNutrtion(),
-                separatorBuilder: (context,index) => Container(
-                  width: double.infinity,
-                  height: 1,
-                  color: Colors.grey,
-                ),
-                itemCount: 5)
-
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
-  Widget buildNutrtion() => Container(
+}
+
+
+
+
+
+
+  /*Widget buildNutrtion() => Container(
     decoration: BoxDecoration(
       color: Colors.white,
 
@@ -146,7 +109,7 @@ class _NutritionScreenState extends State<NutritionScreen>
       ),
     ),
   );
-}
+}*/
 /*
             Table(
               children:

@@ -21,22 +21,6 @@ class HomeCubit extends Cubit<HomeStates>
   HomeCubit() : super(HomeIntitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
-
-  int currentIndex = 0;
-  List<Widget> bodyScreen =
-  [
-    HomePage(),
-    MarketScreen(),
-    RecipeScreen(),
-    CustomerDashBoardScreen(),
-
-  ];
-  void changeBottomNavBar(int index)
-  {
-    currentIndex = index;
-    emit(HomeChangeBottonNavState());
-  }
-
   UserModel? userModel;
 
   void getUserData()
@@ -54,6 +38,23 @@ class HomeCubit extends Cubit<HomeStates>
       print(error.toString());
     });
   }
+
+  int currentIndex = 0;
+  List<Widget> bodyScreen =
+  [
+    HomePage(),
+    MarketScreen(),
+    RecipeScreen(),
+    CustomerDashBoardScreen(),
+
+  ];
+  void changeBottomNavBar(int index)
+  {
+    currentIndex = index;
+    emit(HomeChangeBottonNavState());
+  }
+
+
 
   File? profileImage;
   ImagePicker? picker = ImagePicker();

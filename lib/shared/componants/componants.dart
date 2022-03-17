@@ -443,18 +443,167 @@ Widget defaultTextButton1 ({
 defaultAppBar( {
   required BuildContext context,
   required String title,
+  IconData? icon = IconBroken.Arrow___Left_2,
+
   List<Widget>? actions
 }) => AppBar(
   leading: IconButton(
     onPressed: () {
       Navigator.pop(context);
     },
-    icon: const Icon(
-      IconBroken.Arrow___Left_2,
+    icon:  Icon(
+      icon,
     ),
   ),
   titleSpacing: 5.0,
   title: Text(title),
   actions: actions,
 
+);
+
+Widget buildNutritionItem(BuildContext context,{
+  required String title,
+  required String calorieText,
+  required String foodText,
+  required String remainingText,
+
+}) => defaultContainer(
+  child: Padding(
+    padding: const EdgeInsetsDirectional.all(10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        defaultHeadLineText(
+          context,
+          text: title,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Row(
+          children:
+          [
+            Expanded(
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                    calorieText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Goal',
+                    style: TextStyle(
+                        color: Colors.grey[500]
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Text(
+                      '-',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                   foodText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Food',
+                    style: TextStyle(
+                        color: Colors.grey[500]
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Text(
+                      '=',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                    remainingText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: defaultColor
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Remaining',
+                    style: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 13
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ],
+        ),
+
+      ],
+    ),
+  ),
 );

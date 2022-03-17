@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
@@ -69,8 +68,9 @@ class AdminCubit extends Cubit<AdminStates>
   void getUsers()
   {
     FirebaseFirestore.instance.collection('users').
-    where('status',isEqualTo: 'user')
-        .get().then((value)
+    where('status',isEqualTo: 'user').
+    get().
+    then((value)
     {
       value.docs.forEach((element)
       {

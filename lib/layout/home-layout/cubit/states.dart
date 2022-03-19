@@ -65,4 +65,11 @@ class SearchErrorState extends HomeStates
   SearchErrorState(this.error);
 }
 
+class protienSuccessState extends HomeStates {}
 
+class protienErrorState extends HomeStates
+{
+  final String error;
+
+  protienErrorState(this.error);
+}

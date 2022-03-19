@@ -20,6 +20,7 @@ void main()
       WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();
       await Firebase.initializeApp();
+
       Widget widget;
       uId = CacheHelper.getData(key: 'uId');
       if(uId == '60G1SVVEz9OulifBubcr6YdqAti1')
@@ -58,12 +59,13 @@ class MyApp extends StatelessWidget
   MyApp({
     this.startWidget
   });
+
   @override
   Widget build(BuildContext context)
   {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => HomeCubit()..getUserData()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()),
+        BlocProvider(create: (context) => HomeCubit()..getUserData()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getprotien()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()),
       ],
       child: BlocConsumer<HomeCubit,HomeStates>(

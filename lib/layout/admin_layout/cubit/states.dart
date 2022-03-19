@@ -50,7 +50,20 @@ class UploadNewRecipeImageErrorState extends AdminStates{
   UploadNewRecipeImageErrorState(this.error);
 }
 
-class UpdateRecipeErrorState extends AdminStates{}
+class UpdateRecipeErrorState extends AdminStates{
+  final String error;
+
+  UpdateRecipeErrorState(this.error);
+
+}
+
+class UpdateRecipeSuccessState extends AdminStates{}
+
+class GetAllLunchRecipeLoadingState extends AdminStates {}
+
+class GetAllDinnerRecipeLoadingState extends AdminStates {}
+
+class GetAllBreakFastRecipeLoadingState extends AdminStates {}
 
 class GetAllBreakFastRecipeSuccessState extends AdminStates {}
 

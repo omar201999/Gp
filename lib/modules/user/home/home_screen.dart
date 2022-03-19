@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget
                         ),
                         buildHomeScreenItem(
                           context,
-                          prefixIcon: Icons.water_drop,
+                          prefixIcon: Icons.water_rounded,
                           text: 'Water Tracker',
                           screen: WaterTrackerScreen(),
                         ),

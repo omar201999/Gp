@@ -54,5 +54,22 @@ class GetAllDinnerRecipeErrorState extends HomeStates
 
   GetAllDinnerRecipeErrorState(this.error);
 }
+class SearchLoadingState extends HomeStates {}
 
+class SearchSuccessState extends HomeStates {}
 
+class SearchErrorState extends HomeStates
+{
+  final String error;
+
+  SearchErrorState(this.error);
+}
+
+class protienSuccessState extends HomeStates {}
+
+class protienErrorState extends HomeStates
+{
+  final String error;
+
+  protienErrorState(this.error);
+}

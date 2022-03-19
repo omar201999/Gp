@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/modules/user/search_recipe_screen/search_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -9,7 +10,22 @@ class RecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: buildAppBar(title: 'Recipe'),
+      appBar: buildAppBar(
+          title: 'Recipe ',
+        actions:
+        [
+          IconButton(
+            onPressed:()
+            {
+              navigateTo(context,SearchRecipeScreen());
+
+            },
+            icon: Icon(
+              IconBroken.Search,
+            ),
+          ),
+        ]
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
@@ -19,18 +35,7 @@ class RecipeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children:
               [
-                defaultContainer(
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: defaultTextFormField(
-                      type: TextInputType.text,
-                      prefix: IconBroken.Search,
-                      border: InputBorder.none,
-                      hintText: 'Search'
-                    ),
-                  ),
-                ),
+
                 /*
                 SizedBox(
                   height: 65,

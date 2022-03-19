@@ -7,44 +7,43 @@ import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-class EditRecipeScreen extends StatelessWidget {
+class EditRecipeScreen extends StatelessWidget
+{
+  var titleController = TextEditingController();
+  var ingredientsController = TextEditingController();
+  var directionsController = TextEditingController();
+  //var categoryController = TextEditingController();
+  var carbsController = TextEditingController();
+  var fatsController = TextEditingController();
+  var proteinController = TextEditingController();
+  var calsController = TextEditingController();
+  var weightController = TextEditingController();
 
    RecipeModel recipeModel;
   EditRecipeScreen({
     required this.recipeModel,
   });
-
   @override
   Widget build(BuildContext context) {
 
-    var titleController = TextEditingController();
-    var ingredientsController = TextEditingController();
-    var directionsController = TextEditingController();
-    //var categoryController = TextEditingController();
-    var carbsController = TextEditingController();
-    var fatsController = TextEditingController();
-    var proteinController = TextEditingController();
-    var calsController = TextEditingController();
-    var weightController = TextEditingController();
+
 
    // var recipeModel = AdminCubit.get(context).recipeModel;
-    var recipeImage = AdminCubit.get(context).image;
 
-    titleController.text = recipeModel.title!;
-    ingredientsController.text = recipeModel.ingredients!;
-    directionsController.text = recipeModel.directions!;
-    carbsController.text = '${recipeModel.carbs}';
-    fatsController.text = '${recipeModel.fats}';
-    proteinController.text = '${recipeModel.protein}';
-    calsController.text = '${recipeModel.calories}';
-    weightController.text = '${recipeModel.weight}';
 
 
     return BlocConsumer<AdminCubit, AdminStates>(
+      listener: (context, state) {},
         builder: (context, state) {
-
-
-
+          var recipeImage = AdminCubit.get(context).newRecipeImage;
+          titleController.text = recipeModel.title!;
+          ingredientsController.text = recipeModel.ingredients!;
+          directionsController.text = recipeModel.directions!;
+          carbsController.text = '${recipeModel.carbs}';
+          fatsController.text = '${recipeModel.fats}';
+          proteinController.text = '${recipeModel.protein}';
+          calsController.text = '${recipeModel.calories}';
+          weightController.text = '${recipeModel.weight}';
 
           return Scaffold(
             //backgroundColor: Colors.grey[200],
@@ -85,7 +84,8 @@ class EditRecipeScreen extends StatelessWidget {
                               context,
                               color: Colors.white,
                               function: () {
-
+                                 AdminCubit.get(context).deleteRecipe(recipeModel.uId);
+                                 Navigator.pop(context);
                               },
                               text : 'Delete',
                             ),
@@ -102,7 +102,7 @@ class EditRecipeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             onPressed: () {
-                               AdminCubit.get(context).getImage();
+                               AdminCubit.get(context).getnewRecipeImage();
                             },
                             icon: const CircleAvatar(
                               radius: 30,
@@ -126,7 +126,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.text,
                             controller: titleController,
-                            hintText: 'Title',
                             prefix: IconBroken.Paper,
                           ),
                         ),
@@ -140,7 +139,7 @@ class EditRecipeScreen extends StatelessWidget {
                             child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
-                                hintText: 'Enter Ingredients ... ',
+                                maxLines: 30
                               ),
                         ),
                         const SizedBox(
@@ -152,7 +151,7 @@ class EditRecipeScreen extends StatelessWidget {
                             child: defaultTextFormField(
                                 controller: directionsController,
                                 type: TextInputType.multiline,
-                                hintText: 'Enter Directions ... ',
+                                maxLines: 30
                               ),
                         ),
                         const SizedBox(
@@ -164,7 +163,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: carbsController,
-                            hintText: 'Carbs',
                           ),
                         ),
                         const SizedBox(
@@ -176,7 +174,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: proteinController,
-                            hintText: 'Protein',
                           ),
                         ),
                         const SizedBox(
@@ -188,7 +185,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: fatsController,
-                            hintText: 'Fats',
                           ),
                         ),
                         const SizedBox(
@@ -200,7 +196,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: calsController,
-                            hintText: 'Calories',
                           ),
                         ),
                         const SizedBox(
@@ -212,7 +207,6 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: weightController,
-                            hintText: 'Weight',
                           ),
                         ),
                         const SizedBox(
@@ -221,7 +215,12 @@ class EditRecipeScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
-                            AdminCubit.get(context).UpdateRecipe(
+                            print(recipeImage);
+                            print(recipeModel.uId);
+
+                            if(recipeImage == null)
+                            {
+                              AdminCubit.get(context).UpdateRecipe(
                                 title: titleController.text,
                                 ingredients: ingredientsController.text,
                                 directions: directionsController.text,
@@ -231,8 +230,25 @@ class EditRecipeScreen extends StatelessWidget {
                                 calories: double.parse(calsController.text),
                                 weight: double.parse(weightController.text),
                                 uId: recipeModel.uId,
-                                category: recipeModel.category
-                            );
+                                category: recipeModel.category,
+                                newRecipeImage:recipeModel.image,
+                              );
+                            } else
+                            {
+                              AdminCubit.get(context).uploadNewImage(
+                                title: titleController.text,
+                                ingredients: ingredientsController.text,
+                                directions: directionsController.text,
+                                carbs: double.parse(carbsController.text),
+                                protein: double.parse(proteinController.text),
+                                fats: double.parse(fatsController.text),
+                                calories: double.parse(calsController.text),
+                                weight: double.parse(weightController.text),
+                                uId: recipeModel.uId,
+                                category: recipeModel.category,
+                              );
+                            }
+
                           },
                           text: 'UPDATE',
                           textStyle: Theme.of(context).textTheme.headline1!.copyWith(
@@ -248,9 +264,7 @@ class EditRecipeScreen extends StatelessWidget {
 
           );
         },
-        listener: (context, state) {
 
-    }
     );
   }
 }

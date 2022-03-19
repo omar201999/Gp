@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
-import 'package:gp/shared/styles/icon_broken.dart';
 
 AppBar buildAppBar({
   required String title,
@@ -40,7 +41,7 @@ Widget defaultTextFormField({
   void Function(String)? onSubmitted,
   bool obscure = false,
   String? Function(String?)? validate,
-  int? maxLines = 50,
+  int? maxLines = 1,
 
   //////////////////////////////////////
   String? label ,
@@ -246,6 +247,8 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
     ),
   ),
 );
+
+
 
 Widget headOfRecipeItem(BuildContext context, {
   required String head,
@@ -620,6 +623,140 @@ Widget buildNutritionItem(BuildContext context,{
               ),
             ),
           ],
+        ),
+
+      ],
+    ),
+  ),
+);
+
+Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
+  onTap: ()
+  {
+    navigateTo(context, MarketitemScreen(
+      productModel: model,
+    ));
+  },
+  child: defaultContainer(
+    height: 250,
+    width: 180,
+    color: constantColor5,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        Expanded(
+          flex: 4,
+          child: Image(
+            image: NetworkImage('${model.image}'),
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 10,
+            ),
+            child: Row(
+              children:
+              [
+                Text(
+                  '${model.currentPrice}',
+                  style: TextStyle(
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Current Price'),
+              ],
+            ),
+          ),
+        ),
+
+        SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+                start: 10
+            ),
+            child: Text(''
+                '${model.name}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 10,
+            ),
+            child: Row(
+              children:
+              [
+                Text(
+                  '${model.category}',
+                  style: TextStyle(
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Category'),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 10,
+            ),
+            child: Row(
+              children:
+              [
+                Text(
+                  '${model.description}',
+                  style: TextStyle(
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Description'),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 10,
+            ),
+            child: Row(
+              children:
+              [
+                Text(
+                  '${model.quantity}',
+                  style: TextStyle(
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Availabe in Store'),
+              ],
+            ),
+          ),
         ),
 
       ],

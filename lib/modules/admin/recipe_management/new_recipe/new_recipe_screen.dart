@@ -84,7 +84,7 @@ class NewRecipeScreen extends StatelessWidget {
                               hintText: 'Unique Id ',
                               //border: InputBorder.none,
                             ),
-                      ),
+                              ),
                       const SizedBox(
                         height: 10.0,
                       ),
@@ -95,8 +95,9 @@ class NewRecipeScreen extends StatelessWidget {
                           controller: titleController,
                           hintText: 'Title',
                               //prefixIcon: Icon(IconBroken.Search),
+
+                          ),
                         ),
-                      ),
                       const SizedBox(
                         height: 10.0,
                       ),
@@ -110,6 +111,7 @@ class NewRecipeScreen extends StatelessWidget {
 
                               ),
                       ),
+
                       const SizedBox(
                         height: 10.0,
                       ),

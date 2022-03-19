@@ -203,4 +203,27 @@ class HomeCubit extends Cubit<HomeStates>
     });
   }
 
+  List<RecipeModel> search = [];
+
+  void getSearch(String value )
+  {
+    emit(SearchLoadingState());
+    search = [];
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('title', isGreaterThanOrEqualTo: value)
+        .where('title', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        search.add(RecipeModel.fromJson(element.data()));
+      });
+      emit(SearchSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErrorState(error.toString()));
+    });
+  }
+
 }

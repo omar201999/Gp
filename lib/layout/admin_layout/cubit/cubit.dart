@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
@@ -23,8 +22,24 @@ class AdminCubit extends Cubit<AdminStates>
 
   UserModel  model = UserModel();
 
-  //RecipeModel recipeModel = RecipeModel();
+  /*void getUserData()
+  {
+    emit(AdminGetUserSLoadingState());
 
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .get()
+        .then((value) {
+      print(value.data());
+      model = AdminUserModel.fromJson(value.data());
+      emit(AdminGetUserSuccessState());
+
+    }).catchError((error) {
+      print(error.toString());
+      emit(AdminGetUserErrorState(error.toString()));
+    });
+  }*/
   int currentIndex = 0 ;
   List<Widget> screens = [
     DashboardScreen(),
@@ -54,8 +69,9 @@ class AdminCubit extends Cubit<AdminStates>
   void getUsers()
   {
     FirebaseFirestore.instance.collection('users').
-    where('status',isEqualTo: 'user')
-        .get().then((value)
+    where('status',isEqualTo: 'user').
+    get().
+    then((value)
     {
       value.docs.forEach((element)
       {
@@ -104,15 +120,15 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
-  File? image;
+  File? newRecipeImage;
 
-  Future? getImage() async {
+  Future? getnewRecipeImage() async {
     final pickedFile = await picker?.pickImage(
         source: ImageSource.gallery
     );
 
     if (pickedFile != null ) {
-      image = File(pickedFile.path);
+      newRecipeImage = File(pickedFile.path);
       emit(ImagePickedSuccessState());
     } else {
       print('No image selected');
@@ -120,20 +136,39 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
-  String newRecipeImage = '';
-
-  void uploadNewImage(){
+  void uploadNewImage({
+    required String title,
+    required String ingredients,
+    required String directions,
+    required double calories,
+    required double fats,
+    required double carbs,
+    required double protein,
+    required double weight,
+    required String? uId,
+    required String? category,
+})
+  {
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('recipes/${Uri.file(image!.path).pathSegments.last}')
-        .putFile(image!)
+        .child('recipes/${Uri.file(newRecipeImage!.path).pathSegments.last}')
+        .putFile(newRecipeImage!)
         .then((value){
       value.ref.getDownloadURL().then((value)
       {
-        emit(UploadNewRecipeImageSuccessState());
-        newRecipeImage = value;
-        //print(value);
-
+        UpdateRecipe(
+            title: title,
+            ingredients: ingredients,
+            directions: directions,
+            calories: calories,
+            fats: fats,
+            carbs: carbs,
+            protein: protein,
+            weight: weight,
+            uId: uId,
+            category: category,
+            newRecipeImage: value,
+        );
       }).catchError((error)
       {
         print(error.toString());
@@ -157,6 +192,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double weight,
     required String? uId,
     required String? category,
+    String? newRecipeImage,
 })
   {
     RecipeModel model = RecipeModel(
@@ -170,7 +206,8 @@ class AdminCubit extends Cubit<AdminStates>
       protein: protein,
       weight: weight,
       uId: uId,
-      category: category
+      category: category,
+
     );
 
     FirebaseFirestore.instance
@@ -178,12 +215,14 @@ class AdminCubit extends Cubit<AdminStates>
     .doc(uId)
     .update(model.toMap())
     .then((value) {
-       getBreakfastRecipe();
-     // getLunchRecipe();
-     // getDinnerRecipe();
+      //emit(UpdateRecipeSuccessState());
+      getBreakfastRecipe();
+     getLunchRecipe();
+     getDinnerRecipe();
     }).catchError((error){
 
-      emit(UpdateRecipeErrorState());
+      emit(UpdateRecipeErrorState(error.toString()));
+      print(error.toString());
     });
 
   }
@@ -197,7 +236,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-    required String? uId,
+     required String? uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());

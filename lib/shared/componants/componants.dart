@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
-import 'package:gp/shared/styles/icon_broken.dart';
 
 AppBar buildAppBar({
   required String title,
@@ -40,7 +39,7 @@ Widget defaultTextFormField({
   void Function(String)? onSubmitted,
   bool obscure = false,
   String? Function(String?)? validate,
-  int? maxLines = 50,
+  //int? maxLines ,
 
   //////////////////////////////////////
   String? label ,
@@ -58,7 +57,7 @@ Widget defaultTextFormField({
   onFieldSubmitted: onSubmitted,
   obscureText: obscure,
   validator: validate,
-  maxLines: maxLines,
+  //maxLines: maxLines,
 
   //decoration of textFormField
 

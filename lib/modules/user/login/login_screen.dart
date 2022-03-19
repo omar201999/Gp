@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget
                           border: const OutlineInputBorder(),
 
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 15.0,
                         ),
 

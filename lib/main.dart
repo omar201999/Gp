@@ -20,6 +20,7 @@ void main()
       WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();
       await Firebase.initializeApp();
+
       Widget widget;
       uId = CacheHelper.getData(key: 'uId');
       if(uId == '60G1SVVEz9OulifBubcr6YdqAti1')
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget
   MyApp({
     this.startWidget
   });
+
   @override
   Widget build(BuildContext context)
   {

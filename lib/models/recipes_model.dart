@@ -48,7 +48,7 @@ class RecipeModel
   Map<String, dynamic> toMap()
   {
     return {
-      'title':title,
+      'title':title!.toLowerCase(),
       'image':image,
       'carbs':carbs,
       'protein':protein,

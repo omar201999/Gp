@@ -41,7 +41,7 @@ Widget defaultTextFormField({
   void Function(String)? onSubmitted,
   bool obscure = false,
   String? Function(String?)? validate,
-  //int? maxLines ,
+  int? maxLines = 1,
 
   //////////////////////////////////////
   String? label ,
@@ -59,7 +59,7 @@ Widget defaultTextFormField({
   onFieldSubmitted: onSubmitted,
   obscureText: obscure,
   validator: validate,
-  //maxLines: maxLines,
+  maxLines: maxLines,
 
   //decoration of textFormField
 

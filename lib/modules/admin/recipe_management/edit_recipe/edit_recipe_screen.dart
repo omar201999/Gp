@@ -84,7 +84,8 @@ class EditRecipeScreen extends StatelessWidget
                               context,
                               color: Colors.white,
                               function: () {
-
+                                 AdminCubit.get(context).deleteRecipe(recipeModel.uId);
+                                 Navigator.pop(context);
                               },
                               text : 'Delete',
                             ),
@@ -138,6 +139,7 @@ class EditRecipeScreen extends StatelessWidget
                             child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
+                                maxLines: 30
                               ),
                         ),
                         const SizedBox(
@@ -149,6 +151,7 @@ class EditRecipeScreen extends StatelessWidget
                             child: defaultTextFormField(
                                 controller: directionsController,
                                 type: TextInputType.multiline,
+                                maxLines: 30
                               ),
                         ),
                         const SizedBox(

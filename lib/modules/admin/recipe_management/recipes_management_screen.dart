@@ -214,7 +214,7 @@ Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
               horizontal: 6.0,
             ),
             child: Text(
-              '${model.title}',
+              '${model.title!.toUpperCase()}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

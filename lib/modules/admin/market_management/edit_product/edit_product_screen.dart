@@ -1,53 +1,27 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-class EditRecipeScreen extends StatelessWidget {
-
-   RecipeModel recipeModel;
-  EditRecipeScreen({
-    required this.recipeModel,
-  });
-
+class EditProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    var titleController = TextEditingController();
-    var ingredientsController = TextEditingController();
-    var directionsController = TextEditingController();
-    //var categoryController = TextEditingController();
-    var carbsController = TextEditingController();
-    var fatsController = TextEditingController();
-    var proteinController = TextEditingController();
-    var calsController = TextEditingController();
-    var weightController = TextEditingController();
-
-   // var recipeModel = AdminCubit.get(context).recipeModel;
-    var recipeImage = AdminCubit.get(context).image;
-
-    titleController.text = recipeModel.title!;
-    ingredientsController.text = recipeModel.ingredients!;
-    directionsController.text = recipeModel.directions!;
-    carbsController.text = '${recipeModel.carbs}';
-    fatsController.text = '${recipeModel.fats}';
-    proteinController.text = '${recipeModel.protein}';
-    calsController.text = '${recipeModel.calories}';
-    weightController.text = '${recipeModel.weight}';
-
+    var nameController = TextEditingController();
+    var descriptionController = TextEditingController();
+    var currentPriceController = TextEditingController();
+    var oldPriceController = TextEditingController();
+    var discountController = TextEditingController();
+    var quantityController = TextEditingController();
+    var uIdController = TextEditingController();
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
-
-
-
-
           return Scaffold(
-            //backgroundColor: Colors.grey[200],
+
             body: SingleChildScrollView(
               child: Column(
                 children:
@@ -61,8 +35,7 @@ class EditRecipeScreen extends StatelessWidget {
                         height: 350,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: //AssetImage('assets/images/Recipe1.jpg'),
-                            recipeImage == null ? NetworkImage('${recipeModel.image}') : FileImage(recipeImage) as ImageProvider,
+                            image: AssetImage('assets/images/Recipe1.jpg'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -78,7 +51,7 @@ class EditRecipeScreen extends StatelessWidget {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              icon:const Icon( IconBroken.Arrow___Left_2),
+                              icon: const Icon(IconBroken.Arrow___Left_2),
                             ),
                             const Spacer(),
                             defaultTextButton(
@@ -87,7 +60,7 @@ class EditRecipeScreen extends StatelessWidget {
                               function: () {
 
                               },
-                              text : 'Delete',
+                              text: 'Delete',
                             ),
                             const SizedBox(
                               width: 10.0,
@@ -102,7 +75,7 @@ class EditRecipeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             onPressed: () {
-                               AdminCubit.get(context).getImage();
+
                             },
                             icon: const CircleAvatar(
                               radius: 30,
@@ -122,12 +95,36 @@ class EditRecipeScreen extends StatelessWidget {
                       children: [
                         defaultContainer(
                           height: 65,
-                          color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: uIdController,
+                            type: TextInputType.number,
+                            hintText: 'Unique Id ',
+                            //border: InputBorder.none,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          height: 65,
                           child: defaultTextFormField(
                             type: TextInputType.text,
-                            controller: titleController,
-                            hintText: 'Title',
-                            prefix: IconBroken.Paper,
+                            controller: nameController,
+                            hintText: 'Name',
+                            //prefixIcon: Icon(IconBroken.Paper),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          height: 150,
+                          color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: descriptionController,
+                            type: TextInputType.multiline,
+                            hintText: 'Enter Description ... ',
+
                           ),
                         ),
                         const SizedBox(
@@ -135,36 +132,12 @@ class EditRecipeScreen extends StatelessWidget {
                         ),
 
                         defaultContainer(
-                            height: 150,
-                            color: constantColor5,
-                            child: defaultTextFormField(
-                                controller: ingredientsController,
-                                type: TextInputType.multiline,
-                                hintText: 'Enter Ingredients ... ',
-                              ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        defaultContainer(
-                            height: 150,
-                            color: constantColor5,
-                            child: defaultTextFormField(
-                                controller: directionsController,
-                                type: TextInputType.multiline,
-                                hintText: 'Enter Directions ... ',
-                              ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        defaultContainer(
                           height: 65,
                           color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
-                            controller: carbsController,
-                            hintText: 'Carbs',
+                            controller: currentPriceController,
+                            hintText: 'Current Price',
                           ),
                         ),
                         const SizedBox(
@@ -175,8 +148,8 @@ class EditRecipeScreen extends StatelessWidget {
                           color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
-                            controller: proteinController,
-                            hintText: 'Protein',
+                            controller: oldPriceController,
+                            hintText: 'Old Price',
                           ),
                         ),
                         const SizedBox(
@@ -187,32 +160,22 @@ class EditRecipeScreen extends StatelessWidget {
                           color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
-                            controller: fatsController,
-                            hintText: 'Fats',
+                            controller: discountController,
+                            hintText: 'Discount',
+
                           ),
                         ),
                         const SizedBox(
                           height: 10.0,
                         ),
+
                         defaultContainer(
                           height: 65,
                           color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
-                            controller: calsController,
-                            hintText: 'Calories',
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        defaultContainer(
-                          height: 65,
-                          color: constantColor5,
-                          child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: weightController,
-                            hintText: 'Weight',
+                            controller: quantityController,
+                            hintText: 'Quantity',
                           ),
                         ),
                         const SizedBox(
@@ -221,21 +184,14 @@ class EditRecipeScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
-                            AdminCubit.get(context).UpdateRecipe(
-                                title: titleController.text,
-                                ingredients: ingredientsController.text,
-                                directions: directionsController.text,
-                                carbs: double.parse(carbsController.text),
-                                protein: double.parse(proteinController.text),
-                                fats: double.parse(fatsController.text),
-                                calories: double.parse(calsController.text),
-                                weight: double.parse(weightController.text),
-                                uId: recipeModel.uId,
-                                category: recipeModel.category
-                            );
+
                           },
                           text: 'UPDATE',
-                          textStyle: Theme.of(context).textTheme.headline1!.copyWith(
+                          textStyle: Theme
+                              .of(context)
+                              .textTheme
+                              .headline1!
+                              .copyWith(
                               color: Colors.white
                           ),
                         )
@@ -250,7 +206,7 @@ class EditRecipeScreen extends StatelessWidget {
         },
         listener: (context, state) {
 
-    }
+        }
     );
   }
 }

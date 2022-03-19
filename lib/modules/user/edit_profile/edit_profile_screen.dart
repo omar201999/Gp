@@ -5,6 +5,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class EditProfileScreen extends StatelessWidget {
 
@@ -29,11 +30,14 @@ class EditProfileScreen extends StatelessWidget {
         var profileImage = HomeCubit.get(context).profileImage;
 
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
+          appBar: buildAppBar(
+            title:
               'Edit profile',
-            ),
             titleSpacing: 0,
+            icon: IconBroken.Arrow___Left_2,
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           body: SingleChildScrollView(
             child: Column(

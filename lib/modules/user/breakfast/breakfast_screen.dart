@@ -4,6 +4,8 @@ import 'package:gp/modules/user/breakfast/cubit/cubit.dart';
 import 'package:gp/modules/user/breakfast/cubit/states.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class BreakFastScreen extends StatelessWidget {
   @override
@@ -19,24 +21,22 @@ class BreakFastScreen extends StatelessWidget {
         {
           return Scaffold(
             appBar: buildAppBar(
-              title: 'Breakfast',
-              leadingIcon: IconButton(
-                icon:  Icon(
-                  Icons.arrow_back_ios,
-                ),
-                onPressed: ()
-                {
+                title: 'Breakfast',
+                icon: IconBroken.Arrow___Left_2,
+                onPressed: () {
                   Navigator.pop(context);
                 },
-              ),
-              icon: Icons.camera,
-              onPressed: ()
-              {
-                navigateTo(
-                    context,
-                    cameraScreen());
+                actions: [
+                  IconButton(
+                 icon: Icon(Icons.camera),
+                 onPressed: ()
+                {
+                    navigateTo(
+                     context,
+                     cameraScreen());
               },
-
+                  ),
+             ],
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -46,24 +46,24 @@ class BreakFastScreen extends StatelessWidget {
                   children:
                   [
                     defaultContainer(
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: defaultTextFormField(
+                      color: constantColor5,
+                      child: defaultTextFormField(
                           type: TextInputType.text,
                           prefix: Icons.search,
                           hintText: 'Search',
                           border: InputBorder.none,
-                        ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                    GridView.count(
                      crossAxisCount: 2,
                      shrinkWrap: true,
-                     physics: NeverScrollableScrollPhysics(),
+                     physics: const NeverScrollableScrollPhysics(),
                      mainAxisSpacing: 1,
                      crossAxisSpacing: 1,
                      childAspectRatio: 1 / 1.5,

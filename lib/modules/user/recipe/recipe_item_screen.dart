@@ -3,7 +3,8 @@ import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 class RecipeItemScreen extends StatelessWidget {
-    RecipeModel recipeModel;
+
+  RecipeModel recipeModel;
   RecipeItemScreen({
    required this.recipeModel,
 });

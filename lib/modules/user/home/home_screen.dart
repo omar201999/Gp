@@ -30,18 +30,20 @@ class HomePage extends StatelessWidget
         return ConditionalBuilder(
           condition: state is !GetUserDataLoadingState,
           builder:(context) =>  Scaffold(
-            appBar: defaultAppBar(
-              icon: Icons.menu,
-                context: context,
+            appBar: buildAppBar(
                 title: 'Home',
+               onPressed: () {
+
+               },
               actions:
               [
                 defaultTextButton(
+                  context,
                   text: 'sing out',
                   function: ()
                   {
                     signOut(context,);
-                  }
+                  },
                 ),
               ]
             ),

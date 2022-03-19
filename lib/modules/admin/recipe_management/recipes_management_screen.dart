@@ -9,6 +9,7 @@ import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class RecipesManagementScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
@@ -36,22 +37,12 @@ class RecipesManagementScreen extends StatelessWidget {
                   ),
                 ),*/
 
-                SizedBox(
+                defaultContainer(
                   height: 65,
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        hintText: 'Search',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.0),
-                            ),
-                            borderSide: BorderSide.none
-                        ),
-                        prefixIcon: Icon(IconBroken.Search),
-                        filled: true,
-                        fillColor: constantColor5
-                    ),
+                  child: defaultTextFormField(
+                    type: TextInputType.text,
+                     hintText: 'Search',
+                     prefix: IconBroken.Search,
                   ),
                 ),
                 const SizedBox(
@@ -73,21 +64,22 @@ class RecipesManagementScreen extends StatelessWidget {
                                category: 'breakfast',
                              ));
                            },
-                           icon:  Icon(IconBroken.Paper_Upload)
+                           icon:  const Icon(IconBroken.Paper_Upload)
                        )
                      ],
                    ),
-                   Container(
-                     height: 280,
+                   defaultContainer(
+                     height: 250,
+                     color: Colors.grey[50],
                      child: ConditionalBuilder(
-                       condition: AdminCubit.get(context).breakfastRecipe.length > 0,
+                       condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty,
                        builder: (context) => ListView.separated(
                            scrollDirection: Axis.horizontal,
                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context),
-                           separatorBuilder: (context,index) =>  SizedBox(width: 10,),
+                           separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
                            itemCount: AdminCubit.get(context).breakfastRecipe.length ,
                        ),
-                       fallback: (context) => Center(child: CircularProgressIndicator()),
+                       fallback: (context) => const Center(child: CircularProgressIndicator()),
                      ),
                    ),
                  ],
@@ -119,8 +111,9 @@ class RecipesManagementScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Container(
-                      height: 280,
+                    defaultContainer(
+                      height: 250,
+                      color: Colors.grey[50],
                       child: ConditionalBuilder(
                         condition: AdminCubit.get(context).lunchRecipe.length > 0,
                         builder: (context) => ListView.separated(
@@ -156,17 +149,18 @@ class RecipesManagementScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Container(
-                      height: 280,
+                    defaultContainer(
+                      height: 250,
+                      color: Colors.grey[50],
                       child: ConditionalBuilder(
-                        condition: AdminCubit.get(context).dinnerRecipe.length > 0,
+                        condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty,
                         builder: (context) => ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context),
-                            separatorBuilder: (context,index) =>  SizedBox(width: 10,),
+                            separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
                             itemCount: AdminCubit.get(context).dinnerRecipe.length,
                         ),
-                        fallback: (context) => Center(child: CircularProgressIndicator()),
+                        fallback: (context) => const Center(child: CircularProgressIndicator()),
                       ),
                     ),
                   ],
@@ -185,14 +179,15 @@ class RecipesManagementScreen extends StatelessWidget {
 
 }
 
-Widget buildRecipe(RecipeModel model,context) => defaultGesterDetecter(
+Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditRecipeScreen());
+    navigateTo(context, EditRecipeScreen(recipeModel: model,));
   },
   child: defaultContainer(
-    //height: 250,
+    height: 200,
     width: 170,
+    color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,15 +201,15 @@ Widget buildRecipe(RecipeModel model,context) => defaultGesterDetecter(
             fit: BoxFit.cover,
           ),
         ),
-         SizedBox(
-          height: 10,
+         const SizedBox(
+          height: 4,
         ),
          Expanded(
           child: Padding(
             padding: /*EdgeInsetsDirectional.only(
                 start: 10,
             ),*/
-            EdgeInsets.symmetric(
+            const EdgeInsets.symmetric(
               vertical: 2.0,
               horizontal: 6.0,
             ),
@@ -222,8 +217,8 @@ Widget buildRecipe(RecipeModel model,context) => defaultGesterDetecter(
               '${model.title}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 13
+              style: const TextStyle(
+                  fontSize: 16
               ),
             ),
           ),

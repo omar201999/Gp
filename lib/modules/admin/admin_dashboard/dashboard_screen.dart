@@ -22,7 +22,7 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: defaultContainer(
-                        color: constantColor1,
+                        //color: constantColor1,
                         height: 128,
                         width: 140,
                         child: Padding(
@@ -52,9 +52,9 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: defaultContainer(
-                        color: constantColor1,
+                        //color: constantColor1,
                         height: 128,
-                        width: 160,
+                        width: 140,
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -69,7 +69,7 @@ class DashboardScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black45,
-                                    height: 1
+                                    //height: 1
                                 ),
                               ),
                               defaultHeadLineText(context, text: '\$8200.99')
@@ -88,7 +88,7 @@ class DashboardScreen extends StatelessWidget {
                     height: 180,
                     color: constantColor1,
                     child: Column(
-                      mainAxisAlignment:  MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 96.0),
@@ -250,6 +250,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     defaultTextButton(
+                      context,
                       text: 'See All',
                       function: () {  },
                     ),
@@ -271,19 +272,22 @@ class DashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              SizedBox(
+              /*SizedBox(
                 height:10,
-              ),
-              defaultButton(
+              ),*/
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: defaultButton(
                 context,
                 onPreesed: ()
                 {
                   signOut(context);
                 },
-                text: 'Sing Out',
+                text: 'Sign Out',
                 textStyle: Theme.of(context).textTheme.headline1!.copyWith(
                     color: Colors.white
                 ),
+               ),
               ),
             ],
           ),

@@ -68,11 +68,11 @@ class LoginScreen extends StatelessWidget
         builder:(context,state)
         {
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.grey[200],
+            /*appBar: AppBar(
+              backgroundColor: Colors.grey[50],
               elevation: 0,
               titleSpacing: 20.0,
-            ),
+            ),*/
             body: Center(
               child: SingleChildScrollView(
                 child: Padding(
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget
                           context,
                           text: 'Login',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
 
@@ -95,7 +95,7 @@ class LoginScreen extends StatelessWidget
                           context,
                           text: 'LOGIN now to be Hulk',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         defaultTextFormField(
@@ -111,10 +111,10 @@ class LoginScreen extends StatelessWidget
                           },
                           label: 'Email',
                           prefix: Icons.email_outlined,
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
 
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
 
@@ -128,17 +128,17 @@ class LoginScreen extends StatelessWidget
                                 return 'password is too Short ';
                               }
                             },
-                            obScure: LoginCubit.get(context).obScure,
+                            obscure: LoginCubit.get(context).obScure,
                             suffixPressed: ()
                             {
                               LoginCubit.get(context).changePasswordVisibility();
                             },
                             label: 'Password',
                             prefix: Icons.lock_outline,
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             suffix:LoginCubit.get(context).suffix,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ConditionalBuilder(
@@ -158,16 +158,17 @@ class LoginScreen extends StatelessWidget
                             },
                             text: 'Login',
                           ),
-                          fallback: (context) => Center(child: CircularProgressIndicator()),
+                          fallback: (context) => const Center(child: CircularProgressIndicator()),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:
                           [
-                            Text(
+                            const Text(
                               'Don\'t have an account?',
                             ),
                             defaultTextButton(
+                              context,
                               text: 'Sign Up',
                               function: ()
                               {

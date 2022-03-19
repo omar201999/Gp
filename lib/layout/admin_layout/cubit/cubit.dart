@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/admin/admin_dashboard/dashboard_screen.dart';
@@ -21,24 +23,8 @@ class AdminCubit extends Cubit<AdminStates>
 
   UserModel  model = UserModel();
 
-  /*void getUserData()
-  {
-    emit(AdminGetUserSLoadingState());
+  //RecipeModel recipeModel = RecipeModel();
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .get()
-        .then((value) {
-      print(value.data());
-      model = AdminUserModel.fromJson(value.data());
-      emit(AdminGetUserSuccessState());
-
-    }).catchError((error) {
-      print(error.toString());
-      emit(AdminGetUserErrorState(error.toString()));
-    });
-  }*/
   int currentIndex = 0 ;
   List<Widget> screens = [
     DashboardScreen(),
@@ -68,9 +54,8 @@ class AdminCubit extends Cubit<AdminStates>
   void getUsers()
   {
     FirebaseFirestore.instance.collection('users').
-    where('status',isEqualTo: 'user').
-    get().
-    then((value)
+    where('status',isEqualTo: 'user')
+        .get().then((value)
     {
       value.docs.forEach((element)
       {
@@ -84,7 +69,22 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  void deleteUser(String? uId){
 
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .delete()
+        .then((value) {
+      print('done');
+    }).catchError((error){
+      print(error.toString());
+    });
+  }
+
+
+
+ //cubit for recipe
 
   ImagePicker? picker = ImagePicker();
 
@@ -104,6 +104,89 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
+  File? image;
+
+  Future? getImage() async {
+    final pickedFile = await picker?.pickImage(
+        source: ImageSource.gallery
+    );
+
+    if (pickedFile != null ) {
+      image = File(pickedFile.path);
+      emit(ImagePickedSuccessState());
+    } else {
+      print('No image selected');
+      emit(ImagePickedErrorState());
+    }
+  }
+
+  String newRecipeImage = '';
+
+  void uploadNewImage(){
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('recipes/${Uri.file(image!.path).pathSegments.last}')
+        .putFile(image!)
+        .then((value){
+      value.ref.getDownloadURL().then((value)
+      {
+        emit(UploadNewRecipeImageSuccessState());
+        newRecipeImage = value;
+        //print(value);
+
+      }).catchError((error)
+      {
+        print(error.toString());
+        emit(UploadNewRecipeImageErrorState(error.toString()));
+      });
+    }).catchError((error)
+    {
+      print(error.toString());
+      emit(UploadNewRecipeImageErrorState(error.toString()));
+    });
+  }
+
+  void UpdateRecipe({
+    required String title,
+    required String ingredients,
+    required String directions,
+    required double calories,
+    required double fats,
+    required double carbs,
+    required double protein,
+    required double weight,
+    required String? uId,
+    required String? category,
+})
+  {
+    RecipeModel model = RecipeModel(
+      title: title,
+      image: newRecipeImage,
+      ingredients: ingredients,
+      directions: directions,
+      calories: calories,
+      fats: fats,
+      carbs: carbs,
+      protein: protein,
+      weight: weight,
+      uId: uId,
+      category: category
+    );
+
+    FirebaseFirestore.instance
+    .collection('recipes')
+    .doc(uId)
+    .update(model.toMap())
+    .then((value) {
+       getBreakfastRecipe();
+     // getLunchRecipe();
+     // getDinnerRecipe();
+    }).catchError((error){
+
+      emit(UpdateRecipeErrorState());
+    });
+
+  }
   void uploadRecipeImage({
     required String title,
     required double carbs,
@@ -114,7 +197,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-     required int uId,
+    required String? uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -167,7 +250,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-    required int uId,
+    required String? uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -181,19 +264,17 @@ class AdminCubit extends Cubit<AdminStates>
         weight: weight,
         ingredients: ingredients,
         directions: directions,
-         uId:uId,
+        uId:uId,
         category: category
 
     );
 
     FirebaseFirestore.instance
         .collection('recipes')
-        .doc()
+        .doc(uId)
         .set(model.toMap())
         .then((value){
-      getBreakfastRecipe();
-      getLunchRecipe();
-      getDinnerRecipe();
+
           //print(uId1.toString());
       emit(CreateRecipeSuccessState());
     }).catchError((error)
@@ -263,18 +344,128 @@ class AdminCubit extends Cubit<AdminStates>
       emit(GetAllDinnerRecipeErrorState(error.toString()));
     });
   }
-  void deleteUser(String? uId){
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .delete()
-        .then((value) {
-      print('done');
-    }).catchError((error){
-      print(error.toString());
-    });
+
+
+
+  //cubit for product
+
+
+  File? productImage;
+
+  Future? getProductImage() async {
+    final pickedFile = await picker?.pickImage(
+        source: ImageSource.gallery
+    );
+
+    if (pickedFile != null ) {
+      productImage = File(pickedFile.path);
+      emit(ProductImagePickedSuccessState());
+    } else {
+      print('No image selected');
+      emit(ProductImagePickedErrorState());
+    }
   }
 
+  void uploadProductImage({
+    required String name,
+    required double currentPrice,
+    required double oldPrice,
+    required double discount,
+    required int quantity,
+    required String description,
+    required int uId,
+    //required int totalTime,
+  }){
+    emit(CreateProductLoadingState());
+
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('products/${Uri.file(productImage!.path).pathSegments.last}')
+        .putFile(productImage!)
+        .then((value){
+      value.ref.getDownloadURL().then((value)
+      {
+        //print(value);
+
+        createProduct(
+          name: name,
+          productImage: value,
+          currentPrice: currentPrice,
+          oldPrice: oldPrice,
+          discount: discount,
+          quantity: quantity,
+          description: description,
+          uId:uId,
+        );
+
+
+      }).catchError((error)
+      {
+        emit(CreateProductErrorState());
+      });
+    }).catchError((error)
+    {
+      emit(CreateProductErrorState());
+    });
+
+  }
+
+
+  void createProduct({
+    required String name,
+    String? productImage,
+    required double currentPrice,
+    required double oldPrice,
+    required double discount,
+    required int quantity,
+    required String description,
+    required int uId,
+  }){
+    emit(CreateProductLoadingState());
+    ProductModel model = ProductModel(
+        name: name,
+        image: productImage,
+        currentPrice: currentPrice,
+        oldPrice: oldPrice,
+        discount: discount,
+        quantity: quantity,
+        description: description,
+        uId:uId,
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc()
+        .set(model.toMap())
+        .then((value){
+      getBreakfastRecipe();
+      getLunchRecipe();
+      getDinnerRecipe();
+      //print(uId1.toString());
+      emit(CreateProductSuccessState());
+    }).catchError((error)
+    {
+      emit(CreateProductErrorState());
+    });
+
+  }
+
+  List<ProductModel> products = [];
+
+  void getProducts() {
+    FirebaseFirestore.instance.collection('products')
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            products.add(ProductModel.fromJson(element.data()));
+          });
+         emit(GetProductsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetProductsErrorState(error.toString()));
+    });
+  }
 
 }

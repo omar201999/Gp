@@ -24,6 +24,8 @@ class AdminDeleteUsersErrorState extends AdminStates
   AdminDeleteUsersErrorState(this.error);
 }
 
+
+
 //create recipe
 class CreateRecipeLoadingState extends AdminStates{}
 
@@ -34,6 +36,21 @@ class CreateRecipeErrorState extends AdminStates{}
 class RecipeImagePickedSuccessState extends AdminStates{}
 
 class RecipeImagePickedErrorState extends AdminStates{}
+
+class ImagePickedSuccessState extends AdminStates{}
+
+class ImagePickedErrorState extends AdminStates{}
+
+class UploadNewRecipeImageSuccessState extends AdminStates{}
+
+class UploadNewRecipeImageErrorState extends AdminStates{
+
+  final String error;
+
+  UploadNewRecipeImageErrorState(this.error);
+}
+
+class UpdateRecipeErrorState extends AdminStates{}
 
 class GetAllBreakFastRecipeSuccessState extends AdminStates {}
 
@@ -58,4 +75,27 @@ class GetAllDinnerRecipeErrorState extends AdminStates
   final String error;
 
   GetAllDinnerRecipeErrorState(this.error);
+}
+
+
+
+// create product
+
+class CreateProductLoadingState extends AdminStates{}
+
+class CreateProductSuccessState extends AdminStates{}
+
+class CreateProductErrorState extends AdminStates{}
+
+class ProductImagePickedSuccessState extends AdminStates{}
+
+class ProductImagePickedErrorState extends AdminStates{}
+
+class GetProductsSuccessState extends AdminStates{}
+
+class GetProductsErrorState extends AdminStates
+{
+  final String error;
+
+  GetProductsErrorState(this.error);
 }

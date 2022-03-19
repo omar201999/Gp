@@ -37,11 +37,16 @@ class NewRecipeScreen extends StatelessWidget {
           var recipeImage = AdminCubit.get(context).recipeImage;
 
           return Scaffold(
-              appBar: defaultAppBar(
+              appBar: buildAppBar(
                   title: 'Create Recipe',
+                  icon: IconBroken.Arrow___Left_2,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   actions: [
-                    defaultTextButton1(
-                        onPressed: () {
+                    defaultTextButton(
+                     context,
+                      function: () {
                          AdminCubit.get(context).uploadRecipeImage(
                              title: titleController.text,
                              carbs: double.parse(carbsController.text),
@@ -52,15 +57,13 @@ class NewRecipeScreen extends StatelessWidget {
                              ingredients: ingredientsController.text,
                              directions: directionsController.text,
                              category: category,
-                             uId:int.parse(uIdController.text),
+                             uId:uIdController.text,
                              //totalTime: totalTime
                          );
                         },
                         text: 'Add',
-                        context: context
                     )
                   ],
-                  context :context
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -74,38 +77,24 @@ class NewRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                       defaultContainer(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: TextFormField(
+                          height: 65,
+                          child: defaultTextFormField(
                               controller: uIdController,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                hintText: 'Unique Id ',
-                                border: InputBorder.none,
-                              ),
+                              type: TextInputType.number,
+                              hintText: 'Unique Id ',
+                              //border: InputBorder.none,
                             ),
-                          )
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
+                        child: defaultTextFormField(
+                          type: TextInputType.text,
                           controller: titleController,
-                          decoration: const InputDecoration(
-                              hintText: 'title',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
+                          hintText: 'Title',
                               //prefixIcon: Icon(IconBroken.Search),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
                         ),
                       ),
                       const SizedBox(
@@ -113,149 +102,89 @@ class NewRecipeScreen extends StatelessWidget {
                       ),
                       defaultContainer(
                           height: 150,
-                          child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: TextFormField(
+                          color: constantColor5,
+                          child: defaultTextFormField(
                                 controller: ingredientsController,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: 50,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter Ingredients ... ',
-                                  border: InputBorder.none,
-                                ),
+                                type: TextInputType.multiline,
+                                hintText: 'Enter Ingredients ... ',
+
                               ),
-                          )
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
                       defaultContainer(
                           height: 150,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: TextFormField(
+                          color: constantColor5,
+                          child: defaultTextFormField(
                               controller: directionsController,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 50,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter Directions ... ',
-                                border: InputBorder.none,
-                              ),
+                              type: TextInputType.multiline,
+                              hintText: 'Enter Directions ... ',
                             ),
-                          )
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
+                        color: constantColor5,
+                        child: defaultTextFormField(
+                          type: TextInputType.number,
                           controller: carbsController,
-                          decoration: const InputDecoration(
-                              hintText: 'Carbs',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                             // prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
+                          hintText: 'Carbs',
                         ),
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
+                        color: constantColor5,
+                        child: defaultTextFormField(
+                          type: TextInputType.number,
                           controller: proteinController,
-                          decoration: const InputDecoration(
-                              hintText: 'Protein',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                              //prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
+                          hintText: 'Protein',
                         ),
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
+                        color: constantColor5,
+                        child: defaultTextFormField(
+                          type: TextInputType.number,
                           controller: fatsController,
-                          decoration: const InputDecoration(
-                              hintText: 'Fats',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                              //prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
+                          hintText: 'Fats',
+
                         ),
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
+                        color: constantColor5,
+                        child: defaultTextFormField(
+                          type: TextInputType.number,
                           controller: calsController,
-                          decoration: const InputDecoration(
-                              hintText: 'Calories',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                              //prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
+                          hintText: 'Calories',
                         ),
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      SizedBox(
+                      defaultContainer(
                         height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
+                        color: constantColor5,
+                        child: defaultTextFormField(
+                          type: TextInputType.number,
                           controller: weightController,
-                          decoration: const InputDecoration(
-                              hintText: 'Weight',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                              //prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
+                          hintText: 'Weight',
                         ),
                       ),
                       const SizedBox(
-                        height: 10.0,
+                        height: 20.0,
                       ),
                       /*SizedBox(
                         height: 65,
@@ -276,14 +205,12 @@ class NewRecipeScreen extends StatelessWidget {
                           ),
                         ),
                       ),*/
-                      const SizedBox(
-                        height: 10.0,
-                      ),
+
                       if(AdminCubit.get(context).recipeImage != null)
                         Stack(
                           alignment: AlignmentDirectional.topEnd,
                           children: [
-                            Container(
+                            defaultContainer(
                               height: 140.0,
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -314,7 +241,7 @@ class NewRecipeScreen extends StatelessWidget {
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children:  [
+                            children:  const [
                               Icon(IconBroken.Image),
                               SizedBox(
                                 width: 10.0,

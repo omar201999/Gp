@@ -12,7 +12,7 @@ class RecipeModel
   String? directions;
   String? category;
   //int? totalTime;
-  int? uId;
+  String? uId;
 
   RecipeModel({
     this.title,

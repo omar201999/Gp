@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class NutritionScreen extends StatelessWidget {
 
@@ -17,8 +18,11 @@ class NutritionScreen extends StatelessWidget {
       {
         var userModel = HomeCubit.get(context).userModel;
         return  Scaffold(
-          appBar: defaultAppBar(
-            context: context,
+          appBar: buildAppBar(
+            icon: IconBroken.Arrow___Left_2,
+            onPressed: () {
+              Navigator.pop(context);
+            },
             title: 'Nutrition',
 
           ),

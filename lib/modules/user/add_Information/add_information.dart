@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp/modules/user/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 class AddInformation extends StatefulWidget {
 
   @override
@@ -72,6 +73,10 @@ class _AddInformationState extends State<AddInformation>
   return Scaffold(
       appBar: buildAppBar(
           title: 'Add Information',
+          icon: IconBroken.Arrow___Left_2,
+          onPressed: () {
+          Navigator.pop(context);
+         },
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -87,7 +92,7 @@ class _AddInformationState extends State<AddInformation>
                   children:
                   [
                     Expanded(
-                      child: defaultGesterDetecter(
+                      child: defaultGestureDetector(
                         onTap: ()
                         {
                           setState(() {
@@ -121,7 +126,7 @@ class _AddInformationState extends State<AddInformation>
                       width: 20,
                     ),
                     Expanded(
-                      child: defaultGesterDetecter(
+                      child: defaultGestureDetector(
                         onTap: ()
                         {
                           setState(() {
@@ -637,7 +642,7 @@ class _AddInformationState extends State<AddInformation>
                 SizedBox(
                   height: 10,
                 ),
-                   Container(
+                   defaultContainer(
                      color: Colors.white,
                      child: defaultTextFormField(
                       controller: weightController,

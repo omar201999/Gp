@@ -9,20 +9,26 @@ import 'package:gp/shared/styles/icon_broken.dart';
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
-  IconData? icon,
-  Widget? leadingIcon = const Icon(Icons.menu),
+  IconData? icon = Icons.home,
+  Widget? leadingIcon,
+  List<Widget>? actions,
+  double? titleSpacing = 20.0,
 }) =>  AppBar(
-  leading: leadingIcon,
+  leading: leadingIcon??IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon)
+  ),
   title: Text(
     title,
   ),
-  actions:
-  [
+  titleSpacing: titleSpacing,
+  actions: actions,
+  /*[
     IconButton(
       onPressed: onPressed ,
       icon: Icon(icon),
     ),
-  ],
+  ],*/
 );
 
 Widget defaultTextFormField({
@@ -31,9 +37,10 @@ Widget defaultTextFormField({
   required TextInputType type,
   void Function()? onTap,
   void Function(String)? onChanged,
-  void Function(String)? onSupmitted,
-  bool obScure = false,
+  void Function(String)? onSubmitted,
+  bool obscure = false,
   String? Function(String?)? validate,
+  int? maxLines = 50,
 
   //////////////////////////////////////
   String? label ,
@@ -42,20 +49,24 @@ Widget defaultTextFormField({
   void Function()? suffixPressed,
   String? hintText,
   InputBorder? border ,
+  BorderRadius? borderRadius
 }) => TextFormField(
   controller: controller,
   keyboardType: type,
   onTap: onTap,
   onChanged: onChanged,
-  onFieldSubmitted: onSupmitted,
-  obscureText: obScure,
+  onFieldSubmitted: onSubmitted,
+  obscureText: obscure,
   validator: validate,
+  maxLines: maxLines,
 
   //decoration of textFormField
 
   decoration: InputDecoration(
     hintText: hintText,
     labelText : label,
+    filled: true,
+    fillColor: constantColor5,
     suffixIcon: IconButton(
       onPressed: suffixPressed,
       icon: Icon(suffix),
@@ -63,7 +74,12 @@ Widget defaultTextFormField({
     prefixIcon: Icon(
       prefix,
     ),
-    border: border,
+    border: border??OutlineInputBorder(
+        borderRadius: borderRadius??BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+        borderSide: BorderSide.none
+    ),
 
   ),
 
@@ -110,24 +126,25 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 );
 
 Widget defaultContainer({
-  double? width ,
+  double? width,
   double? height,
-  double radius = 15,
+  double radius = 10,
   Clip clip = Clip.antiAliasWithSaveLayer,
   Color? color = constantColor1,
-  required Widget child ,
+  Widget? child,
+  BoxDecoration? decoration ,
 }) => Container(
   width: width,
   height: height,
   clipBehavior: clip,
-  decoration: BoxDecoration(
+  decoration: decoration??BoxDecoration(
     color: color,
     borderRadius: BorderRadius.circular(radius),
   ),
   child: child,
 );
 
-Widget defaultGesterDetecter({
+Widget defaultGestureDetector({
   required void Function()? onTap ,
   required Widget child ,
 }) => GestureDetector(
@@ -164,7 +181,7 @@ Widget defaultBodyText(BuildContext context,{
   ),
 );
 
-Widget buildRecipeItem(RecipeModel model,context) => defaultGesterDetecter(
+Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, RecipeItemScreen(
@@ -173,7 +190,8 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGesterDetecter(
   },
   child: defaultContainer(
     height: 250,
-    width: 150,
+    width: 180,
+    color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +273,7 @@ Widget buildHomeScreenItem(BuildContext context,{
   IconData suffixIcon = Icons.add,
   required String text,
 
-}) => defaultGesterDetecter(
+}) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, screen);
@@ -370,14 +388,18 @@ Widget afterTitleOfRecipeItem(BuildContext context, {
   ),
 );
 
-Widget defaultTextButton({
+Widget defaultTextButton( BuildContext context,{
   required void Function()? function,
   required String text,
+  Color? color = defaultColor,
+
 }) =>
     TextButton(
       onPressed:function,
-      child: Text(
-        text.toUpperCase(),
+      child: defaultBodyText(
+          context,
+          text: text.toUpperCase(),
+          color: color
       ),
     );
 
@@ -426,7 +448,7 @@ Widget myDivider() => Padding(
   ),
 );
 
-Widget defaultTextButton1 ({
+/*Widget defaultTextButton1 ({
   required void Function()? onPressed,
   required String text,
   required BuildContext context,
@@ -438,28 +460,25 @@ Widget defaultTextButton1 ({
         text: text,
         color: color
     )
-);
+);*/
 
-defaultAppBar( {
-  required BuildContext context,
+/*defaultAppBar( BuildContext context,{
   required String title,
-  IconData? icon = IconBroken.Arrow___Left_2,
-
   List<Widget>? actions
 }) => AppBar(
   leading: IconButton(
     onPressed: () {
       Navigator.pop(context);
     },
-    icon:  Icon(
-      icon,
+    icon: const Icon(
+      IconBroken.Arrow___Left_2,
     ),
   ),
   titleSpacing: 5.0,
   title: Text(title),
   actions: actions,
 
-);
+);*/
 
 Widget buildNutritionItem(BuildContext context,{
   required String title,

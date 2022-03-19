@@ -194,7 +194,7 @@ class RegisterScreen extends StatelessWidget
                                 return 'password is too Short';
                               }
                             },
-                            obScure: RegisterCubit.get(context).obScure,
+                            obscure: RegisterCubit.get(context).obScure,
                             suffixPressed: ()
                             {
                               RegisterCubit.get(context).changePasswordVisibility();

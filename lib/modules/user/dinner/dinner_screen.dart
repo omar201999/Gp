@@ -4,6 +4,8 @@ import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/dinner/cubit/cubit.dart';
 import 'package:gp/modules/user/dinner/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class DinnerScreen extends StatelessWidget {
   @override
@@ -20,23 +22,21 @@ class DinnerScreen extends StatelessWidget {
           return Scaffold(
             appBar: buildAppBar(
               title: 'Dinner',
-              leadingIcon: IconButton(
-                icon:  Icon(
-                  Icons.arrow_back_ios,
-                ),
-                onPressed: ()
-                {
-                  Navigator.pop(context);
-                },
-              ),
-              icon: Icons.camera,
+              icon: IconBroken.Arrow___Left_2,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              actions:[
+                IconButton(
+              icon: Icon(Icons.camera),
               onPressed: ()
               {
                 navigateTo(
                     context,
                     cameraScreen());
               },
-
+              ),
+             ]
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -46,16 +46,16 @@ class DinnerScreen extends StatelessWidget {
                   children:
                   [
                     defaultContainer(
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: defaultTextFormField(
+                      color: constantColor5,
+                      child: defaultTextFormField(
                           type: TextInputType.text,
                           prefix: Icons.search,
                           hintText: 'Search',
                           border: InputBorder.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
                         ),
-                      ),
                     ),
                     SizedBox(
                       height: 20,

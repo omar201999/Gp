@@ -5,6 +5,8 @@ import 'package:gp/modules/user/Lunch/cubit/cubit.dart';
 import 'package:gp/modules/user/Lunch/cubit/states.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class LunchScreen extends StatelessWidget {
   @override
@@ -21,22 +23,21 @@ class LunchScreen extends StatelessWidget {
           return Scaffold(
             appBar: buildAppBar(
               title: 'Lunch',
-              leadingIcon: IconButton(
-                icon:  Icon(
-                  Icons.arrow_back_ios,
-                ),
-                onPressed: ()
-                {
-                  Navigator.pop(context);
-                },
-              ),
-              icon: Icons.camera,
-              onPressed: ()
-              {
-                navigateTo(
-                    context,
-                    cameraScreen());
+              icon: IconBroken.Arrow___Left_2,
+              onPressed: () {
+                Navigator.pop(context);
               },
+              actions:[
+                  IconButton(
+                    icon: Icon(Icons.camera),
+                    onPressed: ()
+                    {
+                      navigateTo(
+                          context,
+                          cameraScreen());
+                    },
+                  ),
+                ]
 
             ),
             body: SingleChildScrollView(
@@ -47,18 +48,18 @@ class LunchScreen extends StatelessWidget {
                   children:
                   [
                     defaultContainer(
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: defaultTextFormField(
+                      color: constantColor5,
+                      child: defaultTextFormField(
                           type: TextInputType.text,
                           prefix: Icons.search,
                           hintText: 'Search',
                           border: InputBorder.none,
-                        ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                    GridView.count(

@@ -50,7 +50,7 @@ class NewProductSrceen extends StatelessWidget {
                       discount: double.parse(discountController.text),
                       quantity: int.parse(quantityController.text),
                       description: descriptionController.text,
-                      uId: int.parse(uIdController.text),
+                      uId: uIdController.text,
                       //totalTime: totalTime
                     );
                   },

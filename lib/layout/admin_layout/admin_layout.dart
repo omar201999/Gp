@@ -21,11 +21,11 @@ class AdminLayout extends StatelessWidget {
         AdminCubit cubit = AdminCubit.get(context);
         return Scaffold(
           appBar: buildAppBar(
-             onPressed: () {
+            onPressed: () {
 
-                },
-             icon: IconBroken.Category,
-             title: cubit.titles[cubit.currentIndex],
+            },
+            icon: IconBroken.Category,
+            title: cubit.titles[cubit.currentIndex],
             actions: [
               IconButton(
                 onPressed: () {

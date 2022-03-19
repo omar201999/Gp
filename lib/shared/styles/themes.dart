@@ -67,7 +67,7 @@ ThemeData darkTheme = ThemeData(
       fontFamily: 'Jannah',
     ),
   ),
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  bottomNavigationBarTheme:  BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     backgroundColor: HexColor('333739'),
     selectedItemColor: Colors.white,

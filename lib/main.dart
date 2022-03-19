@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget
             theme: lightTheme,
             darkTheme: darkTheme ,
             themeMode: ThemeMode.light,
-            home: startWidget,
+            home: AdminLayout(),
           );
         },
       ),

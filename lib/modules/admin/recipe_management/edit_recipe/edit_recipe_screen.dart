@@ -28,6 +28,15 @@ class EditRecipeScreen extends StatelessWidget
 
 
 
+   RecipeModel recipeModel;
+  EditRecipeScreen({
+    required this.recipeModel,
+  });
+  @override
+  Widget build(BuildContext context) {
+
+
+
    // var recipeModel = AdminCubit.get(context).recipeModel;
 
 

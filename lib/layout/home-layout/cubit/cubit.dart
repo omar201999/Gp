@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
+import 'package:gp/modules/user/breakfast/breakfast_screen.dart';
 import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
 import 'package:gp/modules/user/home/home_screen.dart';
 import 'package:gp/modules/user/market/MarketScreen.dart';
@@ -43,7 +45,7 @@ class HomeCubit extends Cubit<HomeStates>
   List<Widget> bodyScreen =
   [
     HomePage(),
-    MarketScreen(),
+    Marketing_Screen(),
     RecipeScreen(),
     CustomerDashBoardScreen(),
 
@@ -202,6 +204,26 @@ class HomeCubit extends Cubit<HomeStates>
       emit(GetAllDinnerRecipeErrorState(error.toString()));
     });
   }
+  List<ProductModel> Protienmodel = [];
+
+  void getprotien()
+  {
+    FirebaseFirestore.instance
+        .collection('products')
+        .where('category',isEqualTo: 'protien')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        Protienmodel.add(ProductModel.fromJson(element.data()));
+      });
+
+      emit(protienSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(protienErrorState(error.toString()));
+    });
+  }
 
   List<RecipeModel> search = [];
 
@@ -227,3 +249,5 @@ class HomeCubit extends Cubit<HomeStates>
   }
 
 }
+
+

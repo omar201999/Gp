@@ -183,7 +183,7 @@ class AdminCubit extends Cubit<AdminStates>
      // getDinnerRecipe();
     }).catchError((error){
 
-      emit(UpdateRecipeErrorState());
+      emit(UpdateRecipeErrorState(error.toString()));
     });
 
   }
@@ -374,7 +374,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
-    required int uId,
+    required String uId,
     //required int totalTime,
   }){
     emit(CreateProductLoadingState());
@@ -420,7 +420,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
-    required int uId,
+    required String uId,
   }){
     emit(CreateProductLoadingState());
     ProductModel model = ProductModel(

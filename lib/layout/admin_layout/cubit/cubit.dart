@@ -294,7 +294,7 @@ class AdminCubit extends Cubit<AdminStates>
   }){
     emit(CreateRecipeLoadingState());
     RecipeModel model = RecipeModel(
-        title: title,
+        title: title.toLowerCase(),
         image: recipeImage,
         carbs: carbs,
         protein: protein,
@@ -327,6 +327,8 @@ class AdminCubit extends Cubit<AdminStates>
 
   void getBreakfastRecipe()
   {
+    emit(GetAllBreakFastRecipeLoadingState());
+    breakfastRecipe = [];
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'breakfast')
@@ -347,6 +349,8 @@ class AdminCubit extends Cubit<AdminStates>
 
   void getLunchRecipe()
   {
+    emit(GetAllLunchRecipeLoadingState());
+    lunchRecipe = [];
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'lunch')
@@ -367,6 +371,10 @@ class AdminCubit extends Cubit<AdminStates>
 
   void getDinnerRecipe()
   {
+
+    emit(GetAllDinnerRecipeLoadingState());
+    dinnerRecipe = [];
+
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'dinner')
@@ -384,6 +392,21 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  void deleteRecipe(String? uId){
+
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(uId)
+        .delete()
+        .then((value) {
+          getBreakfastRecipe();
+          getLunchRecipe();
+          getDinnerRecipe();
+          print('done');
+    }).catchError((error){
+      print(error.toString());
+    });
+  }
 
 
 

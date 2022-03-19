@@ -59,6 +59,11 @@ class UpdateRecipeErrorState extends AdminStates{
 
 class UpdateRecipeSuccessState extends AdminStates{}
 
+class GetAllLunchRecipeLoadingState extends AdminStates {}
+
+class GetAllDinnerRecipeLoadingState extends AdminStates {}
+
+class GetAllBreakFastRecipeLoadingState extends AdminStates {}
 
 class GetAllBreakFastRecipeSuccessState extends AdminStates {}
 

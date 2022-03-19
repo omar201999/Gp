@@ -108,7 +108,7 @@ class NewRecipeScreen extends StatelessWidget {
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
                                 hintText: 'Enter Ingredients ... ',
-
+                                maxLines: 30,
                               ),
                       ),
 
@@ -122,6 +122,7 @@ class NewRecipeScreen extends StatelessWidget {
                               controller: directionsController,
                               type: TextInputType.multiline,
                               hintText: 'Enter Directions ... ',
+                              maxLines: 30
                             ),
                       ),
                       const SizedBox(

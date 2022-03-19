@@ -413,6 +413,7 @@ class AdminCubit extends Cubit<AdminStates>
   //cubit for product
 
 
+
   File? productImage;
 
   Future? getProductImage() async {
@@ -429,6 +430,104 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
+  File? newProductImage;
+
+  Future? getnewProductImage() async {
+    final pickedFile = await picker?.pickImage(
+        source: ImageSource.gallery
+    );
+
+    if (pickedFile != null ) {
+      newProductImage = File(pickedFile.path);
+      emit(ImagePickedSuccessState());
+    } else {
+      print('No image selected');
+      emit(ImagePickedErrorState());
+    }
+  }
+
+  void uploadNewProductImage({
+    required String name,
+    required String description,
+    required int quantity,
+    required double currentPrice,
+    required double oldPrice,
+    required double discount,
+
+    required String? uId,
+  })
+  {
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('products/${Uri.file(newProductImage!.path).pathSegments.last}')
+        .putFile(newProductImage!)
+        .then((value){
+      value.ref.getDownloadURL().then((value)
+      {
+        UpdateProduct(
+          name: name,
+          description: description,
+          currentPrice: currentPrice,
+          oldPrice: oldPrice,
+          discount: discount,
+          quantity: quantity,
+
+          uId: uId,
+          newProductImage: value,
+        );
+      }).catchError((error)
+      {
+        print(error.toString());
+        emit(UploadNewProductImageErrorState(error.toString()));
+      });
+    }).catchError((error)
+    {
+      print(error.toString());
+      emit(UploadNewProductImageErrorState(error.toString()));
+    });
+  }
+
+  void UpdateProduct({
+    required String name,
+    required String description,
+    required int quantity,
+    required double currentPrice,
+    required double oldPrice,
+    required double discount,
+    String? newProductImage,
+    required String? uId,
+  })
+  {
+    ProductModel model = ProductModel(
+      name: name,
+      image: newProductImage,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+
+      uId: uId,
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+      //emit(UpdateRecipeSuccessState());
+
+    }).catchError((error){
+
+      emit(UpdateRecipeErrorState(error.toString()));
+      print(error.toString());
+    });
+
+  }
+
+
+
   void uploadProductImage({
     required String name,
     required double currentPrice,
@@ -436,7 +535,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
-    required int uId,
+    required String uId,
     //required int totalTime,
   }){
     emit(CreateProductLoadingState());
@@ -482,7 +581,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
-    required int uId,
+    required String uId,
   }){
     emit(CreateProductLoadingState());
     ProductModel model = ProductModel(
@@ -499,12 +598,10 @@ class AdminCubit extends Cubit<AdminStates>
 
     FirebaseFirestore.instance
         .collection('products')
-        .doc()
+        .doc(uId)
         .set(model.toMap())
         .then((value){
-      getBreakfastRecipe();
-      getLunchRecipe();
-      getDinnerRecipe();
+
       //print(uId1.toString());
       emit(CreateProductSuccessState());
     }).catchError((error)
@@ -527,6 +624,20 @@ class AdminCubit extends Cubit<AdminStates>
     }).catchError((error) {
       print(error.toString());
       emit(GetProductsErrorState(error.toString()));
+    });
+  }
+
+  void deleteProduct(String? uId){
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .delete()
+        .then((value) {
+
+      print('done');
+    }).catchError((error){
+      print(error.toString());
     });
   }
 

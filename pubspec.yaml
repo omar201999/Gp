@@ -47,7 +47,6 @@ dependencies:
   fluttertoast: ^8.0.8
   iconsax: ^0.0.8
   image_picker: ^0.8.3+3
-  carousel_slider: ^4.0.0
 
 
 

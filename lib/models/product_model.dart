@@ -7,7 +7,7 @@ class ProductModel{
   double? oldPrice;
   double? discount;
   int? quantity;
-  int? uId;
+  String? uId;
 
   ProductModel({
     this.category,
@@ -22,8 +22,9 @@ class ProductModel{
   });
 
   ProductModel.fromJson(Map<String, dynamic>? json) {
-    category = json!['category'];
     uId = json!['uId'];
+    category = json['category'];
+
     name = json['name'];
     image = json['image'];
     description = json['description'];

@@ -80,7 +80,7 @@ class MarketManagementScreen extends StatelessWidget {
 Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditProductScreen());
+    navigateTo(context, EditProductScreen(productModel: model,));
   },
   child: defaultContainer(
 

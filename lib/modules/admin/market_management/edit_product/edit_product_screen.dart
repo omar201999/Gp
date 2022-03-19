@@ -4,22 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/models/product_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 class EditProductScreen extends StatelessWidget {
+
+  ProductModel productModel;
+  EditProductScreen({
+    required this.productModel,
+  });
+
+  var nameController = TextEditingController();
+  var descriptionController = TextEditingController();
+  var currentPriceController = TextEditingController();
+  var oldPriceController = TextEditingController();
+  var discountController = TextEditingController();
+  var quantityController = TextEditingController();
+  var uIdController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var nameController = TextEditingController();
-    var descriptionController = TextEditingController();
-    var currentPriceController = TextEditingController();
-    var oldPriceController = TextEditingController();
-    var discountController = TextEditingController();
-    var quantityController = TextEditingController();
-    var uIdController = TextEditingController();
+
+
+
+
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
+          var newProductImage = AdminCubit.get(context).newProductImage;
+
+          nameController.text = productModel.name!;
+          descriptionController.text = productModel.description!;
+          currentPriceController.text = '${productModel.currentPrice}';
+          oldPriceController.text = '${productModel.oldPrice}';
+          discountController.text = '${productModel.discount}';
+          quantityController.text = '${productModel.quantity}';
+          uIdController.text = '${productModel.uId}';
           return Scaffold(
 
             body: SingleChildScrollView(
@@ -35,7 +55,10 @@ class EditProductScreen extends StatelessWidget {
                         height: 350,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/images/Recipe1.jpg'),
+                            image: //AssetImage('assets/images/Recipe1.jpg'),
+                            newProductImage == null ? NetworkImage(
+                                '${productModel.image}') : FileImage(
+                                newProductImage) as ImageProvider,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -58,7 +81,9 @@ class EditProductScreen extends StatelessWidget {
                               context,
                               color: Colors.white,
                               function: () {
-
+                                AdminCubit.get(context).deleteProduct(
+                                    productModel.uId);
+                                Navigator.pop(context);
                               },
                               text: 'Delete',
                             ),
@@ -75,7 +100,7 @@ class EditProductScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             onPressed: () {
-
+                              AdminCubit.get(context).getnewProductImage();
                             },
                             icon: const CircleAvatar(
                               radius: 30,
@@ -98,7 +123,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             controller: uIdController,
                             type: TextInputType.number,
-                            hintText: 'Unique Id ',
                             //border: InputBorder.none,
                           ),
                         ),
@@ -110,7 +134,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.text,
                             controller: nameController,
-                            hintText: 'Name',
                             //prefixIcon: Icon(IconBroken.Paper),
                           ),
                         ),
@@ -123,7 +146,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             controller: descriptionController,
                             type: TextInputType.multiline,
-                            hintText: 'Enter Description ... ',
 
                           ),
                         ),
@@ -137,7 +159,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: currentPriceController,
-                            hintText: 'Current Price',
                           ),
                         ),
                         const SizedBox(
@@ -149,7 +170,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: oldPriceController,
-                            hintText: 'Old Price',
                           ),
                         ),
                         const SizedBox(
@@ -161,7 +181,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: discountController,
-                            hintText: 'Discount',
 
                           ),
                         ),
@@ -175,7 +194,6 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: quantityController,
-                            hintText: 'Quantity',
                           ),
                         ),
                         const SizedBox(
@@ -184,6 +202,34 @@ class EditProductScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
+
+                            if(newProductImage == null)
+                            {
+                              AdminCubit.get(context).UpdateProduct(
+                                name: nameController.text,
+                                description: descriptionController.text,
+                                currentPrice: double.parse(currentPriceController.text),
+                                oldPrice: double.parse(oldPriceController.text),
+                                discount: double.parse(discountController.text),
+                                quantity : int.parse(quantityController.text),
+                                uId: productModel.uId,
+                                newProductImage:productModel.image,
+                              );
+
+                            } else
+                            {
+                              AdminCubit.get(context).uploadNewProductImage(
+                                  name: nameController.text,
+                                  description: descriptionController.text,
+                                  currentPrice: double.parse(currentPriceController.text),
+                                  oldPrice: double.parse(oldPriceController.text),
+                                  discount: double.parse(discountController.text),
+                                  quantity : int.parse(quantityController.text),
+                                  uId: productModel.uId,
+                              );
+                            }
+
+
 
                           },
                           text: 'UPDATE',

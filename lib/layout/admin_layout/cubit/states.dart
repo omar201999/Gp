@@ -92,7 +92,16 @@ class ProductImagePickedSuccessState extends AdminStates{}
 class ProductImagePickedErrorState extends AdminStates{}
 
 class GetProductsSuccessState extends AdminStates{}
+class UpdateProductErrorState extends AdminStates{}
 
+class UploadNewProductImageSuccessState extends AdminStates{}
+
+class UploadNewProductImageErrorState extends AdminStates{
+
+  final String error;
+
+  UploadNewProductImageErrorState(this.error);
+}
 class GetProductsErrorState extends AdminStates
 {
   final String error;

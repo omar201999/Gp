@@ -6,7 +6,7 @@ class ProductModel{
   double? oldPrice;
   double? discount;
   int? quantity;
-  int? uId;
+  String? uId;
 
   ProductModel({
     this.name,

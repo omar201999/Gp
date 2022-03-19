@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/models/product_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 class EditProductScreen extends StatelessWidget {
+
+  ProductModel productModel;
+  EditProductScreen({
+    required this.productModel,
+  });
   @override
   Widget build(BuildContext context) {
     var nameController = TextEditingController();
@@ -17,6 +24,17 @@ class EditProductScreen extends StatelessWidget {
     var discountController = TextEditingController();
     var quantityController = TextEditingController();
     var uIdController = TextEditingController();
+
+
+    var productImage = AdminCubit.get(context).productImage;
+
+    nameController.text = productModel.name!;
+    descriptionController.text = productModel.description!;
+    currentPriceController.text = '${productModel.currentPrice}';
+    oldPriceController.text = '${productModel.oldPrice}';
+    discountController.text = '${productModel.discount}';
+    quantityController.text = '${productModel.quantity}';
+    uIdController.text = '${productModel.uId}';
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
@@ -58,8 +76,9 @@ class EditProductScreen extends StatelessWidget {
                               context,
                               color: Colors.white,
                               function: () {
-
-                              },
+                                AdminCubit.get(context).deleteProduct(productModel.uId);
+                                Navigator.pop(context);
+                                },
                               text: 'Delete',
                             ),
                             const SizedBox(
@@ -184,6 +203,34 @@ class EditProductScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
+
+                            if(productImage == null)
+                            {
+                              AdminCubit.get(context).UpdateProduct(
+                                name: nameController.text,
+                                description: descriptionController.text,
+                                currentPrice: double.parse(currentPriceController.text),
+                                oldPrice: double.parse(oldPriceController.text),
+                                discount: double.parse(discountController.text),
+                                quantity : int.parse(quantityController.text),
+                                uId: productModel.uId,
+                                newProductImage:productModel.image,
+                              );
+
+                            } else
+                            {
+                              AdminCubit.get(context).uploadNewProductImage(
+                                  name: nameController.text,
+                                  description: descriptionController.text,
+                                  currentPrice: double.parse(currentPriceController.text),
+                                  oldPrice: double.parse(oldPriceController.text),
+                                  discount: double.parse(discountController.text),
+                                  quantity : int.parse(quantityController.text),
+                                  uId: productModel.uId,
+                              );
+                            }
+
+
 
                           },
                           text: 'UPDATE',

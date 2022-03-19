@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget
   {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => HomeCubit()..getUserData()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getprotien()),
+        BlocProvider(create: (context) => HomeCubit()..getUserData()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProduct()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()),
       ],
       child: BlocConsumer<HomeCubit,HomeStates>(

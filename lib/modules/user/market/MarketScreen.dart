@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/shared/componants/componants.dart';
 
-class Marketing_Screen extends StatelessWidget {
+class MarketingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
@@ -51,12 +51,12 @@ class Marketing_Screen extends StatelessWidget {
                     Container(
                       height: 280,
                       child: ConditionalBuilder(
-                        condition: HomeCubit.get(context).Protienmodel.length > 0,
+                        condition: HomeCubit.get(context).products.length > 0,
                         builder: (context) => ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemBuilder:(context,index) => buildmarket_item(HomeCubit.get(context).Protienmodel[index],context),
+                          itemBuilder:(context,index) => buildmarket_item(HomeCubit.get(context).products[index],context),
                           separatorBuilder: (context,index) =>  SizedBox(width: 10,),
-                          itemCount: HomeCubit.get(context).Protienmodel.length ,
+                          itemCount: HomeCubit.get(context).products.length ,
                         ),
                         fallback: (context) => Center(child: CircularProgressIndicator()),
                       ),

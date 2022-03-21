@@ -800,6 +800,7 @@ Widget buildMealItem(MealsModel model,context,{
 Widget buildSerachMealItem (list,context,
 {
   required List<bool> isChecked,
+  required void Function()? function,
   required  void Function(dynamic, dynamic) changeChekBox,
   //required bool? value,
   //required void Function(bool?)? onChanged,
@@ -836,9 +837,7 @@ Widget buildSerachMealItem (list,context,
               ),
             if(state is ChangeCheckBoxState)
               defaultTextButton(context,
-                function: ()
-                {
-                },
+                function: function,
                 text: 'Add',
               ),
 

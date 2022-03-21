@@ -133,3 +133,37 @@ class SearchMealErrorState extends HomeStates
 
   SearchMealErrorState(this.error);
 }
+
+class SearchAddSnacksSuccessState extends HomeStates {}
+
+class SearchAddSnacksErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddSnacksErrorState(this.error);
+}
+class SearchAddBreakFastSuccessState extends HomeStates {}
+
+class SearchAddBreakFastSnacksErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddBreakFastSnacksErrorState(this.error);
+}
+class SearchAddDinnerSuccessState extends HomeStates {}
+
+class SearchAddDinnerErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddDinnerErrorState(this.error);
+}
+class SearchAddLunchSuccessState extends HomeStates {}
+
+class SearchAddLunchErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddLunchErrorState(this.error);
+}
+

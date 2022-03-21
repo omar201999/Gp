@@ -123,7 +123,8 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             controller: uIdController,
                             type: TextInputType.number,
-                            //border: InputBorder.none,
+                            border: InputBorder.none,
+                            label: 'Uid'
                           ),
                         ),
                         const SizedBox(
@@ -135,6 +136,8 @@ class EditProductScreen extends StatelessWidget {
                             type: TextInputType.text,
                             controller: nameController,
                             //prefixIcon: Icon(IconBroken.Paper),
+                              border: InputBorder.none,
+                              label: 'Name'
                           ),
                         ),
                         const SizedBox(
@@ -146,6 +149,8 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             controller: descriptionController,
                             type: TextInputType.multiline,
+                              border: InputBorder.none,
+                              label: 'Description'
 
                           ),
                         ),
@@ -159,6 +164,8 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: currentPriceController,
+                              border: InputBorder.none,
+                              label: 'Current Price'
                           ),
                         ),
                         const SizedBox(
@@ -170,6 +177,8 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: oldPriceController,
+                              border: InputBorder.none,
+                              label: 'Old Price'
                           ),
                         ),
                         const SizedBox(
@@ -181,6 +190,8 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: discountController,
+                              border: InputBorder.none,
+                              label: 'Discount'
 
                           ),
                         ),
@@ -194,6 +205,9 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: quantityController,
+                              border: InputBorder.none,
+                              label: 'Quantity'
+
                           ),
                         ),
                         const SizedBox(

@@ -54,6 +54,46 @@ class GetAllDinnerRecipeErrorState extends HomeStates
 
   GetAllDinnerRecipeErrorState(this.error);
 }
+class SearchLoadingBreakFastState extends HomeStates {}
+
+class SearchSuccessBreakFastState extends HomeStates {}
+
+class SearchErrorBreakFastState extends HomeStates
+{
+  final String error;
+
+  SearchErrorBreakFastState(this.error);
+}
+class SearchLoadingDinnerState extends HomeStates {}
+
+class SearchSuccessDinnerState extends HomeStates {}
+
+class SearchErrorDinnerState extends HomeStates
+{
+  final String error;
+
+  SearchErrorDinnerState(this.error);
+}
+class SearchLoadingSnacksState extends HomeStates {}
+
+class SearchSuccessSnacksState extends HomeStates {}
+
+class SearchErrorSnacksState extends HomeStates
+{
+  final String error;
+
+  SearchErrorSnacksState(this.error);
+}
+class SearchLoadingLunchState extends HomeStates {}
+
+class SearchSuccessLunchState extends HomeStates {}
+
+class SearchErrorLunchState extends HomeStates
+{
+  final String error;
+
+  SearchErrorLunchState(this.error);
+}
 class SearchLoadingState extends HomeStates {}
 
 class SearchSuccessState extends HomeStates {}
@@ -72,4 +112,14 @@ class protienErrorState extends HomeStates
   final String error;
 
   protienErrorState(this.error);
+}
+class ChangeCheckBoxState extends HomeStates{}
+
+class SearchMealSuccessState extends HomeStates {}
+
+class SearchMealErrorState extends HomeStates
+{
+  final String error;
+
+  SearchMealErrorState(this.error);
 }

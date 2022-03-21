@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
@@ -19,6 +20,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
 
 class HomeCubit extends Cubit<HomeStates>
 {
+
   HomeCubit() : super(HomeIntitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -246,6 +248,124 @@ class HomeCubit extends Cubit<HomeStates>
     });
   }
 
+  List<MealsModel> searchBreakFast = [];
+
+  void getSearchBreakFast (String value)
+  {
+    emit(SearchLoadingBreakFastState());
+    searchBreakFast = [];
+    FirebaseFirestore.instance
+        .collection('meals')
+        .where('Food', isGreaterThanOrEqualTo: value)
+        .where('Food', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        searchBreakFast.add(MealsModel.fromJson(element.data()));
+      });
+      emit(SearchSuccessBreakFastState());
+    }).catchError((error) {
+
+      emit(SearchErrorBreakFastState(error.toString()));
+      print(error.toString());
+    });
+  }
+  List<MealsModel> searchLunch = [];
+
+  void getSearchLunch(String value )
+  {
+    emit(SearchLoadingLunchState());
+    searchLunch = [];
+    FirebaseFirestore.instance
+        .collection('meals')
+        .where('Food', isGreaterThanOrEqualTo: value)
+        .where('Food', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        searchLunch.add(MealsModel.fromJson(element.data()));
+      });
+      emit(SearchSuccessLunchState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErrorLunchState(error.toString()));
+    });
+  }
+  List<MealsModel> searchDinner = [];
+
+  void getSearchDinner(String value )
+  {
+    emit(SearchLoadingDinnerState());
+    searchDinner = [];
+    FirebaseFirestore.instance
+        .collection('meals')
+        .where('Food', isGreaterThanOrEqualTo: value)
+        .where('Food', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        searchDinner.add(MealsModel.fromJson(element.data()));
+      });
+      emit(SearchSuccessDinnerState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErrorDinnerState(error.toString()));
+    });
+  }
+  List<MealsModel> searchSnacks = [];
+
+  void getSearchSnacks(String value )
+  {
+    emit(SearchLoadingSnacksState());
+    searchSnacks = [];
+    FirebaseFirestore.instance
+        .collection('meals')
+        .where('Food', isGreaterThanOrEqualTo: value)
+        .where('Food', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        searchSnacks.add(MealsModel.fromJson(element.data()));
+      });
+      emit(SearchSuccessSnacksState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErrorSnacksState(error.toString()));
+    });
+  }
+
+  List<bool> isCheckedBreakFast = List<bool>.filled(100, false);
+  void changeCheckBoxBreakFast (value,index)
+  {
+    isCheckedBreakFast[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
+  List<bool> isCheckedLunch = List<bool>.filled(100, false);
+  void changeCheckBoxLunch (value,index)
+  {
+    isCheckedLunch[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
+  List<bool> isCheckedDinner = List<bool>.filled(100, false);
+  void changeCheckBoxDinner (value,index)
+  {
+    isCheckedDinner[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
+  List<bool> isCheckedSnacks = List<bool>.filled(100, false);
+  void changeCheckBoxSnacks (value,index)
+  {
+    isCheckedSnacks[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
 }
 
 

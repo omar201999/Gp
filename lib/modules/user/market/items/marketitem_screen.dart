@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 class MarketitemScreen extends StatelessWidget {
@@ -64,22 +65,38 @@ class MarketitemScreen extends StatelessWidget {
                       ),
                     ),
                     width: double.infinity,
-                    height: 100,
+                    height: 80,
                   ),
-                  const SizedBox(height: 15,),
-
+                  const SizedBox(
+                    height: 15,
+                  ),
                   defaultContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          defaultHeadLineText(
-                              context, text: ''),
-                          const SizedBox(height: 5,),
-                        ],
-                      ),
-                    ),
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            defaultHeadLineText(context, text: 'Price'),
+                            const SizedBox(height: 5,),
+                            ListView.separated(
+                                padding: const EdgeInsetsDirectional.only(
+                                    top: 5,
+                                    start: 5
+                                ),
+                                physics:  NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) =>
+                                    defaultBodyText(context,
+                                        text: '${productModel.currentPrice}'
+                                    ),
+                                separatorBuilder: (context, index) =>
+                                const SizedBox(height: 5,),
+                                itemCount: 1
+                            ),
+                          ],
+                        ),
+                      )
                   ),
                   const SizedBox(
                     height: 15,
@@ -98,7 +115,7 @@ class MarketitemScreen extends StatelessWidget {
                                     top: 5,
                                     start: 5
                                 ),
-                                physics: NeverScrollableScrollPhysics(),
+                                physics:  NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
                                     defaultBodyText(context,
@@ -112,6 +129,7 @@ class MarketitemScreen extends StatelessWidget {
                         ),
                       )
                   ),
+
                   const SizedBox(
                     height: 15,
                   ),
@@ -122,18 +140,18 @@ class MarketitemScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            defaultHeadLineText(context, text: 'category'),
+                            defaultHeadLineText(context, text: 'Availability In Stock'),
                             const SizedBox(height: 5,),
                             ListView.separated(
                                 padding: const EdgeInsetsDirectional.only(
                                     top: 5,
                                     start: 5
                                 ),
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics:  NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
                                     defaultBodyText(context,
-                                      text: '${productModel.category}',
+                                        text: '${productModel.quantity }'
                                     ),
                                 separatorBuilder: (context, index) =>
                                 const SizedBox(height: 5,),
@@ -143,6 +161,45 @@ class MarketitemScreen extends StatelessWidget {
                         ),
                       )
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      width: double.infinity,
+                      color: defaultColor,
+                      child: MaterialButton(
+                        onPressed: (){
+                          Navigator.pop(context,);
+
+                        },
+                        child: defaultHeadLineText(context, text: 'Add To Cart'),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      width: double.infinity,
+                      color: defaultColor,
+                      child: MaterialButton(
+                        onPressed: (){
+                          Navigator.pop(context,);
+
+                        },
+                        child: defaultHeadLineText(context, text: 'Buy Now'),
+                      ),
+                    ),
+                  )
+
+
+
+
+
 
 
                 ],

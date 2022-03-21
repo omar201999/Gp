@@ -338,6 +338,29 @@ class HomeCubit extends Cubit<HomeStates>
     });
   }
 
+  List<ProductModel> searchitem = [];
+
+  void getSearchitem(String value )
+  {
+    emit(SearchLoadingLunchState());
+    searchitem = [];
+    FirebaseFirestore.instance
+        .collection('products')
+        .where('name', isGreaterThanOrEqualTo: value)
+        .where('name', isLessThan: value +'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        searchitem.add(ProductModel.fromJson(element.data()));
+      });
+      emit(SearchitemState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErroritemState(error.toString()));
+    });
+  }
+
   List<bool> isCheckedBreakFast = List<bool>.filled(100, false);
   void changeCheckBoxBreakFast (value,index)
   {
@@ -363,6 +386,14 @@ class HomeCubit extends Cubit<HomeStates>
   void changeCheckBoxSnacks (value,index)
   {
     isCheckedSnacks[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
+
+  List<bool> isCheckeditem = List<bool>.filled(100, false);
+  void changeCheckBoxitem (value,index)
+  {
+    isCheckeditem[index] = value;
 
     emit(ChangeCheckBoxState());
   }

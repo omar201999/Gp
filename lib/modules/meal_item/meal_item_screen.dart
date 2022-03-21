@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class MealItemScreen extends StatelessWidget {
   MealsModel mealsModel;
@@ -13,6 +14,11 @@ class MealItemScreen extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(
           title: '${mealsModel.Food}',
+        icon: IconBroken.Arrow___Left_2,
+        onPressed: ()
+        {
+          Navigator.pop(context);
+        }
       ),
       body:  Padding(
         padding: const EdgeInsets.all(16.0),

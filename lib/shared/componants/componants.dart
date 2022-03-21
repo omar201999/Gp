@@ -807,11 +807,11 @@ Widget buildMealItem(MealsModel model,context,{
 
             [
 
-              defaultHeadLineText(
+              defaultBodyText(
                 context,
                 text: '${model.Food}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+               /* maxLines: 1,
+                overflow: TextOverflow.ellipsis,*/
               ),
 
               Row(

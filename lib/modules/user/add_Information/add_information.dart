@@ -642,9 +642,9 @@ class _AddInformationState extends State<AddInformation>
                 SizedBox(
                   height: 10,
                 ),
-                   defaultContainer(
-                     color: Colors.white,
-                     child: defaultTextFormField(
+
+
+                   defaultTextFormField(
                       controller: weightController,
                       type: TextInputType.number,
                       validate: (String? value)
@@ -659,68 +659,59 @@ class _AddInformationState extends State<AddInformation>
                       hintText: 'Weight into Kg',
 
                   ),
-                   ),
+
 
                 SizedBox(
                   height: 10,
                 ),
-                 Container(
-                   color: Colors.white,
-                   child: defaultTextFormField(
-                      controller: heightController,
+                 defaultTextFormField(
+                    controller: heightController,
+                    type: TextInputType.number,
+                    validate: (String? value)
+                    {
+                      if(value!.isEmpty)
+                      {
+                        return 'please enter your Height';
+                      }
+                    },
+                    label: 'Height',
+                   border: OutlineInputBorder(),
+                    hintText: 'Height into cm',
+
+                  ),
+
+                SizedBox(
+                  height: 10,
+                ),
+                defaultTextFormField(
+                      controller: goalWeightController,
                       type: TextInputType.number,
                       validate: (String? value)
                       {
                         if(value!.isEmpty)
                         {
-                          return 'please enter your Height';
+                          return 'please enter Goal Weight';
                         }
                       },
-                      label: 'Height',
-                     border: OutlineInputBorder(),
-                      hintText: 'Height into cm',
-
+                      label: 'Goal Weight',
+                     border:OutlineInputBorder(),
+                      hintText: 'Goal Weight into Kg',
                     ),
-                 ),
-
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  color: Colors.white,
-                  child: defaultTextFormField(
-                        controller: goalWeightController,
-                        type: TextInputType.number,
-                        validate: (String? value)
-                        {
-                          if(value!.isEmpty)
-                          {
-                            return 'please enter Goal Weight';
-                          }
-                        },
-                        label: 'Goal Weight',
-                       border:OutlineInputBorder(),
-                        hintText: 'Goal Weight into Kg',
-                      ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                 Container(
-                   color: Colors.white,
-                   child: defaultTextFormField(
-                     controller: ageController,
-                     type: TextInputType.number,
-                     validate: (String? value)
+                 defaultTextFormField(
+                   controller: ageController,
+                   type: TextInputType.number,
+                   validate: (String? value)
+                   {
+                     if(value!.isEmpty)
                      {
-                       if(value!.isEmpty)
-                       {
-                         return 'please enter your Age';
-                       }
-                     },
-                     label: 'Age',
-                     border: OutlineInputBorder(),
-                   ),
+                       return 'please enter your Age';
+                     }
+                   },
+                   label: 'Age',
+                   border: OutlineInputBorder(),
                  ),
 
 

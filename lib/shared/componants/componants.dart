@@ -1,11 +1,19 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/modules/meal_item/meal_item_screen.dart';
+import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 AppBar buildAppBar({
   required String title,
@@ -763,3 +771,195 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
     ),
   ),
 );
+
+Widget buildMealItem(MealsModel model,context,{
+  required bool? value,
+  required void Function(bool?)? onChanged,
+
+}) => Container(
+  color: constantColor1,
+  child:   InkWell(
+
+    onTap: ()
+
+    {
+
+      navigateTo(context, MealItemScreen(
+
+        mealsModel: model,
+
+      ));
+
+    },
+
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+
+        children:
+
+        [
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children:
+
+            [
+
+              defaultHeadLineText(
+                context,
+                text: '${model.Food}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
+              Row(
+
+                children:
+
+                [
+
+                  Text(
+
+                      '${model.Measure},',
+
+                    style: Theme.of(context).textTheme.caption,
+
+                  ),
+                  SizedBox(
+                    width: 3,
+                  ),
+
+                  Text(
+
+                    '${model.Calories}Kcal',
+
+                    style: Theme.of(context).textTheme.caption,
+
+                  ),
+
+
+
+                ],
+
+              ),
+
+
+
+            ],
+
+          ),
+          const Spacer(),
+          Checkbox(
+              value: value ,
+              onChanged: onChanged
+          ),
+
+        ],
+
+      ),
+    ),
+
+  ),
+);
+Widget buildSerachMealItem (list,context,
+{
+  required List<bool> isChecked,
+  required  void Function(dynamic, dynamic) changeChekBox,
+  //required bool? value,
+  //required void Function(bool?)? onChanged,
+  required String title,
+  required  void Function(String)? onChangedSearch
+}) =>  BlocConsumer<HomeCubit,HomeStates>(
+  listener: (context,state)
+  {
+
+  },
+  builder: (context,state)
+  {
+    //var list = HomeCubit.get(context).searchMeal;
+    return  Scaffold(
+      appBar: buildAppBar(
+          title: title,
+          icon: IconBroken.Arrow___Left_2,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          actions:[
+            IconButton(
+              icon: const Icon(Icons.camera),
+              onPressed: ()
+              {
+                navigateTo(
+                    context,
+                    cameraScreen());
+              },
+            ),
+            if(state is ChangeCheckBoxState)
+              SizedBox(
+                width: 5,
+              ),
+            if(state is ChangeCheckBoxState)
+              defaultTextButton(context,
+                function: ()
+                {
+                },
+                text: 'Add',
+              ),
+
+          ]
+
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children:
+          [
+            defaultContainer(
+              color: constantColor5,
+              child: defaultTextFormField(
+                type: TextInputType.text,
+                prefix: Icons.search,
+                hintText: 'Search',
+                border: InputBorder.none,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                onChanged: onChangedSearch,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+
+              child: ConditionalBuilder(
+                condition:  list.length > 0,
+                builder: (context) => ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context,index) => buildMealItem(
+                      list[index],
+                      context,
+                      value: isChecked[index],
+                      onChanged: (value)
+                      {
+                        changeChekBox(value, index);
+                      },
+
+                    ),
+                    separatorBuilder: (context,index) =>  SizedBox(height: 5,),
+                    itemCount: list.length),
+                fallback: (context) => Center(child: Container()),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  },
+);
+
+
+

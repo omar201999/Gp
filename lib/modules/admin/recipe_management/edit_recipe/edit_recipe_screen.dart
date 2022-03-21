@@ -129,6 +129,8 @@ class EditRecipeScreen extends StatelessWidget {
                             type: TextInputType.text,
                             controller: titleController,
                             prefix: IconBroken.Paper,
+                            border: InputBorder.none,
+                            label: 'Title',
                           ),
                         ),
                         const SizedBox(
@@ -141,7 +143,8 @@ class EditRecipeScreen extends StatelessWidget {
                             child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
-                                maxLines: 30
+                                maxLines: 30,
+
                               ),
                         ),
                         const SizedBox(

@@ -94,6 +94,16 @@ class SearchErrorLunchState extends HomeStates
 
   SearchErrorLunchState(this.error);
 }
+class SearchitemState extends HomeStates {}
+
+class SearchSuccessitemState extends HomeStates {}
+
+class SearchErroritemState extends HomeStates
+{
+  final String error;
+
+  SearchErroritemState(this.error);
+}
 class SearchLoadingState extends HomeStates {}
 
 class SearchSuccessState extends HomeStates {}

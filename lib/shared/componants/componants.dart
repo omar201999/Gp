@@ -679,7 +679,6 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
                 SizedBox(
                   width: 4,
                 ),
-                Text('Current Price'),
               ],
             ),
           ),
@@ -700,72 +699,7 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 10,
-            ),
-            child: Row(
-              children:
-              [
-                Text(
-                  '${model.category}',
-                  style: TextStyle(
-                    letterSpacing: 1,
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text('Category'),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 10,
-            ),
-            child: Row(
-              children:
-              [
-                Text(
-                  '${model.description}',
-                  style: TextStyle(
-                    letterSpacing: 1,
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text('Description'),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 10,
-            ),
-            child: Row(
-              children:
-              [
-                Text(
-                  '${model.quantity}',
-                  style: TextStyle(
-                    letterSpacing: 1,
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text('Availabe in Store'),
-              ],
-            ),
-          ),
-        ),
+
 
       ],
     ),
@@ -960,6 +894,9 @@ Widget buildSerachMealItem (list,context,
     );
   },
 );
+
+
+
 
 
 

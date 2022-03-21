@@ -177,6 +177,23 @@ class MarketitemScreen extends StatelessWidget {
                         child: defaultHeadLineText(context, text: 'Add To Cart'),
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      width: double.infinity,
+                      color: defaultColor,
+                      child: MaterialButton(
+                        onPressed: (){
+                          Navigator.pop(context,);
+
+                        },
+                        child: defaultHeadLineText(context, text: 'Buy Now'),
+                      ),
+                    ),
                   )
 
 

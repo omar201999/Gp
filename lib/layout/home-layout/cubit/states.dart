@@ -166,4 +166,14 @@ class SearchAddLunchErrorState extends HomeStates
 
   SearchAddLunchErrorState(this.error);
 }
+class GetAllUsersMealsLoadingState extends HomeStates {}
+
+class GetAllUsersMealsSuccessState extends HomeStates {}
+
+class GetAllUsersMealsErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllUsersMealsErrorState(this.error);
+}
 

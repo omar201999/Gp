@@ -21,27 +21,8 @@ class AdminLayout extends StatelessWidget {
         AdminCubit cubit = AdminCubit.get(context);
         return Scaffold(
           appBar: buildAppBar(
-            onPressed: () {
-
-            },
             icon: IconBroken.Category,
             title: cubit.titles[cubit.currentIndex],
-            actions: [
-              IconButton(
-                onPressed: () {
-
-                },
-                icon: Icon(IconBroken.Search),
-
-              ),
-              IconButton(
-                onPressed: () {
-
-                },
-                icon: Icon(IconBroken.Notification),
-
-              )
-            ],
           ),
           body: cubit.screens[cubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(

@@ -5,6 +5,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/Lunch/lunch_screen.dart';
 import 'package:gp/modules/user/breakfast/breakfast_screen.dart';
+import 'package:gp/modules/user/complete_diary/complete_diary_screen.dart';
 import 'package:gp/modules/user/dinner/dinner_screen.dart';
 import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
 import 'package:gp/modules/user/snacks/snacks_screen.dart';
@@ -177,6 +178,7 @@ class HomePage extends StatelessWidget
                           context,
                           onPreesed: ()
                           {
+                            navigateTo(context, CompleteDiaryScreen());
 
                           },
                           text: 'Complete Diary',

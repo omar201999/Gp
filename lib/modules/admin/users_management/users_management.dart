@@ -18,7 +18,7 @@ class UsersManagementScreen extends StatelessWidget {
       listener: (context , state ) {},
       builder: (context , state ){
         return ConditionalBuilder(
-            condition: AdminCubit.get(context).users.length > 0,
+            condition: AdminCubit.get(context).users.length > 0 && state is !AdminGetAllUsersLoadingState,
         builder: (context) => ListView.separated(
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index],context),

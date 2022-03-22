@@ -5,29 +5,30 @@ import 'package:hexcolor/hexcolor.dart';
 
 ThemeData lightTheme = ThemeData(
   primarySwatch: defaultColor,
-  scaffoldBackgroundColor: Colors.grey[200],
-  appBarTheme: AppBarTheme(
+  scaffoldBackgroundColor: Colors.grey[50],
+  appBarTheme: const AppBarTheme(
     titleSpacing: 20,
     elevation: 0,
-    backgroundColor: Colors.blue,
+    backgroundColor: Colors.white,
     iconTheme: IconThemeData(
-      color: Colors.white,
+      color: defaultColor,
     ),
     titleTextStyle: TextStyle(
       fontSize: 24,
-      color: Colors.white,
+      color: defaultColor,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Jannah',
     ),
   ),
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    backgroundColor: defaultColor,
-    selectedItemColor: Colors.white,
+    //backgroundColor: defaultColor,
+    selectedItemColor: defaultColor,
     unselectedItemColor: Colors.black54,
-    elevation: 0,
+    elevation: 20.0,
 
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     headline1: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
@@ -39,9 +40,10 @@ ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.w400,
     ),
   ),
-  iconTheme: IconThemeData(
-    color: defaultColor
-  )
+  iconTheme: const IconThemeData(
+      color: defaultColor
+  ),
+  fontFamily: 'Jannah',
 );
 
 ThemeData darkTheme = ThemeData(
@@ -51,17 +53,18 @@ ThemeData darkTheme = ThemeData(
     titleSpacing: 20,
     backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: HexColor('333739'),
-      statusBarBrightness: Brightness.light
+        statusBarColor: HexColor('333739'),
+        statusBarBrightness: Brightness.light
     ),
     backgroundColor: HexColor('333739'),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.white,
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       fontSize: 24,
       color: defaultDarkTextColor,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Jannah',
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -72,7 +75,7 @@ ThemeData darkTheme = ThemeData(
     elevation: 0,
 
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     headline1: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
@@ -84,4 +87,5 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w400,
     ),
   ),
+  fontFamily: 'Jannah',
 );

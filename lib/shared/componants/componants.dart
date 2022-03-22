@@ -1,26 +1,43 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/meals_model.dart';
+import 'package:gp/models/product_model.dart';
+import 'package:gp/models/recipes_model.dart';
+import 'package:gp/modules/meal_item/meal_item_screen.dart';
+import 'package:gp/modules/user/camera/Camera_Screen.dart';
+import 'package:gp/modules/user/market/items/marketitem_screen.dart';
+import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
-import '../../modules/recipe/recipe_item_screen.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
-  IconData? icon,
-  Widget? leadingIcon = const Icon(Icons.menu),
+  IconData? icon = Icons.home,
+  Widget? leadingIcon,
+  List<Widget>? actions,
+  double? titleSpacing = 20.0,
 }) =>  AppBar(
-  leading: leadingIcon,
+  leading: leadingIcon??IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon)
+  ),
   title: Text(
     title,
   ),
-  actions:
-  [
+  titleSpacing: titleSpacing,
+  actions: actions,
+  /*[
     IconButton(
       onPressed: onPressed ,
       icon: Icon(icon),
     ),
-  ],
+  ],*/
 );
 
 Widget defaultTextFormField({
@@ -29,32 +46,36 @@ Widget defaultTextFormField({
   required TextInputType type,
   void Function()? onTap,
   void Function(String)? onChanged,
-  void Function(String)? onSupmitted,
-  bool obScure = false,
+  void Function(String)? onSubmitted,
+  bool obscure = false,
   String? Function(String?)? validate,
+  int? maxLines = 1,
 
   //////////////////////////////////////
-
   String? label ,
   IconData? prefix,
   IconData? suffix,
   void Function()? suffixPressed,
   String? hintText,
   InputBorder? border ,
+  BorderRadius? borderRadius
 }) => TextFormField(
   controller: controller,
   keyboardType: type,
   onTap: onTap,
   onChanged: onChanged,
-  onFieldSubmitted: onSupmitted,
-  obscureText: obScure,
+  onFieldSubmitted: onSubmitted,
+  obscureText: obscure,
   validator: validate,
+  maxLines: maxLines,
 
   //decoration of textFormField
 
   decoration: InputDecoration(
     hintText: hintText,
     labelText : label,
+    filled: true,
+    fillColor: constantColor5,
     suffixIcon: IconButton(
       onPressed: suffixPressed,
       icon: Icon(suffix),
@@ -62,7 +83,12 @@ Widget defaultTextFormField({
     prefixIcon: Icon(
       prefix,
     ),
-    border: border,
+    border: border??OutlineInputBorder(
+        borderRadius: borderRadius??BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+        borderSide: BorderSide.none
+    ),
 
   ),
 
@@ -71,7 +97,8 @@ Widget defaultTextFormField({
 Widget defaultButton(BuildContext context,{
   required void Function()? onPreesed,
   required String text ,
-  double radius = 10 ,
+  double radius = 10,
+  TextStyle? textStyle ,
 }
     ) => Container(
   decoration: BoxDecoration(
@@ -83,7 +110,7 @@ Widget defaultButton(BuildContext context,{
     onPressed: onPreesed,
     child: Text(
       text,
-      style: Theme.of(context).textTheme.headline1!.copyWith(
+      style: textStyle??Theme.of(context).textTheme.headline1!.copyWith(
         color: Colors.white,
       ),
     ),
@@ -108,24 +135,25 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 );
 
 Widget defaultContainer({
-  double? width ,
+  double? width,
   double? height,
   double radius = 10,
   Clip clip = Clip.antiAliasWithSaveLayer,
-  Color? color = Colors.white,
-  required Widget child ,
+  Color? color = constantColor1,
+  Widget? child,
+  BoxDecoration? decoration ,
 }) => Container(
   width: width,
   height: height,
   clipBehavior: clip,
-  decoration: BoxDecoration(
+  decoration: decoration??BoxDecoration(
     color: color,
     borderRadius: BorderRadius.circular(radius),
   ),
   child: child,
 );
 
-Widget defaultGesterDetecter({
+Widget defaultGestureDetector({
   required void Function()? onTap ,
   required Widget child ,
 }) => GestureDetector(
@@ -162,14 +190,17 @@ Widget defaultBodyText(BuildContext context,{
   ),
 );
 
-Widget buildRecipeItem(context) => defaultGesterDetecter(
+Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, RecipeItemScreen());
+    navigateTo(context, RecipeItemScreen(
+      recipeModel: model,
+    ));
   },
   child: defaultContainer(
     height: 250,
-    width: 150,
+    width: 180,
+    color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +209,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
         Expanded(
           flex: 4,
           child: Image(
-            image: AssetImage('images/Recipe1.jpg'),
+            image: NetworkImage('${model.image}'),
             width: double.infinity,
             fit: BoxFit.cover,
           ),
@@ -192,7 +223,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
                 start: 10
             ),
             child: Text(''
-                'Chargrilled Broccolini with Blanco Queso',
+                '${model.title}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -207,7 +238,7 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
               children:
               [
                 Text(
-                  '220',
+                  '${model.calories}',
                   style: TextStyle(
                     letterSpacing: 1,
                   ),
@@ -224,6 +255,8 @@ Widget buildRecipeItem(context) => defaultGesterDetecter(
     ),
   ),
 );
+
+
 
 Widget headOfRecipeItem(BuildContext context, {
   required String head,
@@ -251,7 +284,7 @@ Widget buildHomeScreenItem(BuildContext context,{
   IconData suffixIcon = Icons.add,
   required String text,
 
-}) => defaultGesterDetecter(
+}) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, screen);
@@ -297,7 +330,7 @@ Widget buildSelectItem(BuildContext context, int index, {
       Expanded(
         flex: 2,
         child: Image(
-          image: AssetImage('images/Recipe1.jpg'),
+          image: AssetImage('assets/images/Recipe1.jpg'),
           width: double.infinity,
           fit: BoxFit.cover,
         ),
@@ -314,9 +347,9 @@ Widget buildSelectItem(BuildContext context, int index, {
                     defaultHeadLineText(context, text: 'Egg'),
                     Spacer(),
                     Checkbox(
-                          value: value ,
-                          onChanged: onChanged
-                      ),
+                        value: value ,
+                        onChanged: onChanged
+                    ),
 
                   ],
                 ),
@@ -351,7 +384,7 @@ Widget buildSelectItem(BuildContext context, int index, {
 );
 
 Widget afterTitleOfRecipeItem(BuildContext context, {
-  required String? percentage,
+   String? percentage,
   required String? numberOfGrams,
   required String? nameOfType,
   Color? color,
@@ -359,21 +392,25 @@ Widget afterTitleOfRecipeItem(BuildContext context, {
   child: Column(
     children:
     [
-      defaultBodyText(context, text: percentage! ,color: color),
+      //defaultBodyText(context, text: percentage! ,color: color),
       defaultBodyText(context, text: numberOfGrams! ),
       defaultBodyText(context, text: nameOfType! ),
     ],
   ),
 );
 
-Widget defaultTextButton({
+Widget defaultTextButton( BuildContext context,{
   required void Function()? function,
   required String text,
+  Color? color = defaultColor,
+
 }) =>
     TextButton(
       onPressed:function,
-      child: Text(
-        text.toUpperCase(),
+      child: defaultBodyText(
+          context,
+          text: text.toUpperCase(),
+          color: color
       ),
     );
 
@@ -411,3 +448,454 @@ Color chooseToastColor(ToastStates state) {
 
   return color;
 }
+Widget myDivider() => Padding(
+  padding: const EdgeInsetsDirectional.only(
+    start: 20,
+  ),
+  child: Container(
+    width: double.infinity,
+    height: 1,
+    color: Colors.grey[300],
+  ),
+);
+
+/*Widget defaultTextButton1 ({
+  required void Function()? onPressed,
+  required String text,
+  required BuildContext context,
+  Color? color = defaultColor,
+}) => TextButton(
+    onPressed: onPressed,
+    child: defaultBodyText(
+        context,
+        text: text,
+        color: color
+    )
+);*/
+
+/*defaultAppBar( BuildContext context,{
+  required String title,
+  List<Widget>? actions
+}) => AppBar(
+  leading: IconButton(
+    onPressed: () {
+      Navigator.pop(context);
+    },
+    icon: const Icon(
+      IconBroken.Arrow___Left_2,
+    ),
+  ),
+  titleSpacing: 5.0,
+  title: Text(title),
+  actions: actions,
+
+);*/
+
+Widget buildNutritionItem(BuildContext context,{
+  required String title,
+  required String calorieText,
+  required String foodText,
+  required String remainingText,
+
+}) => defaultContainer(
+  child: Padding(
+    padding: const EdgeInsetsDirectional.all(10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        defaultHeadLineText(
+          context,
+          text: title,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Row(
+          children:
+          [
+            Expanded(
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                    calorieText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Goal',
+                    style: TextStyle(
+                        color: Colors.grey[500]
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Text(
+                      '-',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                   foodText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Food',
+                    style: TextStyle(
+                        color: Colors.grey[500]
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 20
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                  [
+                    Text(
+                      '=',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
+                  Text(
+                    remainingText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: defaultColor
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Remaining',
+                    style: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 13
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ],
+        ),
+
+      ],
+    ),
+  ),
+);
+
+Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
+  onTap: ()
+  {
+    navigateTo(context, MarketitemScreen(
+      productModel: model,
+    ));
+  },
+  child: defaultContainer(
+    height: 250,
+    width: 180,
+    color: constantColor5,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        Expanded(
+          flex: 4,
+          child: Image(
+            image: NetworkImage('${model.image}'),
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 10,
+            ),
+            child: Row(
+              children:
+              [
+                Text(
+                  '${model.currentPrice}',
+                  style: TextStyle(
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+                start: 10
+            ),
+            child: Text(''
+                '${model.name}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+
+
+      ],
+    ),
+  ),
+);
+
+Widget buildMealItem(MealsModel model,context,{
+  required bool? value,
+  required void Function(bool?)? onChanged,
+
+}) => Container(
+  color: constantColor1,
+  child:   InkWell(
+
+    onTap: ()
+
+    {
+
+      navigateTo(context, MealItemScreen(
+
+        mealsModel: model,
+
+      ));
+
+    },
+
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+
+        children:
+
+        [
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children:
+
+            [
+
+              defaultBodyText(
+                context,
+                text: '${model.Food}',
+               /* maxLines: 1,
+                overflow: TextOverflow.ellipsis,*/
+              ),
+
+              Row(
+
+                children:
+
+                [
+
+                  Text(
+
+                      '${model.Measure},',
+
+                    style: Theme.of(context).textTheme.caption,
+
+                  ),
+                  SizedBox(
+                    width: 3,
+                  ),
+
+                  Text(
+
+                    '${model.Calories}Kcal',
+
+                    style: Theme.of(context).textTheme.caption,
+
+                  ),
+
+
+
+                ],
+
+              ),
+
+
+
+            ],
+
+          ),
+          const Spacer(),
+          Checkbox(
+              value: value ,
+              onChanged: onChanged
+          ),
+
+        ],
+
+      ),
+    ),
+
+  ),
+);
+Widget buildSerachMealItem (list,context,
+{
+  required List<bool> isChecked,
+  required void Function()? function,
+  required  void Function(dynamic, dynamic) changeChekBox,
+  //required bool? value,
+  //required void Function(bool?)? onChanged,
+  required String title,
+  required  void Function(String)? onChangedSearch
+}) =>  BlocConsumer<HomeCubit,HomeStates>(
+  listener: (context,state)
+  {
+
+  },
+  builder: (context,state)
+  {
+    //var list = HomeCubit.get(context).searchMeal;
+    return  Scaffold(
+      appBar: buildAppBar(
+          title: title,
+          icon: IconBroken.Arrow___Left_2,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          actions:[
+            IconButton(
+              icon: const Icon(Icons.camera),
+              onPressed: ()
+              {
+                navigateTo(
+                    context,
+                    cameraScreen());
+              },
+            ),
+            if(state is ChangeCheckBoxState)
+              SizedBox(
+                width: 5,
+              ),
+            if(state is ChangeCheckBoxState)
+              defaultTextButton(context,
+                function: function,
+                text: 'Add',
+              ),
+
+          ]
+
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children:
+          [
+            defaultContainer(
+              color: constantColor5,
+              child: defaultTextFormField(
+                type: TextInputType.text,
+                prefix: Icons.search,
+                hintText: 'Search',
+                border: InputBorder.none,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                onChanged: onChangedSearch,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+
+              child: ConditionalBuilder(
+                condition:  list.length > 0,
+                builder: (context) => ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context,index) => buildMealItem(
+                      list[index],
+                      context,
+                      value: isChecked[index],
+                      onChanged: (value)
+                      {
+                        changeChekBox(value, index);
+                      },
+
+                    ),
+                    separatorBuilder: (context,index) =>  SizedBox(height: 5,),
+                    itemCount: list.length),
+                fallback: (context) => Center(child: Container()),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  },
+);
+
+
+
+
+
+

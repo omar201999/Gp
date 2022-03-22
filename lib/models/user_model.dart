@@ -8,11 +8,18 @@ class UserModel
   String? gender;
   double? goalWeight;
   String? goal;
-  String? active;
+  double? active;
   String? profileImage;
   String? status ;
   double? weeklyGoal;
   int? age;
+  int? totalCalorie;
+  int? totalProtein;
+  int? totalCarbs;
+  int? totalFats;
+
+
+
 
   UserModel({
     this.name,
@@ -28,6 +35,11 @@ class UserModel
     this.status,
     this.weeklyGoal,
     this.age,
+    this.totalCalorie,
+    this.totalCarbs,
+    this.totalFats,
+    this.totalProtein,
+
 
   });
   UserModel.fromJson(Map<String ,dynamic>? json)
@@ -45,6 +57,11 @@ class UserModel
     status=json['status'];
     weeklyGoal=json['weeklyGoal'];
     age=json['age'];
+    totalCalorie=json['totalCalorie'];
+    totalCarbs=json['totalCarbs'];
+    totalFats=json['totalFats'];
+    totalProtein=json['totalProtein'];
+
 
 
 
@@ -68,6 +85,11 @@ class UserModel
         'status':status,
         'weeklyGoal':weeklyGoal,
         'age': age,
+        'totalCalorie': totalCalorie,
+        'totalCarbs': totalCarbs,
+        'totalFats': totalFats,
+        'totalProtein': totalProtein,
+
       };
   }
 

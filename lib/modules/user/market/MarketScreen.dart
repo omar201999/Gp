@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
-import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/models/product_model.dart';
-import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
-import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
+
+import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 
@@ -19,7 +16,7 @@ class MarketingScreen extends StatelessWidget {
                 [
                   IconButton(
                     onPressed: () {
-                      Navigator.pop(context,);
+                      navigateTo(context, CartScreen());
 
                     },
                     icon: Icon(

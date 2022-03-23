@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/admin_layout.dart';
 import 'package:gp/layout/home-layout/home_layout.dart';
+import 'package:gp/modules/user/cart/cart_screen.dart';
+import 'package:gp/modules/user/cart/cubit/cubit.dart';
 import 'package:gp/modules/user/login/login_screen.dart';
 import 'package:gp/shared/bloc_observer.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -67,6 +69,7 @@ class MyApp extends StatelessWidget
       providers: [
         BlocProvider(create: (context) => HomeCubit()..getUserData()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProduct()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()),
+        BlocProvider(create: (context) => CartCubit()..getCartItem()),
       ],
       child: BlocConsumer<HomeCubit,HomeStates>(
         listener:(context,state){} ,

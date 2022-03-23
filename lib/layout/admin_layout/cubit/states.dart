@@ -24,6 +24,24 @@ class AdminDeleteUsersErrorState extends AdminStates
   AdminDeleteUsersErrorState(this.error);
 }
 
+class AdminDeleteRecipeSuccessState extends AdminStates {}
+
+class AdminDeleteRecipeErrorState extends AdminStates
+{
+  final String error;
+
+  AdminDeleteRecipeErrorState(this.error);
+}
+class AdminDeleteProductSuccessState extends AdminStates {}
+
+class AdminDeleteProductErrorState extends AdminStates
+{
+  final String error;
+
+  AdminDeleteProductErrorState(this.error);
+}
+
+
 
 class AdminDeleteRecipeSuccessState extends AdminStates {}
 

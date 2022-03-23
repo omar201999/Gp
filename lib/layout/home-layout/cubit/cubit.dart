@@ -21,8 +21,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
 class HomeCubit extends Cubit<HomeStates> {
 
   HomeCubit() : super(HomeIntitialState());
-
   static HomeCubit get(context) => BlocProvider.of(context);
+
   UserModel? userModel;
 
   void getUserData() {
@@ -345,7 +345,7 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-  List<bool> isCheckedBreakFast = List<bool>.filled(20, false);
+  List<bool> isCheckedBreakFast = List<bool>.filled(50, false);
 
   void changeCheckBoxBreakFast(value, index) {
     isCheckedBreakFast[index] = value;
@@ -353,7 +353,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<bool> isCheckedLunch = List<bool>.filled(20, false);
+  List<bool> isCheckedLunch = List<bool>.filled(50, false);
 
   void changeCheckBoxLunch(value, index) {
     isCheckedLunch[index] = value;
@@ -361,7 +361,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<bool> isCheckedDinner = List<bool>.filled(20, false);
+  List<bool> isCheckedDinner = List<bool>.filled(50, false);
 
   void changeCheckBoxDinner(value, index) {
     isCheckedDinner[index] = value;
@@ -369,11 +369,10 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<bool> isCheckedSnacks = List<bool>.filled(20, false);
+  List<bool> isCheckedSnacks = List<bool>.filled(50, false,growable: true);
 
   void changeCheckBoxSnacks(value, index) {
     isCheckedSnacks[index] = value;
-
     emit(ChangeCheckBoxState());
   }
 
@@ -387,10 +386,10 @@ class HomeCubit extends Cubit<HomeStates> {
               .collection('userMeal')
               .add(searchSnacks[i].toMap())
               .then((value) {
-                emit(SearchAddSnacksSuccessState());
-
+                //emit(SearchAddSnacksSuccessState());
+                getCompleteDiaryItems();
           }).catchError((error) {
-            emit(SearchAddSnacksErrorState(error));
+            emit(SearchAddSnacksErrorState(error.toString()));
             print(error.toString());
           });
       }
@@ -406,10 +405,10 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchLunch[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
-
+          //emit(SearchAddLunchSuccessState());
+          getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error));
+          emit(SearchAddLunchErrorState(error.toString()));
           print(error.toString());
         });
       }
@@ -425,10 +424,10 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchBreakFast[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
-
+          //emit(SearchAddBreakFastSuccessState());
+          getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error));
+          emit(SearchAddBreakFastErrorState(error.toString()));
           print(error.toString());
         });
       }
@@ -444,37 +443,46 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchDinner[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
-
+         //emit(SearchAddDinnerSuccessState());
+          getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error));
+          emit(SearchAddDinnerErrorState(error.toString()));
           print(error.toString());
         });
       }
     }
   }
-  /*List<MealsModel> getAllMeals = [];
-  void getAllUserMeal()
+  List<bool> isCheckeditem = List<bool>.filled(100, false);
+  void changeCheckBoxitem(value, index) {
+    isCheckeditem[index] = value;
+
+    emit(ChangeCheckBoxState());
+  }
+  List<MealsModel> completeDiary = [];
+  void getCompleteDiaryItems()
   {
+    emit(GetAllUsersMealsLoadingState());
+    completeDiary = [];
     FirebaseFirestore.instance
         .collection('users')
-        .doc(userModel!.uId)
+        .doc(uId)
         .collection('userMeal')
         .get()
-        .then((value) {
-          value.docs.forEach((element) {
-            getAllMeals.add(MealsModel.fromJson(element.data()));
-          });
+        .then((value)
+    {
+      value.docs.forEach((element)
+      {
+        completeDiary.add(MealsModel.fromJson(element.data()));
+        emit(GetAllUsersMealsSuccessState());
+      });
     }).catchError((error){
-
+      emit(GetAllUsersMealsErrorState(error.toString()));
+      print(error.toString());
     });
-  }*/
-    List<bool> isCheckeditem = List<bool>.filled(100, false);
-    void changeCheckBoxitem(value, index) {
-      isCheckeditem[index] = value;
-
-      emit(ChangeCheckBoxState());
-    }
   }
 
+
+
+
+}
 

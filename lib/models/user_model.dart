@@ -18,9 +18,6 @@ class UserModel
   int? totalCarbs;
   int? totalFats;
 
-
-
-
   UserModel({
     this.name,
     this.email,
@@ -39,9 +36,6 @@ class UserModel
     this.totalCarbs,
     this.totalFats,
     this.totalProtein,
-
-    v
-
 
   });
   UserModel.fromJson(Map<String ,dynamic>? json)
@@ -63,11 +57,6 @@ class UserModel
     totalCarbs=json['totalCarbs'];
     totalFats=json['totalFats'];
     totalProtein=json['totalProtein'];
-
-
-
-
-
   }
 
   Map<String ,dynamic> toMap()
@@ -94,9 +83,4 @@ class UserModel
 
       };
   }
-
-
-
-
-
 }

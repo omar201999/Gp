@@ -144,11 +144,11 @@ class SearchAddSnacksErrorState extends HomeStates
 }
 class SearchAddBreakFastSuccessState extends HomeStates {}
 
-class SearchAddBreakFastSnacksErrorState extends HomeStates
+class SearchAddBreakFastErrorState extends HomeStates
 {
   final String error;
 
-  SearchAddBreakFastSnacksErrorState(this.error);
+  SearchAddBreakFastErrorState(this.error);
 }
 class SearchAddDinnerSuccessState extends HomeStates {}
 
@@ -165,5 +165,15 @@ class SearchAddLunchErrorState extends HomeStates
   final String error;
 
   SearchAddLunchErrorState(this.error);
+}
+class GetAllUsersMealsLoadingState extends HomeStates {}
+
+class GetAllUsersMealsSuccessState extends HomeStates {}
+
+class GetAllUsersMealsErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllUsersMealsErrorState(this.error);
 }
 

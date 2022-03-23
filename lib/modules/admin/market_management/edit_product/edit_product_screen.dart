@@ -79,7 +79,7 @@ class EditProductScreen extends StatelessWidget {
                             const Spacer(),
                             defaultTextButton(
                               context,
-                              color: Colors.white,
+                              color: Colors.blue,
                               function: () {
                                 AdminCubit.get(context).deleteProduct(
                                     productModel.uId);

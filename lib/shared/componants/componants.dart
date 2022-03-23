@@ -8,9 +8,9 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
-import 'package:gp/modules/meal_item/meal_item_screen.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
+import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -813,6 +813,7 @@ Widget buildSerachMealItem (list,context,
   },
   builder: (context,state)
   {
+
     //var list = HomeCubit.get(context).searchMeal;
     return  Scaffold(
       appBar: buildAppBar(
@@ -866,7 +867,6 @@ Widget buildSerachMealItem (list,context,
               height: 20,
             ),
             Expanded(
-
               child: ConditionalBuilder(
                 condition:  list.length > 0,
                 builder: (context) => ListView.separated(

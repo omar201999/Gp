@@ -5,7 +5,16 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
-class NutritionScreen extends StatelessWidget {
+class NutritionScreen extends StatelessWidget
+{
+  List<int> totalFoodProtein = [];
+  int totalProtein = 0 ;
+  List<int> totalFoodCarbs = [];
+  int totalCarbs = 0 ;
+  List<int> totalFoodFats = [];
+  int totalFats = 0 ;
+  List<int> totalFoodCal = [];
+  int totalCal = 0 ;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +25,27 @@ class NutritionScreen extends StatelessWidget {
      },
       builder:(context,state)
       {
+        HomeCubit.get(context).completeDiary.forEach((element)
+        {
+          totalFoodCal.add(element.Calories!);
+        });
+        for(int i=0 ; i<= totalFoodCal.length-1 ;i++)
+        {
+          totalCal = totalCal + totalFoodCal[i] ;
+        }
+        HomeCubit.get(context).completeDiary.forEach((element)
+        {
+          totalFoodProtein.add(element.Protein!);
+          totalFoodCarbs.add(element.Carbs!);
+          totalFoodFats.add(element.Fat!);
+
+        });
+        for(int i=0 ; i<= totalFoodProtein.length-1 ;i++)
+        {
+          totalProtein = totalProtein + totalFoodProtein[i];
+          totalCarbs = totalCarbs + totalFoodCarbs[i];
+          totalFats = totalFats + totalFoodFats[i];
+        }
         var userModel = HomeCubit.get(context).userModel;
         return  Scaffold(
           appBar: buildAppBar(
@@ -36,8 +66,8 @@ class NutritionScreen extends StatelessWidget {
                     context,
                     title: 'Protein Remaining',
                     calorieText: '${userModel!.totalProtein}',
-                    foodText: '0',
-                    remainingText: '${userModel.totalProtein}',
+                    foodText: '$totalProtein',
+                    remainingText: '${userModel.totalProtein! - totalProtein}',
                   ),
                   SizedBox(
                     height: 15,
@@ -46,8 +76,8 @@ class NutritionScreen extends StatelessWidget {
                     context,
                     title: 'Fats Remaining',
                     calorieText: '${userModel.totalFats}',
-                    foodText: '0',
-                    remainingText: '${userModel.totalFats}',
+                    foodText: '$totalFats',
+                    remainingText: '${userModel.totalFats! - totalFats}',
                   ),
                   SizedBox(
                     height: 15,
@@ -56,8 +86,8 @@ class NutritionScreen extends StatelessWidget {
                     context,
                     title: 'Carbohydrates Remaining',
                     calorieText: '${userModel.totalCarbs}',
-                    foodText: '0',
-                    remainingText: '${userModel.totalCarbs}',
+                    foodText: '$totalCarbs',
+                    remainingText: '${userModel.totalCarbs! - totalCarbs}',
                   ),
 
                 ],

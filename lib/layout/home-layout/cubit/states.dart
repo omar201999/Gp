@@ -144,11 +144,11 @@ class SearchAddSnacksErrorState extends HomeStates
 }
 class SearchAddBreakFastSuccessState extends HomeStates {}
 
-class SearchAddBreakFastSnacksErrorState extends HomeStates
+class SearchAddBreakFastErrorState extends HomeStates
 {
   final String error;
 
-  SearchAddBreakFastSnacksErrorState(this.error);
+  SearchAddBreakFastErrorState(this.error);
 }
 class SearchAddDinnerSuccessState extends HomeStates {}
 

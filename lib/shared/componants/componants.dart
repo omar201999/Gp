@@ -813,6 +813,7 @@ Widget buildSerachMealItem (list,context,
   },
   builder: (context,state)
   {
+
     //var list = HomeCubit.get(context).searchMeal;
     return  Scaffold(
       appBar: buildAppBar(

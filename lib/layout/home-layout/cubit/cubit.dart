@@ -386,7 +386,7 @@ class HomeCubit extends Cubit<HomeStates> {
               .collection('userMeal')
               .add(searchSnacks[i].toMap())
               .then((value) {
-                emit(SearchAddSnacksSuccessState());
+                //emit(SearchAddSnacksSuccessState());
                 getCompleteDiaryItems();
           }).catchError((error) {
             emit(SearchAddSnacksErrorState(error.toString()));
@@ -405,10 +405,10 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchLunch[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
+          //emit(SearchAddLunchSuccessState());
           getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error.toString()));
+          emit(SearchAddLunchErrorState(error.toString()));
           print(error.toString());
         });
       }
@@ -424,10 +424,10 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchBreakFast[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
+          //emit(SearchAddBreakFastSuccessState());
           getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error.toString()));
+          emit(SearchAddBreakFastErrorState(error.toString()));
           print(error.toString());
         });
       }
@@ -443,10 +443,10 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchDinner[i].toMap())
             .then((value) {
-          emit(SearchAddSnacksSuccessState());
+         //emit(SearchAddDinnerSuccessState());
           getCompleteDiaryItems();
         }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error.toString()));
+          emit(SearchAddDinnerErrorState(error.toString()));
           print(error.toString());
         });
       }
@@ -480,6 +480,9 @@ class HomeCubit extends Cubit<HomeStates> {
       print(error.toString());
     });
   }
+
+
+
 
 }
 

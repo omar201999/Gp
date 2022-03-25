@@ -75,7 +75,7 @@ class EditRecipeScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             IconButton(
-                              color: Colors.white,
+                              color: defaultColor,
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -84,7 +84,7 @@ class EditRecipeScreen extends StatelessWidget {
                             const Spacer(),
                             defaultTextButton(
                               context,
-                              color: Colors.white,
+                              //color: Colors.white,
                               function: () {
                                  AdminCubit.get(context).deleteRecipe(recipeModel.uId);
                                  Navigator.pop(context);
@@ -144,6 +144,8 @@ class EditRecipeScreen extends StatelessWidget {
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
                                 maxLines: 30,
+                                border: InputBorder.none,
+                                label: 'Ingredients',
 
                               ),
                         ),
@@ -156,7 +158,9 @@ class EditRecipeScreen extends StatelessWidget {
                             child: defaultTextFormField(
                                 controller: directionsController,
                                 type: TextInputType.multiline,
-                                maxLines: 30
+                                maxLines: 30,
+                                border: InputBorder.none,
+                                label: 'Directions',
                               ),
                         ),
                         const SizedBox(
@@ -168,6 +172,8 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: carbsController,
+                            border: InputBorder.none,
+                            label: 'Carbs',
                           ),
                         ),
                         const SizedBox(
@@ -179,6 +185,8 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: proteinController,
+                            border: InputBorder.none,
+                            label: 'Protein',
                           ),
                         ),
                         const SizedBox(
@@ -190,6 +198,8 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: fatsController,
+                            border: InputBorder.none,
+                            label: 'Fats',
                           ),
                         ),
                         const SizedBox(
@@ -201,6 +211,8 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: calsController,
+                            border: InputBorder.none,
+                            label: 'Calories',
                           ),
                         ),
                         const SizedBox(
@@ -212,6 +224,8 @@ class EditRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: weightController,
+                            border: InputBorder.none,
+                            label: 'Weight',
                           ),
                         ),
                         const SizedBox(

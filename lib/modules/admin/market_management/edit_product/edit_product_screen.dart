@@ -27,8 +27,6 @@ class EditProductScreen extends StatelessWidget {
 
 
 
-
-
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           var newProductImage = AdminCubit.get(context).newProductImage;
@@ -70,7 +68,7 @@ class EditProductScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             IconButton(
-                              color: Colors.white,
+                              color: defaultColor,
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -79,7 +77,7 @@ class EditProductScreen extends StatelessWidget {
                             const Spacer(),
                             defaultTextButton(
                               context,
-                              color: Colors.blue,
+                              color: defaultColor,
                               function: () {
                                 AdminCubit.get(context).deleteProduct(
                                     productModel.uId);

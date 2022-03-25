@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
@@ -924,6 +926,53 @@ Widget defaultRawButton ({
   constraints: BoxConstraints.tightFor(
     width: width,
     height: height,
+  ),
+);
+
+Widget  BuildUserItem (UserModel model,context)=> Padding(
+  padding: const EdgeInsets.all(20.0),
+  child: Row(
+    children:
+    [
+      CircleAvatar(
+        radius: 40.0,
+        backgroundImage: NetworkImage(
+            '${model.profileImage}'
+        ),
+      ),
+      SizedBox(
+        width: 20,),
+      Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Text(
+              '${model.name}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              '${model.email}',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+      IconButton(
+          icon: Icon(
+              Icons.delete_forever
+          ),
+          onPressed: () {
+            AdminCubit.get(context).deleteUser(model.uId);
+          }
+      ),
+    ],
   ),
 );
 

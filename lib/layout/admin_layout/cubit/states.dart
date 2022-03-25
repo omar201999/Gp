@@ -24,6 +24,16 @@ class AdminDeleteUsersErrorState extends AdminStates
   AdminDeleteUsersErrorState(this.error);
 }
 
+class SearchUsersLoadingState extends AdminStates{}
+
+class SearchUsersSuccessState extends AdminStates{}
+
+class SearchUsersErrorState extends AdminStates
+{
+  final String error;
+  SearchUsersErrorState(this.error);
+}
+
 
 
 //create recipe
@@ -90,6 +100,16 @@ class GetAllDinnerRecipeErrorState extends AdminStates
   GetAllDinnerRecipeErrorState(this.error);
 }
 
+class SearchRecipeLoadingState extends AdminStates{}
+
+class SearchRecipeSuccessState extends AdminStates{}
+
+class SearchRecipeErrorState extends AdminStates
+{
+  final String error;
+  SearchRecipeErrorState(this.error);
+}
+
 
 
 // create product
@@ -120,4 +140,14 @@ class GetProductsErrorState extends AdminStates
   final String error;
 
   GetProductsErrorState(this.error);
+}
+
+class SearchProductLoadingState extends AdminStates{}
+
+class SearchProductSuccessState extends AdminStates{}
+
+class SearchProductErrorState extends AdminStates
+{
+  final String error;
+  SearchProductErrorState(this.error);
 }

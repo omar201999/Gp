@@ -225,7 +225,7 @@ class EditRecipeScreen extends StatelessWidget {
 
                             if(recipeImage == null)
                             {
-                              AdminCubit.get(context).UpdateRecipe(
+                              AdminCubit.get(context).updateRecipe(
                                 title: titleController.text,
                                 ingredients: ingredientsController.text,
                                 directions: directionsController.text,

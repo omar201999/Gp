@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:gp/shared/componants/constant.dart';
 
 class HomePage extends StatelessWidget
 {
+
 
   @override
   Widget build(BuildContext context)
@@ -39,7 +42,7 @@ class HomePage extends StatelessWidget
               [
                 defaultTextButton(
                   context,
-                  text: 'sing out',
+                  text: 'sign out',
                   function: ()
                   {
                     signOut(context,);
@@ -150,10 +153,50 @@ class HomePage extends StatelessWidget
                         SizedBox(
                           height:10,
                         ),
+                        /*defaultContainer(
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children:
+                                  [
+                                    Icon(
+                                      Icons.water_drop,
+                                      size: 15.0,
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    defaultHeadLineText(
+                                      context,
+                                      text: 'Water',
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      '$lOfWater''L',
+                                      style: TextStyle(
+                                        fontSize: 1,
+                                      ),
+                                    )
+                                  ],
+
+                                ),
+                               /* Row(
+                                  children: [
+
+                                  ],
+                                )*/
+                              ],
+                            )
+
+                          ),
+                        ),*/
                         buildHomeScreenItem(
                           context,
-                          prefixIcon: Icons.water_rounded,
-                          text: 'Water Tracker',
+                          prefixIcon: Icons.water_drop,
+                          text: 'Water',
                           screen: WaterTrackerScreen(),
                         ),
                         SizedBox(

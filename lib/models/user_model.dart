@@ -17,6 +17,7 @@ class UserModel
   int? totalProtein;
   int? totalCarbs;
   int? totalFats;
+  int? totalWater;
 
 
 
@@ -39,9 +40,7 @@ class UserModel
     this.totalCarbs,
     this.totalFats,
     this.totalProtein,
-
-    v
-
+    this.totalWater,
 
   });
   UserModel.fromJson(Map<String ,dynamic>? json)
@@ -63,7 +62,7 @@ class UserModel
     totalCarbs=json['totalCarbs'];
     totalFats=json['totalFats'];
     totalProtein=json['totalProtein'];
-
+    totalWater=json['totalWater'];
 
 
 
@@ -91,6 +90,7 @@ class UserModel
         'totalCarbs': totalCarbs,
         'totalFats': totalFats,
         'totalProtein': totalProtein,
+        'totalWater': totalWater,
 
       };
   }

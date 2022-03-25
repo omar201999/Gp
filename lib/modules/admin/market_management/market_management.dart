@@ -5,8 +5,10 @@ import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
+import 'package:gp/modules/admin/market_management/search_product/search_product_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class MarketManagementScreen extends StatelessWidget {
   @override
@@ -15,6 +17,24 @@ class MarketManagementScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           return Scaffold(
+            appBar: buildAppBar(
+
+              title: 'Market',
+              titleSpacing: 5.0,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    navigateTo(context, SearchProductScreen());
+                  },
+                  icon: Icon(IconBroken.Search),
+
+                ),
+                SizedBox(
+                  width: 15.0,
+                )
+              ]
+
+            ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
@@ -25,19 +45,19 @@ class MarketManagementScreen extends StatelessWidget {
 
                     children:
                     [
-                      defaultContainer(
-                        height: 60,
+                      /*defaultContainer(
+                        //height: 60,
                         color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.text,
-                          prefix: Icons.search,
+                          prefix: IconBroken.Search,
                           hintText: 'Search',
                           border: InputBorder.none,
                           borderRadius: const BorderRadius.all(
                             Radius.circular(10.0),
                           ),
                         ),
-                      ),
+                      ),*/
                       const SizedBox(
                         height: 20,
                       ),
@@ -45,9 +65,9 @@ class MarketManagementScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        mainAxisSpacing: 2.0,
-                        crossAxisSpacing: 1.8,
-                        childAspectRatio: 1 / 1.43,
+                        mainAxisSpacing: 3.0,
+                        crossAxisSpacing: 2.8,
+                        childAspectRatio: 1 / 1.38,
                         children: List.generate(
                                 AdminCubit.get(context).products.length,
                                 (index) => buildProductItem(AdminCubit.get(context).products[index], context),
@@ -90,11 +110,30 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
-        Image(
-            image: NetworkImage('${model.image}'),
-            width: double.infinity,
-            //height: 200.0,
-            fit: BoxFit.cover,
+        Stack(
+          alignment: AlignmentDirectional.bottomStart,
+          children: [
+            Image(
+              image: NetworkImage('${model.image}'),
+              width: double.infinity,
+              //height: 180.0,
+              fit: BoxFit.cover,
+            ),
+            if (model.discount != 0)
+              Container(
+              color: Colors.red,
+              padding: EdgeInsets.symmetric(
+                horizontal: 5.0
+              ),
+              child: Text(
+                'DISCOUNT',
+                style: TextStyle(
+                  fontSize: 8.0,
+                  color: Colors.white,
+                ),
+              )
+            ),
+          ],
         ),
         Padding(
             padding: /*EdgeInsetsDirectional.only(
@@ -105,6 +144,7 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
               horizontal: 6.0,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   '${model.name}',
@@ -128,7 +168,8 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
                     const SizedBox(
                       width: 5.0,
                     ),
-                    Text(
+                    if (model.discount != 0)
+                       Text(
                       '${model.oldPrice}',
                       style: const TextStyle(
                         fontSize: 10.0,

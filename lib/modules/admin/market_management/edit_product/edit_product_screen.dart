@@ -147,8 +147,9 @@ class EditProductScreen extends StatelessWidget {
                           height: 150,
                           color: constantColor5,
                           child: defaultTextFormField(
-                            controller: descriptionController,
-                            type: TextInputType.multiline,
+                              controller: descriptionController,
+                              type: TextInputType.multiline,
+                              maxLines: 30,
                               border: InputBorder.none,
                               label: 'Description'
 
@@ -219,7 +220,7 @@ class EditProductScreen extends StatelessWidget {
 
                             if(newProductImage == null)
                             {
-                              AdminCubit.get(context).UpdateProduct(
+                              AdminCubit.get(context).updateProduct(
                                 name: nameController.text,
                                 description: descriptionController.text,
                                 currentPrice: double.parse(currentPriceController.text),

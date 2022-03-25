@@ -29,7 +29,9 @@ class NewRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
-
+            if (state is CreateRecipeSuccessState) {
+              Navigator.pop(context);
+            }
         },
         builder: (context, state)
         {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 import 'cubit/cubit.dart';
@@ -20,20 +19,14 @@ class AdminLayout extends StatelessWidget {
       {
         AdminCubit cubit = AdminCubit.get(context);
         return Scaffold(
-          appBar: buildAppBar(
+          /*appBar: buildAppBar(
             onPressed: () {
 
             },
             icon: IconBroken.Category,
             title: cubit.titles[cubit.currentIndex],
             actions: [
-              IconButton(
-                onPressed: () {
 
-                },
-                icon: Icon(IconBroken.Search),
-
-              ),
               IconButton(
                 onPressed: () {
 
@@ -42,7 +35,7 @@ class AdminLayout extends StatelessWidget {
 
               )
             ],
-          ),
+          ),*/
           body: cubit.screens[cubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: cubit.currentIndex ,

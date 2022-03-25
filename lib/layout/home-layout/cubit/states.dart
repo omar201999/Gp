@@ -133,3 +133,9 @@ class SearchMealErrorState extends HomeStates
 
   SearchMealErrorState(this.error);
 }
+
+// for water tracker
+
+class AddWaterGlassState extends HomeStates{}
+
+class MinusWaterGlassState extends HomeStates{}

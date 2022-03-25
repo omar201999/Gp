@@ -27,6 +27,10 @@ class DinnerScreen extends StatelessWidget {
             HomeCubit.get(context).changeCheckBoxLunch(value, index);
           },*/
           changeChekBox: HomeCubit.get(context).changeCheckBoxDinner,
+            function: ()
+            {
+              HomeCubit.get(context).addDinnerMeal();
+            }
         );
       },
     );

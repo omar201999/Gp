@@ -20,33 +20,33 @@ class UsersManagementScreen extends StatelessWidget {
       listener: (context , state ) {},
       builder: (context , state ){
         return Scaffold(
-          appBar: buildAppBar(
+            appBar: buildAppBar(
 
             title: 'Users',
             actions: [
 
-              IconButton(
-                onPressed: () {
-                 navigateTo(context, SearchUsersScreen());
-                },
-                icon: Icon(IconBroken.Search),
+            IconButton(
+            onPressed: () {
+          navigateTo(context, SearchUsersScreen());
+        },
+        icon: Icon(IconBroken.Search),
 
-              ),
-              SizedBox(
-                width:15.0
-              )
-            ],
-          ),
-          body: ConditionalBuilder(
-            condition: AdminCubit.get(context).users.length > 0,
-            builder: (context) => ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index],context),
-            separatorBuilder: (context, index) => myDivider(),
-            itemCount: AdminCubit.get(context).users.length,
-           ),
-            fallback: (context) => Center(child: CircularProgressIndicator())
         ),
+        SizedBox(
+        width:15.0
+        )
+        ],
+        ),
+          body: ConditionalBuilder(
+            condition: AdminCubit.get(context).users.length > 0 && state is !AdminGetAllUsersLoadingState,
+        builder: (context) => ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) => BuildUserItem(AdminCubit.get(context).users[index],context),
+        separatorBuilder: (context, index) => myDivider(),
+        itemCount: AdminCubit.get(context).users.length,
+        ),
+        fallback: (context) => Center(child: CircularProgressIndicator())
+          ),
         );
       }
 
@@ -57,7 +57,7 @@ class UsersManagementScreen extends StatelessWidget {
 
   Widget  BuildUserItem (UserModel model,context)=> Padding(
     padding: const EdgeInsets.all(20.0),
-    child:  Row(
+    child: Row(
       children:
       [
         CircleAvatar(
@@ -100,7 +100,6 @@ class UsersManagementScreen extends StatelessWidget {
         ),
       ],
     ),
-
   );
 
 }

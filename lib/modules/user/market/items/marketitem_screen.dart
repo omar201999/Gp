@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/modules/user/cart/cart_screen.dart';
+import 'package:gp/modules/user/cart/cubit/cubit.dart';
 import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
@@ -171,7 +173,18 @@ class MarketitemScreen extends StatelessWidget {
                       color: defaultColor,
                       child: MaterialButton(
                         onPressed: (){
-                          Navigator.pop(context,);
+                          CartCubit.get(context).addCartItem(
+                            productModel.uId,
+                              name: productModel.name,
+                            image: productModel.image,
+                            uId1: productModel.uId,
+                            oldPrice: productModel.oldPrice,
+                            currentPrice: productModel.currentPrice,
+                            discount: productModel.discount,
+                            quantity: productModel.quantity,
+                            description: productModel.description,
+                          );
+                          navigateTo(context, CartScreen());
 
                         },
                         child: defaultHeadLineText(context, text: 'Add To Cart'),

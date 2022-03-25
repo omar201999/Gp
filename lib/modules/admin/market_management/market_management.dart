@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
@@ -16,76 +17,77 @@ class MarketManagementScreen extends StatelessWidget {
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(
+          return ConditionalBuilder(
+            condition: AdminCubit.get(context).products.length > 0 && state is !GetProductsLoadingState,
+            builder: (context) => Scaffold(
+              appBar: buildAppBar(
 
-              title: 'Market',
-              titleSpacing: 5.0,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    navigateTo(context, SearchProductScreen());
-                  },
-                  icon: Icon(IconBroken.Search),
+                  title: 'Market',
+                  titleSpacing: 5.0,
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        navigateTo(context, SearchProductScreen());
+                      },
+                      icon: Icon(IconBroken.Search),
 
-                ),
-                SizedBox(
-                  width: 15.0,
-                )
-              ]
+                    ),
+                    SizedBox(
+                      width: 15.0,
+                    )
+                  ]
 
-            ),
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: defaultContainer(
-                  color: Colors.grey[50],
-                  child: Column(
-
-                    children:
-                    [
-                      /*defaultContainer(
-                        //height: 60,
-                        color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.text,
-                          prefix: IconBroken.Search,
-                          hintText: 'Search',
-                          border: InputBorder.none,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
+              ),
+              body: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: defaultContainer(
+                    color: Colors.grey[50],
+                    child: Column(
+                      children:
+                      [
+                        /*defaultContainer(
+                          height: 60,
+                          color: constantColor5,
+                          child: defaultTextFormField(
+                            type: TextInputType.text,
+                            prefix: Icons.search,
+                            hintText: 'Search',
+                            border: InputBorder.none,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                        ),*/
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          mainAxisSpacing: 2.0,
+                          crossAxisSpacing: 1.8,
+                          childAspectRatio: 1 / 1.43,
+                          children: List.generate(
+                            AdminCubit.get(context).products.length,
+                                (index) => buildProductItem(AdminCubit.get(context).products[index], context),
                           ),
                         ),
-                      ),*/
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        mainAxisSpacing: 3.0,
-                        crossAxisSpacing: 2.8,
-                        childAspectRatio: 1 / 1.38,
-                        children: List.generate(
-                                AdminCubit.get(context).products.length,
-                                (index) => buildProductItem(AdminCubit.get(context).products[index], context),
-                        ),
-                      ),
-
-
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  navigateTo(context, NewProductSrceen());
+                },
+                child: const Icon(Icons.add),
+              ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                navigateTo(context, NewProductSrceen());
-              },
-              child: const Icon(Icons.add),
-            ),
+            fallback: (context) => Center(child: CircularProgressIndicator()),
           );
         },
         listener: (context, state) {

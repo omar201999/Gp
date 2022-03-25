@@ -51,6 +51,8 @@ class AdminCubit extends Cubit<AdminStates>
 
   void getUsers()
   {
+    emit(AdminGetAllUsersLoadingState());
+    users = [];
     FirebaseFirestore.instance.collection('users').
     where('status',isEqualTo: 'user')
         .get().then((value)
@@ -59,23 +61,24 @@ class AdminCubit extends Cubit<AdminStates>
       {
         users.add(UserModel.fromJson(element.data()));
       });
-
       emit(AdminGetAllUsersSuccessState());
+
     }).catchError((error) {
       print(error.toString());
       emit(AdminGetAllUsersErrorState(error.toString()));
     });
   }
 
-  void deleteUser(String? uId){
-
+  void deleteUser(String? uId)
+  {
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .delete()
         .then((value) {
-      print('done');
+          getUsers();
     }).catchError((error){
+      emit(AdminDeleteUsersErrorState(error.toString()));
       print(error.toString());
     });
   }
@@ -388,13 +391,13 @@ class AdminCubit extends Cubit<AdminStates>
 
       emit(GetAllDinnerRecipeSuccessState());
     }).catchError((error) {
-      print(error.toString());
       emit(GetAllDinnerRecipeErrorState(error.toString()));
+      print(error.toString());
+
     });
   }
 
   void deleteRecipe(String? uId){
-
     FirebaseFirestore.instance
         .collection('recipes')
         .doc(uId)
@@ -403,8 +406,8 @@ class AdminCubit extends Cubit<AdminStates>
           getBreakfastRecipe();
           getLunchRecipe();
           getDinnerRecipe();
-          print('done');
     }).catchError((error){
+      emit(AdminDeleteRecipeErrorState(error.toString()));
       print(error.toString());
     });
   }
@@ -634,7 +637,10 @@ class AdminCubit extends Cubit<AdminStates>
 
   List<ProductModel> products = [];
 
-  void getProducts() {
+  void getProducts()
+  {
+    emit(GetProductsLoadingState());
+    products = [];
     FirebaseFirestore.instance.collection('products')
         .get()
         .then((value) {
@@ -649,15 +655,14 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
   void deleteProduct(String? uId){
-
     FirebaseFirestore.instance
         .collection('products')
         .doc(uId)
         .delete()
         .then((value) {
-
-      print('done');
+          getProducts();
     }).catchError((error){
+      emit(AdminDeleteProductErrorState(error.toString()));
       print(error.toString());
     });
   }

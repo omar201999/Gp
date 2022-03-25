@@ -19,9 +19,6 @@ class UserModel
   int? totalFats;
   int? totalWater;
 
-
-
-
   UserModel({
     this.name,
     this.email,
@@ -94,9 +91,4 @@ class UserModel
 
       };
   }
-
-
-
-
-
 }

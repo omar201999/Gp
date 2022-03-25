@@ -19,16 +19,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
 
 
-class HomeCubit extends Cubit<HomeStates>
-{
+class HomeCubit extends Cubit<HomeStates> {
 
   HomeCubit() : super(HomeIntitialState());
-
   static HomeCubit get(context) => BlocProvider.of(context);
+
   UserModel? userModel;
 
-  void getUserData()
-  {
+  void getUserData() {
     emit(GetUserDataLoadingState());
     FirebaseFirestore.instance.
     collection('users').
@@ -37,7 +35,7 @@ class HomeCubit extends Cubit<HomeStates>
     then((value) {
       userModel = UserModel.fromJson(value.data());
       emit(GetUserDataSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       emit(GetUserDataErrorState(error));
       print(error.toString());
     });
@@ -52,12 +50,11 @@ class HomeCubit extends Cubit<HomeStates>
     CustomerDashBoardScreen(),
 
   ];
-  void changeBottomNavBar(int index)
-  {
+
+  void changeBottomNavBar(int index) {
     currentIndex = index;
     emit(HomeChangeBottonNavState());
   }
-
 
 
   File? profileImage;
@@ -74,20 +71,21 @@ class HomeCubit extends Cubit<HomeStates>
     }
   }
 
-  void uploadProfileImage (
-      {
-        required String name ,
-        required int age ,
-        required double goalWeight ,
-        required double weight,
-      })
-  {
+  void uploadProfileImage({
+    required String name,
+    required int age,
+    required double goalWeight,
+    required double weight,
+  }) {
     emit(UploadProfileImageLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(profileImage!.path)
+        .pathSegments
+        .last}')
         .putFile(profileImage!)
-        .then((value){
+        .then((value) {
       value.ref.getDownloadURL()
           .then((value) {
         print(value);
@@ -96,32 +94,32 @@ class HomeCubit extends Cubit<HomeStates>
           name: name,
           age: age,
           goalWeight: goalWeight,
-          profileImage: value ,
+          profileImage: value,
         );
       })
-          .catchError((error){
+          .catchError((error) {
         emit(UploadProfileImageErrorState());
       });
     })
-        .catchError((error){
+        .catchError((error) {
       emit(UploadProfileImageErrorState());
     });
   }
 
 
   void updateUser({
-    double? height ,
-    required String name ,
-    String? active ,
-    required int age ,
+    double? height,
+    required String name,
+    String? active,
+    required int age,
     String? goal,
-    required double goalWeight ,
-    String? profileImage ,
-    required double weight ,
-  }){
+    required double goalWeight,
+    String? profileImage,
+    required double weight,
+  }) {
     UserModel model = UserModel(
       height: userModel!.height,
-      profileImage:profileImage??userModel!.profileImage,
+      profileImage: profileImage ?? userModel!.profileImage,
       uId: userModel!.uId,
       name: name,
       email: userModel!.email,
@@ -129,11 +127,11 @@ class HomeCubit extends Cubit<HomeStates>
       age: age,
       gender: userModel!.gender,
       goal: userModel!.goal,
-      goalWeight:goalWeight ,
+      goalWeight: goalWeight,
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
       weight: weight,
-    ) ;
+    );
 
     FirebaseFirestore.instance
         .collection('users')
@@ -142,21 +140,20 @@ class HomeCubit extends Cubit<HomeStates>
         .then((value) {
       getUserData();
     })
-        .catchError((error){
+        .catchError((error) {
       emit(UpdateUserDataErrorState());
     });
   }
+
   List<RecipeModel> breakfastRecipe = [];
 
-  void getBreakfastRecipe()
-  {
+  void getBreakfastRecipe() {
     FirebaseFirestore.instance
         .collection('recipes')
-        .where('category',isEqualTo: 'breakfast')
+        .where('category', isEqualTo: 'breakfast')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         breakfastRecipe.add(RecipeModel.fromJson(element.data()));
       });
 
@@ -166,17 +163,16 @@ class HomeCubit extends Cubit<HomeStates>
       emit(GetAllBreakFastRecipeErrorState(error.toString()));
     });
   }
+
   List<RecipeModel> lunchRecipe = [];
 
-  void getLunchRecipe()
-  {
+  void getLunchRecipe() {
     FirebaseFirestore.instance
         .collection('recipes')
-        .where('category',isEqualTo: 'lunch')
+        .where('category', isEqualTo: 'lunch')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         lunchRecipe.add(RecipeModel.fromJson(element.data()));
       });
 
@@ -186,17 +182,16 @@ class HomeCubit extends Cubit<HomeStates>
       emit(GetAllLunchRecipeErrorState(error.toString()));
     });
   }
+
   List<RecipeModel> dinnerRecipe = [];
 
-  void getDinnerRecipe()
-  {
+  void getDinnerRecipe() {
     FirebaseFirestore.instance
         .collection('recipes')
-        .where('category',isEqualTo: 'dinner')
+        .where('category', isEqualTo: 'dinner')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         dinnerRecipe.add(RecipeModel.fromJson(element.data()));
       });
 
@@ -206,16 +201,15 @@ class HomeCubit extends Cubit<HomeStates>
       emit(GetAllDinnerRecipeErrorState(error.toString()));
     });
   }
+
   List<ProductModel> products = [];
 
-  void getProduct()
-  {
+  void getProduct() {
     FirebaseFirestore.instance
         .collection('products')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         products.add(ProductModel.fromJson(element.data()));
       });
 
@@ -228,18 +222,16 @@ class HomeCubit extends Cubit<HomeStates>
 
   List<RecipeModel> search = [];
 
-  void getSearch(String value )
-  {
+  void getSearch(String value) {
     emit(SearchLoadingState());
     search = [];
     FirebaseFirestore.instance
         .collection('recipes')
         .where('title', isGreaterThanOrEqualTo: value)
-        .where('title', isLessThan: value +'z')
+        .where('title', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         search.add(RecipeModel.fromJson(element.data()));
       });
       emit(SearchSuccessState());
@@ -251,41 +243,37 @@ class HomeCubit extends Cubit<HomeStates>
 
   List<MealsModel> searchBreakFast = [];
 
-  void getSearchBreakFast (String value)
-  {
+  void getSearchBreakFast(String value) {
     emit(SearchLoadingBreakFastState());
     searchBreakFast = [];
     FirebaseFirestore.instance
         .collection('meals')
         .where('Food', isGreaterThanOrEqualTo: value)
-        .where('Food', isLessThan: value +'z')
+        .where('Food', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         searchBreakFast.add(MealsModel.fromJson(element.data()));
       });
       emit(SearchSuccessBreakFastState());
     }).catchError((error) {
-
       emit(SearchErrorBreakFastState(error.toString()));
       print(error.toString());
     });
   }
+
   List<MealsModel> searchLunch = [];
 
-  void getSearchLunch(String value )
-  {
+  void getSearchLunch(String value) {
     emit(SearchLoadingLunchState());
     searchLunch = [];
     FirebaseFirestore.instance
         .collection('meals')
         .where('Food', isGreaterThanOrEqualTo: value)
-        .where('Food', isLessThan: value +'z')
+        .where('Food', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         searchLunch.add(MealsModel.fromJson(element.data()));
       });
       emit(SearchSuccessLunchState());
@@ -294,20 +282,19 @@ class HomeCubit extends Cubit<HomeStates>
       emit(SearchErrorLunchState(error.toString()));
     });
   }
+
   List<MealsModel> searchDinner = [];
 
-  void getSearchDinner(String value )
-  {
+  void getSearchDinner(String value) {
     emit(SearchLoadingDinnerState());
     searchDinner = [];
     FirebaseFirestore.instance
         .collection('meals')
         .where('Food', isGreaterThanOrEqualTo: value)
-        .where('Food', isLessThan: value +'z')
+        .where('Food', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         searchDinner.add(MealsModel.fromJson(element.data()));
       });
       emit(SearchSuccessDinnerState());
@@ -316,20 +303,19 @@ class HomeCubit extends Cubit<HomeStates>
       emit(SearchErrorDinnerState(error.toString()));
     });
   }
+
   List<MealsModel> searchSnacks = [];
 
-  void getSearchSnacks(String value )
-  {
+  void getSearchSnacks(String value) {
     emit(SearchLoadingSnacksState());
     searchSnacks = [];
     FirebaseFirestore.instance
         .collection('meals')
         .where('Food', isGreaterThanOrEqualTo: value)
-        .where('Food', isLessThan: value +'z')
+        .where('Food', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         searchSnacks.add(MealsModel.fromJson(element.data()));
       });
       emit(SearchSuccessSnacksState());
@@ -341,18 +327,16 @@ class HomeCubit extends Cubit<HomeStates>
 
   List<ProductModel> searchitem = [];
 
-  void getSearchitem(String value )
-  {
+  void getSearchitem(String value) {
     emit(SearchLoadingLunchState());
     searchitem = [];
     FirebaseFirestore.instance
         .collection('products')
         .where('name', isGreaterThanOrEqualTo: value)
-        .where('name', isLessThan: value +'z')
+        .where('name', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element)
-      {
+      value.docs.forEach((element) {
         searchitem.add(ProductModel.fromJson(element.data()));
       });
       emit(SearchitemState());
@@ -362,41 +346,140 @@ class HomeCubit extends Cubit<HomeStates>
     });
   }
 
-  List<bool> isCheckedBreakFast = List<bool>.filled(100, false);
-  void changeCheckBoxBreakFast (value,index)
-  {
+  List<bool> isCheckedBreakFast = List<bool>.filled(50, false);
+
+  void changeCheckBoxBreakFast(value, index) {
     isCheckedBreakFast[index] = value;
 
     emit(ChangeCheckBoxState());
   }
-  List<bool> isCheckedLunch = List<bool>.filled(100, false);
-  void changeCheckBoxLunch (value,index)
-  {
+
+  List<bool> isCheckedLunch = List<bool>.filled(50, false);
+
+  void changeCheckBoxLunch(value, index) {
     isCheckedLunch[index] = value;
 
     emit(ChangeCheckBoxState());
   }
-  List<bool> isCheckedDinner = List<bool>.filled(100, false);
-  void changeCheckBoxDinner (value,index)
-  {
+
+  List<bool> isCheckedDinner = List<bool>.filled(50, false);
+
+  void changeCheckBoxDinner(value, index) {
     isCheckedDinner[index] = value;
 
     emit(ChangeCheckBoxState());
   }
-  List<bool> isCheckedSnacks = List<bool>.filled(100, false);
-  void changeCheckBoxSnacks (value,index)
-  {
-    isCheckedSnacks[index] = value;
 
+  List<bool> isCheckedSnacks = List<bool>.filled(50, false,growable: true);
+
+  void changeCheckBoxSnacks(value, index) {
+    isCheckedSnacks[index] = value;
     emit(ChangeCheckBoxState());
   }
 
+  void addSnacksMeal() {
+    int i = 0;
+    for ( i;isCheckedSnacks.length>0; i++) {
+      if (isCheckedSnacks[i] == true) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .add(searchSnacks[i].toMap())
+              .then((value) {
+                //emit(SearchAddSnacksSuccessState());
+                getCompleteDiaryItems();
+          }).catchError((error) {
+            emit(SearchAddSnacksErrorState(error.toString()));
+            print(error.toString());
+          });
+      }
+    }
+  }
+  void addLunchMeal() {
+    int i = 0;
+    for ( i;isCheckedLunch.length>0; i++) {
+      if (isCheckedLunch[i] == true) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel!.uId)
+            .collection('userMeal')
+            .add(searchLunch[i].toMap())
+            .then((value) {
+          //emit(SearchAddLunchSuccessState());
+          getCompleteDiaryItems();
+        }).catchError((error) {
+          emit(SearchAddLunchErrorState(error.toString()));
+          print(error.toString());
+        });
+      }
+    }
+  }
+  void addBreakFastMeal() {
+    int i = 0;
+    for ( i;isCheckedBreakFast.length>0; i++) {
+      if (isCheckedBreakFast[i] == true) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel!.uId)
+            .collection('userMeal')
+            .add(searchBreakFast[i].toMap())
+            .then((value) {
+          //emit(SearchAddBreakFastSuccessState());
+          getCompleteDiaryItems();
+        }).catchError((error) {
+          emit(SearchAddBreakFastErrorState(error.toString()));
+          print(error.toString());
+        });
+      }
+    }
+  }
+  void addDinnerMeal() {
+    int i = 0;
+    for ( i;isCheckedDinner.length>0; i++) {
+      if (isCheckedDinner[i] == true) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel!.uId)
+            .collection('userMeal')
+            .add(searchDinner[i].toMap())
+            .then((value) {
+         //emit(SearchAddDinnerSuccessState());
+          getCompleteDiaryItems();
+        }).catchError((error) {
+          emit(SearchAddDinnerErrorState(error.toString()));
+          print(error.toString());
+        });
+      }
+    }
+  }
   List<bool> isCheckeditem = List<bool>.filled(100, false);
-  void changeCheckBoxitem (value,index)
-  {
+  void changeCheckBoxitem(value, index) {
     isCheckeditem[index] = value;
 
     emit(ChangeCheckBoxState());
+  }
+  List<MealsModel> completeDiary = [];
+  void getCompleteDiaryItems()
+  {
+    emit(GetAllUsersMealsLoadingState());
+    completeDiary = [];
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('userMeal')
+        .get()
+        .then((value)
+    {
+      value.docs.forEach((element)
+      {
+        completeDiary.add(MealsModel.fromJson(element.data()));
+        emit(GetAllUsersMealsSuccessState());
+      });
+    }).catchError((error){
+      emit(GetAllUsersMealsErrorState(error.toString()));
+      print(error.toString());
+    });
   }
 
   int counter = 0;
@@ -455,5 +538,8 @@ class HomeCubit extends Cubit<HomeStates>
 
 
 }
+
+
+
 
 

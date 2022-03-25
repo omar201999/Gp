@@ -134,6 +134,49 @@ class SearchMealErrorState extends HomeStates
   SearchMealErrorState(this.error);
 }
 
+class SearchAddSnacksSuccessState extends HomeStates {}
+
+class SearchAddSnacksErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddSnacksErrorState(this.error);
+}
+class SearchAddBreakFastSuccessState extends HomeStates {}
+
+class SearchAddBreakFastErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddBreakFastErrorState(this.error);
+}
+class SearchAddDinnerSuccessState extends HomeStates {}
+
+class SearchAddDinnerErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddDinnerErrorState(this.error);
+}
+class SearchAddLunchSuccessState extends HomeStates {}
+
+class SearchAddLunchErrorState extends HomeStates
+{
+  final String error;
+
+  SearchAddLunchErrorState(this.error);
+}
+class GetAllUsersMealsLoadingState extends HomeStates {}
+
+class GetAllUsersMealsSuccessState extends HomeStates {}
+
+class GetAllUsersMealsErrorState extends HomeStates
+{
+  final String error;
+
+  GetAllUsersMealsErrorState(this.error);
+}
+
 // for water tracker
 
 class AddWaterGlassState extends HomeStates{}

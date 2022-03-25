@@ -6,6 +6,7 @@ import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/admin/recipe_management/edit_recipe/edit_recipe_screen.dart';
 import 'package:gp/modules/admin/recipe_management/new_recipe/new_recipe_screen.dart';
+import 'package:gp/modules/admin/recipe_management/search_recipe/search_recipe_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -20,6 +21,24 @@ class RecipesManagementScreen extends StatelessWidget {
       builder: (context,state)
       {
         return Scaffold(
+          appBar: buildAppBar(
+
+              title: 'Recipes',
+              titleSpacing: 5.0,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    navigateTo(context, SearchRecipeItemScreen());
+                  },
+                  icon: Icon(IconBroken.Search),
+
+                ),
+                SizedBox(
+                  width: 15,
+                )
+              ]
+
+          ),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
@@ -43,14 +62,14 @@ class RecipesManagementScreen extends StatelessWidget {
                     ),
                   ),*/
 
-                    defaultContainer(
+                   /* defaultContainer(
                       height: 65,
                       child: defaultTextFormField(
                         type: TextInputType.text,
                         hintText: 'Search',
                         prefix: IconBroken.Search,
                       ),
-                    ),
+                    ),*/
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -75,7 +94,7 @@ class RecipesManagementScreen extends StatelessWidget {
                           ],
                         ),
                         defaultContainer(
-                          height: 250,
+                          height: 230,
                           color: Colors.grey[50],
                           child: ConditionalBuilder(
                             condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty && state is !GetAllBreakFastRecipeLoadingState,
@@ -118,7 +137,7 @@ class RecipesManagementScreen extends StatelessWidget {
                           ],
                         ),
                         defaultContainer(
-                          height: 250,
+                          height: 230,
                           color: Colors.grey[50],
                           child: ConditionalBuilder(
                             condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
@@ -156,7 +175,7 @@ class RecipesManagementScreen extends StatelessWidget {
                           ],
                         ),
                         defaultContainer(
-                          height: 250,
+                          height: 230,
                           color: Colors.grey[50],
                           child: ConditionalBuilder(
                             condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState,
@@ -193,7 +212,7 @@ Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
     navigateTo(context, EditRecipeScreen(recipeModel: model,));
   },
   child: defaultContainer(
-    height: 200,
+    height: 170,
     width: 170,
     color: constantColor5,
     child: Column(
@@ -223,7 +242,7 @@ Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
             ),
             child: Text(
               '${model.title!.toUpperCase()}',
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                   fontSize: 16
@@ -240,9 +259,10 @@ Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
               children:
                [
                 Text(
-                  '${model.calories}',
+                  '${model.calories!.round()}',
                   style: TextStyle(
-                    letterSpacing: 1,
+                    //letterSpacing: 1,
+                    fontSize: 12
                   ),
                 ),
                 SizedBox(

@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget
               [
                 defaultTextButton(
                   context,
-                  text: 'sing out',
+                  text: 'sign out',
                   function: ()
                   {
                     signOut(context,);

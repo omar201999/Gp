@@ -3,14 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return SingleChildScrollView(
-      child: Column(
+    return Scaffold(
+      appBar: buildAppBar(
+        /*onPressed: () {
+
+        },
+        icon: IconBroken.Category,*/
+        title: 'Dashboard',
+        titleSpacing: 10.0,
+        actions: [
+
+          IconButton(
+            onPressed: () {
+
+            },
+            icon: Icon(IconBroken.Notification),
+
+          ),
+
+          defaultTextButton(
+            context,
+            text: 'log out',
+            fontSize: 14,
+            isUpper: false,
+            function: ()
+            {
+              signOut(context,);
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+         child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
@@ -272,10 +303,10 @@ class DashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              /*SizedBox(
+              SizedBox(
                 height:10,
-              ),*/
-              Padding(
+              ),
+              /*Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: defaultButton(
                 context,
@@ -288,12 +319,13 @@ class DashboardScreen extends StatelessWidget {
                     color: Colors.white
                 ),
                ),
-              ),
+              ),*/
             ],
           ),
         ],
 
       ),
+    ),
     );
 
   }

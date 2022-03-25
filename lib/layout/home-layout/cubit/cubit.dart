@@ -13,6 +13,7 @@ import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart
 import 'package:gp/modules/user/home/home_screen.dart';
 import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/modules/user/recipe/recipe_screen.dart';
+import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
@@ -481,8 +482,64 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
+  int counter = 0;
+  int maximum = 16;
+  int gaolGlass = 8;
+  double countLiter = 0.0;
 
+  int addWaterGlass () {
+
+    if (counter < maximum) {
+      counter++;
+      if (counter == gaolGlass){
+        showToast(
+            text: 'Great job! You\'re reached your goal.',
+            state: ToastStates.SUCCESS
+        );
+      }
+      if (counter == gaolGlass+1){
+        showToast(
+            text: 'Remember to drink more if you\'re thirsty or if you exercise.',
+            state: ToastStates.NOTE
+        );
+      }
+      userModel!.totalWater = counter;
+
+      emit(AddWaterGlassState());
+    }
+    return counter;
+  }
+
+  double addCountLiter () {
+    if (counter < maximum) countLiter+=0.25;
+
+      return countLiter;
+
+  }
+
+  double minusCountLiter () {
+    if (counter > 0 ) countLiter-=0.25;
+    return countLiter;
+  }
+
+
+  int minusWaterGlass () {
+
+    if (counter > 0 ){
+      counter--;
+      userModel!.totalWater = counter;
+
+      emit(MinusWaterGlassState());
+
+    }
+
+    return counter;
+  }
 
 
 }
+
+
+
+
 

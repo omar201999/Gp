@@ -27,8 +27,6 @@ class EditProductScreen extends StatelessWidget {
 
 
 
-
-
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           var newProductImage = AdminCubit.get(context).newProductImage;
@@ -70,7 +68,7 @@ class EditProductScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             IconButton(
-                              color: Colors.white,
+                              color: defaultColor,
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -79,7 +77,7 @@ class EditProductScreen extends StatelessWidget {
                             const Spacer(),
                             defaultTextButton(
                               context,
-                              color: Colors.blue,
+                              color: defaultColor,
                               function: () {
                                 AdminCubit.get(context).deleteProduct(
                                     productModel.uId);
@@ -147,8 +145,9 @@ class EditProductScreen extends StatelessWidget {
                           height: 150,
                           color: constantColor5,
                           child: defaultTextFormField(
-                            controller: descriptionController,
-                            type: TextInputType.multiline,
+                              controller: descriptionController,
+                              type: TextInputType.multiline,
+                              maxLines: 30,
                               border: InputBorder.none,
                               label: 'Description'
 
@@ -219,7 +218,7 @@ class EditProductScreen extends StatelessWidget {
 
                             if(newProductImage == null)
                             {
-                              AdminCubit.get(context).UpdateProduct(
+                              AdminCubit.get(context).updateProduct(
                                 name: nameController.text,
                                 description: descriptionController.text,
                                 currentPrice: double.parse(currentPriceController.text),

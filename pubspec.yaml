@@ -47,7 +47,8 @@ dependencies:
   fluttertoast: ^8.0.8
   iconsax: ^0.0.8
   image_picker: ^0.8.3+3
-
+  animated_icon_button: ^1.0.2
+  #flutter_icons: ^1.1.0
 
 
   #firebase_core: ^1.13.1

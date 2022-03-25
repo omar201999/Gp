@@ -33,12 +33,12 @@ class AdminCubit extends Cubit<AdminStates>
     MarketManagementScreen()
   ];
 
-  List<String> titles = [
+  /*List<String> titles = [
     'Dashboard',
     'Users',
     'Recipes',
     'Market'
-  ];
+  ];*/
 
 
 
@@ -83,7 +83,26 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  List<UserModel> searchUsers = [];
 
+  void getSearchUsers(String value) {
+    emit(SearchUsersLoadingState());
+    searchProduct = [];
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('name', isGreaterThanOrEqualTo: value)
+        .where('name', isLessThan: value + 'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        searchUsers.add(UserModel.fromJson(element.data()));
+      });
+      emit(SearchUsersSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchUsersErrorState(error.toString()));
+    });
+  }
 
  //cubit for recipe
 
@@ -141,7 +160,7 @@ class AdminCubit extends Cubit<AdminStates>
         .then((value){
       value.ref.getDownloadURL().then((value)
       {
-        UpdateRecipe(
+        updateRecipe(
             title: title,
             ingredients: ingredients,
             directions: directions,
@@ -166,7 +185,7 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
-  void UpdateRecipe({
+  void updateRecipe({
     required String title,
     required String ingredients,
     required String directions,
@@ -393,6 +412,27 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  List<RecipeModel> searchRecipe = [];
+
+  void getSearchRecipe(String value) {
+    emit(SearchRecipeLoadingState());
+    searchRecipe = [];
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('title', isGreaterThanOrEqualTo: value)
+        .where('title', isLessThan: value + 'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        searchRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+      emit(SearchRecipeSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchRecipeErrorState(error.toString()));
+    });
+  }
+
 
 
   //cubit for product
@@ -448,7 +488,7 @@ class AdminCubit extends Cubit<AdminStates>
         .then((value){
       value.ref.getDownloadURL().then((value)
       {
-        UpdateProduct(
+        updateProduct(
           name: name,
           description: description,
           currentPrice: currentPrice,
@@ -471,7 +511,7 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
-  void UpdateProduct({
+  void updateProduct({
     required String name,
     required String description,
     required int quantity,
@@ -624,6 +664,27 @@ class AdminCubit extends Cubit<AdminStates>
     }).catchError((error){
       emit(AdminDeleteProductErrorState(error.toString()));
       print(error.toString());
+    });
+  }
+
+  List<ProductModel> searchProduct = [];
+
+  void getSearchProduct(String value) {
+    emit(SearchProductLoadingState());
+    searchProduct = [];
+    FirebaseFirestore.instance
+        .collection('products')
+        .where('name', isGreaterThanOrEqualTo: value)
+        .where('name', isLessThan: value + 'z')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        searchProduct.add(ProductModel.fromJson(element.data()));
+      });
+      emit(SearchProductSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchProductErrorState(error.toString()));
     });
   }
 

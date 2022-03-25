@@ -177,3 +177,8 @@ class GetAllUsersMealsErrorState extends HomeStates
   GetAllUsersMealsErrorState(this.error);
 }
 
+// for water tracker
+
+class AddWaterGlassState extends HomeStates{}
+
+class MinusWaterGlassState extends HomeStates{}

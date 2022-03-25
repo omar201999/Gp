@@ -143,6 +143,7 @@ class RegisterCubit extends Cubit<RegisterStates>
       totalCarbs: totalCarbs,
       totalFats: totalFats,
       totalProtein:totalProtein,
+      totalWater: 0,
     );
     print(profileImage.toString());
     FirebaseFirestore.instance.

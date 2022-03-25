@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
+import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
@@ -19,9 +21,10 @@ AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
   IconData? icon = Icons.home,
+  //IconData? icon,
   Widget? leadingIcon,
   List<Widget>? actions,
-  double? titleSpacing = 20.0,
+  double? titleSpacing = 15.0,
 }) =>  AppBar(
   leading: leadingIcon??IconButton(
       onPressed: onPressed,
@@ -180,12 +183,14 @@ Widget defaultHeadLineText(BuildContext context, {
 Widget defaultBodyText(BuildContext context,{
   required String text,
   FontWeight? fontWeight ,
+  double? fontSize,
   Color? color,
 
 }) => Text(
   text,
   style: Theme.of(context).textTheme.bodyText1?.copyWith(
     fontWeight: fontWeight,
+    fontSize: fontSize,
     color: color,
   ),
 );
@@ -403,14 +408,17 @@ Widget defaultTextButton( BuildContext context,{
   required void Function()? function,
   required String text,
   Color? color = defaultColor,
+  bool isUpper = true,
+  double? fontSize,
 
 }) =>
     TextButton(
       onPressed:function,
       child: defaultBodyText(
           context,
-          text: text.toUpperCase(),
-          color: color
+          text: isUpper ? text.toUpperCase() : text,
+          color: color,
+          fontSize: fontSize,
       ),
     );
 
@@ -429,7 +437,7 @@ void showToast({
     );
 
 // enum
-enum ToastStates { SUCCESS, ERROR, WARNING }
+enum ToastStates { SUCCESS, ERROR, WARNING, NOTE }
 
 Color chooseToastColor(ToastStates state) {
   Color color;
@@ -443,6 +451,9 @@ Color chooseToastColor(ToastStates state) {
       break;
     case ToastStates.WARNING:
       color = Colors.amber;
+      break;
+    case ToastStates.NOTE:
+      color = Colors.grey;
       break;
   }
 
@@ -894,7 +905,76 @@ Widget buildSerachMealItem (list,context,
   },
 );
 
+Widget defaultRawButton ({
+  required Function()? onPressed,
+  required IconData icon,
+  double? iconSize = 16.0,
+  Color color = defaultColor,
+  double width = 30.0,
+  double height = 30.0,
 
+}) => RawMaterialButton(
+  shape:const CircleBorder(),
+  elevation: 1.0,
+  fillColor: color,
+  child: Icon(
+    icon,
+    color: Colors.white,
+    size: iconSize,
+  ),
+  onPressed: onPressed,
+  constraints: BoxConstraints.tightFor(
+    width: width,
+    height: height,
+  ),
+);
+
+Widget  BuildUserItem (UserModel model,context)=> Padding(
+  padding: const EdgeInsets.all(20.0),
+  child: Row(
+    children:
+    [
+      CircleAvatar(
+        radius: 40.0,
+        backgroundImage: NetworkImage(
+            '${model.profileImage}'
+        ),
+      ),
+      SizedBox(
+        width: 20,),
+      Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Text(
+              '${model.name}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              '${model.email}',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+      IconButton(
+          icon: Icon(
+              Icons.delete_forever
+          ),
+          onPressed: () {
+            AdminCubit.get(context).deleteUser(model.uId);
+          }
+      ),
+    ],
+  ),
+);
 
 
 

@@ -9,26 +9,19 @@ import 'cubit/cubit.dart';
 class AdminLayout extends StatelessWidget {
 
   @override
-  Widget build(BuildContext context)
-  {
-    return BlocConsumer<AdminCubit,AdminStates>(
-      listener: (context, state)
-      {
+  Widget build(BuildContext context) {
+    return BlocConsumer<AdminCubit, AdminStates>(
+      listener: (context, state) {
 
       },
-      builder: (context, state)
-      {
+      builder: (context, state) {
         AdminCubit cubit = AdminCubit.get(context);
         return Scaffold(
-          appBar: buildAppBar(
-            icon: IconBroken.Category,
-            title: cubit.titles[cubit.currentIndex],
-          ),
+
           body: cubit.screens[cubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: cubit.currentIndex ,
-            onTap: (index)
-            {
+            currentIndex: cubit.currentIndex,
+            onTap: (index) {
               cubit.changeBottomNav(index);
             },
             items: const [
@@ -54,6 +47,5 @@ class AdminLayout extends StatelessWidget {
       },
 
     );
-
   }
 }

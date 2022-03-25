@@ -41,9 +41,15 @@ class AdminDeleteProductErrorState extends AdminStates
   AdminDeleteProductErrorState(this.error);
 }
 
+class SearchUsersLoadingState extends AdminStates{}
 
+class SearchUsersSuccessState extends AdminStates{}
 
-
+class SearchUsersErrorState extends AdminStates
+{
+  final String error;
+  SearchUsersErrorState(this.error);
+}
 
 
 
@@ -113,6 +119,16 @@ class GetAllDinnerRecipeErrorState extends AdminStates
   GetAllDinnerRecipeErrorState(this.error);
 }
 
+class SearchRecipeLoadingState extends AdminStates{}
+
+class SearchRecipeSuccessState extends AdminStates{}
+
+class SearchRecipeErrorState extends AdminStates
+{
+  final String error;
+  SearchRecipeErrorState(this.error);
+}
+
 
 
 // create product
@@ -149,3 +165,13 @@ class GetProductsSuccessState extends AdminStates{}
 class GetProductsLoadingState extends AdminStates{}
 
 
+
+class SearchProductLoadingState extends AdminStates{}
+
+class SearchProductSuccessState extends AdminStates{}
+
+class SearchProductErrorState extends AdminStates
+{
+  final String error;
+  SearchProductErrorState(this.error);
+}

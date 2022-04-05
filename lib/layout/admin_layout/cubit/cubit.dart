@@ -87,7 +87,7 @@ class AdminCubit extends Cubit<AdminStates>
 
   void getSearchUsers(String value) {
     emit(SearchUsersLoadingState());
-    searchProduct = [];
+    searchUsers = [] ;
     FirebaseFirestore.instance
         .collection('users')
         .where('name', isGreaterThanOrEqualTo: value)
@@ -328,7 +328,6 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
   List<RecipeModel> breakfastRecipe = [];
-
   void getBreakfastRecipe()
   {
     emit(GetAllBreakFastRecipeLoadingState());
@@ -350,7 +349,6 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
   List<RecipeModel> lunchRecipe = [];
-
   void getLunchRecipe()
   {
     emit(GetAllLunchRecipeLoadingState());
@@ -636,7 +634,6 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
   List<ProductModel> products = [];
-
   void getProducts()
   {
     emit(GetProductsLoadingState());

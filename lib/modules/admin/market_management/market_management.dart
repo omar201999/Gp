@@ -60,9 +60,6 @@ class MarketManagementScreen extends StatelessWidget {
                             ),
                           ),
                         ),*/
-                        const SizedBox(
-                          height: 20,
-                        ),
                         GridView.count(
                           crossAxisCount: 2,
                           shrinkWrap: true,
@@ -105,7 +102,6 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
     navigateTo(context, EditProductScreen(productModel: model,));
   },
   child: defaultContainer(
-
     color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
-import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
-import 'package:gp/modules/user/cart/cubit/cubit.dart';
-import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 class MarketitemScreen extends StatelessWidget {
   late ProductModel productModel;
   MarketitemScreen({
@@ -13,215 +13,173 @@ class MarketitemScreen extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //backgroundColor: Colors.grey[50],
-      body: SingleChildScrollView(
-        child: Column(
-          children:
-          [
-            Stack(
+    return BlocConsumer<HomeCubit,HomeStates>(
+     listener: (context,state){},
+      builder: (context,state)
+      {
+        return Scaffold(
+          //backgroundColor: Colors.grey[50],
+          body: SingleChildScrollView(
+            child: Column(
               children:
               [
-                Container(
-                  width: double.infinity,
-                  height: 350,
-                  decoration:  BoxDecoration(
-                    image: DecorationImage(
-                      image:NetworkImage('${productModel.image}'),
-                      fit: BoxFit.cover,
+                Stack(
+                  children:
+                  [
+                    Container(
+                      width: double.infinity,
+                      height: 350,
+                      decoration:  BoxDecoration(
+                        image: DecorationImage(
+                          image:NetworkImage('${productModel.image}'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                          top: 30
+                      ),
+                      child: IconButton(
+                        color: Colors.blue,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          IconBroken.Arrow___Left_2,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      top: 30
-                  ),
-                  child: IconButton(
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon( Icons.arrow_back, ),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                    [
+                      defaultContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              defaultHeadLineText(
+                                  context,
+                                  fontWeight: FontWeight.w900,
+                                  text: '${productModel.name}',
+                                  maxLines: 2
+                              ),
+                            ],
+                          ),
+                        ),
+                        width: double.infinity,
+                        height: 80,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultContainer(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                defaultHeadLineText(context, text: 'Price',
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                defaultBodyText(context,
+                                    text: '${productModel.currentPrice}'
+                                ),
+                              ],
+                            ),
+                          )
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultContainer(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                defaultHeadLineText(
+                                    context,
+                                    text: 'Description',
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                defaultBodyText(context,
+                                    text: '${productModel.description}',
+                                ),
+                              ],
+                            ),
+                          )
+                      ),
+
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultContainer(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                defaultHeadLineText(
+                                    context, text:
+                                'Availability In Stock',
+                                  fontWeight: FontWeight.w900
+                                ),
+                                defaultBodyText(context,
+                                    text: '${productModel.quantity }'
+                                ),
+                              ],
+                            ),
+                          )
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultButton(
+                          context,
+                          onPreesed: ()
+                          {
+                            HomeCubit.get(context).addCartItem(
+                              productModel.uId,
+                              name: productModel.name,
+                              image: productModel.image,
+                              uId1: productModel.uId,
+                              oldPrice: productModel.oldPrice,
+                              currentPrice: productModel.currentPrice,
+                              discount: productModel.discount,
+                              quantity: productModel.quantity,
+                              description: productModel.description,
+                            );
+                            navigateTo(context, CartScreen());
+                          },
+                          text: 'Add to Your Card'),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultButton(
+                          context,
+                          onPreesed: ()
+                          {},
+                          text: 'Buy Now',
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                [
-                  defaultContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          defaultHeadLineText(
-                              context,
-                              text: '${productModel.name}',
-                              maxLines: 2
-                          ),
-                        ],
-                      ),
-                    ),
-                    width: double.infinity,
-                    height: 80,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  defaultContainer(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            defaultHeadLineText(context, text: 'Price'),
-                            const SizedBox(height: 5,),
-                            ListView.separated(
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 5,
-                                    start: 5
-                                ),
-                                physics:  NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    defaultBodyText(context,
-                                        text: '${productModel.currentPrice}'
-                                    ),
-                                separatorBuilder: (context, index) =>
-                                const SizedBox(height: 5,),
-                                itemCount: 1
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  defaultContainer(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            defaultHeadLineText(context, text: 'description'),
-                            const SizedBox(height: 5,),
-                            ListView.separated(
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 5,
-                                    start: 5
-                                ),
-                                physics:  NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    defaultBodyText(context,
-                                        text: '${productModel.description}'
-                                    ),
-                                separatorBuilder: (context, index) =>
-                                const SizedBox(height: 5,),
-                                itemCount: 1
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
+          ),
 
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  defaultContainer(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            defaultHeadLineText(context, text: 'Availability In Stock'),
-                            const SizedBox(height: 5,),
-                            ListView.separated(
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 5,
-                                    start: 5
-                                ),
-                                physics:  NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    defaultBodyText(context,
-                                        text: '${productModel.quantity }'
-                                    ),
-                                separatorBuilder: (context, index) =>
-                                const SizedBox(height: 5,),
-                                itemCount: 1
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      width: double.infinity,
-                      color: defaultColor,
-                      child: MaterialButton(
-                        onPressed: (){
-                          CartCubit.get(context).addCartItem(
-                            productModel.uId,
-                              name: productModel.name,
-                            image: productModel.image,
-                            uId1: productModel.uId,
-                            oldPrice: productModel.oldPrice,
-                            currentPrice: productModel.currentPrice,
-                            discount: productModel.discount,
-                            quantity: productModel.quantity,
-                            description: productModel.description,
-                          );
-                          navigateTo(context, CartScreen());
-
-                        },
-                        child: defaultHeadLineText(context, text: 'Add To Cart'),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      width: double.infinity,
-                      color: defaultColor,
-                      child: MaterialButton(
-                        onPressed: (){
-                          Navigator.pop(context,);
-
-                        },
-                        child: defaultHeadLineText(context, text: 'Buy Now'),
-                      ),
-                    ),
-                  )
-
-
-
-
-
-
-
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-
+        );
+      },
     );
   }
 }

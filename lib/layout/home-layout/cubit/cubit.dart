@@ -25,7 +25,6 @@ class HomeCubit extends Cubit<HomeStates> {
   static HomeCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
-
   void getUserData() {
     emit(GetUserDataLoadingState());
     FirebaseFirestore.instance.
@@ -145,65 +144,7 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-  List<RecipeModel> breakfastRecipe = [];
-
-  void getBreakfastRecipe() {
-    FirebaseFirestore.instance
-        .collection('recipes')
-        .where('category', isEqualTo: 'breakfast')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
-      });
-
-      emit(GetAllBreakFastRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetAllBreakFastRecipeErrorState(error.toString()));
-    });
-  }
-
-  List<RecipeModel> lunchRecipe = [];
-
-  void getLunchRecipe() {
-    FirebaseFirestore.instance
-        .collection('recipes')
-        .where('category', isEqualTo: 'lunch')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        lunchRecipe.add(RecipeModel.fromJson(element.data()));
-      });
-
-      emit(GetAllLunchRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetAllLunchRecipeErrorState(error.toString()));
-    });
-  }
-
-  List<RecipeModel> dinnerRecipe = [];
-
-  void getDinnerRecipe() {
-    FirebaseFirestore.instance
-        .collection('recipes')
-        .where('category', isEqualTo: 'dinner')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        dinnerRecipe.add(RecipeModel.fromJson(element.data()));
-      });
-
-      emit(GetAllDinnerRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetAllDinnerRecipeErrorState(error.toString()));
-    });
-  }
-
   List<ProductModel> products = [];
-
   void getProduct() {
     FirebaseFirestore.instance
         .collection('products')
@@ -462,7 +403,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<MealsModel> completeDiary = [];
   void getCompleteDiaryItems()
   {
-    emit(GetAllUsersMealsLoadingState());
+    //emit(GetAllUsersMealsLoadingState());
     completeDiary = [];
     FirebaseFirestore.instance
         .collection('users')
@@ -486,9 +427,7 @@ class HomeCubit extends Cubit<HomeStates> {
   int maximum = 16;
   int gaolGlass = 8;
   double countLiter = 0.0;
-
   int addWaterGlass () {
-
     if (counter < maximum) {
       counter++;
       if (counter == gaolGlass){
@@ -512,31 +451,162 @@ class HomeCubit extends Cubit<HomeStates> {
 
   double addCountLiter () {
     if (counter < maximum) countLiter+=0.25;
-
       return countLiter;
-
   }
 
   double minusCountLiter () {
     if (counter > 0 ) countLiter-=0.25;
     return countLiter;
   }
-
-
   int minusWaterGlass () {
 
     if (counter > 0 ){
       counter--;
       userModel!.totalWater = counter;
-
       emit(MinusWaterGlassState());
-
     }
 
     return counter;
   }
 
+  void addCartItem(String? prodId,{
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    required String? uId1,
+  })
+  {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
 
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('yourCart')
+        .doc(prodId)
+        .set(model.toMap())
+        .then((value) {
+      getCartItem();
+      emit(AddCartItemSuccessState());
+
+    }).catchError((error) {
+      emit(AddCartItemErrorState(error));
+      print(error.toString());
+    });
+
+  }
+
+
+  void updateCartItem(String? prodId,{
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    required String? uId1,
+  }) {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('yourCart')
+        .doc(prodId)
+        .update(model.toMap())
+        .then((value) {
+      getCartItem();
+      //emit(UpdateCartItemSuccessState());
+
+    }).catchError((error) {
+      emit(UpdateCartItemErrorState(error));
+      print(error.toString());
+    });
+
+  }
+
+  List<ProductModel> cart = [];
+
+  void getCartItem() {
+    emit(GetCartItemLoadingState());
+    cart = [];
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('yourCart')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        cart.add(ProductModel.fromJson(element.data()));
+      });
+      emit(GetCartItemSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetCartItemErrorState(error.toString()));
+    });
+  }
+
+
+
+  /* getTotalPrice(){
+    double total = 0.0;
+    cart.forEach((element) {
+      total += (element.currentPrice)!.round() * (element.quantity)!.round();
+
+    });
+    return total;
+  }*/
+
+  void deleteCartItem(String? cartId){
+    FirebaseFirestore.instance.collection('users').doc(uId)
+        .collection('yourCart').doc(cartId).delete()
+        .then((value) {
+      getCartItem();
+      emit(DeleteCartItemSuccessState());
+    }).catchError((error){
+      print(error.toString());
+      emit(DeleteCartItemErrorState(error.toString()));
+    });
+  }
+  List <int> Counter = List<int>.filled(50,1) ;
+  void minus (index)
+  {
+    if(Counter[index] > 0)
+    {
+      Counter [index] -- ;
+      emit(minusState());
+    }
+  }
+  void plus (index)
+  {
+    if(Counter[index] < (cart[index].quantity)!.round())
+    {
+      Counter [index] ++ ;
+      emit(plusState());
+    }
+  }
 }
 
 

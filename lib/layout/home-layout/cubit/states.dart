@@ -182,3 +182,44 @@ class GetAllUsersMealsErrorState extends HomeStates
 class AddWaterGlassState extends HomeStates{}
 
 class MinusWaterGlassState extends HomeStates{}
+
+class AddCartItemSuccessState extends HomeStates{}
+
+class AddCartItemErrorState extends HomeStates
+{
+  final String error;
+
+  AddCartItemErrorState(this.error);
+}
+
+class UpdateCartItemSuccessState extends HomeStates{}
+
+class UpdateCartItemErrorState extends HomeStates
+{
+  final String error;
+
+  UpdateCartItemErrorState(this.error);
+}
+
+class GetCartItemSuccessState extends HomeStates{}
+
+class GetCartItemLoadingState extends HomeStates{}
+
+class GetCartItemErrorState extends HomeStates
+{
+  final String error;
+
+  GetCartItemErrorState(this.error);
+}
+
+class DeleteCartItemSuccessState extends HomeStates{}
+
+class DeleteCartItemErrorState extends HomeStates
+{
+  final String error;
+
+  DeleteCartItemErrorState(this.error);
+}
+class minusState extends HomeStates{}
+
+class plusState extends HomeStates{}

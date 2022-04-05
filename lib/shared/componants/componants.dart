@@ -657,61 +657,85 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
     ));
   },
   child: defaultContainer(
-    height: 250,
-    width: 180,
     color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
-        Expanded(
-          flex: 4,
-          child: Image(
-            image: NetworkImage('${model.image}'),
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 10,
+        Stack(
+          alignment: AlignmentDirectional.bottomStart,
+          children: [
+            Image(
+              image: NetworkImage('${model.image}'),
+              width: double.infinity,
+              //height: 180.0,
+              fit: BoxFit.cover,
             ),
-            child: Row(
-              children:
-              [
-                Text(
-                  '${model.currentPrice}',
-                  style: TextStyle(
-                    letterSpacing: 1,
+            if (model.discount != 0)
+              Container(
+                  color: Colors.red,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 5.0
                   ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-              ],
-            ),
+                  child: Text(
+                    'DISCOUNT',
+                    style: TextStyle(
+                      fontSize: 8.0,
+                      color: Colors.white,
+                    ),
+                  )
+              ),
+          ],
+        ),
+        Padding(
+          padding: /*EdgeInsetsDirectional.only(
+                start: 10,
+            ),*/
+          const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 6.0,
           ),
-        ),
-
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-                start: 10
-            ),
-            child: Text(''
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
                 '${model.name}',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.3,
+                ),
+              ),
+              Row(
+                children:
+                [
+                  Text(
+                    '${model.currentPrice}',
+                    style: const TextStyle(
+                      fontSize: 13.0,
+                      color: defaultColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5.0,
+                  ),
+                  if (model.discount != 0)
+                    Text(
+                      '${model.oldPrice}',
+                      style: const TextStyle(
+                        fontSize: 10.0,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                ],
+              ),
+
+            ],
           ),
         ),
-
-
       ],
     ),
   ),

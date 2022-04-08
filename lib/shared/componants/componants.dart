@@ -1001,5 +1001,64 @@ Widget  BuildUserItem (UserModel model,context)=> Padding(
 );
 
 
+Widget  BuildOrderItem (UserModel userModel,ProductModel model,context,index)=> SingleChildScrollView(
+
+  child: Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: defaultContainer(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                    'UserName : '
+                ),
+                Text(
+                    '${userModel.name}'
+                ),
+              ],
+            ),
+
+            SizedBox(
+              height: 5.0,
+            ),
+            Row(
+              children: [
+                Text(
+                    'ProductName : '
+                ),
+                Text(
+                    '${model.name}'
+                ),
+              ],
+            ),
+
+            Row(
+              children: [
+                Text(
+                    '${model.currentPrice! * HomeCubit.get(context).Counter[index]}'
+                ),
+                SizedBox(
+                  width: 140,
+                ),
+                defaultTextButton(context, function: (){},
+                    text: 'Confirm'
+                ),
+              ],
+            )
+
+
+          ],
+        ),
+      ),
+    ),
+  ),
+);
+
+
 
 

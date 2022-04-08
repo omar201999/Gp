@@ -20,6 +20,7 @@ class AdminCubit extends Cubit<AdminStates>
   static AdminCubit get(context) => BlocProvider.of(context);
 
   UserModel  model = UserModel();
+  ProductModel  productModel = ProductModel();
 
   //RecipeModel recipeModel = RecipeModel();
 
@@ -682,6 +683,27 @@ class AdminCubit extends Cubit<AdminStates>
     }).catchError((error) {
       print(error.toString());
       emit(SearchProductErrorState(error.toString()));
+    });
+  }
+
+  List<ProductModel> orders = [];
+
+  void getOrders()
+  {
+    emit(AdminGetAllOrdersLoadingState());
+    orders = [];
+    FirebaseFirestore.instance.collection('orders')
+        .get().then((value)
+    {
+      value.docs.forEach((element)
+      {
+        orders.add(ProductModel.fromJson(element.data()));
+      });
+      emit(AdminGetAllOrdersSuccessState());
+
+    }).catchError((error) {
+      print(error.toString());
+      emit(AdminGetAllOrdersErrorState(error.toString()));
     });
   }
 

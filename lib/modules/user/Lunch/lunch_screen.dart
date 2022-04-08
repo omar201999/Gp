@@ -7,12 +7,9 @@ import 'package:gp/shared/componants/componants.dart';
 
 class LunchScreen extends StatelessWidget {
   //List<bool>? isChecked;
-
-
   @override
   Widget build(BuildContext context)
   {
-
     //var list = HomeCubit.get(context).searchMeal;
     //isChecked =  List<bool>.filled(list.length, false,growable: true);//growable: true
     return BlocConsumer<HomeCubit,HomeStates>(
@@ -22,7 +19,6 @@ class LunchScreen extends StatelessWidget {
         },
       builder: (context,state)
       {
-
         var list = HomeCubit.get(context).searchLunch;
         return  buildSerachMealItem(list, context,title: 'Lunch',
             onChangedSearch: (value )
@@ -39,7 +35,6 @@ class LunchScreen extends StatelessWidget {
             function: ()
             {
               HomeCubit.get(context).addLunchMeal();
-
             }
 
         );

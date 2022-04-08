@@ -223,3 +223,9 @@ class DeleteCartItemErrorState extends HomeStates
 class minusState extends HomeStates{}
 
 class plusState extends HomeStates{}
+
+class CreateOrderLoadingState extends HomeStates {}
+
+class CreateOrderSuccessState extends HomeStates {}
+
+class CreateOrderErrorState extends HomeStates {}

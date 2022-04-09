@@ -6,6 +6,7 @@ class ProductModel{
   double? oldPrice;
   double? discount;
   int? quantity;
+  String? status;
   String? uId;
 
   ProductModel({
@@ -16,6 +17,7 @@ class ProductModel{
     this.oldPrice,
     this.discount,
     this.quantity,
+    this.status,
     this.uId
   });
 
@@ -27,6 +29,7 @@ class ProductModel{
     currentPrice = json['currentPrice'];
     oldPrice = json['oldPrice'];
     discount = json['discount'];
+    status = json['status'];
     quantity = json['quantity'];
 
   }
@@ -41,6 +44,7 @@ class ProductModel{
       'currentPrice': currentPrice,
       'oldPrice': oldPrice,
       'discount': discount,
+      'status': status,
       'quantity': quantity,
     };
   }

@@ -165,7 +165,6 @@ class GetProductsSuccessState extends AdminStates{}
 class GetProductsLoadingState extends AdminStates{}
 
 
-
 class SearchProductLoadingState extends AdminStates{}
 
 class SearchProductSuccessState extends AdminStates{}
@@ -174,4 +173,15 @@ class SearchProductErrorState extends AdminStates
 {
   final String error;
   SearchProductErrorState(this.error);
+}
+
+class AdminGetAllOrdersLoadingState extends AdminStates {}
+
+class AdminGetAllOrdersSuccessState extends AdminStates {}
+
+class AdminGetAllOrdersErrorState extends AdminStates
+{
+  final String error;
+
+  AdminGetAllOrdersErrorState(this.error);
 }

@@ -77,7 +77,6 @@ class RecipesManagementScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            //headOfRecipeItem(context,head: 'Snacks'),
                             defaultHeadLineText(
                               context,
                               text: 'Breakfast',
@@ -116,7 +115,6 @@ class RecipesManagementScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            //headOfRecipeItem(context,head: 'Snacks'),
                             defaultHeadLineText(
                               context,
                               text: 'Lunch',
@@ -158,7 +156,6 @@ class RecipesManagementScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            //headOfRecipeItem(context,head: 'Snacks'),
                             defaultHeadLineText(
                               context,
                               text: 'Dinner',

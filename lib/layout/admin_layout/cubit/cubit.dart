@@ -20,6 +20,7 @@ class AdminCubit extends Cubit<AdminStates>
   static AdminCubit get(context) => BlocProvider.of(context);
 
   UserModel  model = UserModel();
+  ProductModel  productModel = ProductModel();
 
   //RecipeModel recipeModel = RecipeModel();
 
@@ -32,13 +33,6 @@ class AdminCubit extends Cubit<AdminStates>
     RecipesManagementScreen(),
     MarketManagementScreen()
   ];
-
-  /*List<String> titles = [
-    'Dashboard',
-    'Users',
-    'Recipes',
-    'Market'
-  ];*/
 
 
 
@@ -557,6 +551,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
+    String? status,
     required String uId,
     //required int totalTime,
   }){
@@ -579,6 +574,7 @@ class AdminCubit extends Cubit<AdminStates>
           discount: discount,
           quantity: quantity,
           description: description,
+          status: status,
           uId:uId,
         );
 
@@ -602,6 +598,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double oldPrice,
     required double discount,
     required int quantity,
+    String? status,
     required String description,
     required String uId,
   }){
@@ -614,6 +611,7 @@ class AdminCubit extends Cubit<AdminStates>
         discount: discount,
         quantity: quantity,
         description: description,
+        status: status,
         uId:uId,
 
     );
@@ -682,6 +680,47 @@ class AdminCubit extends Cubit<AdminStates>
     }).catchError((error) {
       print(error.toString());
       emit(SearchProductErrorState(error.toString()));
+    });
+  }
+
+  List<ProductModel> stockProducts = [];
+  void countStockProducts()
+  {
+    //emit(GetProductsLoadingState());
+    FirebaseFirestore.instance
+        .collection('products')
+        .where('status', isEqualTo: 'inStock')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        stockProducts.add(ProductModel.fromJson(element.data()));
+      });
+      //emit(GetProductsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      //emit(GetProductsErrorState(error.toString()));
+    });
+  }
+
+
+  List<ProductModel> orders = [];
+
+  void getOrders()
+  {
+    emit(AdminGetAllOrdersLoadingState());
+    orders = [];
+    FirebaseFirestore.instance.collection('orders')
+        .get().then((value)
+    {
+      value.docs.forEach((element)
+      {
+        orders.add(ProductModel.fromJson(element.data()));
+      });
+      emit(AdminGetAllOrdersSuccessState());
+
+    }).catchError((error) {
+      print(error.toString());
+      emit(AdminGetAllOrdersErrorState(error.toString()));
     });
   }
 

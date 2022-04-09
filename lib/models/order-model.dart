@@ -4,7 +4,7 @@ class OrderModel{
   //String? orderId;
   String? userId;
   double? totalPrice;
-  double? shipping = 100;
+  double? shipping;
   double? total;
 
 

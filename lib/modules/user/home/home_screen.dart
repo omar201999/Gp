@@ -16,8 +16,7 @@ import 'package:gp/shared/componants/constant.dart';
 class HomePage extends StatelessWidget
 {
 
-  List<int> totalFoodCal = [];
-  int totalCal = 0 ;
+
 
   @override
   Widget build(BuildContext context)
@@ -30,33 +29,78 @@ class HomePage extends StatelessWidget
       },
       builder: (context,state)
       {
-        HomeCubit.get(context).completeDiary.forEach((element)
-          {
-            totalFoodCal.add(element.Calories!);
-          });
-          for(int i = 0 ; i <= totalFoodCal.length - 1 ; i++)
-          {
-            totalCal = totalCal + totalFoodCal[i] ;
-          }
+
+
         return ConditionalBuilder(
           condition: HomeCubit.get(context).userModel != null && state is! GetUserDataLoadingState,
           builder: (context) => Scaffold(
-            appBar: buildAppBar(
-                title: 'Home',
-                onPressed: () {
-
-                },
-                actions:
-                [
-                  defaultTextButton(
-                    context,
-                    text: 'sign out',
-                    function: ()
-                    {
-                      signOut(context,);
+            drawer:Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                   DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child:Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                      [
+                        CircleAvatar(
+                          radius: 40.0,
+                          backgroundImage: NetworkImage(
+                              '${HomeCubit.get(context).userModel!.profileImage}'
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          '${HomeCubit.get(context).userModel!.name}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Item 1'),
+                    onTap: () {
+                      // Update the state of the app
+                      // ...
+                      // Then close the drawer
+                      //navigateTo(context, MarketingScreen());
+                      Navigator.pop(context);
                     },
                   ),
-                ]
+                  ListTile(
+                    title: const Text('Item 2'),
+                    onTap: () {
+                      // Update the state of the app
+                      // ...
+                      // Then close the drawer
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            appBar: AppBar(
+              title: Text('Home'),
+              actions:
+              [
+                defaultTextButton(
+                  context,
+                  text: 'log out',
+                  fontSize: 14,
+                  isUpper: false,
+                  function: () {
+                    signOut(context,);
+                  },
+                ),
+              ],
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -118,8 +162,8 @@ class HomePage extends StatelessWidget
                           context,
                           title: 'Calories Remaining',
                           calorieText: '${HomeCubit.get(context).userModel!.totalCalorie}',
-                          foodText: '$totalCal',
-                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - totalCal}',
+                          foodText: '${HomeCubit.get(context).food()}',
+                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).food()}',
                         ),
 
                         SizedBox(

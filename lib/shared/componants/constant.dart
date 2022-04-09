@@ -12,8 +12,10 @@ void signOut(context)
     if (value)
     {
       navigateToAndReplacement(context, LoginScreen());
+      uId = '';
     }
   });
+  print(uId.toString());
 }
 
 

@@ -64,22 +64,35 @@ class CompleteDiaryScreen extends StatelessWidget {
     child: defaultContainer(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            defaultHeadLineText(context, text: '${model.Food}'),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${model.Calories} cal,' ,style: Theme.of(context).textTheme.caption,),
-                SizedBox(width: 3,),
-                Text('${model.Protein}g Protein,',style: Theme.of(context).textTheme.caption,),
-                SizedBox(width: 3,),
-                Text('${model.Carbs}g Carbs,',style: Theme.of(context).textTheme.caption,),
-                SizedBox(width: 3,),
-                Text('${model.Fat}g Fats',style: Theme.of(context).textTheme.caption,),
-                SizedBox(width: 3,)
+                defaultHeadLineText(context, text: '${model.Food}'),
+                Row(
+                  children: [
+                    Text('${model.Calories} cal,' ,style: Theme.of(context).textTheme.caption,),
+                    SizedBox(width: 3,),
+                    Text('${model.Protein}g Protein,',style: Theme.of(context).textTheme.caption,),
+                    SizedBox(width: 3,),
+                    Text('${model.Carbs}g Carbs,',style: Theme.of(context).textTheme.caption,),
+                    SizedBox(width: 3,),
+                    Text('${model.Fat}g Fats',style: Theme.of(context).textTheme.caption,),
+                    SizedBox(width: 3,)
+                  ],
+                ) ,
               ],
-            ) ,
+            ),
+            Spacer(),
+            IconButton(
+                icon: Icon(
+                    Icons.delete_forever
+                ),
+                onPressed: () {
+
+                }
+            ),
           ],
         ),
       ),

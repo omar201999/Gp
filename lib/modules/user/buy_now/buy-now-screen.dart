@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
-import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 
@@ -17,8 +16,6 @@ class BuyNowScreen extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-
-    OrderModel? model ;
 
     return BlocConsumer<HomeCubit,HomeStates>(
       listener: (context,state) {},

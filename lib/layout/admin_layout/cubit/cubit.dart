@@ -414,7 +414,8 @@ class AdminCubit extends Cubit<AdminStates>
         .where('title', isLessThan: value + 'z')
         .get()
         .then((value) {
-      value.docs.forEach((element) {
+      value.docs.forEach((element)
+      {
         searchRecipe.add(RecipeModel.fromJson(element.data()));
       });
       emit(SearchRecipeSuccessState());
@@ -617,7 +618,7 @@ class AdminCubit extends Cubit<AdminStates>
 
     FirebaseFirestore.instance
         .collection('products')
-        .doc(uId)
+        .doc(uId.toString())
         .set(model.toMap())
         .then((value){
 
@@ -694,10 +695,9 @@ class AdminCubit extends Cubit<AdminStates>
       value.docs.forEach((element) {
         stockProducts.add(ProductModel.fromJson(element.data()));
       });
-      //emit(GetProductsSuccessState());
+      emit(GetDashboardProductsSuccessState());
     }).catchError((error) {
-      print(error.toString());
-      //emit(GetProductsErrorState(error.toString()));
+      emit(GetDashboardProductsErrorState());
     });
   }
 

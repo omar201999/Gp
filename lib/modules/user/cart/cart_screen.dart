@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
-import 'package:gp/modules/user/buu-now/buy-now-screen.dart';
+import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                       onPressed: () {
                         HomeCubit.get(context).minus(index);
                         productQuantity = model.quantity! + 1;
-                           HomeCubit.get(context).updateCartItem(
+                          /* HomeCubit.get(context).updateCartItem(
                             model.uId,
                             name: model.name,
                             image: model.image,
@@ -111,7 +111,7 @@ class CartScreen extends StatelessWidget {
                             discount: model.discount,
                             quantity: productQuantity,
                             description: model.description,
-                          );
+                          );*/
 
                       },
                       icon: Icon (Icons.remove),
@@ -133,7 +133,7 @@ class CartScreen extends StatelessWidget {
                       onPressed: () {
                         HomeCubit.get(context).plus(index);
                           productQuantity = model.quantity! - 1;
-                           HomeCubit.get(context).updateCartItem(
+                          /* HomeCubit.get(context).updateCartItem(
                             model.uId,
                             name: model.name,
                             image: model.image,
@@ -144,7 +144,7 @@ class CartScreen extends StatelessWidget {
                             quantity: productQuantity,
                             description: model.description,
                           );
-
+*/
 
                       },
                       icon: Icon (Icons.add),

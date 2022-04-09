@@ -48,7 +48,6 @@ class HomeCubit extends Cubit<HomeStates> {
     MarketingScreen(),
     RecipeScreen(),
     CustomerDashBoardScreen(),
-
   ];
 
   void changeBottomNavBar(int index) {
@@ -136,7 +135,7 @@ class HomeCubit extends Cubit<HomeStates> {
       totalFats: userModel!.totalFats,
       totalProtein: userModel!.totalProtein,
       weight: weight,
-      totalWater: totalWater,
+      totalWater: userModel!.totalWater??totalWater,
     );
 
     FirebaseFirestore.instance
@@ -567,6 +566,8 @@ class HomeCubit extends Cubit<HomeStates> {
         .then((value) {
       value.docs.forEach((element) {
         cart.add(ProductModel.fromJson(element.data()));
+
+
       });
       emit(GetCartItemSuccessState());
     }).catchError((error) {
@@ -637,12 +638,37 @@ class HomeCubit extends Cubit<HomeStates> {
     .collection('orders')
     .add(createOrder.toMap())
     .then((value){
+      //addProductToOrders(postsId[]);
       emit(CreateOrderSuccessState());
     })
     .catchError((error){
       emit(CreateOrderErrorState());
     });
   }
+  List<OrderModel> orders = [];
+  List<String> ordersId = [];
+
+
+  /*void getOrders()
+  {
+    emit(AdminGetAllOrdersLoadingState());
+    orders = [];
+    FirebaseFirestore.instance.collection('orders')
+        .get().then((value)
+    {
+      value.docs.forEach((element)
+      {
+        orders.add(OrderModel.fromJson(element.data()));
+        ordersId = [];
+        ordersId.add(element.id);
+      });
+      emit(AdminGetAllOrdersSuccessState());
+
+    }).catchError((error) {
+      print(error.toString());
+      emit(AdminGetAllOrdersErrorState(error.toString()));
+    });
+  }*/
 
   void addProductToOrders(String? prodId,{
     required String? name,
@@ -668,19 +694,36 @@ class HomeCubit extends Cubit<HomeStates> {
 
     FirebaseFirestore.instance
         .collection('orders')
-        .doc()
+        .doc(prodId)
         .collection('products')
         .add(model.toMap())
         .then((value) {
-      getCartItem();
+      //getCartItem();
       emit(AddCartItemSuccessState());
-
     }).catchError((error) {
       emit(AddCartItemErrorState(error));
       print(error.toString());
     });
 
   }
+  List<int> totalFoodCal = [];
+  int totalCal = 0 ;
+  int food()
+  {
+    totalFoodCal = [];
+    totalCal = 0;
+    completeDiary.forEach((element)
+    {
+      totalFoodCal.add(element.Calories!);
+    });
+    for(int i = 0 ; i <= totalFoodCal.length - 1 ; i++)
+    {
+      totalCal = totalCal + totalFoodCal[i] ;
+    }
+    print(totalCal);
+    return totalCal;
+  }
+
 
 }
 

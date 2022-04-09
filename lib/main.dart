@@ -13,6 +13,7 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/cubit/states.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'layout/admin_layout/cubit/cubit.dart';
+import 'shared/componants/componants.dart';
 import 'shared/styles/themes.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -23,17 +24,40 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 
-void main()
-{
+Future<void> main()
+async{
   BlocOverrides.runZoned(
         () async {
-      WidgetsFlutterBinding.ensureInitialized();
+          WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();
       await Firebase.initializeApp();
-
       var token = await FirebaseMessaging.instance.getToken();
+     // print(token);
 
-      print(token);
+
+      // foreground fcm
+      FirebaseMessaging.onMessage.listen((event)
+      {
+        print('on message');
+        print(event.data.toString());
+
+        showToast(text: 'on message', state: ToastStates.SUCCESS,);
+      });
+
+      // when click on notification to open app
+      FirebaseMessaging.onMessageOpenedApp.listen((event)
+      {
+        print('on message opened app');
+        print(event.data.toString());
+
+        showToast(text: 'on message opened app', state: ToastStates.SUCCESS,);
+      });
+
+      // background fcm
+      FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+
+
 
       //when the app is opened
       FirebaseMessaging.onMessage.listen((event) {
@@ -53,8 +77,9 @@ void main()
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
       Widget widget;
-      uId = CacheHelper.getData(key: 'uId');
-      if(uId == '60G1SVVEz9OulifBubcr6YdqAti1')
+      uId =   CacheHelper.getData(key: 'uId');
+      print(uId);
+      if( uId == '60G1SVVEz9OulifBubcr6YdqAti1')
       {
         widget = AdminLayout();
         print(uId.toString());

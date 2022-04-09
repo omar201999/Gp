@@ -18,6 +18,7 @@ class NewProductSrceen extends StatelessWidget {
   var quantityController = TextEditingController();
   var uIdController = TextEditingController();
 
+
   //var timeController = TextEditingController();
 
   @override
@@ -43,7 +44,8 @@ class NewProductSrceen extends StatelessWidget {
                 defaultTextButton(
                   context,
                   function: () {
-                    AdminCubit.get(context).uploadProductImage(
+
+                   AdminCubit.get(context).uploadProductImage(
                       name: nameController.text,
                       currentPrice: double.parse(currentPriceController.text),
                       oldPrice: double.parse(oldPriceController.text),
@@ -54,6 +56,7 @@ class NewProductSrceen extends StatelessWidget {
                       uId: uIdController.text,
                       //totalTime: totalTime
                     );
+
                   },
                   text: 'Add',
 

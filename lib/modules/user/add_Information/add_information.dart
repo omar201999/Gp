@@ -464,7 +464,7 @@ class _AddInformationState extends State<AddInformation>
                               ),
                             ],
                           ),
-                          value: activeList.not,
+                          value: activeList.hulk,
                           groupValue: activeGroup,
                           onChanged: (activeList? value) {
                             setState(() {

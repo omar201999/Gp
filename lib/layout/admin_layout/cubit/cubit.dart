@@ -303,7 +303,6 @@ class AdminCubit extends Cubit<AdminStates>
         directions: directions,
         uId:uId,
         category: category
-
     );
 
     FirebaseFirestore.instance

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/modules/user/buu-now/buy-now-screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -15,8 +16,6 @@ class CartScreen extends StatelessWidget {
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state)
         {
-
-
         },
         builder: (context,state)
         {
@@ -34,7 +33,7 @@ class CartScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               onPressed: ()
               {
-
+                navigateTo(context, BuyNowScreen());
               },
               label: Text('Buy Now'),
 

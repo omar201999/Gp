@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
+import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
@@ -575,7 +576,6 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
 
-
   /* getTotalPrice(){
     double total = 0.0;
     cart.forEach((element) {
@@ -613,6 +613,75 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(plusState());
     }
   }
+  double totalPrice = 0 ;
+  double calculateTotalPriceOfCartItems(){
+    totalPrice = 0;
+    for(int i = 0 ; i < cart.length ; i++){
+      totalPrice = totalPrice + (cart[i].currentPrice)!.round();
+    }
+    return totalPrice ;
+  }
+
+  void createOrder ({
+    required double totalPrice,
+    required double total,
+}) {
+    emit(CreateOrderLoadingState());
+    OrderModel createOrder = OrderModel(
+      userId: uId,
+      total: total,
+      totalPrice: totalPrice,
+      shipping: 100,
+    );
+    FirebaseFirestore.instance
+    .collection('orders')
+    .add(createOrder.toMap())
+    .then((value){
+      emit(CreateOrderSuccessState());
+    })
+    .catchError((error){
+      emit(CreateOrderErrorState());
+    });
+  }
+
+  void addProductToOrders(String? prodId,{
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    required String? uId1,
+  })
+  {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
+
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc()
+        .collection('products')
+        .add(model.toMap())
+        .then((value) {
+      getCartItem();
+      emit(AddCartItemSuccessState());
+
+    }).catchError((error) {
+      emit(AddCartItemErrorState(error));
+      print(error.toString());
+    });
+
+  }
+
 }
 
 

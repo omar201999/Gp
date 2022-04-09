@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/modules/admin/market_management/confirm_order_screen.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
 import 'package:gp/modules/admin/market_management/search_product/search_product_screen.dart';
@@ -30,6 +31,13 @@ class MarketManagementScreen extends StatelessWidget {
                         navigateTo(context, SearchProductScreen());
                       },
                       icon: Icon(IconBroken.Search),
+
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        navigateTo(context, ConfirmOrderScreen());
+                      },
+                      icon: Icon(Icons.notification_important),
 
                     ),
                     SizedBox(

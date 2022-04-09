@@ -109,13 +109,14 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void updateUser({
     double? height,
-    required String name,
+    required String? name,
     String? active,
-    required int age,
+    required int? age,
     String? goal,
-    required double goalWeight,
+    required double? goalWeight,
     String? profileImage,
-    required double weight,
+    required double? weight,
+    int? totalWater
   }) {
     UserModel model = UserModel(
       height: userModel!.height,
@@ -130,7 +131,12 @@ class HomeCubit extends Cubit<HomeStates> {
       goalWeight: goalWeight,
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
+      totalCalorie: userModel!.totalCalorie,
+      totalCarbs: userModel!.totalCarbs,
+      totalFats: userModel!.totalFats,
+      totalProtein: userModel!.totalProtein,
       weight: weight,
+      totalWater: totalWater,
     );
 
     FirebaseFirestore.instance

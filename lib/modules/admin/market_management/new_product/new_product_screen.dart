@@ -50,6 +50,7 @@ class NewProductSrceen extends StatelessWidget {
                       discount: double.parse(discountController.text),
                       quantity: int.parse(quantityController.text),
                       description: descriptionController.text,
+                      status: 'inStock',
                       uId: uIdController.text,
                       //totalTime: totalTime
                     );
@@ -101,6 +102,7 @@ class NewProductSrceen extends StatelessWidget {
                       child: defaultTextFormField(
                         controller: descriptionController,
                         type: TextInputType.multiline,
+                        maxLines: 30,
                         hintText: 'Enter Description ... ',
 
                       ),

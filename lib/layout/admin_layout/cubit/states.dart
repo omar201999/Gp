@@ -165,7 +165,6 @@ class GetProductsSuccessState extends AdminStates{}
 class GetProductsLoadingState extends AdminStates{}
 
 
-
 class SearchProductLoadingState extends AdminStates{}
 
 class SearchProductSuccessState extends AdminStates{}

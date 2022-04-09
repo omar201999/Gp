@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -16,6 +17,8 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
   @override
   Widget build(BuildContext context) {
 
+    UserModel? userModel = HomeCubit.get(context).userModel;
+
     double countLiter = HomeCubit.get(context).countLiter;
     int counter = HomeCubit.get(context).counter;
 
@@ -26,6 +29,13 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                   title: 'Water Tracker',
                   onPressed: () {
                     Navigator.pop(context);
+                    HomeCubit.get(context).updateUser(
+                      name: userModel!.name,
+                      age: userModel.age,
+                      goalWeight: userModel.goalWeight,
+                      weight: userModel.weight,
+                      totalWater: counter,
+                    );
                   },
                   icon: IconBroken.Arrow___Left_2,
                   titleSpacing: 5.0,
@@ -76,6 +86,7 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                                   HomeCubit.get(context).addWaterGlass();
                                   HomeCubit.get(context).addCountLiter();
                                 });
+
                               },
                               icon: Icons.add
                           ),
@@ -117,6 +128,7 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                                   HomeCubit.get(context).minusWaterGlass();
                                   HomeCubit.get(context).minusCountLiter();
                                 });
+
                               },
                               icon: Icons.remove
                           )

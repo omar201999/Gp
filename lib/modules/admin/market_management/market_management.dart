@@ -92,7 +92,7 @@ class MarketManagementScreen extends StatelessWidget {
                 child: const Icon(Icons.add),
               ),
             ),
-            fallback: (context) => Center(child: CircularProgressIndicator()),
+            fallback: (context) => NewProductSrceen(),
           );
         },
         listener: (context, state) {
@@ -125,6 +125,7 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
               //height: 180.0,
               fit: BoxFit.cover,
             ),
+
             if (model.discount != 0)
               Container(
               color: Colors.red,
@@ -175,7 +176,7 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
                       width: 5.0,
                     ),
                     if (model.discount != 0)
-                       Text(
+                      Text(
                       '${model.oldPrice}',
                       style: const TextStyle(
                         fontSize: 10.0,
@@ -183,6 +184,15 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
+                    const Spacer(),
+                    if (model.quantity == 0)
+                      const Text(
+                            'Not available now',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.red
+                            ),
+                          )
                   ],
                 ),
 

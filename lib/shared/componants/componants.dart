@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -1059,6 +1060,77 @@ Widget  BuildOrderItem (UserModel userModel,ProductModel model,context,index)=> 
   ),
 );
 
+indicator({
+  required Color color,
+  required String text,
+  String? secondText,
+  required bool isSquare,
+  double? size = 16,
+  Color? secondTextColor,
+  Color? textColor = const Color(0xff505050),
+}) => Row(
+    children: [
+      defaultContainer(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+          color: color,
+        ),
+      ),
+      const SizedBox(
+        width: 4,
+      ),
+      Text(
+        text,
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: textColor
+        ),
+      ),
+
+      const Spacer(),
+
+      Text(
+        secondText!,
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: secondTextColor
+        ),
+      ),
+
+    ],
+);
+
+buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAmount) =>
+    PieChartSectionData(
+      color: colors[index],
+      value: model.quantity!/totalAmount*100*360,
+      title: ((model.quantity!/totalAmount*100).round()).toString()+'%',
+      radius: radius,
+      titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white
+      ),
+    );
+
+
+List<Color> colors = [
+  Color(0xff0293ee),
+  Color(0xfff8b250),
+  Color(0xff845bef),
+  Color(0xffef5bed),
+  Color(0xff097eac),
+  Color(0xe8a7a7ad),
+  Color(0xff082ca7),
+  Color(0xff27ce21),
+  Color(0xffe8e224),
+  Color(0xff8e09ac),
+
+];
 
 
 

@@ -21,10 +21,9 @@ class MarketManagementScreen extends StatelessWidget {
           return ConditionalBuilder(
             condition: AdminCubit.get(context).products.length > 0 && state is !GetProductsLoadingState,
             builder: (context) => Scaffold(
-              appBar: buildAppBar(
+              appBar: AppBar(
 
-                  title: 'Market',
-                  titleSpacing: 5.0,
+                  title: Text('Market'),
                   actions: [
                     IconButton(
                       onPressed: () {

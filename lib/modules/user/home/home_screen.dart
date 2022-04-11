@@ -84,6 +84,17 @@ class HomePage extends StatelessWidget
                       Navigator.pop(context);
                     },
                   ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  buildMenuItem(
+                      text: 'Log Out',
+                      icon: Icons.logout,
+                      onClicked: () {
+                        signOut(context,);
+                      }
+                  ),
                 ],
               ),
             ),

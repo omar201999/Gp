@@ -19,9 +19,9 @@ class UsersManagementScreen extends StatelessWidget {
       listener: (context , state ) {},
       builder: (context , state ){
         return Scaffold(
-            appBar: buildAppBar(
+            appBar: AppBar(
 
-            title: 'Users',
+            title: Text('Users'),
             actions: [
 
             IconButton(

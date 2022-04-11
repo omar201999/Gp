@@ -21,10 +21,9 @@ class RecipesManagementScreen extends StatelessWidget {
       builder: (context,state)
       {
         return Scaffold(
-          appBar: buildAppBar(
+          appBar: AppBar(
 
-              title: 'Recipes',
-              titleSpacing: 5.0,
+              title: Text('Recipes'),
               actions: [
                 IconButton(
                   onPressed: () {

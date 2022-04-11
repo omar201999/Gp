@@ -129,6 +129,8 @@ class SearchRecipeErrorState extends AdminStates
   SearchRecipeErrorState(this.error);
 }
 
+class RemoveRecipeImageState extends AdminStates{}
+
 
 
 // create product
@@ -164,10 +166,12 @@ class GetProductsSuccessState extends AdminStates{}
 
 class GetProductsLoadingState extends AdminStates{}
 
+
+class GetStockProductsLoadingState extends AdminStates {}
+
 class GetDashboardProductsSuccessState extends AdminStates{}
 
 class GetDashboardProductsErrorState extends AdminStates{}
-
 
 
 class SearchProductLoadingState extends AdminStates{}
@@ -190,3 +194,5 @@ class AdminGetAllOrdersErrorState extends AdminStates
 
   AdminGetAllOrdersErrorState(this.error);
 }
+
+class RemoveProductImageState extends AdminStates{}

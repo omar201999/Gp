@@ -28,8 +28,8 @@ AppBar buildAppBar({
   double? titleSpacing = 15.0,
 }) =>  AppBar(
   leading: leadingIcon??IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon)
+       onPressed: onPressed,
+       icon: Icon(icon)
   ),
   title: Text(
     title,
@@ -43,6 +43,7 @@ AppBar buildAppBar({
     ),
   ],*/
 );
+
 
 Widget defaultTextFormField({
 
@@ -1132,5 +1133,72 @@ List<Color> colors = [
 
 ];
 
+Widget drawerHeader(UserModel model) => DrawerHeader(
+    decoration: BoxDecoration(
+      color: defaultColor,
 
+    ),
+    child: Container(
+      child: Column(
+        children: [
+         defaultContainer(
+            //borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            color: Colors.white,
+            width: 87.0,
+            height: 87.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                //radius: 25.0,
+                backgroundImage: NetworkImage('${model.profileImage}'),
+              )
+            ),
+          ),
+          Text(
+            '${model.name}',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold),
+          ),
+          Text(
+            '${model.email}',
+            style: TextStyle(
+                color: Colors.white70,
+                fontSize: 12.0
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+Widget buildMenuItem({
+  required String text,
+  required IconData icon,
+  required Function()? onClicked,
+  //Color backgroundColor = Colors.white,
+  Color color = Colors.black54
+}) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: defaultContainer (
+      color: Colors.grey[50],
+      child: ListTile(
+        leading: Icon(
+            icon,
+            color: color),
+        title: Text(
+          text,
+          style: TextStyle(
+              color: color,
+              fontSize: 14
+          ),
+        ),
+        onTap: onClicked
+      ),
+    )
+);
 

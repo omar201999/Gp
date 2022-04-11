@@ -38,6 +38,7 @@ class NewProductSrceen extends StatelessWidget {
               icon: IconBroken.Arrow___Left_2,
               onPressed: () {
                 Navigator.pop(context);
+                AdminCubit.get(context).removeProductImage();
               },
               titleSpacing: 5.0,
               actions: [
@@ -56,6 +57,7 @@ class NewProductSrceen extends StatelessWidget {
                       uId: uIdController.text,
                       //totalTime: totalTime
                     );
+                   AdminCubit.get(context).removeProductImage();
 
                   },
                   text: 'Add',

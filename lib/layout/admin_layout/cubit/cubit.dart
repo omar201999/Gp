@@ -403,6 +403,11 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  void removeRecipeImage() {
+    recipeImage = null;
+    emit(RemoveRecipeImageState());
+  }
+
   List<RecipeModel> searchRecipe = [];
 
   void getSearchRecipe(String value) {
@@ -662,6 +667,12 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
+  void removeProductImage() {
+    productImage = null;
+    emit(RemoveRecipeImageState());
+  }
+
+
   List<ProductModel> searchProduct = [];
 
   void getSearchProduct(String value) {
@@ -686,7 +697,7 @@ class AdminCubit extends Cubit<AdminStates>
   List<ProductModel> stockProducts = [];
   void countStockProducts()
   {
-    //emit(GetProductsLoadingState());
+    emit(GetStockProductsLoadingState());
     FirebaseFirestore.instance
         .collection('products')
         .where('status', isEqualTo: 'inStock')

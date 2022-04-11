@@ -44,6 +44,7 @@ class NewRecipeScreen extends StatelessWidget {
                   icon: IconBroken.Arrow___Left_2,
                   onPressed: () {
                     Navigator.pop(context);
+                    AdminCubit.get(context).removeRecipeImage();
                   },
                   actions: [
                     defaultTextButton(
@@ -62,6 +63,7 @@ class NewRecipeScreen extends StatelessWidget {
                              uId:uIdController.text,
                              //totalTime: totalTime
                          );
+                         AdminCubit.get(context).removeRecipeImage();
                         },
                         text: 'Add',
                     )

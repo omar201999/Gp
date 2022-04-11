@@ -11,6 +11,7 @@ import 'package:gp/shared/bloc_observer.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/cubit/states.dart';
+import 'package:gp/shared/network/api.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'layout/admin_layout/cubit/cubit.dart';
 import 'shared/componants/componants.dart';
@@ -32,8 +33,7 @@ async{
       await CacheHelper.init();
       await Firebase.initializeApp();
       var token = await FirebaseMessaging.instance.getToken();
-     // print(token);
-
+      print(token);
 
       // foreground fcm
       FirebaseMessaging.onMessage.listen((event)
@@ -56,25 +56,6 @@ async{
       // background fcm
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-
-
-
-      //when the app is opened
-      FirebaseMessaging.onMessage.listen((event) {
-        print('on message');
-        print(event.data.toString());
-
-        //showToast(text: 'on message', state: ToastStates.NOTE);
-      });
-      // when click on notification to open app
-      FirebaseMessaging.onMessageOpenedApp.listen((event) {
-        print('on message opened app');
-        print(event.data.toString());
-
-        //showToast(text: 'on message opened app', state: ToastStates.NOTE);
-      });
-      // background notification
-      FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
       Widget widget;
       uId =   CacheHelper.getData(key: 'uId');

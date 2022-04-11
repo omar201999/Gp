@@ -78,11 +78,15 @@ class CartScreen extends StatelessWidget {
                       width: 90,
                     ),
                     SizedBox(width: 20),
-                    Text(
-                      '${model.name}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    Expanded(
+                      child: Text(
+                        '${model.name}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     Spacer(),

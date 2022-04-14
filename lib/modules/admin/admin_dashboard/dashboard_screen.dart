@@ -12,7 +12,6 @@ import 'package:gp/modules/admin/recipe_management/recipes_management_screen.dar
 import 'package:gp/modules/admin/users_management/users_management.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
-import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -58,13 +57,12 @@ class DashboardScreen extends StatelessWidget {
           });
     }
 
-    //UserModel? userModel = HomeCubit.get(context).userModel;
+    UserModel? userModel = HomeCubit.get(context).userModel;
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-              condition: state is! GetStockProductsLoadingState,
-                  //&& HomeCubit.get(context).userModel != null && state is! GetUserDataLoadingState,
+              condition: state is! GetStockProductsLoadingState && HomeCubit.get(context).userModel != null && state is! GetAdminDataLoadingState,
               builder: (context) => Scaffold(
                 appBar: AppBar(
                   /*onPressed: () {
@@ -94,47 +92,8 @@ class DashboardScreen extends StatelessWidget {
                             /*const SizedBox(
                               height: 50,
                             ),*/
-                   DrawerHeader(
-                    decoration: BoxDecoration(
-                     color: defaultColor,
-
-                    ),
-                    child: Container(
-                     child: Column(
-                      children: [
-                        defaultContainer(
-                          //borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                          color: Colors.white,
-                          width: 87.0,
-                          height: 87.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                //radius: 25.0,
-                                backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-                              )
-                          ),
-                        ),
-                        Text(
-                          'admin',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'admin@gamil.com',
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12.0
-                          ),
-                        ),
-                      ],
-                    ),
-                   ),
+                   drawerHeader(
+                    userModel!
                   ),
                             /*const SizedBox(
                               height: 25,

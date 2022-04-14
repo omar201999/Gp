@@ -104,7 +104,7 @@ class EditRecipeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             onPressed: () {
-                               AdminCubit.get(context).getnewRecipeImage();
+                               AdminCubit.get(context).getNewRecipeImage();
                             },
                             icon: const CircleAvatar(
                               radius: 30,

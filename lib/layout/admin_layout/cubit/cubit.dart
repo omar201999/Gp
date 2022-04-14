@@ -120,7 +120,7 @@ class AdminCubit extends Cubit<AdminStates>
 
   File? newRecipeImage;
 
-  Future? getnewRecipeImage() async {
+  Future? getNewRecipeImage() async {
     final pickedFile = await picker?.pickImage(
         source: ImageSource.gallery
     );

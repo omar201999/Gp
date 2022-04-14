@@ -41,6 +41,25 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
+  List<UserModel> admin = [];
+  void getAdminData() {
+    emit(GetAdminDataLoadingState());
+    FirebaseFirestore.instance.
+    collection('users').
+    where('status', isEqualTo: 'admin').
+    get().
+    then((value) {
+      value.docs.forEach((element)
+      {
+        admin.add(UserModel.fromJson(element.data()));
+      });
+      emit(GetAdminDataSuccessState());
+    }).catchError((error) {
+      emit(GetAdminDataErrorState(error));
+      print(error.toString());
+    });
+  }
+
   int currentIndex = 0;
   List<Widget> bodyScreen =
   [

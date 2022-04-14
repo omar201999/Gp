@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context, state)
         {
-          if(state is LoginErrorState)
+         if(state is LoginErrorState)
           {
             showToast(
               text: state.error,
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget
                   value: state.uId,
                 ).then((value) {
                   uId = state.uId;
-                  navigateToAndReplacement(context, AdminLayout());
+                  //navigateToAndReplacement(context, AdminLayout());
                 }).catchError((error){
                   print(error.toString());
                 });
@@ -56,11 +56,15 @@ class LoginScreen extends StatelessWidget
                   value: state.uId,
                 ).then((value) async {
                   uId = state.uId;
-                  navigateToAndReplacement(context, HomeLayout());
+                  //navigateToAndReplacement(context, HomeLayout());
                 }).catchError((error){
                   print(error.toString());
                 });
               }
+              /*CacheHelper.saveData(
+                key: 'uId',
+                value: state.uId,
+              );*/
             });
 
           }

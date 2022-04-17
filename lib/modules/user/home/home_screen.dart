@@ -16,8 +16,6 @@ import 'package:gp/shared/componants/constant.dart';
 class HomePage extends StatelessWidget
 {
 
-
-
   @override
   Widget build(BuildContext context)
   {
@@ -173,8 +171,8 @@ class HomePage extends StatelessWidget
                           context,
                           title: 'Calories Remaining',
                           calorieText: '${HomeCubit.get(context).userModel!.totalCalorie}',
-                          foodText: '${HomeCubit.get(context).food()}',
-                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).food()}',
+                          foodText: '${HomeCubit.get(context).calculateTotalFoodCalories()}',
+                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).calculateTotalFoodCalories()!}',
                         ),
 
                         SizedBox(

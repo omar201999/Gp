@@ -10,6 +10,7 @@ import 'package:gp/modules/admin/admin_dashboard/dashboard_screen.dart';
 import 'package:gp/modules/admin/market_management/market_management.dart';
 import 'package:gp/modules/admin/recipe_management/recipes_management_screen.dart';
 import 'package:gp/modules/admin/users_management/users_management.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -19,11 +20,21 @@ class AdminCubit extends Cubit<AdminStates>
 
   static AdminCubit get(context) => BlocProvider.of(context);
 
-  UserModel  model = UserModel();
-  ProductModel  productModel = ProductModel();
-
-  //RecipeModel recipeModel = RecipeModel();
-
+  UserModel? adminModel;
+  void getAdminData() {
+    emit(GetAdminDataLoadingState());
+    FirebaseFirestore.instance.
+    collection('users').
+    doc(uId).
+    get().
+    then((value) {
+      adminModel = UserModel.fromJson(value.data());
+      emit(GetAdminDataSuccessState());
+    }).catchError((error) {
+      emit(GetAdminDataErrorState(error));
+      print(error.toString());
+    });
+  }
   int currentIndex = 0 ;
   List<Widget> screens = [
     DashboardScreen(),
@@ -79,23 +90,12 @@ class AdminCubit extends Cubit<AdminStates>
 
   List<UserModel> searchUsers = [];
 
-  void getSearchUsers(String value) {
-    emit(SearchUsersLoadingState());
+  void getSearchUsers(String value)
+  {
     searchUsers = [] ;
-    FirebaseFirestore.instance
-        .collection('users')
-        .where('name', isGreaterThanOrEqualTo: value)
-        .where('name', isLessThan: value + 'z')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        searchUsers.add(UserModel.fromJson(element.data()));
-      });
-      emit(SearchUsersSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(SearchUsersErrorState(error.toString()));
-    });
+    searchUsers = users.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    emit(SearchUsersSuccessState());
+
   }
 
  //cubit for recipe
@@ -363,13 +363,10 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
   List<RecipeModel> dinnerRecipe = [];
-
   void getDinnerRecipe()
   {
-
     emit(GetAllDinnerRecipeLoadingState());
     dinnerRecipe = [];
-
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'dinner')
@@ -387,6 +384,25 @@ class AdminCubit extends Cubit<AdminStates>
 
     });
   }
+  List<RecipeModel> allRecipe = [];
+  void getAllRecipe()
+  {
+    allRecipe = [];
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        allRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+      emit(GetAllRecipeSuccessState());
+    }).catchError((error) {
+      emit(GetAllRecipeErrorState(error.toString()));
+      print(error.toString());
+
+    });
+  }
 
   void deleteRecipe(String? uId){
     FirebaseFirestore.instance
@@ -397,6 +413,7 @@ class AdminCubit extends Cubit<AdminStates>
           getBreakfastRecipe();
           getLunchRecipe();
           getDinnerRecipe();
+          getAllRecipe();
     }).catchError((error){
       emit(AdminDeleteRecipeErrorState(error.toString()));
       print(error.toString());
@@ -410,24 +427,11 @@ class AdminCubit extends Cubit<AdminStates>
 
   List<RecipeModel> searchRecipe = [];
 
-  void getSearchRecipe(String value) {
-    emit(SearchRecipeLoadingState());
+  void getSearchRecipe(String value)
+  {
     searchRecipe = [];
-    FirebaseFirestore.instance
-        .collection('recipes')
-        .where('title', isGreaterThanOrEqualTo: value)
-        .where('title', isLessThan: value + 'z')
-        .get()
-        .then((value) {
-      value.docs.forEach((element)
-      {
-        searchRecipe.add(RecipeModel.fromJson(element.data()));
-      });
-      emit(SearchRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(SearchRecipeErrorState(error.toString()));
-    });
+    searchRecipe = allRecipe.where((element) => element.title!.toLowerCase().contains(value.toLowerCase())).toList();
+    emit(SearchRecipeSuccessState());
   }
 
 
@@ -579,8 +583,8 @@ class AdminCubit extends Cubit<AdminStates>
           discount: discount,
           quantity: quantity,
           description: description,
-          status: status,
           uId:uId,
+          status: status
         );
 
 
@@ -603,9 +607,10 @@ class AdminCubit extends Cubit<AdminStates>
     required double oldPrice,
     required double discount,
     required int quantity,
-    String? status,
     required String description,
     required String uId,
+    String? status,
+
   }){
     emit(CreateProductLoadingState());
     ProductModel model = ProductModel(
@@ -616,8 +621,8 @@ class AdminCubit extends Cubit<AdminStates>
         discount: discount,
         quantity: quantity,
         description: description,
-        status: status,
         uId:uId,
+        status: status
 
     );
 
@@ -674,24 +679,12 @@ class AdminCubit extends Cubit<AdminStates>
 
 
   List<ProductModel> searchProduct = [];
-
-  void getSearchProduct(String value) {
-    emit(SearchProductLoadingState());
+  void getSearchProduct(String value)
+  {
     searchProduct = [];
-    FirebaseFirestore.instance
-        .collection('products')
-        .where('name', isGreaterThanOrEqualTo: value)
-        .where('name', isLessThan: value + 'z')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        searchProduct.add(ProductModel.fromJson(element.data()));
-      });
-      emit(SearchProductSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(SearchProductErrorState(error.toString()));
-    });
+    searchProduct = products.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    emit(SearchProductSuccessState());
+
   }
 
   List<ProductModel> stockProducts = [];
@@ -713,7 +706,7 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
 
-  List<ProductModel> orders = [];
+ List<ProductModel> orders = [];
 
   void getOrders()
   {

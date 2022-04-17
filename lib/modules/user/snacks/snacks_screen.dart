@@ -29,7 +29,15 @@ class SnacksScreen extends StatelessWidget {
           changeChekBox: HomeCubit.get(context).changeCheckBoxSnacks,
           function: ()
           {
-            HomeCubit.get(context).addSnacksMeal();
+            if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
+            {
+              showToast(text: 'Please reduce Your Meal your goal is ${HomeCubit.get(context).userModel!.totalCalorie} and your total food is ${HomeCubit.get(context).totalFood} ', state: ToastStates.SUCCESS);
+            }
+            else
+            {
+              HomeCubit.get(context).addSnacksMeal();
+
+            }
           }
         );
       },

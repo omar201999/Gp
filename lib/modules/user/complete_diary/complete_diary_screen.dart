@@ -34,11 +34,11 @@ class CompleteDiaryScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     ConditionalBuilder(
-                        condition: HomeCubit.get(context).completeDiary.length > 0,
+                        condition: HomeCubit.get(context).completeDiary.length > 0 && state is !GetAllUsersMealsLoadingState,
                         builder: (context) => ListView.separated(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context),
+                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
                           separatorBuilder: (context, index) => SizedBox(height: 10,),
                           itemCount: HomeCubit.get(context).completeDiary.length,
                         ),
@@ -54,7 +54,7 @@ class CompleteDiaryScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCompleteDiaryItem(MealsModel model,context)=> InkWell(
+  Widget buildCompleteDiaryItem(MealsModel model,context,index)=> InkWell(
     onTap: ()
     {
       navigateTo(context, MealItemScreen(
@@ -66,31 +66,37 @@ class CompleteDiaryScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                defaultHeadLineText(context, text: '${model.Food}'),
-                Row(
-                  children: [
-                    Text('${model.Calories} cal,' ,style: Theme.of(context).textTheme.caption,),
-                    SizedBox(width: 3,),
-                    Text('${model.Protein}g Protein,',style: Theme.of(context).textTheme.caption,),
-                    SizedBox(width: 3,),
-                    Text('${model.Carbs}g Carbs,',style: Theme.of(context).textTheme.caption,),
-                    SizedBox(width: 3,),
-                    Text('${model.Fat}g Fats',style: Theme.of(context).textTheme.caption,),
-                    SizedBox(width: 3,)
-                  ],
-                ) ,
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  defaultBodyText(
+                      context,
+                      text: '${model.Food}',
+                    fontWeight: FontWeight.bold,
+                    maxLines: 1,
+                  ),
+                  Row(
+                    children: [
+                      Text('${model.Calories} cal,' ,style: Theme.of(context).textTheme.caption,),
+                      SizedBox(width: 3,),
+                      Text('${model.Protein}g Protein,',style: Theme.of(context).textTheme.caption,),
+                      SizedBox(width: 3,),
+                      Text('${model.Carbs}g Carbs,',style: Theme.of(context).textTheme.caption,),
+                      SizedBox(width: 3,),
+                      Text('${model.Fat}g Fats',style: Theme.of(context).textTheme.caption,),
+                      SizedBox(width: 3,)
+                    ],
+                  ) ,
+                ],
+              ),
             ),
-            Spacer(),
             IconButton(
                 icon: Icon(
                     Icons.delete_forever
                 ),
                 onPressed: () {
-
+                  HomeCubit.get(context).deleteCompleteDiaryItem(HomeCubit.get(context).completeDiaryId[index]);
                 }
             ),
           ],

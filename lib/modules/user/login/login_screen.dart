@@ -1,15 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/layout/admin_layout/admin_layout.dart';
-import 'package:gp/layout/home-layout/home_layout.dart';
 import 'package:gp/modules/user/add_Information/add_information.dart';
 import 'package:gp/modules/user/login/cubit/cubit.dart';
 import 'package:gp/modules/user/login/cubit/states.dart';
-
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/componants/constant.dart';
-import 'package:gp/shared/network/local/cashe_helper.dart';
+
 
 class LoginScreen extends StatelessWidget
 {
@@ -22,7 +18,7 @@ class LoginScreen extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => LoginCubit()..getUsers(),//..getUsers()
+      create: (BuildContext context) => LoginCubit(),//..getUsers()
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context, state)
         {
@@ -32,41 +28,6 @@ class LoginScreen extends StatelessWidget
               text: state.error,
               state: ToastStates.ERROR,
             );
-          }
-          if(state is LoginSuccessState)
-          {
-            LoginCubit.get(context).users.forEach((element)
-            {
-              if(element.status == 'admin')
-              {
-                CacheHelper.saveData(
-                  key: 'uId',
-                  value: state.uId,
-                ).then((value) {
-                  uId = state.uId;
-                  //navigateToAndReplacement(context, AdminLayout());
-                }).catchError((error){
-                  print(error.toString());
-                });
-              }
-              else
-              {
-                CacheHelper.saveData(
-                  key: 'uId',
-                  value: state.uId,
-                ).then((value) async {
-                  uId = state.uId;
-                  //navigateToAndReplacement(context, HomeLayout());
-                }).catchError((error){
-                  print(error.toString());
-                });
-              }
-              /*CacheHelper.saveData(
-                key: 'uId',
-                value: state.uId,
-              );*/
-            });
-
           }
         },
         builder:(context,state)

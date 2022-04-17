@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/layout/home-layout/cubit/cubit.dart';
-import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/layout/admin_layout/cubit/cubit.dart';
+import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 
 class SearchRecipeScreen extends StatelessWidget {
@@ -11,16 +11,15 @@ class SearchRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context)
   {
     var searchController = TextEditingController();
-    return BlocConsumer<HomeCubit,HomeStates>(
+    return BlocConsumer<AdminCubit,AdminStates>(
       listener: (context,state)
       {
 
       },
       builder: (context,state)
       {
-        var list = HomeCubit.get(context).search;
 
-
+        var list = AdminCubit.get(context).searchRecipe;
         return Scaffold(
           appBar: AppBar(),
           body: Padding(
@@ -33,7 +32,7 @@ class SearchRecipeScreen extends StatelessWidget {
                   type: TextInputType.text,
                   onChanged: (value)
                   {
-                    HomeCubit.get(context).getSearch(value);
+                    AdminCubit.get(context).getSearchRecipe(value);
 
                   },
 
@@ -60,9 +59,9 @@ class SearchRecipeScreen extends StatelessWidget {
                     builder: (context) => ListView.separated(
                     physics: BouncingScrollPhysics(), // بتشيل الload اللي فوق دا بيخليه ينط كدا
                     itemBuilder: (context,index) => buildRecipeItem(list[index],context),
-                separatorBuilder: (context,index) =>  SizedBox(height: 8,),
-                itemCount: list.length),
-                fallback: (context) => Center(child: Container()),
+                        separatorBuilder: (context,index) =>  SizedBox(height: 8,),
+                    itemCount: list.length),
+                      fallback: (context) => Center(child: Container()),
                 ),
                   ),
 

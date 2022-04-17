@@ -118,6 +118,14 @@ class GetAllDinnerRecipeErrorState extends AdminStates
 
   GetAllDinnerRecipeErrorState(this.error);
 }
+class GetAllRecipeSuccessState extends AdminStates {}
+
+class GetAllRecipeErrorState extends AdminStates
+{
+  final String error;
+
+  GetAllRecipeErrorState(this.error);
+}
 
 class SearchRecipeLoadingState extends AdminStates{}
 
@@ -196,3 +204,11 @@ class AdminGetAllOrdersErrorState extends AdminStates
 }
 
 class RemoveProductImageState extends AdminStates{}
+class GetAdminDataLoadingState extends AdminStates{}
+
+class GetAdminDataSuccessState extends AdminStates{}
+
+class GetAdminDataErrorState extends AdminStates{
+  final String error;
+  GetAdminDataErrorState(this.error);
+}

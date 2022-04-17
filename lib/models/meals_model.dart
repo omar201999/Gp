@@ -1,38 +1,32 @@
 class MealsModel
 {
-  int? id;
-  String? Food;
   String? Measure;
-  int? Carbs;
-  int? Protein;
-  int? Fat;
-  int? Calories;
-  int? Grams;
-
-
-
+  String? Food;
+  num? Carbs;
+  num? Protein;
+  num? Fat;
+  num? Calories;
+  num? Grams;
 
   MealsModel({
     this.Food,
-    this.Measure,
     this.Carbs,
     this.Protein,
     this.Fat,
     this.Calories,
-    this.id,
-    this.Grams
+    this.Grams,
+    this.Measure
   });
 
   MealsModel.fromJson(Map<String, dynamic>? json){
-    id = json!['id'];
-    Food = json['Food'];
-    Measure = json['Measure'];
+
+    Food = json!['Food'];
     Carbs = json['Carbs'];
     Protein = json['Protein'];
     Fat = json['Fat'];
     Calories = json['Calories'];
     Grams = json['Grams'];
-
+    Measure = json['Measure'];
 
   }
 
@@ -40,13 +34,12 @@ class MealsModel
   {
     return {
       'Food':Food,
-      'Measure':Measure,
       'Carbs':Carbs,
       'Protein':Protein,
       'Fat':Fat,
-      'id':id,
       'Calories':Calories,
       'Grams':Grams,
+      'Measure':Measure,
 
     };
   }

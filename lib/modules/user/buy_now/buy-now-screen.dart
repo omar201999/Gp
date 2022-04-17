@@ -79,7 +79,7 @@ class BuyNowScreen extends StatelessWidget {
                   SizedBox(height: 10,),
                   if(HomeCubit.get(context).cart != null)
                     ListView.separated(
-                    itemBuilder: (context,index) =>buyNowItem(context , HomeCubit.get(context).cart[index]) ,
+                    itemBuilder: (context,index) =>buyNowItem(context , HomeCubit.get(context).cart[index],index) ,
                     separatorBuilder: (context,index) => SizedBox(height: 10,),
                     itemCount: HomeCubit.get(context).cart.length,
                     physics: BouncingScrollPhysics(),
@@ -196,7 +196,8 @@ class BuyNowScreen extends StatelessWidget {
             foregroundColor: Colors.white,
             onPressed: ()
             {
-              HomeCubit.get(context).createOrder(totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems(), total: (HomeCubit.get(context).calculateTotalPriceOfCartItems())+100);
+              //HomeCubit.get(context).createOrder(totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems(), total: (HomeCubit.get(context).calculateTotalPriceOfCartItems())+100);
+              HomeCubit.get(context).addProductToOrders();
             },
             label: Text('Buy Now'),
 
@@ -205,7 +206,7 @@ class BuyNowScreen extends StatelessWidget {
       },
     );
   }
-  Widget buyNowItem(BuildContext context , ProductModel model ) => defaultContainer(
+  Widget buyNowItem(BuildContext context,ProductModel model,index ) => defaultContainer(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -260,7 +261,9 @@ class BuyNowScreen extends StatelessWidget {
               ),
             ],
 
-          )
+          ),
+
+
         ],
       ),
     ),

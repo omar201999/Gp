@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/admin_layout.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/home_layout.dart';
-import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/login/login_screen.dart';
 import 'package:gp/shared/bloc_observer.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -105,8 +104,8 @@ class MyApp extends StatelessWidget
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()),
-        BlocProvider(create: (context) => HomeCubit()..getUserData()..getCompleteDiaryItems()..getCartItem()),
-        BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()),
+        BlocProvider(create: (context) => HomeCubit()..getUserData()..getCompleteDiaryItems()..getCartItem()..getAllMeals()),
+        BlocProvider(create: (context) => AdminCubit()..getAdminData()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
         listener:(context,state){} ,
@@ -135,6 +134,7 @@ class MainPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             CacheHelper.saveData(key: 'uId', value: snapshot.data!.uid);
+            uId =snapshot.data!.uid;
             return StreamBuilder(
               stream: users.doc(snapshot.data!.uid).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){

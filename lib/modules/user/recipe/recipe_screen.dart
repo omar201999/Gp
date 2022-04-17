@@ -27,7 +27,6 @@ class RecipeScreen extends StatelessWidget {
                onPressed:()
                {
                  navigateTo(context,SearchRecipeScreen());
-
                },
                icon: Icon(
                  IconBroken.Search,

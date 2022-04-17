@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/layout/home-layout/cubit/cubit.dart';
-import 'package:gp/layout/home-layout/cubit/states.dart';
-import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/admin/market_management/market_management.dart';
 import 'package:gp/modules/admin/recipe_management/recipes_management_screen.dart';
 import 'package:gp/modules/admin/users_management/users_management.dart';
@@ -57,12 +54,12 @@ class DashboardScreen extends StatelessWidget {
           });
     }
 
-    UserModel? userModel = HomeCubit.get(context).userModel;
+
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-              condition: state is! GetStockProductsLoadingState && HomeCubit.get(context).userModel != null && state is! GetAdminDataLoadingState,
+              condition: AdminCubit.get(context).adminModel != null && state is! GetAdminDataLoadingState && state is! GetStockProductsLoadingState ,
               builder: (context) => Scaffold(
                 appBar: AppBar(
                   /*onPressed: () {
@@ -93,7 +90,7 @@ class DashboardScreen extends StatelessWidget {
                               height: 50,
                             ),*/
                    drawerHeader(
-                    userModel!
+                       AdminCubit.get(context).adminModel!
                   ),
                             /*const SizedBox(
                               height: 25,

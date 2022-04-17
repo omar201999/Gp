@@ -114,8 +114,10 @@ class MarketitemScreen extends StatelessWidget {
                                     text: 'Description',
                                   fontWeight: FontWeight.w900,
                                 ),
-                                defaultBodyText(context,
+                                defaultBodyText(
+                                  context,
                                     text: '${productModel.description}',
+
                                 ),
                               ],
                             ),

@@ -4,13 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
-import 'package:gp/modules/admin/market_management/confirm_order_screen.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
-import 'package:gp/modules/admin/market_management/search_product/search_product_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
-import 'package:gp/shared/styles/icon_broken.dart';
 
 class MarketManagementScreen extends StatelessWidget {
   @override
@@ -21,30 +18,6 @@ class MarketManagementScreen extends StatelessWidget {
           return ConditionalBuilder(
             condition: AdminCubit.get(context).products.length > 0 && state is !GetProductsLoadingState,
             builder: (context) => Scaffold(
-              appBar: AppBar(
-
-                  title: Text('Market'),
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        navigateTo(context, SearchProductScreen());
-                      },
-                      icon: Icon(IconBroken.Search),
-
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        navigateTo(context, ConfirmOrderScreen());
-                      },
-                      icon: Icon(Icons.notification_important),
-
-                    ),
-                    SizedBox(
-                      width: 15.0,
-                    )
-                  ]
-
-              ),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(

@@ -783,57 +783,59 @@ Widget buildMealItem(MealsModel model,context,{
 
         [
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-            children:
+              children:
 
-            [
+              [
 
-              defaultBodyText(
-                context,
-                text: '${model.Food}',
-               /* maxLines: 1,
-                overflow: TextOverflow.ellipsis,*/
-              ),
+                defaultBodyText(
+                  context,
+                  text: '${model.Food}',
+                  maxLines: 1,
 
-              Row(
+                ),
 
-                children:
+                Row(
 
-                [
+                  children:
 
-                  Text(
+                  [
 
-                      '${model.Measure},',
+                    Text(
 
-                    style: Theme.of(context).textTheme.caption,
+                        '${model.Measure},',
 
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
+                      style: Theme.of(context).textTheme.caption,
 
-                  Text(
+                    ),
+                    SizedBox(
+                      width: 2,
+                    ),
 
-                    '${model.Calories}Kcal',
+                    Text(
 
-                    style: Theme.of(context).textTheme.caption,
+                      '${model.Calories}Kcal',
 
-                  ),
+                      style: Theme.of(context).textTheme.caption,
 
-
-
-                ],
-
-              ),
+                    ),
 
 
 
-            ],
+                  ],
 
+                ),
+
+
+
+              ],
+
+            ),
           ),
-          const Spacer(),
+
           Checkbox(
               value: value ,
               onChanged: onChanged
@@ -1193,23 +1195,26 @@ Widget buildMenuItem({
   required Function()? onClicked,
   //Color backgroundColor = Colors.white,
   Color color = Colors.black54
-}) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-    child: defaultContainer (
-      color: Colors.grey[50],
-      child: ListTile(
-        leading: Icon(
-            icon,
-            color: color),
-        title: Text(
-          text,
-          style: TextStyle(
-              color: color,
-              fontSize: 14
+}) => InkWell(
+  onTap:onClicked ,
+  child:   Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: defaultContainer (
+        color: Colors.grey[50],
+        child: ListTile(
+          leading: Icon(
+              icon,
+              color: color),
+          title: Text(
+            text,
+            style: TextStyle(
+                color: color,
+                fontSize: 14
+            ),
           ),
+
         ),
-        onTap: onClicked
-      ),
-    )
+      )
+  ),
 );
 

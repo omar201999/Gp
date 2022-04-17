@@ -40,9 +40,14 @@ class AdminCubit extends Cubit<AdminStates>
     DashboardScreen(),
     UsersManagementScreen(),
 
-    //NotificationsScreen(),
     RecipesManagementScreen(),
     MarketManagementScreen()
+  ];
+  List<String> titleAppBar = [
+    'Dashboard',
+    'Users',
+    'Recipes',
+    'Market'
   ];
 
 

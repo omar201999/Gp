@@ -49,6 +49,13 @@ class HomeCubit extends Cubit<HomeStates> {
     RecipeScreen(),
     CustomerDashBoardScreen(),
   ];
+  List<String> titleAppBar =
+  [
+    'Home',
+    'Market',
+    'Recipe',
+    'Me'
+  ];
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -637,7 +644,7 @@ class HomeCubit extends Cubit<HomeStates> {
     if (totalFood >= (userModel!.totalCalorie)!.round()) {
       //totalFood = 0;
       print('the biggest $totalFood');
-      return userModel!.totalCalorie;
+      return totalFood;
     }
     else {
       print('the smallest $totalFood');

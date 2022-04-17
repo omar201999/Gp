@@ -57,7 +57,7 @@ class DashboardScreen extends StatelessWidget {
           });
     }
 
-    UserModel? userModel = HomeCubit.get(context).userModel;
+    //UserModel? userModel = HomeCubit.get(context).userModel;
 
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
@@ -93,7 +93,7 @@ class DashboardScreen extends StatelessWidget {
                               height: 50,
                             ),*/
                    drawerHeader(
-                    userModel!
+                    AdminCubit.get(context).model!
                   ),
                             /*const SizedBox(
                               height: 25,

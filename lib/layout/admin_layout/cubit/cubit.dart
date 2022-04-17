@@ -41,6 +41,22 @@ class AdminCubit extends Cubit<AdminStates>
     emit(ChangeBottomNavState());
   }
 
+
+  void getAdminData() {
+    emit(GetAdminDataLoadingState());
+    FirebaseFirestore.instance.
+    collection('users').
+    doc('60G1SVVEz9OulifBubcr6YdqAti1').
+    get().
+    then((value) {
+      model = UserModel.fromJson(value.data());
+      emit(GetAdminDataSuccessState());
+    }).catchError((error) {
+      emit(GetAdminDataErrorState(error));
+      print(error.toString());
+    });
+  }
+
   List<UserModel> users = [];
 
   void getUsers()

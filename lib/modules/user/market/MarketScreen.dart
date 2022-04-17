@@ -16,8 +16,8 @@ class MarketingScreen extends StatelessWidget {
      builder: (context,state)
      {
        return Scaffold(
-         appBar: buildAppBar(
-             title: 'Marketing ',
+         appBar: AppBar(
+             title: Text('Marketing '),
              actions:
              [
                IconButton(

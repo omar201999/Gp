@@ -132,11 +132,11 @@ class MarketitemScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                defaultHeadLineText(
-                                    context, text:
-                                'Availability In Stock',
-                                  fontWeight: FontWeight.w900
-                                ),
+                                  defaultHeadLineText(
+                                     context, text:
+                                   'Availability In Stock',
+                                   fontWeight: FontWeight.w900
+                                  ),
                                 defaultBodyText(context,
                                     text: '${productModel.quantity }'
                                 ),
@@ -147,6 +147,7 @@ class MarketitemScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                     if (productModel.quantity != 0)
                       defaultButton(
                           context,
                           onPreesed: ()
@@ -168,7 +169,8 @@ class MarketitemScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      defaultButton(
+                      if (productModel.quantity != 0)
+                        defaultButton(
                           context,
                           onPreesed: ()
                           {

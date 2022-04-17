@@ -34,6 +34,7 @@ async{
           WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();
       await Firebase.initializeApp();
+
       var token = await FirebaseMessaging.instance.getToken();
       print(token);
 
@@ -43,7 +44,7 @@ async{
         print('on message');
         print(event.data.toString());
 
-        showToast(text: 'on message', state: ToastStates.SUCCESS,);
+        //showToast(text: 'on message', state: ToastStates.SUCCESS,);
       });
 
       // when click on notification to open app
@@ -52,7 +53,7 @@ async{
         print('on message opened app');
         print(event.data.toString());
 
-        showToast(text: 'on message opened app', state: ToastStates.SUCCESS,);
+        //showToast(text: 'on message opened app', state: ToastStates.SUCCESS,);
       });
 
       // background fcm
@@ -60,7 +61,7 @@ async{
 
 
       //Widget widget;
-      uId =   CacheHelper.getData(key: 'uId');
+     // uId =   CacheHelper.getData(key: 'uId');
       print(uId);
       /*if( uId == '60G1SVVEz9OulifBubcr6YdqAti1')
       {
@@ -106,7 +107,7 @@ class MyApp extends StatelessWidget
       providers: [
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => HomeCubit()..getUserData()..getCompleteDiaryItems()..getCartItem()),
-        BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()),
+        BlocProvider(create: (context) => AdminCubit()..getAdminData()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
         listener:(context,state){} ,
@@ -135,6 +136,7 @@ class MainPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             CacheHelper.saveData(key: 'uId', value: snapshot.data!.uid);
+            uId = snapshot.data!.uid;
             return StreamBuilder(
               stream: users.doc(snapshot.data!.uid).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
@@ -157,3 +159,4 @@ class MainPage extends StatelessWidget {
   }
 
 }
+

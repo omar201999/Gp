@@ -14,14 +14,6 @@ class GetUserDataErrorState extends HomeStates
   GetUserDataErrorState(this.error);
 }
 
-class GetAdminDataLoadingState extends HomeStates{}
-
-class GetAdminDataSuccessState extends HomeStates{}
-
-class GetAdminDataErrorState extends HomeStates{
-  final String error;
-  GetAdminDataErrorState(this.error);
-}
 
 class GetProfileImageLoadingState extends HomeStates{}
 

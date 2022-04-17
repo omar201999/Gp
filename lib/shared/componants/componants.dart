@@ -21,7 +21,7 @@ import 'package:gp/shared/styles/icon_broken.dart';
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
-  IconData? icon = Icons.home,
+  IconData? icon,
   //IconData? icon,
   Widget? leadingIcon,
   List<Widget>? actions,
@@ -732,6 +732,15 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
+                  const Spacer(),
+                  if (model.quantity == 0)
+                    const Text(
+                      'Not available now',
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.red
+                      ),
+                    )
                 ],
               ),
 

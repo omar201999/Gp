@@ -37,12 +37,18 @@ class MealItemScreen extends StatelessWidget {
                   [
                     defaultHeadLineText(
                         context,
-                        text: 'Measure is ${mealsModel.Measure}',
+                        text: 'Measure is ${mealsModel.Measure} ',
                     ),
                     SizedBox(
                       height: 5,
                     ),
-                    defaultHeadLineText(
+                    if (mealsModel.Grams == null)
+                      defaultHeadLineText(
+                      context,
+                      text: 'Grams is Follow the Recipe',
+                      ),
+                    if(mealsModel.Grams != null)
+                      defaultHeadLineText(
                       context,
                       text: 'Grams is ${mealsModel.Grams}',
                     ),

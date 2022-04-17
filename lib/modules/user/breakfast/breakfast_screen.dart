@@ -29,7 +29,14 @@ class BreakFastScreen extends StatelessWidget {
           changeChekBox: HomeCubit.get(context).changeCheckBoxBreakFast,
             function: ()
             {
-              HomeCubit.get(context).addBreakFastMeal();
+              if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
+              {
+                showToast(text: 'Please reduce Your Meal your goal is ${HomeCubit.get(context).userModel!.totalCalorie} and your total food is ${HomeCubit.get(context).totalFood} ', state: ToastStates.SUCCESS);
+              }else
+              {
+                HomeCubit.get(context).addBreakFastMeal();
+              }
+
             }
         );
       },

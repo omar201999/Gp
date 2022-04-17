@@ -14,6 +14,7 @@ class GetUserDataErrorState extends HomeStates
   GetUserDataErrorState(this.error);
 }
 
+
 class GetProfileImageLoadingState extends HomeStates{}
 
 class GetProfileImageSuccessState extends HomeStates{}
@@ -63,6 +64,16 @@ class SearchErrorBreakFastState extends HomeStates
   final String error;
 
   SearchErrorBreakFastState(this.error);
+}
+class GetALlMealsLoadingState extends HomeStates {}
+
+class GetALlMealsSuccessState extends HomeStates {}
+
+class GetALlMealsErrorState extends HomeStates
+{
+  final String error;
+
+  GetALlMealsErrorState(this.error);
 }
 class SearchLoadingDinnerState extends HomeStates {}
 
@@ -158,6 +169,12 @@ class SearchAddDinnerErrorState extends HomeStates
 
   SearchAddDinnerErrorState(this.error);
 }
+class AddRecipeToMealErrorState extends HomeStates
+{
+  final String error;
+
+  AddRecipeToMealErrorState(this.error);
+}
 class SearchAddLunchSuccessState extends HomeStates {}
 
 class SearchAddLunchErrorState extends HomeStates
@@ -229,3 +246,15 @@ class CreateOrderLoadingState extends HomeStates {}
 class CreateOrderSuccessState extends HomeStates {}
 
 class CreateOrderErrorState extends HomeStates {}
+
+class GetOrderIdSuccessState extends HomeStates {}
+
+class GetOrderIdErrorState extends HomeStates {}
+class DeleteCompleteDiaryItemSuccessState extends HomeStates {}
+
+class DeleteCompleteDiaryItemErrorState extends HomeStates
+{
+  final String error;
+
+  DeleteCompleteDiaryItemErrorState(this.error);
+}

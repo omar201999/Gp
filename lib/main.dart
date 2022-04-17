@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:gp/shared/bloc_observer.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/cubit/states.dart';
-import 'package:gp/shared/network/api.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'layout/admin_layout/cubit/cubit.dart';
 import 'shared/componants/componants.dart';
@@ -57,10 +58,10 @@ async{
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
 
-      Widget widget;
+      //Widget widget;
       uId =   CacheHelper.getData(key: 'uId');
       print(uId);
-      if( uId == '60G1SVVEz9OulifBubcr6YdqAti1')
+      /*if( uId == '60G1SVVEz9OulifBubcr6YdqAti1')
       {
         widget = AdminLayout();
         print(uId.toString());
@@ -75,10 +76,10 @@ async{
         widget = HomeLayout();
         print(uId.toString());
 
-      }
+      }*/
 
       runApp( MyApp(
-        startWidget: widget,
+        //startWidget: widget,
       )); //isDark!
 
 
@@ -103,8 +104,8 @@ class MyApp extends StatelessWidget
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()),
-        BlocProvider(create: (context) => HomeCubit()..getUserData()..getCompleteDiaryItems()..getCartItem()),
-        BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()),
+        BlocProvider(create: (context) => HomeCubit()..getUserData()..getCompleteDiaryItems()..getCartItem()..getAllMeals()),
+        BlocProvider(create: (context) => AdminCubit()..getAdminData()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
         listener:(context,state){} ,
@@ -114,10 +115,44 @@ class MyApp extends StatelessWidget
             theme: lightTheme,
             darkTheme: darkTheme ,
             themeMode: ThemeMode.light,
-            home: startWidget,
+            home: MainPage(),
           );
         },
       ),
+    );
+  }
+
+}
+
+class MainPage extends StatelessWidget {
+
+  CollectionReference users =  FirebaseFirestore.instance.collection('users');
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            CacheHelper.saveData(key: 'uId', value: snapshot.data!.uid);
+            uId =snapshot.data!.uid;
+            return StreamBuilder(
+              stream: users.doc(snapshot.data!.uid).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
+                if(snapshot.hasData && snapshot.data != null) {
+                  final user = snapshot.data!.data();
+                  if(user!['status'] == 'admin') {
+                    return AdminLayout();
+                  } else {
+                    return HomeLayout();
+                  }
+                }
+                return const Center(child: CircularProgressIndicator());
+              }
+
+          );
+        }
+          return LoginScreen();
+        },
     );
   }
 

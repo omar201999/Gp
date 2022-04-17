@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/Lunch/lunch_screen.dart';
 import 'package:gp/modules/user/breakfast/breakfast_screen.dart';
 import 'package:gp/modules/user/complete_diary/complete_diary_screen.dart';
+import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
 import 'package:gp/modules/user/dinner/dinner_screen.dart';
+import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
+import 'package:gp/modules/user/recipe/recipe_screen.dart';
 import 'package:gp/modules/user/snacks/snacks_screen.dart';
 import 'package:gp/modules/user/water_tracker/water_tracker_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:iconsax/iconsax.dart';
 
 class HomePage extends StatelessWidget
 {
-
-
 
   @override
   Widget build(BuildContext context)
@@ -38,7 +42,7 @@ class HomePage extends StatelessWidget
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                   DrawerHeader(
+                   /*DrawerHeader(
                     decoration: BoxDecoration(
                       color: Colors.blue,
                     ),
@@ -60,29 +64,38 @@ class HomePage extends StatelessWidget
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            color: Colors.white
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  ListTile(
-                    title: Text('Item 1'),
+                  ),*/
+                  InkWell(
                     onTap: () {
-                      // Update the state of the app
-                      // ...
-                      // Then close the drawer
-                      //navigateTo(context, MarketingScreen());
-                      Navigator.pop(context);
+                      navigateTo(context, CustomerDashBoardScreen());
                     },
+                    child: drawerHeader(HomeCubit.get(context).userModel!),
                   ),
-                  ListTile(
-                    title: const Text('Item 2'),
-                    onTap: () {
-                      // Update the state of the app
-                      // ...
-                      // Then close the drawer
-                      Navigator.pop(context);
-                    },
+                  buildMenuItem(
+                      text: 'Home',
+                      icon: IconBroken.Home,
+                      onClicked: () {
+                        navigateTo(context, HomePage());
+                      }
+                  ),
+                  buildMenuItem(
+                      text: 'Market',
+                      icon: Iconsax.shop,
+                      onClicked: () {
+                        navigateTo(context, MarketingScreen());
+                      }
+                  ),
+                  buildMenuItem(
+                      text: 'Recipes',
+                      icon: Icons.restaurant_menu,
+                      onClicked: () {
+                        navigateTo(context, RecipeScreen());
+                      }
                   ),
                   const Divider(),
                   const SizedBox(
@@ -100,7 +113,7 @@ class HomePage extends StatelessWidget
             ),
             appBar: AppBar(
               title: Text('Home'),
-              actions:
+             /* actions:
               [
                 defaultTextButton(
                   context,
@@ -111,7 +124,7 @@ class HomePage extends StatelessWidget
                     signOut(context,);
                   },
                 ),
-              ],
+              ],*/
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -173,8 +186,8 @@ class HomePage extends StatelessWidget
                           context,
                           title: 'Calories Remaining',
                           calorieText: '${HomeCubit.get(context).userModel!.totalCalorie}',
-                          foodText: '${HomeCubit.get(context).food()}',
-                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).food()}',
+                          foodText: '${HomeCubit.get(context).calculateTotalFoodCalories()}',
+                          remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).calculateTotalFoodCalories()!}',
                         ),
 
                         SizedBox(

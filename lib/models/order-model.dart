@@ -2,7 +2,7 @@
 
 class OrderModel{
   //String? orderId;
-  String? userId;
+  String? userName;
   double? totalPrice;
   double? shipping;
   double? total;
@@ -12,7 +12,7 @@ class OrderModel{
 
   OrderModel({
     //this.orderId,
-    this.userId,
+    this.userName,
     this.totalPrice,
     this.shipping,
     this.total,
@@ -24,7 +24,7 @@ class OrderModel{
 
   OrderModel.fromJson(Map<String, dynamic>? json) {
     //orderId = json!['orderId'];
-    userId = json!['userId'];
+    userName = json!['userName'];
     totalPrice = json['totalPrice'];
     shipping = json['shipping'];
     total = json['total'];
@@ -35,7 +35,7 @@ class OrderModel{
   {
     return {
       //'orderId':orderId,
-      'userId': userId,
+      'userName': userName,
       'totalPrice': totalPrice,
       'shipping': shipping,
       'total': total,

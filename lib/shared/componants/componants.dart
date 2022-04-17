@@ -21,7 +21,7 @@ import 'package:gp/shared/styles/icon_broken.dart';
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
-  IconData? icon = Icons.home,
+  IconData? icon,
   //IconData? icon,
   Widget? leadingIcon,
   List<Widget>? actions,
@@ -187,6 +187,7 @@ Widget defaultBodyText(BuildContext context,{
   FontWeight? fontWeight ,
   double? fontSize,
   Color? color,
+  int? maxLines,
 
 }) => Text(
   text,
@@ -195,6 +196,8 @@ Widget defaultBodyText(BuildContext context,{
     fontSize: fontSize,
     color: color,
   ),
+  maxLines: maxLines,
+
 );
 
 Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
@@ -732,6 +735,15 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
+                  const Spacer(),
+                  if (model.quantity == 0)
+                    const Text(
+                      'Not available now',
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.red
+                      ),
+                    )
                 ],
               ),
 
@@ -799,7 +811,7 @@ Widget buildMealItem(MealsModel model,context,{
 
                   ),
                   SizedBox(
-                    width: 3,
+                    width: 2,
                   ),
 
                   Text(
@@ -873,7 +885,7 @@ Widget buildSerachMealItem (list,context,
               SizedBox(
                 width: 5,
               ),
-            if(state is ChangeCheckBoxState)
+            if(state is ChangeCheckBoxState && isChecked.any((element) => element == true) )
               defaultTextButton(context,
                 function: function,
                 text: 'Add',
@@ -914,6 +926,7 @@ Widget buildSerachMealItem (list,context,
                       value: isChecked[index],
                       onChanged: (value)
                       {
+                        
                         changeChekBox(value, index);
                       },
 
@@ -1047,9 +1060,7 @@ Widget  BuildOrderItem (UserModel userModel,ProductModel model,context,index)=> 
                 SizedBox(
                   width: 140,
                 ),
-                defaultTextButton(context, function: (){},
-                    text: 'Confirm'
-                ),
+
               ],
             )
 

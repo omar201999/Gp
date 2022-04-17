@@ -8,6 +8,7 @@ class ProductModel{
   int? quantity;
   String? status;
   String? uId;
+  String? userName;
 
   ProductModel({
     this.name,
@@ -18,7 +19,8 @@ class ProductModel{
     this.discount,
     this.quantity,
     this.status,
-    this.uId
+    this.uId,
+    this.userName
   });
 
   ProductModel.fromJson(Map<String, dynamic>? json) {
@@ -31,6 +33,7 @@ class ProductModel{
     discount = json['discount'];
     status = json['status'];
     quantity = json['quantity'];
+    userName = json['userName'];
 
   }
 
@@ -46,6 +49,7 @@ class ProductModel{
       'discount': discount,
       'status': status,
       'quantity': quantity,
+      'userName': userName,
     };
   }
 

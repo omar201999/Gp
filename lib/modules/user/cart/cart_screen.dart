@@ -84,12 +84,11 @@ class CartScreen extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          //fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                       ),
                     ),
-                    Spacer(),
                     IconButton(
                       onPressed: () {
                         HomeCubit.get(context).deleteCartItem(model.uId);

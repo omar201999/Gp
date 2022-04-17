@@ -33,7 +33,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return BlocConsumer<HomeCubit,HomeStates>(
       listener: (context,state){},
       builder: (context,state){
-
         var model = HomeCubit.get(context).userModel;
 
         nameController.text = model!.name!;

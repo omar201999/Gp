@@ -493,10 +493,12 @@ class HomeCubit extends Cubit<HomeStates> {
         .then((value) {
       getCartItem();
       emit(AddCartItemSuccessState());
+
     }).catchError((error) {
       emit(AddCartItemErrorState(error));
       print(error.toString());
     });
+
   }
 
 

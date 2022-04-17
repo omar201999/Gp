@@ -344,6 +344,38 @@ class HomeCubit extends Cubit<HomeStates> {
       }
     }
   }
+  void addRecipeToMeals({
+  required num calories,
+    required num carbs,
+    required num fat,
+    required num protein,
+    required String? title,
+
+
+
+  }) {
+    MealsModel model = MealsModel(
+        Food: title,
+        Measure:'Follow the Recipe',
+        Calories:calories ,
+        Carbs: carbs,
+        Fat: fat,
+        Protein: protein,
+    );
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel!.uId)
+            .collection('userMeal')
+            .add(model.toMap())
+            .then((value) {
+          calculateTotalFoodCalories();
+          getCompleteDiaryItems();
+        }).catchError((error) {
+          emit(AddRecipeToMealErrorState(error.toString()));
+          print(error.toString());
+        });
+
+  }
   List<bool> isCheckeditem = List<bool>.filled(100, false);
   void changeCheckBoxitem(value, index) {
     isCheckeditem[index] = value;

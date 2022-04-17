@@ -169,6 +169,12 @@ class SearchAddDinnerErrorState extends HomeStates
 
   SearchAddDinnerErrorState(this.error);
 }
+class AddRecipeToMealErrorState extends HomeStates
+{
+  final String error;
+
+  AddRecipeToMealErrorState(this.error);
+}
 class SearchAddLunchSuccessState extends HomeStates {}
 
 class SearchAddLunchErrorState extends HomeStates

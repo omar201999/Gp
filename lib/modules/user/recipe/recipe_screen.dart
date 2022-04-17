@@ -19,8 +19,8 @@ class RecipeScreen extends StatelessWidget {
     builder: (context,state)
     {
      return Scaffold(
-       appBar: buildAppBar(
-           title: 'Recipe ',
+       appBar: AppBar(
+           title: Text('Recipe '),
            actions:
            [
              IconButton(

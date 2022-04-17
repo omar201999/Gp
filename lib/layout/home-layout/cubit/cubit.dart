@@ -39,7 +39,8 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-/*  List<UserModel> admin = [];
+/*
+ List<UserModel> admin = [];
   void getAdminData() {
     emit(GetAdminDataLoadingState());
     FirebaseFirestore.instance.
@@ -652,7 +653,7 @@ class HomeCubit extends Cubit<HomeStates> {
     }
     return totalFats;
   }
-  
+
 
 
 /*void createOrder ({

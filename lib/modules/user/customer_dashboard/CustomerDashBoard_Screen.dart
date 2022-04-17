@@ -6,6 +6,7 @@ import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
 
+import '../edit_goal_screen/edit_goal_screen.dart';
 import '../edit_profile/edit_profile_screen.dart';
 
 class CustomerDashBoardScreen extends StatelessWidget {
@@ -26,7 +27,7 @@ class CustomerDashBoardScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  color: Colors.grey[200],
+                  color: Colors.grey[50],
                   child: Column(
                     children: [
                       Container(
@@ -63,13 +64,16 @@ class CustomerDashBoardScreen extends StatelessWidget {
                       Column(
                         children: [
                           defaultHeadLineText(context, text: '${userModel?.name}'),
-                          SizedBox(
-                            height: 5,
-                          ),
+
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsetsDirectional.only(
+                          top: 5,
+                          start: 20,
+                          end: 20,
+                          bottom: 10,
+                        ),
                         child: defaultContainer(
                           width: double.infinity,
                           child: Padding(
@@ -121,7 +125,15 @@ class CustomerDashBoardScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                defaultHeadLineText(context, text: 'Goal',color: defaultColor),
+                                Row(
+                                  children: [
+                                    defaultHeadLineText(context, text: 'Goal',color: defaultColor),
+                                    Spacer(),
+                                    defaultTextButton(context, function: (){
+                                      navigateTo(context, EditGoalScreen());
+                                    }, text: 'Edit Goal')
+                                  ],
+                                ),
                                 SizedBox(height: 20,),
                                 secondPart(
                                     context,
@@ -136,6 +148,7 @@ class CustomerDashBoardScreen extends StatelessWidget {
                                     subHeadLine2: '${userModel.totalCalorie}g' ,
                                     caption: 'Carbs ${userModel.totalCarbs}g , fat ${userModel.totalFats}g , protein ${userModel.totalProtein}g'
                                 ),
+                                SizedBox(height: 20,),
                               ],
                             ),
                           ),

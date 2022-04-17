@@ -218,7 +218,6 @@ class _AddInformationState extends State<AddInformation>
                           },
 
                         ),
-
                       ],
                     ),
                   ),
@@ -474,8 +473,6 @@ class _AddInformationState extends State<AddInformation>
                             });
                           },
                         ),
-
-
                       ],
                     ),
                   ),
@@ -724,19 +721,24 @@ class _AddInformationState extends State<AddInformation>
                   text: 'Register Now ',
                   onPreesed: ()
                     {
-                      if(formKey.currentState!.validate())
-                      {
-                        navigateTo(context, RegisterScreen(
-                          weight: double.parse(weightController.text),
-                          height: double.parse(heightController.text),
-                          gender: isMale ? 'Male' : 'Female',
-                          goalWeight: double.parse(goalWeightController.text),
-                          goal: goal,
-                          active: active,
-                          isMale: isMale,
-                          age: int.parse(ageController.text),
-                        ));
-
+                      if(formKey.currentState!.validate()) {
+                        if (active == null || goal == null) {
+                          showToast(
+                              text: 'please enter your active and your goal',
+                              state: ToastStates.ERROR);
+                        }
+                        else {
+                          navigateTo(context, RegisterScreen(
+                            weight: double.parse(weightController.text),
+                            height: double.parse(heightController.text),
+                            gender: isMale ? 'Male' : 'Female',
+                            goalWeight: double.parse(goalWeightController.text),
+                            goal: goal,
+                            active: active,
+                            isMale: isMale,
+                            age: int.parse(ageController.text),
+                          ));
+                        }
                       }
 
                     },

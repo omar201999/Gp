@@ -108,34 +108,39 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void updateUser({
     double? height,
-    required String? name,
-    String? active,
-    required int? age,
+    String? name,
+    double? active,
+    int? age,
     String? goal,
-    required double? goalWeight,
+    double? goalWeight,
     String? profileImage,
-    required double? weight,
-    int? totalWater
+    double? weight,
+    int? totalWater,
+    int? totalCalorie,
+    int? totalProtein,
+    int? totalCarbs,
+    int? totalFats,
+
   }) {
     UserModel model = UserModel(
       height: userModel!.height,
       profileImage: profileImage ?? userModel!.profileImage,
       uId: userModel!.uId,
-      name: name,
+      name: name ?? userModel!.name,
       email: userModel!.email,
-      active: userModel!.active,
-      age: age,
+      active: active?? userModel!.active,
+      age: age ?? userModel!.age,
       gender: userModel!.gender,
-      goal: userModel!.goal,
-      goalWeight: goalWeight,
+      goal: goal ?? userModel!.goal ,
+      goalWeight: goalWeight ?? userModel!.goalWeight,
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
-      totalCalorie: userModel!.totalCalorie,
-      totalCarbs: userModel!.totalCarbs,
-      totalFats: userModel!.totalFats,
-      totalProtein: userModel!.totalProtein,
-      weight: weight,
-      totalWater: userModel!.totalWater??totalWater,
+      totalCalorie: totalCalorie ?? userModel!.totalCalorie,
+      totalCarbs: totalCarbs ?? userModel!.totalCarbs,
+      totalFats: totalFats ?? userModel!.totalFats ,
+      totalProtein: totalProtein ??userModel!.totalProtein ,
+      weight: weight ?? userModel!.weight,
+      totalWater: userModel!.totalWater ?? totalWater,
     );
 
     FirebaseFirestore.instance
@@ -618,11 +623,13 @@ class HomeCubit extends Cubit<HomeStates> {
   double calculateTotalPriceOfCartItems(){
     totalPrice = 0;
     for(int i = 0 ; i < cart.length ; i++){
-      totalPrice = totalPrice + (cart[i].currentPrice)!.round();
+      totalPrice = (totalPrice + (cart[i].currentPrice)!.round());
     }
-    return totalPrice ;
+
+    return totalPrice;
   }
 
+  /*
   void createOrder ({
     required double totalPrice,
     required double total,
@@ -645,6 +652,8 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(CreateOrderErrorState());
     });
   }
+
+
   List<OrderModel> orders = [];
   List<String> ordersId = [];
 
@@ -670,6 +679,7 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }*/
 
+
   void addProductToOrders(String? prodId,{
     required String? name,
     String? image,
@@ -691,21 +701,97 @@ class HomeCubit extends Cubit<HomeStates> {
       quantity: quantity,
       uId: uId1,
     );
+    for(int i = 0 ; i < ordersId.length ; i++) {
+      FirebaseFirestore.instance
+          .collection('orders')
+          .doc(ordersId[i])
+          .collection('products')
+          .add(model.toMap())
+          .then((value) {
+        //getCartItem();
+        emit(AddCartItemSuccessState());
+      }).catchError((error) {
+        emit(AddCartItemErrorState(error));
+        print(error.toString());
+      });
+    }
+  }
+  */
 
+  List<String> ordersId = [] ;
+  List<OrderModel> orders = [] ;
+
+  void createOrder ({
+    required double totalPrice,
+    required double total,
+  })
+  {
+    emit(CreateOrderLoadingState());
+    OrderModel createOrder = OrderModel(
+      totalPrice: totalPrice ,
+      total: total,
+      shipping: 100 ,
+      userId: userModel!.uId ,
+    );
+    FirebaseFirestore.instance
+    .collection('orders')
+    .add(createOrder.toMap())
+    .then((value){
+      getOrders();
+      emit(CreateOrderSuccessState());
+    })
+    .catchError((error){
+      emit(CreateOrderErrorState());
+    });
+  }
+
+  void getOrders(){
     FirebaseFirestore.instance
         .collection('orders')
-        .doc(prodId)
-        .collection('products')
-        .add(model.toMap())
-        .then((value) {
-      //getCartItem();
-      emit(AddCartItemSuccessState());
-    }).catchError((error) {
-      emit(AddCartItemErrorState(error));
-      print(error.toString());
-    });
-
+        .get()
+        .then((value){
+          value.docs.forEach((element){
+            element.reference.collection('products').get()
+                .then((value) {
+                  ordersId.add(element.id) ;
+                  orders.add(OrderModel.fromJson(element.data()));
+            })
+                .catchError((error){});
+          });
+    })
+        .catchError((error){});
   }
+
+  void addProductToOrders (String orderId, {
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    String? uId1,
+}){
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
+    FirebaseFirestore.instance
+    .collection('orders')
+    .doc(orderId)
+    .collection('products')
+    .add(model.toMap())
+    .then((value){})
+    .catchError((error){});
+}
+
+
   List<int> totalFoodCal = [];
   int totalCal = 0 ;
   int food()

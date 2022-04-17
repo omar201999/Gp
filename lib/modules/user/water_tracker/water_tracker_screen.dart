@@ -35,6 +35,12 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                       goalWeight: userModel.goalWeight,
                       weight: userModel.weight,
                       totalWater: counter,
+                      totalProtein: userModel.totalProtein,
+                      totalCalorie: userModel.totalCalorie,
+                      totalCarbs: userModel.totalCarbs,
+                      totalFats: userModel.totalFats,
+                      active: userModel.active,
+
                     );
                   },
                   icon: IconBroken.Arrow___Left_2,

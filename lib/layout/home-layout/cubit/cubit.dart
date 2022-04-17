@@ -39,26 +39,6 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-/*
- List<UserModel> admin = [];
-  void getAdminData() {
-    emit(GetAdminDataLoadingState());
-    FirebaseFirestore.instance.
-    collection('users').
-    where('status', isEqualTo: 'admin').
-    get().
-    then((value) {
-      value.docs.forEach((element)
-      {
-        admin.add(UserModel.fromJson(element.data()));
-      });
-      emit(GetAdminDataSuccessState());
-    }).catchError((error) {
-      emit(GetAdminDataErrorState(error));
-      print(error.toString());
-    });
-  }*/
-
   int currentIndex = 0;
   List<Widget> bodyScreen =
   [
@@ -211,6 +191,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<MealsModel> searchLunch = [];
 
   void getSearchLunch(String value) {
+    emit(SearchLoadingLunchState());
     searchLunch = [];
     searchLunch = allMeals.where((element) => element.Food!.toLowerCase().contains(value.toLowerCase())).toList();
     emit(SearchSuccessLunchState());
@@ -227,6 +208,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<MealsModel> searchSnacks = [];
 
   void getSearchSnacks(String value) {
+    emit(SearchLoadingSnacksState());
     searchSnacks = [];
     searchSnacks = allMeals.where((element) => element.Food!.toLowerCase().contains(value.toLowerCase())).toList();
     emit(SearchSuccessSnacksState());
@@ -261,6 +243,7 @@ class HomeCubit extends Cubit<HomeStates> {
     isCheckedSnacks[index] = value;
     emit(ChangeCheckBoxState());
   }
+
   void addSnacksMeal() {
     int i = 0;
     for ( i;isCheckedSnacks.length>0; i++) {
@@ -415,8 +398,7 @@ class HomeCubit extends Cubit<HomeStates> {
       getCompleteDiaryItems();
 
     }).catchError((error){
-
-      emit(DeleteCompleteDiaryItemErrorState(error.toString()));
+      emit(GetAllUsersMealsErrorState(error.toString()));
       print(error.toString());
     });
   }
@@ -610,9 +592,10 @@ class HomeCubit extends Cubit<HomeStates> {
   double calculateTotalPriceOfCartItems(){
     totalPrice = 0;
     for(int i = 0 ; i < cart.length ; i++){
-      totalPrice = totalPrice + (cart[i].currentPrice)!.round();
+      totalPrice = (totalPrice + (cart[i].currentPrice)!.round());
     }
-    return totalPrice ;
+
+    return totalPrice;
   }
 
   void addProductToOrders()
@@ -689,6 +672,8 @@ class HomeCubit extends Cubit<HomeStates> {
 
 
 /*void createOrder ({
+  /*
+  void createOrder ({
     required double totalPrice,
     required double total,
 
@@ -715,6 +700,9 @@ class HomeCubit extends Cubit<HomeStates> {
 
 
   }
+
+
+  List<OrderModel> orders = [];
   List<String> ordersId = [];
   void getOrdersId()
   {
@@ -738,6 +726,144 @@ class HomeCubit extends Cubit<HomeStates> {
       print(error.toString());
     });
   }*/
+      emit(AdminGetAllOrdersSuccessState());
+
+    }).catchError((error) {
+      print(error.toString());
+      emit(AdminGetAllOrdersErrorState(error.toString()));
+    });
+  }*/
+
+
+  void addProductToOrders(String? prodId,{
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    required String? uId1,
+  })
+  {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
+    for(int i = 0 ; i < ordersId.length ; i++) {
+      FirebaseFirestore.instance
+          .collection('orders')
+          .doc(ordersId[i])
+          .collection('products')
+          .add(model.toMap())
+          .then((value) {
+        //getCartItem();
+        emit(AddCartItemSuccessState());
+      }).catchError((error) {
+        emit(AddCartItemErrorState(error));
+        print(error.toString());
+      });
+    }
+  }
+  */
+
+  List<String> ordersId = [] ;
+  List<OrderModel> orders = [] ;
+
+  void createOrder ({
+    required double totalPrice,
+    required double total,
+  })
+  {
+    emit(CreateOrderLoadingState());
+    OrderModel createOrder = OrderModel(
+      totalPrice: totalPrice ,
+      total: total,
+      shipping: 100 ,
+      userId: userModel!.uId ,
+    );
+    FirebaseFirestore.instance
+    .collection('orders')
+    .add(createOrder.toMap())
+    .then((value){
+      getOrders();
+      emit(CreateOrderSuccessState());
+    })
+    .catchError((error){
+      emit(CreateOrderErrorState());
+    });
+  }
+
+  void getOrders(){
+    FirebaseFirestore.instance
+        .collection('orders')
+        .get()
+        .then((value){
+          value.docs.forEach((element){
+            element.reference.collection('products').get()
+                .then((value) {
+                  ordersId.add(element.id) ;
+                  orders.add(OrderModel.fromJson(element.data()));
+            })
+                .catchError((error){});
+          });
+    })
+        .catchError((error){});
+  }
+
+  void addProductToOrders (String orderId, {
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required String? description,
+    String? uId1,
+}){
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      uId: uId1,
+    );
+    FirebaseFirestore.instance
+    .collection('orders')
+    .doc(orderId)
+    .collection('products')
+    .add(model.toMap())
+    .then((value){})
+    .catchError((error){});
+}
+
+
+  List<int> totalFoodCal = [];
+  int totalCal = 0 ;
+  int food()
+  {
+    totalFoodCal = [];
+    totalCal = 0;
+    completeDiary.forEach((element)
+    {
+      totalFoodCal.add(element.Calories!);
+    });
+    for(int i = 0 ; i <= totalFoodCal.length - 1 ; i++)
+    {
+      totalCal = totalCal + totalFoodCal[i] ;
+    }
+    print(totalCal);
+    return totalCal;
+  }
 
 
 }

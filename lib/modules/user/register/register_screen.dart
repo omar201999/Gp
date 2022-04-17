@@ -30,8 +30,6 @@ class RegisterScreen extends StatelessWidget
     required this.isMale,
     required this.age
 
-
-
   });
 
 

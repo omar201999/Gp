@@ -27,6 +27,7 @@ class HomeLayout extends StatelessWidget {
       },
       builder: (context, state)
       {
+
         HomeCubit cubit = HomeCubit.get(context);
         return ConditionalBuilder(
           condition: HomeCubit.get(context).userModel != null && state is! GetUserDataLoadingState,
@@ -72,7 +73,7 @@ class HomeLayout extends StatelessWidget {
                     text: 'Log Out',
                     icon: Icons.logout,
                     onClicked: () {
-                      signOut(context,);
+                     signOut(context);
                     }
                 ),
               ],

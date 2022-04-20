@@ -18,6 +18,10 @@ class UserModel
   int? totalCarbs;
   int? totalFats;
   int? totalWater;
+  bool? userActive;
+  String? phone;
+  String? address;
+
 
   UserModel({
     this.name,
@@ -38,6 +42,9 @@ class UserModel
     this.totalFats,
     this.totalProtein,
     this.totalWater,
+    this.phone,
+    this.address,
+    this.userActive
 
   });
   UserModel.fromJson(Map<String ,dynamic>? json)
@@ -60,10 +67,9 @@ class UserModel
     totalFats=json['totalFats'];
     totalProtein=json['totalProtein'];
     totalWater=json['totalWater'];
-
-
-
-
+    phone=json['phone'];
+    address=json['address'];
+    userActive=json['userActive'];
   }
 
   Map<String ,dynamic> toMap()
@@ -88,6 +94,9 @@ class UserModel
         'totalFats': totalFats,
         'totalProtein': totalProtein,
         'totalWater': totalWater,
+        'phone': phone,
+        'address': address,
+        'userActive': userActive,
 
       };
   }

@@ -144,6 +144,7 @@ class RegisterCubit extends Cubit<RegisterStates>
       totalFats: totalFats,
       totalProtein:totalProtein,
       totalWater: 0,
+      userActive: true,
     );
     print(profileImage.toString());
     FirebaseFirestore.instance.

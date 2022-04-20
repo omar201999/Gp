@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
+import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
@@ -25,21 +26,31 @@ class HomeCubit extends Cubit<HomeStates> {
   static HomeCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
-
-  void getUserData() {
+ void getUserData({
+    UserModel? model
+ })
+ {
+   emit(GetUserDataLoadingState());
+   userModel = model;
+   emit(GetUserDataSuccessState());
+ }
+  /*Future<DocumentSnapshot> getUserData() async{
     emit(GetUserDataLoadingState());
-    FirebaseFirestore.instance.
+    DocumentSnapshot x = await FirebaseFirestore.instance.
     collection('users').
     doc(uId).
-    get().
+    get();
+    userModel = UserModel.fromJson(x.data());
+    return x;
+    *//*.
     then((value) {
       userModel = UserModel.fromJson(value.data());
       emit(GetUserDataSuccessState());
     }).catchError((error) {
       emit(GetUserDataErrorState(error));
       print(error.toString());
-    });
-  }
+    });*//*
+  }*/
 
   int currentIndex = 0;
   List<Widget> bodyScreen =
@@ -126,27 +137,32 @@ class HomeCubit extends Cubit<HomeStates> {
     int? totalCalorie,
     int? totalCarbs,
     int? totalFats,
-    int? totalProtein
+    int? totalProtein,
+    String? phone,
+    String? address,
   }) {
     UserModel model = UserModel(
       height: userModel!.height,
       profileImage: profileImage ?? userModel!.profileImage,
       uId: userModel!.uId,
-      name: name,
+      name: name ?? userModel!.name,
       email: userModel!.email,
       active: userModel!.active,
-      age: age,
+      age: age ?? userModel!.age,
       gender: userModel!.gender,
       goal: userModel!.goal,
-      goalWeight: goalWeight,
+      goalWeight: goalWeight ?? userModel!.goalWeight,
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
       totalCalorie: userModel!.totalCalorie,
       totalCarbs: userModel!.totalCarbs,
       totalFats: userModel!.totalFats,
       totalProtein: userModel!.totalProtein,
-      weight: weight,
+      weight: weight ?? userModel!.weight,
       totalWater: userModel!.totalWater ?? totalWater,
+      phone: phone ?? userModel!.phone,
+      address: address ?? userModel!.address,
+      userActive: userModel!.userActive,
     );
 
     FirebaseFirestore.instance
@@ -154,7 +170,8 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(userModel!.uId)
         .update(model.toMap())
         .then((value) {
-      getUserData();
+
+     emit(UpdateUserDataSuccessState());
     })
         .catchError((error) {
       emit(UpdateUserDataErrorState());
@@ -488,7 +505,6 @@ class HomeCubit extends Cubit<HomeStates> {
       discount: discount,
       quantity: quantity,
       uId: uId1,
-      userName: userModel!.name,
     );
 
     FirebaseFirestore.instance
@@ -605,18 +621,9 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
-  double totalPrice = 0;
 
-  double calculateTotalPriceOfCartItems() {
-    totalPrice = 0;
-    for (int i = 0; i < cart.length; i++) {
-      totalPrice = (totalPrice + (cart[i].currentPrice)!.round());
-    }
 
-    return totalPrice;
-  }
-
-  void addProductToOrders() {
+ /* void addProductToOrders() {
     int i = 0;
     for (i; i < cart.length; i++) {
       FirebaseFirestore.instance
@@ -632,7 +639,7 @@ class HomeCubit extends Cubit<HomeStates> {
         print(error.toString());
       });
     }
-  }
+  }*/
 
   int totalFood = 0;
 
@@ -683,38 +690,50 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
 
-/*void createOrder ({
-  /*
-  void createOrder ({
+  double totalPrice = 0;
+  double calculateTotalPriceOfCartItems() {
+    totalPrice = 0;
+    for (int i = 0; i < cart.length; i++) {
+      totalPrice = (totalPrice + (cart[i].currentPrice)!.round());
+    }
+
+    return totalPrice;
+  }
+
+
+ Future<void> createOrder ({
     required double totalPrice,
     required double total,
 
-}) {
-    //emit(CreateOrderLoadingState());
+}) async{
+
     OrderModel createOrder = OrderModel(
       userName: userModel!.name,
       total: total,
       totalPrice: totalPrice,
       shipping: 100,
+      phone: userModel!.phone,
+      address: userModel!.address,
     );
-      FirebaseFirestore.instance
+    DocumentReference x = await FirebaseFirestore.instance
+           .collection('orders')
+          .add(createOrder.toMap());
+    for (int i = 0; i < cart.length; i++) {
+      await FirebaseFirestore.instance
           .collection('orders')
-          .add(createOrder.toMap())
-          .then((value)
-      {
-        //getOrdersId();
-        addProductToOrders();
-      })
-          .catchError((error){
-        emit(CreateOrderErrorState());
-      });
-
-
-
+          .doc(x.id)
+          .collection('products')
+          .add(cart[i].toMap());
+    }
+    emit(CreateOrderSuccessState());
   }
 
 
-  List<OrderModel> orders = [];
+
+
+
+
+/*List<OrderModel> orders = [];
   List<String> ordersId = [];
   void getOrdersId()
   {
@@ -744,6 +763,3 @@ class HomeCubit extends Cubit<HomeStates> {
 
 
 
-
-*/
-}

@@ -34,7 +34,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       listener: (context,state){},
       builder: (context,state){
         var model = HomeCubit.get(context).userModel;
-
         nameController.text = model!.name!;
         ageController.text ='${model.age}' ;
         weightController.text ='${ model.weight}';
@@ -109,8 +108,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
-                      children: [
-                        defaultTextFormField(type: TextInputType.text,
+                      children:
+                      [
+                        defaultTextFormField(
+                            type: TextInputType.text,
                             label: 'Name',
                             border: OutlineInputBorder(),
                             prefix: Icons.person,

@@ -211,5 +211,16 @@ class AdminGetAllOrdersErrorState extends AdminStates
 
   AdminGetAllOrdersErrorState(this.error);
 }
+class AdminGetAllProductsOrdersLoadingState extends AdminStates {}
+
+class AdminGetAllProductsOrdersSuccessState extends AdminStates {}
+
+class AdminGetAllProductsOrdersErrorState extends AdminStates
+{
+  final String error;
+
+  AdminGetAllProductsOrdersErrorState(this.error);
+}
+
 
 class RemoveProductImageState extends AdminStates{}

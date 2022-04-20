@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
@@ -10,7 +11,6 @@ import 'package:gp/modules/admin/admin_dashboard/dashboard_screen.dart';
 import 'package:gp/modules/admin/market_management/market_management.dart';
 import 'package:gp/modules/admin/recipe_management/recipes_management_screen.dart';
 import 'package:gp/modules/admin/users_management/users_management.dart';
-import 'package:gp/shared/componants/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -20,26 +20,11 @@ class AdminCubit extends Cubit<AdminStates>
 
   static AdminCubit get(context) => BlocProvider.of(context);
 
-  UserModel? adminModel;
-  void getAdminData() {
-    emit(GetAdminDataLoadingState());
-    FirebaseFirestore.instance.
-    collection('users').
-    doc(uId).
-    get().
-    then((value) {
-      adminModel = UserModel.fromJson(value.data());
-      emit(GetAdminDataSuccessState());
-    }).catchError((error) {
-      emit(GetAdminDataErrorState(error));
-      print(error.toString());
-    });
-  }
+
   int currentIndex = 0 ;
   List<Widget> screens = [
     DashboardScreen(),
     UsersManagementScreen(),
-
     RecipesManagementScreen(),
     MarketManagementScreen()
   ];
@@ -50,17 +35,12 @@ class AdminCubit extends Cubit<AdminStates>
     'Market'
   ];
 
-
-
   changeBottomNav(index) {
     currentIndex = index;
     emit(ChangeBottomNavState());
   }
-
-
-
+  // cubit for user
   List<UserModel> users = [];
-
   void getUsers()
   {
     emit(AdminGetAllUsersLoadingState());
@@ -713,25 +693,56 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
 
- List<ProductModel> orders = [];
+  List<OrderModel> orders = [];
+  List<String> ordersId = [];
 
   void getOrders()
   {
     emit(AdminGetAllOrdersLoadingState());
     orders = [];
-    FirebaseFirestore.instance.collection('orders')
-        .get().then((value)
+    FirebaseFirestore.instance
+        .collection('orders')
+        .get()
+        .then((value)
     {
       value.docs.forEach((element)
       {
-        orders.add(ProductModel.fromJson(element.data()));
+        ordersId.add(element.id);
+        orders.add(OrderModel.fromJson(element.data()));
       });
-      emit(AdminGetAllOrdersSuccessState());
-
+      getProductsOrders();
     }).catchError((error) {
       print(error.toString());
       emit(AdminGetAllOrdersErrorState(error.toString()));
     });
   }
+  List<ProductModel> productsOrders = [];
+  void getProductsOrders({
+    String? id
+  })
+  {
+    //emit(AdminGetAllOrdersLoadingState());
+    for(int i =0 ; i < orders.length; i++ )
+    {
+      productsOrders = [];
+      FirebaseFirestore.instance
+          .collection('orders')
+          .doc(ordersId[i])
+          .collection('products')
+          .get()
+          .then((value)
+      {
+        value.docs.forEach((element)
+        {
+          productsOrders.add(ProductModel.fromJson(element.data()));
+        });
+        emit(AdminGetAllProductsOrdersSuccessState());
+      }).catchError((error) {
+        emit(AdminGetAllProductsOrdersErrorState(error.toString()));
+        print(error.toString());
+      });
+    }
+    }
+
 
 }

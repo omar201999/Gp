@@ -1,14 +1,13 @@
 
-
 class OrderModel{
   //String? orderId;
   String? userName;
   double? totalPrice;
   double? shipping;
   double? total;
+  String? phone;
+  String? address;
 
-
-  //List<ProductModel>? productsOfOrder = [] ;
 
   OrderModel({
     //this.orderId,
@@ -16,8 +15,8 @@ class OrderModel{
     this.totalPrice,
     this.shipping,
     this.total,
-
-    //this.productsOfOrder,
+    this.address,
+    this.phone,
   });
 
 
@@ -28,7 +27,8 @@ class OrderModel{
     totalPrice = json['totalPrice'];
     shipping = json['shipping'];
     total = json['total'];
-
+    phone=json['phone'];
+    address=json['address'];
   }
 
   Map<String, dynamic> toMap()
@@ -39,7 +39,8 @@ class OrderModel{
       'totalPrice': totalPrice,
       'shipping': shipping,
       'total': total,
-
+      'phone': phone,
+      'address': address,
     };
   }
 

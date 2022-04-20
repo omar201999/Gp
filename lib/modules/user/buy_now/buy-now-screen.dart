@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
-import 'package:gp/modules/user/edit_profile/edit_profile_screen.dart';
+import 'package:gp/modules/user/address_and_phone_change_screen/address_and_phone_change_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 
 import '../../../shared/styles/icon_broken.dart';
@@ -36,7 +36,17 @@ class BuyNowScreen extends StatelessWidget {
             foregroundColor: Colors.white,
             onPressed: ()
             {
-              navigateTo(context, EditProfileScreen());
+              if( HomeCubit.get(context).userModel!.address != null ||HomeCubit.get(context).userModel!.phone!= null  )
+              {
+                HomeCubit.get(context).createOrder(total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100 , totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems());
+                showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
+              }
+              else
+              {
+                showToast(text: 'pleas enter your address and your phone', state: ToastStates.ERROR);
+              }
+
+
             },
             label: Text('Buy Now'),
 
@@ -57,7 +67,20 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultHeadLineText(context, text: 'Address : '),
                               SizedBox(width: 5,),
-                              Expanded(
+                              if(HomeCubit.get(context).userModel!.address! != null)
+                                Expanded(
+                                child: Text(
+                                  HomeCubit.get(context).userModel!.address!,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .caption,
+                                  maxLines: 2,
+
+                                ),
+                              ),
+                              if(HomeCubit.get(context).userModel!.address! == null)
+                                Expanded(
                                 child: Text(
                                   '9 ali abdelfath street qsr elshama masr elqdema',
                                   style: Theme
@@ -76,8 +99,9 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultHeadLineText(context, text: 'Phone : '),
                               SizedBox(width: 5,),
-                              Text(
-                                '01158822107',
+                              if(HomeCubit.get(context).userModel!.phone! != null)
+                                Text(
+                                HomeCubit.get(context).userModel!.phone!,
                                 style: Theme
                                     .of(context)
                                     .textTheme
@@ -85,9 +109,21 @@ class BuyNowScreen extends StatelessWidget {
                                 maxLines: 2,
 
                               ),
-                              Spacer(),
+                              if(HomeCubit.get(context).userModel!.phone! == null)
+                                Text(
+                                 '01147881089',
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .caption,
+                                  maxLines: 2,
+
+                                ),
+                                Spacer(),
                               TextButton(
-                                  onPressed: () {}, child: Text('change'))
+                                  onPressed: () {
+                                    navigateTo(context, AddressAndPhoneChangeScreen());
+                                  }, child: Text('change'))
                             ],
                           ),
                         ],
@@ -95,9 +131,7 @@ class BuyNowScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  if(HomeCubit
-                      .get(context)
-                      .cart != null)
+                  if(HomeCubit.get(context).cart != null)
                     ListView.separated(
                       itemBuilder: (context, index) => buyNowItem(context, HomeCubit.get(context).cart[index],index),
                       separatorBuilder: (context, index) => SizedBox(height: 10,),

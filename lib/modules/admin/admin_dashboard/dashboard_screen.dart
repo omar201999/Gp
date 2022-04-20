@@ -304,7 +304,7 @@ class DashboardScreen extends StatelessWidget {
                                     color: colors[index],
                                     text: '${AdminCubit.get(context).products[index].name}',
                                     isSquare: true,
-                                    secondText: ((AdminCubit.get(context).products[index].quantity!/totalAmount*100).round()).toString()+'%',
+                                    secondText: ((AdminCubit.get(context).products[index].quantity!/totalAmount*100).ceil()).toString()+'%',
                                     secondTextColor: colors[index]
                                 )
                             ),

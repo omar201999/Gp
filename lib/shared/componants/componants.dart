@@ -326,72 +326,6 @@ Widget buildHomeScreenItem(BuildContext context,{
   ),
 );
 
-Widget buildSelectItem(BuildContext context, int index, {
-  required bool? value,
-  required void Function(bool?)? onChanged,
-
-
-}) => defaultContainer(
-  height: 250,
-  child:   Column(
-
-    children:
-    [
-      Expanded(
-        flex: 2,
-        child: Image(
-          image: AssetImage('assets/images/Recipe1.jpg'),
-          width: double.infinity,
-          fit: BoxFit.cover,
-        ),
-      ),
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: Row(
-                  children:
-                  [
-                    defaultHeadLineText(context, text: 'Egg'),
-                    Spacer(),
-                    Checkbox(
-                        value: value ,
-                        onChanged: onChanged
-                    ),
-
-                  ],
-                ),
-              ),
-              Expanded(
-                child:  Row(
-                  children:
-                  [
-                    defaultBodyText(context, text: '220 cal'),
-                    Spacer(),
-                    defaultBodyText(context, text: '220 cal'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child:  Row(
-                  children:
-                  [
-                    defaultBodyText(context, text: '220 cal'),
-                    Spacer(),
-                    defaultBodyText(context, text: '220 cal'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-    ],
-  ),
-);
 
 Widget afterTitleOfRecipeItem(BuildContext context, {
    String? percentage,
@@ -1018,61 +952,7 @@ Widget  BuildUserItem (UserModel model,context)=> Padding(
 );
 
 
-Widget  BuildOrderItem (UserModel userModel,ProductModel model,context,index)=> SingleChildScrollView(
 
-  child: Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: defaultContainer(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                    'UserName : '
-                ),
-                Text(
-                    '${userModel.name}'
-                ),
-              ],
-            ),
-
-            SizedBox(
-              height: 5.0,
-            ),
-            Row(
-              children: [
-                Text(
-                    'ProductName : '
-                ),
-                Text(
-                    '${model.name}'
-                ),
-              ],
-            ),
-
-            Row(
-              children: [
-                Text(
-                    '${model.currentPrice! * HomeCubit.get(context).Counter[index]}'
-                ),
-                SizedBox(
-                  width: 140,
-                ),
-
-              ],
-            )
-
-
-          ],
-        ),
-      ),
-    ),
-  ),
-);
 
 indicator({
   required Color color,

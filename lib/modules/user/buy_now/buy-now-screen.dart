@@ -82,7 +82,7 @@ class BuyNowScreen extends StatelessWidget {
                               if(HomeCubit.get(context).userModel!.address! == null)
                                 Expanded(
                                 child: Text(
-                                  '9 ali abdelfath street qsr elshama masr elqdema',
+                                  'Pleas enter your address ',
                                   style: Theme
                                       .of(context)
                                       .textTheme
@@ -111,7 +111,7 @@ class BuyNowScreen extends StatelessWidget {
                               ),
                               if(HomeCubit.get(context).userModel!.phone! == null)
                                 Text(
-                                 '01147881089',
+                                 'Pleas enter your phone',
                                   style: Theme
                                       .of(context)
                                       .textTheme

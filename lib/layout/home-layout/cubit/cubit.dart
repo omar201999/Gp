@@ -26,13 +26,20 @@ class HomeCubit extends Cubit<HomeStates> {
   static HomeCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
- void getUserData({
-    UserModel? model
- })
+ void getUserData()
  {
    emit(GetUserDataLoadingState());
-   userModel = model;
-   emit(GetUserDataSuccessState());
+   FirebaseFirestore.instance.
+   collection('users').
+   doc(uId).
+   get().then((value)
+   {
+    userModel = UserModel.fromJson(value.data());
+ emit(GetUserDataSuccessState());
+ }).catchError((error) {
+ emit(GetUserDataErrorState(error.toString()));
+ print(error.toString());
+ });
  }
   /*Future<DocumentSnapshot> getUserData() async{
     emit(GetUserDataLoadingState());
@@ -170,8 +177,8 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(userModel!.uId)
         .update(model.toMap())
         .then((value) {
-
-     emit(UpdateUserDataSuccessState());
+      getUserData();
+     //emit(UpdateUserDataSuccessState());
     })
         .catchError((error) {
       emit(UpdateUserDataErrorState());

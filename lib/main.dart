@@ -17,6 +17,7 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/cubit/states.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'layout/admin_layout/cubit/cubit.dart';
+import 'shared/componants/componants.dart';
 import 'shared/styles/themes.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -35,10 +36,10 @@ async{
       await CacheHelper.init();
       await Firebase.initializeApp();
       var token = await FirebaseMessaging.instance.getToken();
-      //print(token);
+      print(token);
 
       // foreground fcm
-      /*FirebaseMessaging.onMessage.listen((event)
+      FirebaseMessaging.onMessage.listen((event)
       {
         print('on message');
         print(event.data.toString());
@@ -57,7 +58,7 @@ async{
 
       // background fcm
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-*/
+
 
       //Widget widget;
       //uId =   CacheHelper.getData(key: 'uId');
@@ -160,7 +161,7 @@ class MainPage extends StatelessWidget
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                 if(snapshot.hasData && snapshot.data != null) {
                   final user = snapshot.data!.data();
-                  HomeCubit.get(context).getUserData( model: userModel);
+                  HomeCubit.get(context).userModel=userModel;
                   if(user!['status'] == 'admin') {
                     return AdminLayout();
                   } else {

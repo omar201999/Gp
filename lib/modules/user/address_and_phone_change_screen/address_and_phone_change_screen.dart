@@ -20,8 +20,8 @@ class AddressAndPhoneChangeScreen extends StatelessWidget {
       var model = HomeCubit.get(context).userModel;
       if(model!.address == null)
       {
-        addressController.text = '9 ali abdelfath street qsr elshama masr elqdema';
-        phoneController.text = '01147881089';
+        addressController.text = 'Pleas enter your address ';
+        phoneController.text = 'Pleas enter your phone ';
       }else
       {
         addressController.text = model.address!;

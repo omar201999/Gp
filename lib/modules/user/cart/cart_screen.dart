@@ -104,17 +104,7 @@ class CartScreen extends StatelessWidget {
                       onPressed: () {
                         HomeCubit.get(context).minus(index);
                         productQuantity = model.quantity! + 1;
-                          /* HomeCubit.get(context).updateCartItem(
-                            model.uId,
-                            name: model.name,
-                            image: model.image,
-                            uId1: model.uId,
-                            oldPrice: model.oldPrice,
-                            currentPrice: model.currentPrice,
-                            discount: model.discount,
-                            quantity: productQuantity,
-                            description: model.description,
-                          );*/
+
 
                       },
                       icon: Icon (Icons.remove),
@@ -136,18 +126,7 @@ class CartScreen extends StatelessWidget {
                       onPressed: () {
                         HomeCubit.get(context).plus(index);
                           productQuantity = model.quantity! - 1;
-                          /* HomeCubit.get(context).updateCartItem(
-                            model.uId,
-                            name: model.name,
-                            image: model.image,
-                            uId1: model.uId,
-                            oldPrice: model.oldPrice,
-                            currentPrice: model.currentPrice,
-                            discount: model.discount,
-                            quantity: productQuantity,
-                            description: model.description,
-                          );
-*/
+
 
                       },
                       icon: Icon (Icons.add),

@@ -43,7 +43,7 @@ class BuyNowScreen extends StatelessWidget {
               }
               else
               {
-                showToast(text: 'pleas enter your address and your phone', state: ToastStates.ERROR);
+                showToast(text: 'please enter your address and your phone', state: ToastStates.ERROR);
               }
 
 
@@ -67,7 +67,7 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultHeadLineText(context, text: 'Address : '),
                               SizedBox(width: 5,),
-                              if(HomeCubit.get(context).userModel!.address! != null)
+                              if(HomeCubit.get(context).userModel!.address != null)
                                 Expanded(
                                 child: Text(
                                   HomeCubit.get(context).userModel!.address!,
@@ -79,7 +79,7 @@ class BuyNowScreen extends StatelessWidget {
 
                                 ),
                               ),
-                              if(HomeCubit.get(context).userModel!.address! == null)
+                              if(HomeCubit.get(context).userModel!.address == null)
                                 Expanded(
                                 child: Text(
                                   'Pleas enter your address ',
@@ -99,7 +99,7 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultHeadLineText(context, text: 'Phone : '),
                               SizedBox(width: 5,),
-                              if(HomeCubit.get(context).userModel!.phone! != null)
+                              if(HomeCubit.get(context).userModel!.phone != null)
                                 Text(
                                 HomeCubit.get(context).userModel!.phone!,
                                 style: Theme
@@ -109,9 +109,9 @@ class BuyNowScreen extends StatelessWidget {
                                 maxLines: 2,
 
                               ),
-                              if(HomeCubit.get(context).userModel!.phone! == null)
+                              if(HomeCubit.get(context).userModel!.phone == null)
                                 Text(
-                                 'Pleas enter your phone',
+                                 'Please enter your phone',
                                   style: Theme
                                       .of(context)
                                       .textTheme
@@ -156,58 +156,61 @@ class BuyNowScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 20,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .center,
-                                      children: [
-                                        defaultHeadLineText(
-                                            context, text: 'Name : '),
-                                        Text(
-                                          '${productModel!.name}',
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .caption,
-                                          maxLines: 2,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .center,
-                                      children: [
-                                        defaultHeadLineText(
-                                            context, text: 'Quantity : '),
-                                        Text(
-                                          '${productModel!.quantity}',
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .caption,
-                                          maxLines: 2,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .center,
-                                      children: [
-                                        defaultHeadLineText(
-                                            context, text: 'Price : '),
-                                        Text(
-                                          '${productModel!.currentPrice} \$',
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .caption,
-                                          maxLines: 2,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          defaultBodyText(context, text: 'Name : '),
+                                          Expanded(
+                                            child: Text(
+                                              '${productModel!.name}',
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .caption,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
+                                        children: [
+                                          defaultBodyText(
+                                              context, text: 'Quantity : '),
+                                          Text(
+                                            '1',
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .caption,
+                                            maxLines: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
+                                        children: [
+                                          defaultBodyText(
+                                              context, text: 'Price : '),
+                                          Text(
+                                            '${productModel!.currentPrice} \$',
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .caption,
+                                            maxLines: 2,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
 
@@ -225,11 +228,11 @@ class BuyNowScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              defaultHeadLineText(
+                              defaultBodyText(
                                   context, text: 'Total Price : '),
                               Text(
-                                '${HomeCubit.get(context)
-                                    .calculateTotalPriceOfCartItems()} \$',
+                                '${(HomeCubit.get(context)
+            .calculateTotalPriceOfCartItems()) + productModel!.currentPrice!} \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
@@ -240,7 +243,7 @@ class BuyNowScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              defaultHeadLineText(context, text: 'Shipping: '),
+                              defaultBodyText(context, text: 'Shipping: '),
                               Text(
                                 '100 \$',
                                 style: Theme
@@ -253,10 +256,10 @@ class BuyNowScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              defaultHeadLineText(context, text: 'Total  : '),
+                              defaultBodyText(context, text: 'Total  : '),
                               Text(
                                 '${(HomeCubit.get(context)
-                                    .calculateTotalPriceOfCartItems()) +
+                                    .calculateTotalPriceOfCartItems()) + productModel!.currentPrice! +
                                     100} \$',
                                 style: Theme
                                     .of(context)

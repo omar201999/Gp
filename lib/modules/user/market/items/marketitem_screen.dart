@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
-import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -176,7 +175,15 @@ class MarketitemScreen extends StatelessWidget {
                           context,
                           onPreesed: ()
                           {
-                            navigateTo(context, BuyNowScreen(productModel: productModel,));
+                            if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
+                            {
+                              HomeCubit.get(context).createOrderForOneProduct(total: productModel.currentPrice! + 100 , totalPrice: productModel.currentPrice!, productName: productModel.name!);
+                              showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
+                            }
+                            else
+                            {
+                              showToast(text: 'please enter your address and your phone', state: ToastStates.ERROR);
+                            }
                           },
                           text: 'Buy Now',
                       ),

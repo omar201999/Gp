@@ -713,7 +713,6 @@ class HomeCubit extends Cubit<HomeStates> {
     required double total,
 
 }) async{
-
     OrderModel createOrder = OrderModel(
       userName: userModel!.name,
       total: total,
@@ -721,6 +720,8 @@ class HomeCubit extends Cubit<HomeStates> {
       shipping: 100,
       phone: userModel!.phone,
       address: userModel!.address,
+      dateTime: DateTime.now().toString(),
+
     );
     DocumentReference x = await FirebaseFirestore.instance
            .collection('orders')
@@ -734,6 +735,29 @@ class HomeCubit extends Cubit<HomeStates> {
     }
     emit(CreateOrderSuccessState());
   }
+  Future<void> createOrderForOneProduct ({
+    required double totalPrice,
+    required double total,
+    required String productName,
+
+  }) async{
+    OrderModel createOrderForOneProduct = OrderModel(
+      userName: userModel!.name,
+      total: total,
+      totalPrice: totalPrice,
+      shipping: 100,
+      phone: userModel!.phone,
+      address: userModel!.address,
+      dateTime: DateTime.now().toString(),
+      productName: productName,
+
+    );
+   await FirebaseFirestore.instance
+        .collection('orders')
+        .add(createOrderForOneProduct.toMap());
+    emit(CreateOrderSuccessState());
+  }
+
 
 
 

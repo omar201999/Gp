@@ -702,6 +702,7 @@ class AdminCubit extends Cubit<AdminStates>
     orders = [];
     FirebaseFirestore.instance
         .collection('orders')
+        .orderBy('dateTime',descending: false)
         .get()
         .then((value)
     {
@@ -716,6 +717,7 @@ class AdminCubit extends Cubit<AdminStates>
       emit(AdminGetAllOrdersErrorState(error.toString()));
     });
   }
+
   List<ProductModel> productsOrders = [];
   void getProductsOrders({
     String? id
@@ -736,7 +738,15 @@ class AdminCubit extends Cubit<AdminStates>
         {
           productsOrders.add(ProductModel.fromJson(element.data()));
         });
+        for(int i=0; i<productsOrders.length;i++)
+        {
+          print(productsOrders[i].name);
+        }
         emit(AdminGetAllProductsOrdersSuccessState());
+
+        print(productsOrders);
+        print(orders.length);
+        print(ordersId);
       }).catchError((error) {
         emit(AdminGetAllProductsOrdersErrorState(error.toString()));
         print(error.toString());

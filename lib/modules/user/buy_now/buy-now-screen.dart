@@ -11,11 +11,11 @@ import '../../../shared/styles/icon_broken.dart';
 
 class BuyNowScreen extends StatelessWidget {
 
-  ProductModel? productModel;
+ /* ProductModel? productModel;
 
   BuyNowScreen({
     this.productModel
-  });
+  });*/
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class BuyNowScreen extends StatelessWidget {
             foregroundColor: Colors.white,
             onPressed: ()
             {
-              if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone!= null && HomeCubit.get(context).userModel!.address !="" && HomeCubit.get(context).userModel!.phone!= ""  )
+              if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
               {
                 HomeCubit.get(context).createOrder(total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100 , totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems());
                 showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
@@ -131,7 +131,9 @@ class BuyNowScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10,),
+/*
                   if(HomeCubit.get(context).cart != null)
+*/
                     ListView.separated(
                       itemBuilder: (context, index) => buyNowItem(context, HomeCubit.get(context).cart[index],index),
                       separatorBuilder: (context, index) => SizedBox(height: 10,),
@@ -139,7 +141,7 @@ class BuyNowScreen extends StatelessWidget {
                       physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                     ),
-                  SizedBox(height: 10,),
+             /*     SizedBox(height: 10,),
                   if(productModel != null)
                     defaultContainer(
                       child: Padding(
@@ -218,7 +220,7 @@ class BuyNowScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ),
+                    ),*/
                   SizedBox(height: 10,),
                   defaultContainer(
                     child: Padding(
@@ -232,13 +234,25 @@ class BuyNowScreen extends StatelessWidget {
                                   context, text: 'Total Price : '),
                               Text(
                                 '${(HomeCubit.get(context)
-            .calculateTotalPriceOfCartItems()) + productModel!.currentPrice!} \$',
+                                    .calculateTotalPriceOfCartItems())  } \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
                                     .caption,
                                 maxLines: 2,
                               ),
+                              /*if(productModel != null)
+                                Text(
+                                '${(HomeCubit.get(context)
+            .calculateTotalPriceOfCartItems()) + productModel!.currentPrice! } \$',
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .caption,
+                                maxLines: 2,
+                              ),
+                              if(productModel == null)*/
+
                             ],
                           ),
                           Row(
@@ -259,6 +273,16 @@ class BuyNowScreen extends StatelessWidget {
                               defaultBodyText(context, text: 'Total  : '),
                               Text(
                                 '${(HomeCubit.get(context)
+                                    .calculateTotalPriceOfCartItems())  + 100} \$',
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .caption,
+                                maxLines: 2,
+                              ),
+                            /*  if(productModel != null)
+                                Text(
+                                '${(HomeCubit.get(context)
                                     .calculateTotalPriceOfCartItems()) + productModel!.currentPrice! +
                                     100} \$',
                                 style: Theme
@@ -267,6 +291,8 @@ class BuyNowScreen extends StatelessWidget {
                                     .caption,
                                 maxLines: 2,
                               ),
+                              if(productModel == null)*/
+
                             ],
                           ),
                         ],

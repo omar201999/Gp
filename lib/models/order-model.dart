@@ -7,6 +7,10 @@ class OrderModel{
   double? total;
   String? phone;
   String? address;
+  String? dateTime;
+  String? productName;
+
+
 
 
   OrderModel({
@@ -17,6 +21,8 @@ class OrderModel{
     this.total,
     this.address,
     this.phone,
+    this.dateTime,
+    this.productName
   });
 
 
@@ -29,6 +35,9 @@ class OrderModel{
     total = json['total'];
     phone=json['phone'];
     address=json['address'];
+    dateTime=json['dateTime'];
+    productName=json['productName'];
+
   }
 
   Map<String, dynamic> toMap()
@@ -41,6 +50,10 @@ class OrderModel{
       'total': total,
       'phone': phone,
       'address': address,
+      'dateTime': dateTime,
+      'productName': productName,
+
+
     };
   }
 

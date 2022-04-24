@@ -250,9 +250,16 @@ class HomeCubit extends Cubit<HomeStates> {
   void getSearchSnacks(String value) {
     emit(SearchLoadingSnacksState());
     searchSnacks = [];
-    searchSnacks = allMeals.where((element) =>
-        element.Food!.toLowerCase().contains(value.toLowerCase())).toList();
+    searchSnacks = allMeals.where((element) => element.Food!.toLowerCase().contains(value.toLowerCase())).toList();
     emit(SearchSuccessSnacksState());
+  }
+  List<MealsModel> searchPredictedMeal = [];
+
+  void getSearchPredictedMeal(String value) {
+    searchPredictedMeal = [];
+    searchPredictedMeal = allMeals.where((element) => element.Food!.toLowerCase() == value.toLowerCase()).toList();
+    print(value.toLowerCase());
+    emit(SearchPredictedMealState());
   }
 
   List<bool> isCheckedBreakFast = List<bool>.filled(50, false);

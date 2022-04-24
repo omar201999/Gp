@@ -1,0 +1,10 @@
+0 apple
+1 banana
+2 Apricot
+3 Avocado
+4 Onion 
+5 Orange
+6 Peach
+7 Tomato
+8 Strawberry
+9 Pepper Green

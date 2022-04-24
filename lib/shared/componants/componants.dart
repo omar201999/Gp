@@ -814,7 +814,7 @@ Widget buildSerachMealItem (list,context,
               {
                 navigateTo(
                     context,
-                    cameraScreen());
+                    CameraScreen());
               },
             ),
             if(state is ChangeCheckBoxState)

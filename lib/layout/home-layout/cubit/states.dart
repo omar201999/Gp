@@ -58,6 +58,8 @@ class GetAllDinnerRecipeErrorState extends HomeStates
 class SearchLoadingBreakFastState extends HomeStates {}
 
 class SearchSuccessBreakFastState extends HomeStates {}
+class SearchPredictedMealState extends HomeStates {}
+
 
 class SearchErrorBreakFastState extends HomeStates
 {

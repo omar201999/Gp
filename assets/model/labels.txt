@@ -1,10 +1,33 @@
-0 apple
-1 banana
-2 Apricot
-3 Avocado
-4 Onion 
-5 Orange
-6 Peach
-7 Tomato
-8 Strawberry
-9 Pepper Green
+Pepper Green
+Lemon
+Cantaloupe
+Passion Fruit
+Pineapple
+Apricot
+Banana
+Pomegranate
+Pear
+Avocado
+Potato Red
+Plum
+Cucumber Ripe
+Strawberry
+Cactus fruit
+Raspberry
+Tomato
+Pepper Red
+Peach
+Blueberry
+Onion
+Orange
+Watermelon
+Kiwi
+Limes
+Apple Granny Smith
+Apple Braeburn
+Cherry
+Grape Blue
+Corn
+Mango
+Clementine
+Papaya

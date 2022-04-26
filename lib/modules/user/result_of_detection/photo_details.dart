@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class PhotoDetails extends StatelessWidget
 {
@@ -28,36 +30,47 @@ class PhotoDetails extends StatelessWidget
              child: Container(
                child: Column(
                  children: [
-                   Image(
-                     image: FileImage(image) as ImageProvider,
-                     width: double.infinity,
+                   Stack(
+                     children: [
+                       Image(
+                         image: FileImage(image) as ImageProvider,
+                         width: double.infinity,
+                       ),
+                       Padding(
+                         padding: const EdgeInsetsDirectional.only(
+                             top: 30
+                         ),
+                         child: IconButton(
+                           color: Colors.white,
+                           onPressed: () {
+                             Navigator.pop(context);
+                           },
+                           icon: const Icon( IconBroken.Arrow___Left_2 ),
+                         ),
+                       ),
+                     ],
                    ),
                    Padding(
-                     padding: const EdgeInsets.all(20.0),
-                     child: Container(
+                     padding: const EdgeInsets.all(16.0),
+                     child: defaultContainer(
                        child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
                          children: [
                            Padding(
                              padding: const EdgeInsets.all(10.0),
-                             child: Text(
-                               '${HomeCubit.get(context).searchPredictedMeal[0].Food}',
-                               style: TextStyle(
-                                   color: Colors.teal,
-                                   fontSize: 30
-                               ),
+                             child: defaultHeadLineText(
+                               context,
+                               text: '${HomeCubit.get(context).searchPredictedMeal[0].Food}',
+                               fontSize: 30
                              ),
                            ),
                          ],
                        ),
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(10),
-                         color: Colors.white,
-                       ),
                      ),
                    ),
                    Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                     child: Container(
+                     padding: const EdgeInsets.symmetric(horizontal: 16),
+                     child: defaultContainer(
                        child: Padding(
                          padding: const EdgeInsets.all(10.0),
                          child: Expanded(
@@ -66,38 +79,35 @@ class PhotoDetails extends StatelessWidget
                                Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   Text(
-                                     'Protein is ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
-                                     style: TextStyle(
-                                         fontSize: 20
-                                     ),
+                                   defaultHeadLineText(
+                                     context,
+                                     text:'Protein is ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
+                                     fontWeight: FontWeight.w900
                                    ),
                                    SizedBox(
                                      height: 10,
                                    ),
-                                   Text(
-                                     'Calories is ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
-                                     style: TextStyle(
-                                         fontSize: 20
-                                     ),
+                                   defaultHeadLineText(
+                                     context,
+                                     text:'Calories is ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
+                                       fontWeight: FontWeight.w900
+
                                    ),
                                    SizedBox(
                                      height: 10,
                                    ),
-                                   Text(
-                                     'Carbs is ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
-                                     style: TextStyle(
-                                         fontSize: 20
-                                     ),
+                                   defaultHeadLineText(
+                                     context,
+                                     text:'Carbs is ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                       fontWeight: FontWeight.w900
                                    ),
                                    SizedBox(
                                      height: 10,
                                    ),
-                                   Text(
-                                     'Fat is ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
-                                     style: TextStyle(
-                                         fontSize: 20
-                                     ),
+                                   defaultHeadLineText(
+                                     context,
+                                     text:'Fat is ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
+                                       fontWeight: FontWeight.w900
                                    ),
                                  ],
                                )
@@ -105,10 +115,7 @@ class PhotoDetails extends StatelessWidget
                            ),
                          ),
                        ),
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(10),
-                         color: Colors.white,
-                       ),
+
                      ),
                    ),
                  ],

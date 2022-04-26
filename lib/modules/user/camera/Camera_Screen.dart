@@ -8,6 +8,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/result_of_detection/photo_details.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
@@ -76,40 +77,40 @@ class CameraScreenState extends State<CameraScreen>
           ),
           body: _isLoading! ? Container(
             alignment: Alignment.center,
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           ) :
-          Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Image(
-                  image: _image == null ?  NetworkImage('https://clippingpathgreat.com/wp-content/uploads/2021/04/upload-files-1536x1061.jpg') : FileImage(_image!) as ImageProvider ,
-                  width: double.infinity,
+          Column(
+            children: [
+              Image(
+                image: _image == null ?  const NetworkImage('https://clippingpathgreat.com/wp-content/uploads/2021/04/upload-files-1536x1061.jpg') : FileImage(_image!) as ImageProvider ,
+                width: double.infinity,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              _output == null ? Text('') : Padding(
+                padding: const EdgeInsets.all(10),
+                child: defaultContainer(child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: defaultHeadLineText(
+                            context,
+                            text: '${_output![0]['label']}',
+                            fontSize: 30
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                _output == null ? Text('') : defaultHeadLineText(context,text: '${_output![0]['label']}'),
-                Stack(
-                    children: stackChildren
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                defaultButton(
-                    context,
-                    onPreesed: ()
-                    {
-                      print(_output![0]['label']);
-                      HomeCubit.get(context).getSearchPredictedMeal(_output![0]['label']);
-                      navigateTo(context, PhotoDetails(image: _image!,));
+              ),
+              Stack(
+                  children: stackChildren
+              ),
 
-                    }, text: 'show Food Information')
-
-
-                //((res) {return Text( "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",);}).toList(): [],),
-              ],
-            ),
+              //((res) {return Text( "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",);}).toList(): [],),
+            ],
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: ()
@@ -120,6 +121,43 @@ class CameraScreenState extends State<CameraScreen>
                 IconBroken.Camera
             ),
 
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Material(
+
+              color: defaultColor,
+              child: InkWell(
+                onTap: ()
+                {
+                  if(_image != null && _output != null)
+                  {
+                    print(_output![0]['label']);
+                    HomeCubit.get(context).getSearchPredictedMeal(_output![0]['label']);//
+                    navigateTo(context, PhotoDetails(image: _image!,));
+                  }
+                  else
+                    {
+                      showToast(
+                          text: 'please upload Image',
+                          state: ToastStates.ERROR);
+                    }
+
+                },
+                child:  SizedBox(
+                  height: kToolbarHeight,
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      'Show Food Info',
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -145,7 +183,7 @@ class CameraScreenState extends State<CameraScreen>
   async {
     var output = await Tflite.runModelOnImage(
         path: image.path,
-      numResults: 35,
+      numResults: 33,
       imageMean: 127.5,
       imageStd: 127.5,
       threshold: 0.5
@@ -193,7 +231,7 @@ class CameraScreenState extends State<CameraScreen>
   Future loadModel()
   async {
     await Tflite.loadModel(
-      model: "assets/model/food_model.tflite",
+      model: "assets/model/model.tflite",
       labels: "assets/model/labels.txt",
 
     );

@@ -172,11 +172,13 @@ Widget defaultHeadLineText(BuildContext context, {
   required String text,
   FontWeight? fontWeight ,
   Color? color,
+  double? fontSize,
 }) => Text(
   text,
   style: Theme.of(context).textTheme.headline1?.copyWith(
     fontWeight: fontWeight,
     color: color,
+    fontSize: fontSize
   ),
   maxLines: maxLines,
   overflow: overflow,
@@ -1088,7 +1090,7 @@ Widget buildMenuItem({
           title: Text(
             text,
             style: TextStyle(
-                color: color,
+
                 fontSize: 14
             ),
           ),

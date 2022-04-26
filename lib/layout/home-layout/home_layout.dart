@@ -70,7 +70,7 @@ class HomeLayout extends StatelessWidget {
                   height: 15,
                 ),
                 buildMenuItem(
-                    text: 'Log Out',
+                    text: ' 🥺 Log Out ',
                     icon: Icons.logout,
                     onClicked: () {
                      signOut(context);

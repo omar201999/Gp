@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
+import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/user_model.dart';
@@ -509,6 +511,8 @@ class HomeCubit extends Cubit<HomeStates> {
     required int? quantity,
     required String? description,
     required String? uId1,
+    required String? status,
+
   }) {
     ProductModel model = ProductModel(
       name: name,
@@ -519,6 +523,7 @@ class HomeCubit extends Cubit<HomeStates> {
       discount: discount,
       quantity: quantity,
       uId: uId1,
+      status: status
     );
 
     FirebaseFirestore.instance
@@ -715,7 +720,7 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
 
- Future<void> createOrder ({
+ /*Future<void> createOrder ({
     required double totalPrice,
     required double total,
 
@@ -741,11 +746,12 @@ class HomeCubit extends Cubit<HomeStates> {
           .add(cart[i].toMap());
     }
     emit(CreateOrderSuccessState());
-  }
+  }*/
   Future<void> createOrderForOneProduct ({
     required double totalPrice,
     required double total,
     required String productName,
+    required int quantity,
 
   }) async{
     OrderModel createOrderForOneProduct = OrderModel(
@@ -757,12 +763,45 @@ class HomeCubit extends Cubit<HomeStates> {
       address: userModel!.address,
       dateTime: DateTime.now().toString(),
       productName: productName,
+      quantity: quantity
 
     );
    await FirebaseFirestore.instance
         .collection('orders')
         .add(createOrderForOneProduct.toMap());
     emit(CreateOrderSuccessState());
+  }
+  int creatOrderNumber()
+  {
+    return Random().nextInt(1000);
+  }
+  Future<void> createOrderModel ({
+    required double totalPrice,
+    required double total,
+    required List<dynamic>? cart,
+  }) async{
+    NewOrderModel createOrder = NewOrderModel(
+      orderId: creatOrderNumber().toString(),
+      userName: userModel!.name,
+      total: total,
+      totalPrice: totalPrice,
+      shipping: 100,
+      phone: userModel!.phone,
+      address: userModel!.address,
+      dateTime: DateTime.now().toString(),
+      cardItemList: cart
+    );
+     await FirebaseFirestore.instance
+        .collection('orders')
+        .add(createOrder.toMap())
+         .then((value)
+     {
+     emit(CreateOrderSuccessState());
+     }).catchError((error)
+     {
+       emit(CreateOrderErrorState(error.toString()));
+       print(error.toString());
+     });
   }
 
 

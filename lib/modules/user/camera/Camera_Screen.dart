@@ -25,6 +25,8 @@ class CameraScreen extends StatefulWidget {
 
 class CameraScreenState extends State<CameraScreen>
 {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool? _isLoading;
   File? _image;
   List? _output;
@@ -67,6 +69,7 @@ class CameraScreenState extends State<CameraScreen>
       {
 
         return Scaffold(
+          key: scaffoldKey,
           appBar:  buildAppBar(
             title: 'Photo',
             icon: IconBroken.Arrow___Left_2,
@@ -115,10 +118,50 @@ class CameraScreenState extends State<CameraScreen>
           floatingActionButton: FloatingActionButton(
             onPressed: ()
             {
-              chooseImage();
+              scaffoldKey.currentState!.showBottomSheet(
+                      (context) =>  defaultContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children:
+                              [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      defaultBodyText(context, text: '1.Make Sure you take photo for one meal'),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      defaultBodyText(context, text: '2.Focus for one meal to best dedication'),
+                                    ],
+                                  ),
+                                ),
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: defaultColor,
+                                  child: IconButton(onPressed: ()
+                                  {
+                                    chooseImage();
+                                  }, icon: const Icon(
+                                      IconBroken.Camera,
+                                    color: Colors.white,
+                                  ),
+                                  ),
+                                )
+
+                              ],
+                            ),
+                        ),
+                      ),
+
+
+              );
+
             },
             child: const Icon(
-                IconBroken.Camera
+                Icons.open_in_browser,
             ),
 
           ),

@@ -37,11 +37,22 @@ class HomeLayout extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 drawerHeader(HomeCubit.get(context).userModel!),
-                buildMenuItem(
+
+                  buildMenuItem(
                     text: 'Buy Now',
                     icon: IconBroken.Buy,
                     onClicked: () {
-                      navigateTo(context, BuyNowScreen());
+                      if(HomeCubit.get(context).cart.isNotEmpty)
+                      {
+                        navigateTo(context, BuyNowScreen());
+                      }
+                      else
+                      {
+                        showToast(
+                            text: 'Your Cart is Empty',
+                            state: ToastStates.ERROR);
+                      }
+
                     }
                 ),
                 buildMenuItem(

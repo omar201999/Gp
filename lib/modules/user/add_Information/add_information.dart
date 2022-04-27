@@ -640,7 +640,6 @@ class _AddInformationState extends State<AddInformation>
                   height: 10,
                 ),
 
-
                    defaultTextFormField(
                       controller: weightController,
                       type: TextInputType.number,
@@ -654,9 +653,7 @@ class _AddInformationState extends State<AddInformation>
                       label: 'Weight',
                       border: OutlineInputBorder(),
                       hintText: 'Weight into Kg',
-
                   ),
-
 
                 SizedBox(
                   height: 10,

@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -16,45 +17,59 @@ class CartScreen extends StatelessWidget {
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state)
         {
+
         },
         builder: (context,state)
         {
-          return Scaffold(
-            appBar: buildAppBar(
-              title: 'Your Cart',
-              icon: IconBroken.Arrow___Left_2,
+          return ConditionalBuilder(
+            condition: HomeCubit.get(context).cart.isNotEmpty,
+            builder: (context)=>Scaffold(
+              appBar: buildAppBar(
+                title: 'Your Cart',
+                icon: IconBroken.Arrow___Left_2,
 
-              onPressed: ()
-              {
-                Navigator.pop(context);
-              },
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              foregroundColor: Colors.white,
-              onPressed: ()
-              {
-                navigateTo(context, BuyNowScreen());
-              },
-              label: Text('Buy Now'),
+                onPressed: ()
+                {
+                  Navigator.pop(context);
+                },
+              ),
+              floatingActionButton: FloatingActionButton.extended(
+                foregroundColor: Colors.white,
+                onPressed: ()
+                {
+                  if(HomeCubit.get(context).cart.isNotEmpty )
+                  {
+                    navigateTo(context, BuyNowScreen());
+                  }
+                  else
+                  {
+                    showToast(
+                        text: 'Your Cart is Empty',
+                        state: ToastStates.ERROR);
+                  }
+                },
+                label: const Text('Buy Now'),
 
-            ),
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) => BuildCartItem(HomeCubit.get(context).cart[index],context,index),
-                      separatorBuilder: (context, index) => SizedBox(height: 5,),
-                      itemCount: HomeCubit.get(context).cart.length,
-                    ),
-                  ],
+              ),
+              body: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) => BuildCartItem(HomeCubit.get(context).cart[index],context,index),
+                        separatorBuilder: (context, index) => SizedBox(height: 5,),
+                        itemCount: HomeCubit.get(context).cart.length,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+              fallback: (context) => Center(child: CircularProgressIndicator())
           );
 
         }
@@ -100,7 +115,8 @@ class CartScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(
+                    defaultBodyText(context, text: 'Quantity : ${model.quantity}'),
+                    /*IconButton(
                       onPressed: () {
                         HomeCubit.get(context).minus(index);
                         productQuantity = model.quantity! + 1;
@@ -108,8 +124,8 @@ class CartScreen extends StatelessWidget {
 
                       },
                       icon: Icon (Icons.remove),
-                    ),
-                    SizedBox(
+                    ),*/
+                   /* SizedBox(
                       width: 30,
                       child: Container(
                         alignment: Alignment.center,
@@ -117,7 +133,7 @@ class CartScreen extends StatelessWidget {
                             border: Border.all(
                                 color: Colors.black, width: 0.5)),
                         child: Text(
-                          '${HomeCubit.get(context).Counter[index]}',
+                          '${model.quantity}',
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -130,12 +146,9 @@ class CartScreen extends StatelessWidget {
 
                       },
                       icon: Icon (Icons.add),
-                    ),
-
+                    ),*/
                     Spacer(),
-                    Text(
-                        "${model.currentPrice! * HomeCubit.get(context).Counter[index]}"
-                    ),
+                    defaultBodyText(context, text: '${model.currentPrice! * (model.quantity)!.round()}'),
                   ],
                 ),
               ],

@@ -36,9 +36,9 @@ class BuyNowScreen extends StatelessWidget {
             foregroundColor: Colors.white,
             onPressed: ()
             {
-              if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
+              if(HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
               {
-                HomeCubit.get(context).createOrder(total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100 , totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems());
+                HomeCubit.get(context).createOrderModel(total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100 , totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems(),cart: HomeCubit.get(context).cart);
                 showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
               }
               else
@@ -375,7 +375,7 @@ class BuyNowScreen extends StatelessWidget {
                           children: [
                             defaultBodyText(context, text: 'Quantity : '),
                             Text(
-                              '${HomeCubit.get(context).Counter[index]}',
+                              '${model.quantity}',
                               style: Theme
                                   .of(context)
                                   .textTheme

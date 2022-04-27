@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/models/order-model.dart';
+import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
@@ -691,8 +691,8 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
 
-  List<OrderModel> orders = [];
-  List<String> ordersId = [];
+  List<NewOrderModel> orders = [];
+  //List<String> ordersId = [];
 
   void getOrders()
   {
@@ -700,23 +700,26 @@ class AdminCubit extends Cubit<AdminStates>
     orders = [];
     FirebaseFirestore.instance
         .collection('orders')
-        .orderBy('dateTime',descending: false)
+        .orderBy('dateTime',descending: true)
         .get()
         .then((value)
     {
-      value.docs.forEach((element)
-      {
-        ordersId.add(element.id);
-        orders.add(OrderModel.fromJson(element.data()));
-      });
-      getProductsOrders();
+      for (var element in value.docs) {
+        orders.add(NewOrderModel.fromJson(element.data()));
+      }
+      emit(AdminGetAllOrdersSuccessState());
+      print(orders);
     }).catchError((error) {
-      print(error.toString());
       emit(AdminGetAllOrdersErrorState(error.toString()));
+      print(orders);
+      print(error.toString());
+      //print(orders);
     });
+
   }
 
-  List<ProductModel> productsOrders = [];
+ /*
+ List<ProductModel> productsOrders = [];
   void getProductsOrders({
     String? id
   })
@@ -751,6 +754,6 @@ class AdminCubit extends Cubit<AdminStates>
       });
     }
     }
-
+*/
 
 }

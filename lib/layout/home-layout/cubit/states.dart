@@ -247,7 +247,12 @@ class CreateOrderLoadingState extends HomeStates {}
 
 class CreateOrderSuccessState extends HomeStates {}
 
-class CreateOrderErrorState extends HomeStates {}
+class CreateOrderErrorState extends HomeStates
+{
+  final String error;
+
+  CreateOrderErrorState(this.error);
+}
 
 class GetOrderIdSuccessState extends HomeStates {}
 

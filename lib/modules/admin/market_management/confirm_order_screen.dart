@@ -1,13 +1,14 @@
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/models/order-model.dart';
-import 'package:gp/models/product_model.dart';
+import 'package:gp/models/new_order_model.dart';
+import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:intl/intl.dart';
 
 class ConfirmOrderScreen extends StatelessWidget {
 
@@ -22,7 +23,6 @@ class ConfirmOrderScreen extends StatelessWidget {
         builder: (context , state ){
           return Scaffold(
             appBar: buildAppBar(
-
               title: 'Orders',
               icon: IconBroken.Arrow___Left_2,
               onPressed: ()
@@ -31,14 +31,23 @@ class ConfirmOrderScreen extends StatelessWidget {
               },
             ),
             body: ConditionalBuilder(
-                condition: AdminCubit.get(context).orders.length > 0 ,
-                builder: (context) => ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => BuildOrderItem(AdminCubit.get(context).orders[index],context,index),
-                  separatorBuilder: (context, index) => myDivider(),
-                  itemCount: AdminCubit.get(context).orders.length,
+                condition: AdminCubit.get(context).orders.isNotEmpty && state is !AdminGetAllOrdersLoadingState ,
+                builder: (context) => SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding:  const EdgeInsets.symmetric(
+                      horizontal: 16
+                    ),
+                    child: ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => BuildOrderItem(AdminCubit.get(context).orders[index],context,index),
+                      separatorBuilder: (context, index) => myDivider(),
+                      itemCount: AdminCubit.get(context).orders.length,
+                    ),
+                  ),
                 ),
-                fallback: (context) => Center(child: CircularProgressIndicator())
+                fallback: (context) => const Center(child: CircularProgressIndicator())
             ),
           );
         }
@@ -46,10 +55,24 @@ class ConfirmOrderScreen extends StatelessWidget {
     );
   }
 
-  Widget  BuildOrderItem (OrderModel model,context,index)=> SingleChildScrollView(
+  Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
+    padding: const EdgeInsetsDirectional.only(
+      top: 10,
+      bottom: 10
+    ),
+    child: InkWell(
+      onTap: ()
+      {
+        if(model.cardItemList != null)
+        {
+          navigateTo(context, ProductsForOrder(products: model.cardItemList!));
+        }
+        else
+          {
+            showToast(text: 'this customer buy one product ', state: ToastStates.WARNING);
 
-    child:Padding(
-      padding: const EdgeInsets.all(16.0),
+          }
+      },
       child: Column(
         children:
         [
@@ -62,8 +85,6 @@ class ConfirmOrderScreen extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-
-
                       children:
                       [
                         defaultBodyText(context, text: 'User name is ${model.userName}'),
@@ -75,124 +96,61 @@ class ConfirmOrderScreen extends StatelessWidget {
                           height: 5,
                         ),
                         defaultBodyText(context, text: 'Phone is ${model.phone}'),
-
+                        SizedBox(
+                          height: 5,
+                        ),
+                        defaultBodyText(context, text: 'Data is ${convertToDataTime(model.dateTime!)} '),
                       ],
                     ),
                   ),
                   defaultTextButton(context, function: ()
                   {
-
                   }, text: 'Confirm'),
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: 3,
-          ),
-        /* ListView.separated(
+
+         /* ListView.separated(
             shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context,index) =>buildConfirmOrderItem(context,AdminCubit.get(context).productsOrders[index]),
-              separatorBuilder: (context,index) =>  SizedBox(width: 10,),
-              itemCount:AdminCubit.get(context).productsOrders.length,
+              itemBuilder: (context,index) =>Card(
+                child: Column(
+                  children: [
+                    Image(
+                      image: NetworkImage('${model.cardItemList![0]['image']}'),
+                      width: double.infinity,
+                      height: 200.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          defaultBodyText(context, text: '${model.cardItemList![0]['name']}'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              defaultBodyText(context, text: ' currentPrice:${model.cardItemList![0]['currentPrice']}'),
+                              Spacer(),
+                              defaultBodyText(context, text: 'quantity:${model.cardItemList![0]['quantity']}'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              separatorBuilder: (context,index) =>  SizedBox(width: 5,),
+              itemCount:model.cardItemList!.length,
           ),*/
         ],
       ),
     ),
   );
-  Widget buildConfirmOrderItem(context,ProductModel model) => defaultContainer(
-      color: constantColor5,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-        [
-          Stack(
-            alignment: AlignmentDirectional.bottomStart,
-            children: [
-              Image(
-                image: NetworkImage('${model.image}'),
-                width: double.infinity,
-                //height: 180.0,
-                fit: BoxFit.cover,
-              ),
-              if (model.discount != 0)
-                Container(
-                    color: Colors.red,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 5.0
-                    ),
-                    child: Text(
-                      'DISCOUNT',
-                      style: TextStyle(
-                        fontSize: 8.0,
-                        color: Colors.white,
-                      ),
-                    )
-                ),
-            ],
-          ),
-          Padding(
-            padding: /*EdgeInsetsDirectional.only(
-                start: 10,
-            ),*/
-            const EdgeInsets.symmetric(
-              vertical: 5.0,
-              horizontal: 6.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${model.name}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    height: 1.3,
-                  ),
-                ),
-                Row(
-                  children:
-                  [
-                    Text(
-                      '${model.currentPrice}',
-                      style: const TextStyle(
-                        fontSize: 13.0,
-                        color: defaultColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    if (model.discount != 0)
-                      Text(
-                        '${model.oldPrice}',
-                        style: const TextStyle(
-                          fontSize: 10.0,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    const Spacer(),
-                    if (model.quantity == 0)
-                      const Text(
-                        'Not available now',
-                        style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.red
-                        ),
-                      )
-                  ],
-                ),
+  String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(date));
 
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
 
 
 }

@@ -1090,7 +1090,6 @@ Widget buildMenuItem({
           title: Text(
             text,
             style: TextStyle(
-
                 fontSize: 14
             ),
           ),

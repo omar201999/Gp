@@ -65,7 +65,7 @@ class ConfirmOrderScreen extends StatelessWidget {
       {
         if(model.cardItemList != null)
         {
-          navigateTo(context, ProductsForOrder(products: model.cardItemList!));
+          navigateTo(context, ProductsForOrder(products: model.cardItemList!, orderID: model.orderId!,));
         }
         else
           {

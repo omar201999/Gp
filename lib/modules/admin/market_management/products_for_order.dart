@@ -5,15 +5,17 @@ import 'package:gp/shared/styles/icon_broken.dart';
 class ProductsForOrder extends StatelessWidget {
 
   final List<dynamic> products;
+  final String orderID;
   ProductsForOrder({
     required this.products,
+    required this.orderID
 });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(
-        title: 'Products For Order',
+        title: 'Products For Order $orderID',
         icon: IconBroken.Arrow___Left_2,
         onPressed: ()
         {

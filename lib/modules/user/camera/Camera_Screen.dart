@@ -8,6 +8,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/result_of_detection/photo_details.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:image_picker/image_picker.dart';
@@ -71,7 +72,7 @@ class CameraScreenState extends State<CameraScreen>
         return Scaffold(
           key: scaffoldKey,
           appBar:  buildAppBar(
-            title: 'Photo',
+            title: AppLocalizations.of(context).translate("photo"),//'Photo',
             icon: IconBroken.Arrow___Left_2,
 
             onPressed: () {
@@ -93,7 +94,9 @@ class CameraScreenState extends State<CameraScreen>
               ),
               _output == null ? Text('') : Padding(
                 padding: const EdgeInsets.all(10),
-                child: defaultContainer(child: Row(
+                child: defaultContainer(
+                  context,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
@@ -118,46 +121,90 @@ class CameraScreenState extends State<CameraScreen>
           floatingActionButton: FloatingActionButton(
             onPressed: ()
             {
-              scaffoldKey.currentState!.showBottomSheet(
-                      (context) =>  defaultContainer(
-                        child: Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children:
-                              [
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      defaultBodyText(context, text: '1.Make Sure you take photo for one meal'),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      defaultBodyText(context, text: '2.Focus for one meal to best dedication'),
-                                    ],
-                                  ),
-                                ),
-                                CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: defaultColor,
-                                  child: IconButton(onPressed: ()
-                                  {
-                                    chooseImage();
-                                  }, icon: const Icon(
-                                      IconBroken.Camera,
-                                    color: Colors.white,
-                                  ),
-                                  ),
-                                )
+              /*defaultContainer(
+              context,
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children:
+                  [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          defaultBodyText(context, text: '1.Make Sure you take photo for one meal'),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          defaultBodyText(context, text: '2.Focus for one meal to best dedication'),
+                        ],
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: defaultColor,
+                      child: IconButton(onPressed: ()
+                      {
+                        chooseImage();
+                      }, icon: const Icon(
+                        IconBroken.Camera,
+                        color: Colors.white,
+                      ),
+                      ),
+                    )
 
-                              ],
+                  ],
+                ),
+              ),
+            ),*/
+            /*  scaffoldKey.currentState!.showBottomSheet((context) => defaultContainer(
+                context,
+                radius: 0,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children:
+                    [
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            defaultBodyText(context, text: '1.Make Sure you take photo for one meal'),
+                            SizedBox(
+                              height: 5,
                             ),
+                            defaultBodyText(context, text: '2.Focus for one meal to best dedication'),
+                          ],
                         ),
                       ),
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: defaultColor,
+                        child: IconButton(onPressed: ()
+                        {
+                          chooseImage();
+                        }, icon: const Icon(
+                          IconBroken.Camera,
+                          color: Colors.white,
+                        ),
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),);*/
+              var sheetController = showModalBottomSheet(
+                  context: context,
+                  builder: (context) => CameraImagePicker());
+              sheetController.then((value) {});
 
 
-              );
+
+
 
             },
             child: const Icon(
@@ -182,7 +229,7 @@ class CameraScreenState extends State<CameraScreen>
                   else
                     {
                       showToast(
-                          text: 'please upload Image',
+                          text: AppLocalizations.of(context).translate("note_to_upload"),//'please upload Image',
                           state: ToastStates.ERROR);
                     }
 
@@ -192,7 +239,7 @@ class CameraScreenState extends State<CameraScreen>
                   width: double.infinity,
                   child: Center(
                     child: Text(
-                      'Show Food Info',
+                      AppLocalizations.of(context).translate("show_food"),//'Show Food Info',
                       style: Theme.of(context).textTheme.headline1!.copyWith(
                         color: Colors.white,
                       ),
@@ -282,3 +329,51 @@ class CameraScreenState extends State<CameraScreen>
 
 
 }
+
+
+class  CameraImagePicker extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return defaultContainer(
+    context,
+    radius: 0,
+    child: Padding(
+    padding: const EdgeInsets.all(30.0),
+    child: Row(
+    mainAxisSize: MainAxisSize.min,
+    children:
+    [
+    Expanded(
+    child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition1_to_upload")),//'1.Make Sure you take photo for one meal'),
+    SizedBox(
+    height: 5,
+    ),
+    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition2_to_upload")),//'2.Focus for one meal to best dedication'),
+    ],
+    ),
+    ),
+    CircleAvatar(
+    radius: 25,
+    backgroundColor: defaultColor,
+    child: IconButton(onPressed: ()
+{
+
+}, icon: const Icon(
+IconBroken.Camera,
+color: Colors.white,
+),
+),
+)
+
+],
+),
+),
+);
+  }
+}
+
+

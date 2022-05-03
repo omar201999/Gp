@@ -15,7 +15,7 @@ class ProductsForOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(
-        title: 'Products For Order $orderID',
+        title: 'Products For Order #$orderID',
         icon: IconBroken.Arrow___Left_2,
         onPressed: ()
         {
@@ -46,7 +46,7 @@ class ProductsForOrder extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              defaultBodyText(context, text: ' currentPrice:${products[index]['currentPrice']}'),
+                              defaultBodyText(context, text: ' total:${products[index]['currentPrice'] * products[index]['quantity'] }'),
                               Spacer(),
                               defaultBodyText(context, text: 'quantity:${products[index]['quantity']}'),
                             ],

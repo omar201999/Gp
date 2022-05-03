@@ -7,7 +7,6 @@ import 'package:gp/models/recipes_model.dart';
 import 'package:gp/modules/admin/recipe_management/edit_recipe/edit_recipe_screen.dart';
 import 'package:gp/modules/admin/recipe_management/new_recipe/new_recipe_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class RecipesManagementScreen extends StatelessWidget {
@@ -72,9 +71,9 @@ class RecipesManagementScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      defaultContainer(
+                      Container(
                         height: 230,
-                        color: Colors.grey[50],
+                        //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty && state is !GetAllBreakFastRecipeLoadingState,
                           builder: (context) => ListView.separated(
@@ -114,9 +113,10 @@ class RecipesManagementScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      defaultContainer(
+                      Container(
+
                         height: 230,
-                        color: Colors.grey[50],
+                        //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
                           builder: (context) => ListView.separated(
@@ -151,9 +151,9 @@ class RecipesManagementScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      defaultContainer(
+                      Container(
                         height: 230,
-                        color: Colors.grey[50],
+                        //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState,
                           builder: (context) => ListView.separated(
@@ -188,9 +188,10 @@ Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
     navigateTo(context, EditRecipeScreen(recipeModel: model,));
   },
   child: defaultContainer(
+    context,
     height: 170,
     width: 170,
-    color: constantColor5,
+    //color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -68,7 +68,7 @@ class SearchUsersScreen extends StatelessWidget {
                     builder: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context,index) => BuildUserItem(list[index],context),
-                        separatorBuilder: (context,index) =>  SizedBox(height: 8,),
+                        separatorBuilder: (context, index) => myDivider(),
                         itemCount: list.length),
                     fallback: (context) => Center(child: Container()),
                   ),

@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/layout/admin_layout/cubit/cubit.dart';
-import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
+import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
@@ -13,18 +13,16 @@ class MarketManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocConsumer<AdminCubit, AdminStates>(
+    return BlocConsumer<HomeCubit, HomeStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-            condition: AdminCubit.get(context).products.length > 0 && state is !GetProductsLoadingState,
+            condition: HomeCubit.get(context).products.isNotEmpty && state is !GetProductsLoadingState,
             builder: (context) => Scaffold(
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: defaultContainer(
-                    color: Colors.grey[50],
-                    child: Column(
+                  child:Column(
                       children:
                       [
                         /*defaultContainer(
@@ -44,17 +42,17 @@ class MarketManagementScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          mainAxisSpacing: 2.0,
-                          crossAxisSpacing: 1.8,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 5,
                           childAspectRatio: 1 / 1.43,
                           children: List.generate(
-                            AdminCubit.get(context).products.length,
-                                (index) => buildProductItem(AdminCubit.get(context).products[index], context),
+                            HomeCubit.get(context).products.length,
+                                (index) => buildProductItem(HomeCubit.get(context).products[index], context),
                           ),
                         ),
                       ],
                     ),
-                  ),
+
                 ),
               ),
               floatingActionButton: FloatingActionButton(
@@ -82,7 +80,8 @@ Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
     navigateTo(context, EditProductScreen(productModel: model,));
   },
   child: defaultContainer(
-    color: constantColor5,
+    context,
+    //color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

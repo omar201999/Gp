@@ -6,6 +6,7 @@ import 'package:gp/modules/user/register/cubit/cubit.dart';
 import 'package:gp/modules/user/register/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 
 class RegisterScreen extends StatelessWidget
@@ -90,7 +91,7 @@ class RegisterScreen extends StatelessWidget
 
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.grey[200],
+                backgroundColor: Colors.grey[50],
                 elevation: 0,
                 titleSpacing: 20.0,
               ),
@@ -152,10 +153,11 @@ class RegisterScreen extends StatelessWidget
                             {
                               if(value!.isEmpty)
                               {
-                                return 'please enter your Name';
+                                return AppLocalizations.of(context).translate("name must not be empty");//'';
                               }
+                              return null;
                             },
-                            label: 'Name',
+                            label: AppLocalizations.of(context).translate("name"),//'Name',
                             prefix: Icons.person,
                             border: OutlineInputBorder(),
 
@@ -170,10 +172,10 @@ class RegisterScreen extends StatelessWidget
                             {
                               if(value!.isEmpty)
                               {
-                                return 'please enter your email';
+                                return AppLocalizations.of(context).translate("please enter your email");
                               }
                             },
-                            label: 'Email',
+                            label: AppLocalizations.of(context).translate("Email"),//'Email',
                             prefix: Icons.email_outlined,
                             border: OutlineInputBorder(),
 
@@ -189,7 +191,7 @@ class RegisterScreen extends StatelessWidget
                             {
                               if(value!.isEmpty)
                               {
-                                return 'password is too Short';
+                                return AppLocalizations.of(context).translate("check_pass");// 'password is too Short';
                               }
                             },
                             obscure: RegisterCubit.get(context).obScure,
@@ -197,7 +199,7 @@ class RegisterScreen extends StatelessWidget
                             {
                               RegisterCubit.get(context).changePasswordVisibility();
                             },
-                            label: 'Password',
+                            label: AppLocalizations.of(context).translate("Password"),//'Password',
                             prefix: Icons.lock_outline,
                             border: OutlineInputBorder(),
                             suffix:RegisterCubit.get(context).suffix,
@@ -213,7 +215,7 @@ class RegisterScreen extends StatelessWidget
                            condition: state is! RegisterLoadingState ,
                             builder: (context) =>  defaultButton(
                               context,
-                              text: 'Registration ',
+                              text: AppLocalizations.of(context).translate("Registration"),//'Registration ',
                               onPreesed: ()
                               {
                                 if(formKey.currentState!.validate())

@@ -8,16 +8,20 @@ import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
+import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
+import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
+import 'package:gp/shared/cubit/cubit.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-
+import 'package:intl/intl.dart';
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
@@ -26,6 +30,7 @@ AppBar buildAppBar({
   Widget? leadingIcon,
   List<Widget>? actions,
   double? titleSpacing = 15.0,
+
 }) =>  AppBar(
   leading: leadingIcon??IconButton(
        onPressed: onPressed,
@@ -36,6 +41,7 @@ AppBar buildAppBar({
   ),
   titleSpacing: titleSpacing,
   actions: actions,
+
   /*[
     IconButton(
       onPressed: onPressed ,
@@ -55,6 +61,7 @@ Widget defaultTextFormField({
   bool obscure = false,
   String? Function(String?)? validate,
   int? maxLines = 1,
+  Color? color = constantColor5,
 
   //////////////////////////////////////
   String? label ,
@@ -80,7 +87,7 @@ Widget defaultTextFormField({
     hintText: hintText,
     labelText : label,
     filled: true,
-    fillColor: constantColor5,
+    fillColor: color,
     suffixIcon: IconButton(
       onPressed: suffixPressed,
       icon: Icon(suffix),
@@ -139,12 +146,12 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 }
 );
 
-Widget defaultContainer({
+Widget defaultContainer(BuildContext context,{
   double? width,
   double? height,
   double radius = 10,
   Clip clip = Clip.antiAliasWithSaveLayer,
-  Color? color = constantColor1,
+  //Color? color = constantColor1,
   Widget? child,
   BoxDecoration? decoration ,
 }) => Container(
@@ -152,7 +159,15 @@ Widget defaultContainer({
   height: height,
   clipBehavior: clip,
   decoration: decoration??BoxDecoration(
-    color: color,
+    /*gradient:  LinearGradient(
+      colors: [
+        Colors.grey[50]!,
+        HexColor('#1c1c1c '),
+      ],
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+    ),*/
+    color: AppCubit.get(context).constantColor1,//HexColor('#4d4d4d')
     borderRadius: BorderRadius.circular(radius),
   ),
   child: child,
@@ -190,6 +205,10 @@ Widget defaultBodyText(BuildContext context,{
   double? fontSize,
   Color? color,
   int? maxLines,
+  double? height,
+  double? letterSpacing,
+  TextOverflow? overflow
+
 
 }) => Text(
   text,
@@ -197,6 +216,9 @@ Widget defaultBodyText(BuildContext context,{
     fontWeight: fontWeight,
     fontSize: fontSize,
     color: color,
+    height: height,
+      letterSpacing:letterSpacing,
+    overflow: overflow,
   ),
   maxLines: maxLines,
 
@@ -210,9 +232,10 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
     ));
   },
   child: defaultContainer(
+    context,
     height: 250,
     width: 180,
-    color: constantColor5,
+    //color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,11 +257,7 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
             padding: const EdgeInsetsDirectional.only(
                 start: 10
             ),
-            child: Text(''
-                '${model.title}',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: defaultBodyText(context, text: '${model.title}',maxLines: 2,height: 1.3),
           ),
         ),
         Expanded(
@@ -249,16 +268,11 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
             child: Row(
               children:
               [
-                Text(
-                  '${model.calories}',
-                  style: TextStyle(
-                    letterSpacing: 1,
-                  ),
-                ),
+                defaultBodyText(context, text: '${model.calories}',letterSpacing: 1),
                 SizedBox(
                   width: 4,
                 ),
-                Text('cal'),
+                defaultBodyText(context, text: 'cal',fontSize: 15),
               ],
             ),
           ),
@@ -302,6 +316,7 @@ Widget buildHomeScreenItem(BuildContext context,{
     navigateTo(context, screen);
   },
   child: defaultContainer(
+    context,
 
     child: Padding(
       padding: const EdgeInsets.all(20),
@@ -450,6 +465,8 @@ Widget buildNutritionItem(BuildContext context,{
   required String remainingText,
 
 }) => defaultContainer(
+  context,
+
   child: Padding(
     padding: const EdgeInsetsDirectional.all(10),
     child: Column(
@@ -472,21 +489,14 @@ Widget buildNutritionItem(BuildContext context,{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:
                 [
-                  Text(
-                    calorieText,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                    ),
-                  ),
+
+                  defaultHeadLineText(context, text: calorieText,fontSize: 18),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'Goal',
-                    style: TextStyle(
-                        color: Colors.grey[500]
-                    ),
+                    AppLocalizations.of(context).translate("goal"),//'Goal',
+                    style: Theme.of(context).textTheme.caption,
                   ),
 
                 ],
@@ -501,12 +511,7 @@ Widget buildNutritionItem(BuildContext context,{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children:
                   [
-                    Text(
-                      '-',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
+                    defaultHeadLineText(context, text: '-',fontSize: 25),
                   ],
                 ),
               ),
@@ -516,21 +521,14 @@ Widget buildNutritionItem(BuildContext context,{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:
                 [
-                  Text(
-                   foodText,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                    ),
-                  ),
+                  //18
+                  defaultHeadLineText(context, text: foodText,fontSize: 18),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'Food',
-                    style: TextStyle(
-                        color: Colors.grey[500]
-                    ),
+                    AppLocalizations.of(context).translate("food"),//'Food',
+                    style: Theme.of(context).textTheme.caption,
                   ),
 
                 ],
@@ -545,12 +543,7 @@ Widget buildNutritionItem(BuildContext context,{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children:
                   [
-                    Text(
-                      '=',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
+                    defaultHeadLineText(context, text: '=',),
                   ],
                 ),
               ),
@@ -572,10 +565,9 @@ Widget buildNutritionItem(BuildContext context,{
                     height: 5,
                   ),
                   Text(
-                    'Remaining',
-                    style: TextStyle(
-                        color: Colors.grey[500],
-                        fontSize: 13
+                    AppLocalizations.of(context).translate("remaining"),//'Remaining',
+                    style: Theme.of(context).textTheme.caption!.copyWith(
+                      fontSize: 13
                     ),
                   ),
 
@@ -598,7 +590,9 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
     ));
   },
   child: defaultContainer(
-    color: constantColor5,
+    context,
+
+    //color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -620,7 +614,7 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
                       horizontal: 5.0
                   ),
                   child: Text(
-                    'DISCOUNT',
+                    AppLocalizations.of(context).translate("DISCOUNT"),//'DISCOUNT',
                     style: TextStyle(
                       fontSize: 8.0,
                       color: Colors.white,
@@ -640,15 +634,7 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${model.name}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  height: 1.3,
-                ),
-              ),
+            defaultBodyText(context, text: '${model.name}',height: 1.3,maxLines: 2),
               Row(
                 children:
                 [
@@ -673,8 +659,8 @@ Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
                     ),
                   const Spacer(),
                   if (model.quantity == 0)
-                    const Text(
-                      'Not available now',
+                     Text(
+                       AppLocalizations.of(context).translate("not_available"),//'Not available now',
                       style: TextStyle(
                           fontSize: 12.0,
                           color: Colors.red
@@ -695,8 +681,9 @@ Widget buildMealItem(MealsModel model,context,{
   required bool? value,
   required void Function(bool?)? onChanged,
 
-}) => Container(
-  color: constantColor1,
+}) => defaultContainer(
+  context,
+  //color: constantColor1,
   child:   InkWell(
 
     onTap: ()
@@ -826,7 +813,7 @@ Widget buildSerachMealItem (list,context,
             if(state is ChangeCheckBoxState && isChecked.any((element) => element == true) )
               defaultTextButton(context,
                 function: function,
-                text: 'Add',
+                text:AppLocalizations.of(context).translate("Add"),// 'Add',
               ),
 
           ]
@@ -838,11 +825,12 @@ Widget buildSerachMealItem (list,context,
           children:
           [
             defaultContainer(
-              color: constantColor5,
+              context,
+              //color: constantColor5,
               child: defaultTextFormField(
                 type: TextInputType.text,
                 prefix: Icons.search,
-                hintText: 'Search',
+                hintText: AppLocalizations.of(context).translate("  "),//'Search',
                 border: InputBorder.none,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
@@ -966,7 +954,7 @@ indicator({
   Color? textColor = const Color(0xff505050),
 }) => Row(
     children: [
-      defaultContainer(
+      Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
@@ -1036,13 +1024,14 @@ Widget drawerHeader(UserModel model) => DrawerHeader(
     child: Container(
       child: Column(
         children: [
-         defaultContainer(
+          Container(
             //borderRadius: BorderRadius.all(Radius.circular(50.0)),
-            color: Colors.white,
+
             width: 87.0,
             height: 87.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
+
             ),
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -1071,7 +1060,7 @@ Widget drawerHeader(UserModel model) => DrawerHeader(
     ),
   );
 
-Widget buildMenuItem({
+Widget buildMenuItem(context,{
   required String text,
   required IconData icon,
   required Function()? onClicked,
@@ -1082,7 +1071,8 @@ Widget buildMenuItem({
   child:   Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: defaultContainer (
-        color: Colors.grey[50],
+        context,
+        //color: Colors.grey[50],
         child: ListTile(
           leading: Icon(
               icon,
@@ -1098,4 +1088,479 @@ Widget buildMenuItem({
       )
   ),
 );
+
+Widget buildOrderScreens(list) => ConditionalBuilder(
+    condition: list.isNotEmpty  ,
+    builder: (context) => SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding:  const EdgeInsets.symmetric(
+            horizontal: 16
+        ),
+        child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) => BuildOrderItem(list[index],context,index),
+          separatorBuilder: (context, index) => myDivider(),
+          itemCount: list.length,
+        ),
+      ),
+    ),
+    fallback: (context) => const Center(child: CircularProgressIndicator())
+);
+List<dynamic>? emptyCart = [];
+Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
+  padding: const EdgeInsetsDirectional.only(
+      top: 10,
+      bottom: 10
+  ),
+  child: InkWell(
+    onTap: ()
+    {
+      if(model.cardItemList != null && model.orderId != null )
+      {
+        navigateTo(context, ProductsForOrder(products: model.cardItemList!, orderID: model.orderId!,));
+      }
+      else
+      {
+        showToast(text: 'this customer buy one product ', state: ToastStates.WARNING);
+      }
+    },
+    child: Dismissible(
+      key:Key(model.dateTime!),
+      onDismissed: (direction)
+      {
+        if(direction == DismissDirection.endToStart)
+        {
+          if(model.status == 'new')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersNewId[index],
+              status: 'canceled',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+          else if(model.status == 'confirmed')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersConfirmedId[index],
+              status: 'canceled',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+          else if(model.status == 'canceled')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersCanceledId[index],
+              status: 'canceled',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+        }
+        if(direction == DismissDirection.startToEnd)
+        {
+          if(model.status == 'new')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersNewId[index],
+              status: 'confirmed',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+          else if(model.status == 'confirmed')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersConfirmedId[index],
+              status: 'confirmed',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+          else if(model.status == 'canceled')
+          {
+            AdminCubit.get(context).updateStatusOfOrdres(
+              AdminCubit.get(context).ordersCanceledId[index],
+              status: 'confirmed',
+              userName:model.userName ,
+              totalPrice: model.totalPrice,
+              total:model.total ,
+              shipping:model.shipping ,
+              phone: model.phone,
+              orderId: model.orderId,
+              cardItemList: emptyCart,
+              address: model.address,
+              dateTime:model.dateTime,
+              productName: model.productName,
+              quantity: model.quantity,
+            );
+          }
+        }
+      },
+      background: Container(
+        alignment: Alignment.centerLeft,
+        child:Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: defaultHeadLineText(context, text: 'Confirmed Order',color: Colors.white),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        decoration:BoxDecoration(
+          color: defaultColor,//HexColor('#4d4d4d')
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      secondaryBackground: Container(
+        alignment: Alignment.centerRight,
+        child:Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: defaultHeadLineText(context, text: 'Canceled Order',color: Colors.white),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        decoration:BoxDecoration(
+          color: Colors.red,//HexColor('#4d4d4d')
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: Column(
+        children:
+        [
+          defaultContainer(
+            context,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children:
+                [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                      [
+                        defaultBodyText(context, text: 'User name is ${model.userName}'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        defaultBodyText(context, text: 'Address is ${model.address}'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        defaultBodyText(context, text: 'Phone is ${model.phone}'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        defaultBodyText(context, text: 'Data is ${convertToDataTime(model.dateTime!)} '),
+                        if(model.productName != null)
+                          SizedBox(
+                            height: 5,
+                          ),
+                        if(model.productName != null)
+                          defaultBodyText(context, text: 'productName : ${model.productName}'),
+
+                        if(model.quantity != null)
+                          defaultBodyText(context, text: 'quantity is ${model.quantity}'),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      defaultTextButton(
+                          context,
+                          function: ()
+                          {
+                            if(model.status == 'new')
+                            {
+                              AdminCubit.get(context).updateStatusOfOrdres(
+                                AdminCubit.get(context).ordersNewId[index],
+                                status: 'confirmed',
+                                userName:model.userName ,
+                                totalPrice: model.totalPrice,
+                                total:model.total ,
+                                shipping:model.shipping ,
+                                phone: model.phone,
+                                orderId: model.orderId,
+                                cardItemList:emptyCart,
+                                address: model.address,
+                                dateTime:model.dateTime,
+                                productName: model.productName,
+                                quantity: model.quantity,
+                              );
+                            }
+                            else if(model.status == 'confirmed')
+                            {
+                              AdminCubit.get(context).updateStatusOfOrdres(
+                                AdminCubit.get(context).ordersConfirmedId[index],
+                                status: 'confirmed',
+                                userName:model.userName ,
+                                totalPrice: model.totalPrice,
+                                total:model.total ,
+                                shipping:model.shipping ,
+                                phone: model.phone,
+                                orderId: model.orderId,
+                                cardItemList: emptyCart,
+                                address: model.address,
+                                dateTime:model.dateTime,
+                                productName: model.productName,
+                                quantity: model.quantity,
+                              );
+                            }
+                            else if(model.status == 'canceled')
+                            {
+                              AdminCubit.get(context).updateStatusOfOrdres(
+                                AdminCubit.get(context).ordersCanceledId[index],
+                                status: 'confirmed',
+                                userName:model.userName ,
+                                totalPrice: model.totalPrice,
+                                total:model.total ,
+                                shipping:model.shipping ,
+                                phone: model.phone,
+                                orderId: model.orderId,
+                                cardItemList: emptyCart,
+                                address: model.address,
+                                dateTime:model.dateTime,
+                                productName: model.productName,
+                                quantity: model.quantity,
+                              );
+                            }
+
+                            //print(index);
+                            /* if(model.cardItemList != null) {
+                             AdminCubit.get(context).updateStatusOfOrdres(
+                                AdminCubit.get(context).ordersId[index],
+                                status: 'confirmed',
+                                userName:model.userName ,
+                                totalPrice: model.totalPrice,
+                                total:model.total ,
+                                shipping:model.shipping ,
+                                phone: model.phone,
+                                orderId: model.orderId,
+                                cardItemList: HomeCubit.get(context).cart ,
+                                address: model.address,
+                                dateTime:model.dateTime,
+                                productName: model.productName,
+                                quantity: model.quantity,
+                              );
+                            }
+
+                            }
+                            else
+                              {
+                                AdminCubit.get(context).updateStatusOfOrdres(
+                                  AdminCubit.get(context).ordersId[index],
+                                  status: 'confirmed',
+                                  userName:model.userName ,
+                                  totalPrice: model.totalPrice,
+                                  total:model.total ,
+                                  shipping:model.shipping ,
+                                  phone: model.phone,
+                                  orderId: model.orderId,
+                                  cardItemList: emptyCart ,
+                                  address: model.address,
+                                  dateTime:model.dateTime,
+                                  productName: model.productName,
+                                  quantity: model.quantity,
+                                );
+                              }*/
+
+                          },
+                          text: 'Confirmed',
+                      ),
+                      defaultTextButton(
+                        context,
+                        function: () {
+                          print(index);
+                          if(model.status == 'new')
+                          {
+                            AdminCubit.get(context).updateStatusOfOrdres(
+                              AdminCubit.get(context).ordersNewId[index],
+                              status: 'canceled',
+                              userName:model.userName ,
+                              totalPrice: model.totalPrice,
+                              total:model.total ,
+                              shipping:model.shipping ,
+                              phone: model.phone,
+                              orderId: model.orderId,
+                              cardItemList: emptyCart,
+                              address: model.address,
+                              dateTime:model.dateTime,
+                              productName: model.productName,
+                              quantity: model.quantity,
+                            );
+                          }
+                          else if(model.status == 'confirmed')
+                          {
+                            AdminCubit.get(context).updateStatusOfOrdres(
+                              AdminCubit.get(context).ordersConfirmedId[index],
+                              status: 'canceled',
+                              userName:model.userName ,
+                              totalPrice: model.totalPrice,
+                              total:model.total ,
+                              shipping:model.shipping ,
+                              phone: model.phone,
+                              orderId: model.orderId,
+                              cardItemList: emptyCart,
+                              address: model.address,
+                              dateTime:model.dateTime,
+                              productName: model.productName,
+                              quantity: model.quantity,
+                            );
+                          }
+                          else if(model.status == 'canceled')
+                          {
+                            AdminCubit.get(context).updateStatusOfOrdres(
+                              AdminCubit.get(context).ordersCanceledId[index],
+                              status: 'canceled',
+                              userName:model.userName ,
+                              totalPrice: model.totalPrice,
+                              total:model.total ,
+                              shipping:model.shipping ,
+                              phone: model.phone,
+                              orderId: model.orderId,
+                              cardItemList: emptyCart,
+                              address: model.address,
+                              dateTime:model.dateTime,
+                              productName: model.productName,
+                              quantity: model.quantity,
+                            );
+                          }
+
+
+
+
+
+                         /*if(model.cardItemList != null)
+                          {
+                            AdminCubit.get(context).updateStatusOfOrdres(
+                              AdminCubit.get(context).ordersId[index],
+                              status: 'canceled',
+                              userName:model.userName ,
+                              totalPrice: model.totalPrice,
+                              total:model.total ,
+                              shipping:model.shipping ,
+                              phone: model.phone,
+                              orderId: model.orderId,
+                              cardItemList:HomeCubit.get(context).cart ,
+                              address: model.address,
+                              dateTime:model.dateTime,
+                              productName: model.productName,
+                              quantity: model.quantity,
+                            );
+                          }
+                          else
+                          {
+                            AdminCubit.get(context).updateStatusOfOrdres(
+                              AdminCubit.get(context).ordersId[index],
+                              status: 'canceled',
+                              userName:model.userName ,
+                              totalPrice: model.totalPrice,
+                              total:model.total ,
+                              shipping:model.shipping ,
+                              phone: model.phone,
+                              orderId: model.orderId,
+                              cardItemList: emptyCart ,
+                              address: model.address,
+                              dateTime:model.dateTime,
+                              productName: model.productName,
+                              quantity: model.quantity,
+                            );
+                          }*/
+                        },
+                        text: 'Canceled',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          /* ListView.separated(
+              shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context,index) =>Card(
+                  child: Column(
+                    children: [
+                      Image(
+                        image: NetworkImage('${model.cardItemList![0]['image']}'),
+                        width: double.infinity,
+                        height: 200.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            defaultBodyText(context, text: '${model.cardItemList![0]['name']}'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                defaultBodyText(context, text: ' currentPrice:${model.cardItemList![0]['currentPrice']}'),
+                                Spacer(),
+                                defaultBodyText(context, text: 'quantity:${model.cardItemList![0]['quantity']}'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                separatorBuilder: (context,index) =>  SizedBox(width: 5,),
+                itemCount:model.cardItemList!.length,
+            ),*/
+        ],
+      ),
+    ),
+  ),
+);
+String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(date));
+
+
 

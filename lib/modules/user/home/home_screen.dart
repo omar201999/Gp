@@ -11,6 +11,7 @@ import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
 import 'package:gp/modules/user/snacks/snacks_screen.dart';
 import 'package:gp/modules/user/water_tracker/water_tracker_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 
 class HomePage extends StatelessWidget
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget
 
 
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).userModel != null && state is! GetUserDataLoadingState,
+          condition: HomeCubit.get(context).userModel != null && HomeCubit.get(context).userModel!.userActive != null && state is! GetUserDataLoadingState,
           builder: (context) => SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -89,7 +90,7 @@ class HomePage extends StatelessWidget
                           // ),
                           buildNutritionItem(
                             context,
-                            title: 'Calories Remaining',
+                            title:  AppLocalizations.of(context).translate("calories_remaining"),//'Calories Remaining',
                             calorieText: '${HomeCubit.get(context).userModel!.totalCalorie}',
                             foodText: '${HomeCubit.get(context).calculateTotalFoodCalories()}',
                             remainingText: '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).calculateTotalFoodCalories()!}',
@@ -101,7 +102,7 @@ class HomePage extends StatelessWidget
                           buildHomeScreenItem(
                             context,
                             prefixIcon: Icons.breakfast_dining_outlined,
-                            text: 'Breakfast',
+                            text:  AppLocalizations.of(context).translate("breakfast"),//'Breakfast',
                             screen: BreakFastScreen(),
                           ),
                           SizedBox(
@@ -110,7 +111,7 @@ class HomePage extends StatelessWidget
                           buildHomeScreenItem(
                             context,
                             prefixIcon: Icons.lunch_dining_outlined,
-                            text: 'Lunch',
+                            text:  AppLocalizations.of(context).translate("lunch"),//'Lunch',
                             screen: LunchScreen(),
                           ),
                           SizedBox(
@@ -119,7 +120,7 @@ class HomePage extends StatelessWidget
                           buildHomeScreenItem(
                             context,
                             prefixIcon: Icons.dinner_dining_outlined,
-                            text: 'Dinner',
+                            text:  AppLocalizations.of(context).translate("dinner"),//'Dinner',
                             screen: DinnerScreen(),
                           ),
                           SizedBox(
@@ -128,7 +129,7 @@ class HomePage extends StatelessWidget
                           buildHomeScreenItem(
                             context,
                             prefixIcon: Icons.nights_stay_outlined,
-                            text: 'Snacks',
+                            text:  AppLocalizations.of(context).translate("snacks"),//'Snacks',
                             screen: SnacksScreen(),
                           ),
                           SizedBox(
@@ -137,7 +138,7 @@ class HomePage extends StatelessWidget
                           buildHomeScreenItem(
                             context,
                             prefixIcon: Icons.water_rounded,
-                            text: 'Water Tracker',
+                            text:  AppLocalizations.of(context).translate("Water Tracker"),//'Water Tracker',
                             screen: WaterTrackerScreen(),
                           ),
                           SizedBox(
@@ -149,7 +150,7 @@ class HomePage extends StatelessWidget
                             {
                               navigateTo(context, NutritionScreen());
                             },
-                            text: 'Nutrition',
+                            text:  AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
                             textStyle: Theme.of(context).textTheme.headline1!.copyWith(
                                 color: Colors.white
                             ),
@@ -164,7 +165,7 @@ class HomePage extends StatelessWidget
                               navigateTo(context, CompleteDiaryScreen());
 
                             },
-                            text: 'Complete Diary',
+                            text:  AppLocalizations.of(context).translate("complete_daily"),//'Complete Diary',
                             textStyle: Theme.of(context).textTheme.headline1!.copyWith(
                                 color: Colors.white
                             ),
@@ -178,7 +179,7 @@ class HomePage extends StatelessWidget
                   ],
                 ),
               ),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => const Center(child: CircularProgressIndicator()),
         );
       },
 

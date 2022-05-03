@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class NutritionScreen extends StatelessWidget
@@ -26,7 +27,7 @@ class NutritionScreen extends StatelessWidget
             onPressed: () {
               Navigator.pop(context);
             },
-            title: 'Nutrition',
+            title: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
 
           ),
           body: SingleChildScrollView(
@@ -37,7 +38,7 @@ class NutritionScreen extends StatelessWidget
                 [
                   buildNutritionItem(
                     context,
-                    title: 'Protein Remaining',
+                    title: AppLocalizations.of(context).translate("protein_remaining"),//'Protein Remaining',
                     calorieText: '${userModel!.totalProtein}',
                     foodText: '${HomeCubit.get(context).calculateTotalProtein()}',
                     remainingText: '${userModel.totalProtein! - HomeCubit.get(context).calculateTotalProtein()}',
@@ -47,7 +48,7 @@ class NutritionScreen extends StatelessWidget
                   ),
                   buildNutritionItem(
                     context,
-                    title: 'Fats Remaining',
+                    title: AppLocalizations.of(context).translate("fats_remaining"),//'Fats Remaining',
                     calorieText: '${userModel.totalFats}',
                     foodText: '${HomeCubit.get(context).calculateTotalFats()}',
                     remainingText: '${userModel.totalFats! - HomeCubit.get(context).calculateTotalFats()}',
@@ -57,7 +58,7 @@ class NutritionScreen extends StatelessWidget
                   ),
                   buildNutritionItem(
                     context,
-                    title: 'Carbohydrates Remaining',
+                    title: AppLocalizations.of(context).translate("carb_remaining"),//'Carbohydrates Remaining',
                     calorieText: '${userModel.totalCarbs}',
                     foodText: '${HomeCubit.get(context).calculateTotalCarbs()}',
                     remainingText: '${userModel.totalCarbs! - HomeCubit.get(context).calculateTotalCarbs()}',

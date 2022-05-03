@@ -53,6 +53,7 @@ class PhotoDetails extends StatelessWidget
                    Padding(
                      padding: const EdgeInsets.all(16.0),
                      child: defaultContainer(
+                       context,
                        child: Row(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: [
@@ -71,6 +72,7 @@ class PhotoDetails extends StatelessWidget
                    Padding(
                      padding: const EdgeInsets.symmetric(horizontal: 16),
                      child: defaultContainer(
+                       context,
                        child: Padding(
                          padding: const EdgeInsets.all(10.0),
                          child: Expanded(

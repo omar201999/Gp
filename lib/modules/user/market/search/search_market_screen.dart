@@ -6,6 +6,7 @@ import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -25,6 +26,7 @@ class SearchMarketingscreen extends StatelessWidget
         var list = AdminCubit.get(context).searchProduct;
         return Scaffold(
           appBar: AppBar(
+            title: Text(AppLocalizations.of(context).translate("search")),
             leading: IconButton(
               icon: Icon (IconBroken.Arrow___Left_2),
               onPressed: () {
@@ -50,13 +52,13 @@ class SearchMarketingscreen extends StatelessWidget
                   {
                     if(value!.isEmpty)
                     {
-                      return 'search must not be empty';
+                      return AppLocalizations.of(context).translate("search must not be empty");//'search must not be empty';
 
                     }
                     return null;
 
                   },
-                  hintText: 'search',
+                  hintText: AppLocalizations.of(context).translate("search"),
                   prefix: IconBroken.Search,
                 ),
                 SizedBox(
@@ -93,7 +95,8 @@ class SearchMarketingscreen extends StatelessWidget
       navigateTo(context, MarketitemScreen(productModel: model,));
     },
     child: defaultContainer(
-      color: constantColor5,
+      context,
+      //color: constantColor5,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +118,7 @@ class SearchMarketingscreen extends StatelessWidget
                         horizontal: 5.0
                     ),
                     child: Text(
-                      'DISCOUNT',
+                      AppLocalizations.of(context).translate("DISCOUNT"),
                       style: TextStyle(
                         fontSize: 8.0,
                         color: Colors.white,

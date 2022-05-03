@@ -6,10 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/feedback_model.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/order-model.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/customer_dashboard/CustomerDashBoard_Screen.dart';
 import 'package:gp/modules/user/home/home_screen.dart';
@@ -26,7 +28,6 @@ class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeIntitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
-
   UserModel? userModel;
  void getUserData()
  {
@@ -69,13 +70,7 @@ class HomeCubit extends Cubit<HomeStates> {
     RecipeScreen(),
     CustomerDashBoardScreen(),
   ];
-  List<String> titleAppBar =
-  [
-    'Home',
-    'Market',
-    'Recipe',
-    'Me'
-  ];
+
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -171,7 +166,7 @@ class HomeCubit extends Cubit<HomeStates> {
       totalWater: userModel!.totalWater ?? totalWater,
       phone: phone ?? userModel!.phone,
       address: address ?? userModel!.address,
-      userActive: userModel!.userActive,
+      userActive: true,
     );
 
     FirebaseFirestore.instance
@@ -187,23 +182,7 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-  List<ProductModel> products = [];
 
-  void getProduct() {
-    FirebaseFirestore.instance
-        .collection('products')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        products.add(ProductModel.fromJson(element.data()));
-      });
-
-      emit(protienSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(protienErrorState(error.toString()));
-    });
-  }
 
   List<MealsModel> allMeals = [];
 
@@ -263,8 +242,23 @@ class HomeCubit extends Cubit<HomeStates> {
     print(value.toLowerCase());
     emit(SearchPredictedMealState());
   }
+List<ProductModel> products = [];
+  void getProducts()
+  {
+    emit(GetProductsLoadingState());
+    FirebaseFirestore.instance
+        .collection('products')
+        .snapshots()
+        .listen((event) {
+      products = [];
+      event.docs.forEach((element) {
+        products.add(ProductModel.fromJson(element.data()));
+      });
+      emit(GetProductsSuccessState());
+    });
+  }
 
-  List<bool> isCheckedBreakFast = List<bool>.filled(50, false);
+  List<bool> isCheckedBreakFast = List<bool>.filled(334, false);
 
   void changeCheckBoxBreakFast(value, index) {
     isCheckedBreakFast[index] = value;
@@ -279,7 +273,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<bool> isCheckedDinner = List<bool>.filled(50, false);
+  List<bool> isCheckedDinner = List<bool>.filled(334, false);
 
   void changeCheckBoxDinner(value, index) {
     isCheckedDinner[index] = value;
@@ -287,7 +281,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<bool> isCheckedSnacks = List<bool>.filled(50, false, growable: true);
+  List<bool> isCheckedSnacks = List<bool>.filled(334, false, growable: true);
 
   void changeCheckBoxSnacks(value, index) {
     isCheckedSnacks[index] = value;
@@ -306,7 +300,7 @@ class HomeCubit extends Cubit<HomeStates> {
             .then((value) {
           //emit(SearchAddSnacksSuccessState());
           calculateTotalFoodCalories();
-
+          isCheckedSnacks = List<bool>.filled(334, false, growable: true);
           getCompleteDiaryItems();
         }).catchError((error) {
           emit(SearchAddSnacksErrorState(error.toString()));
@@ -326,6 +320,8 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchLunch[i].toMap())
             .then((value) {
+          isCheckedLunch = List<bool>.filled(334, false, growable: true);
+
           //emit(SearchAddLunchSuccessState());
           calculateTotalFoodCalories();
           getCompleteDiaryItems();
@@ -347,6 +343,8 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchBreakFast[i].toMap())
             .then((value) {
+          isCheckedBreakFast = List<bool>.filled(334, false, growable: true);
+
           //emit(SearchAddBreakFastSuccessState());
           calculateTotalFoodCalories();
 
@@ -369,6 +367,7 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .add(searchDinner[i].toMap())
             .then((value) {
+          isCheckedDinner = List<bool>.filled(334, false, growable: true);
           //emit(SearchAddDinnerSuccessState());
           calculateTotalFoodCalories();
 
@@ -427,7 +426,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(GetAllUsersMealsLoadingState());
     FirebaseFirestore.instance
         .collection('users')
-        .doc(uId)
+        .doc(uId!)
         .collection('userMeal')
         .snapshots()
         .listen((event) {
@@ -543,8 +542,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   }
 
-
-  void updateCartItem(String? prodId, {
+  void updateProductForOneBuy(String? prodId, {
     required String? name,
     String? image,
     required double? currentPrice,
@@ -552,7 +550,8 @@ class HomeCubit extends Cubit<HomeStates> {
     required double? discount,
     required int? quantity,
     required String? description,
-    required String? uId1,
+    required String? uId,
+    required String? status,
   }) {
     ProductModel model = ProductModel(
       name: name,
@@ -562,24 +561,70 @@ class HomeCubit extends Cubit<HomeStates> {
       oldPrice: oldPrice,
       discount: discount,
       quantity: quantity,
-      uId: uId1,
+      uId: uId,
+      status: status
     );
 
     FirebaseFirestore.instance
-        .collection('users')
+        .collection('products')
         .doc(uId)
-        .collection('yourCart')
-        .doc(prodId)
         .update(model.toMap())
         .then((value) {
-      getCartItem();
-      //emit(UpdateCartItemSuccessState());
+      //getProducts();
+      emit(UpdateCartItemSuccessState());
 
     }).catchError((error) {
-      emit(UpdateCartItemErrorState(error));
+      emit(UpdateCartItemErrorState(error.toString()));
       print(error.toString());
     });
   }
+ /* Future<void> createOrderModel ({
+    required double totalPrice,
+    required double total,
+    required List<dynamic>? cart,
+  }) async{
+    NewOrderModel createOrder = NewOrderModel(
+        orderId: creatOrderNumber().toString(),
+        userName: userModel!.name,
+        total: total,
+        totalPrice: totalPrice,
+        shipping: 100,
+        phone: userModel!.phone,
+        address: userModel!.address,
+        dateTime: DateTime.now().toString(),
+        cardItemList: cart
+    );
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .add(createOrder.toMap())
+        .then((value)
+    {
+      emit(CreateOrderSuccessState());
+    }).catchError((error)
+    {
+      emit(CreateOrderErrorState(error.toString()));
+      print(error.toString());
+    });
+  }*/
+/*  void updateProductForCartItem({
+  int? quantity,
+  }) {
+    for(int i =0 ; i < cart.length;i++)
+    {
+      FirebaseFirestore.instance
+          .collection('products')
+          .doc(cart[i].uId)
+          .update(cart[i].toMap())
+          .then((value) {
+        getProducts();
+        //emit(UpdateCartItemSuccessState());
+      }).catchError((error) {
+        emit(UpdateCartItemErrorState(error.toString()));
+        print(error.toString());
+      });
+    }
+
+  }*/
 
   List<ProductModel> cart = [];
 
@@ -713,7 +758,7 @@ class HomeCubit extends Cubit<HomeStates> {
   double calculateTotalPriceOfCartItems() {
     totalPrice = 0;
     for (int i = 0; i < cart.length; i++) {
-      totalPrice = (totalPrice + (cart[i].currentPrice)!.round());
+      totalPrice = totalPrice + (cart[i].currentPrice)!.round() * (cart[i].quantity)!.round();
     }
 
     return totalPrice;
@@ -752,6 +797,16 @@ class HomeCubit extends Cubit<HomeStates> {
     required double total,
     required String productName,
     required int quantity,
+    required int quantityAfterBuy,
+    required String prodId,
+    required String image,
+    required String uId,
+    required String description,
+    required double currentPrice,
+    required double oldPrice,
+    required double discount,
+    required String name,
+    required String status,
 
   }) async{
     OrderModel createOrderForOneProduct = OrderModel(
@@ -763,22 +818,43 @@ class HomeCubit extends Cubit<HomeStates> {
       address: userModel!.address,
       dateTime: DateTime.now().toString(),
       productName: productName,
-      quantity: quantity
+      quantity: quantity,
+      status: 'new'
 
     );
    await FirebaseFirestore.instance
         .collection('orders')
-        .add(createOrderForOneProduct.toMap());
-    emit(CreateOrderSuccessState());
+        .add(createOrderForOneProduct.toMap())
+       .then((value) {
+     updateProductForOneBuy(
+         prodId,
+         name: name,
+         currentPrice: currentPrice,
+         oldPrice: oldPrice,
+         discount: discount,
+         quantity: quantityAfterBuy,
+         description: description,
+         uId: uId,
+         image: image,
+         status: status
+     );
+
+   }).catchError((error){
+     emit(GetProductsErrorState(error.toString()));
+     print(error.toString());
+   });
+
+    //emit(CreateOrderSuccessState());
   }
   int creatOrderNumber()
   {
     return Random().nextInt(1000);
   }
+
   Future<void> createOrderModel ({
     required double totalPrice,
     required double total,
-    required List<dynamic>? cart,
+    //required List<dynamic>? cart,
   }) async{
     NewOrderModel createOrder = NewOrderModel(
       orderId: creatOrderNumber().toString(),
@@ -789,13 +865,27 @@ class HomeCubit extends Cubit<HomeStates> {
       phone: userModel!.phone,
       address: userModel!.address,
       dateTime: DateTime.now().toString(),
-      cardItemList: cart
+      /*
+      name: e['name'],
+      image: e['image'],
+      description: e['description'],
+      currentPrice: e['currentPrice'],
+      oldPrice: e['oldPrice'],
+      discount: e['discount'],
+      quantity: e['quantity'],
+      status: e['status'],
+      uId: e['uId'],
+      */
+      cardItemList: cart,
+      status: 'new',
     );
      await FirebaseFirestore.instance
         .collection('orders')
         .add(createOrder.toMap())
          .then((value)
      {
+       //print(creatOrderNumber().toString());
+       //updateProductForCartItem();
      emit(CreateOrderSuccessState());
      }).catchError((error)
      {
@@ -803,6 +893,121 @@ class HomeCubit extends Cubit<HomeStates> {
        print(error.toString());
      });
   }
+
+  File? feedBackImage;
+  Future? getFeedbackImage() async {
+    final pickedFile = await picker!.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      feedBackImage = File(pickedFile.path);
+      emit(GetFeedBackImageSuccessState());
+    } else {
+      emit(GetFeedBackImageErrorState());
+    }
+  }
+  void removeFeedBackImage() {
+    feedBackImage = null;
+    emit(RemoveFeedBackImageState());
+  }
+  void uploadFeedBackImage({
+    required String feedback,
+    required String goalAchieve,
+    required double rating,
+  }) {
+    emit(UploadProfileImageLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('feedback/${Uri.file(feedBackImage!.path).pathSegments.last}').putFile(feedBackImage!)
+        .then((value) {
+      value.ref.getDownloadURL()
+          .then((value) {
+        createFeedBack(
+         rating: rating,
+          feedbackImage:value ,
+          feedback: feedback,
+            goalAchieve: goalAchieve
+        );
+      })
+          .catchError((error) {
+        emit(UploadFeedBackImageErrorState(error.toString()));
+      });
+    })
+        .catchError((error) {
+      emit(UploadFeedBackImageErrorState(error.toString()));
+    });
+  }
+  void createFeedBack({
+  required String feedback,
+  required String goalAchieve,
+   String? feedbackImage,
+  required double rating,
+
+})
+  {
+    FeedBackModel model = FeedBackModel(
+      userName:userModel!.name,
+      userEmail: userModel!.email,
+      userImage: userModel!.profileImage,
+      feedback: feedback,
+      feedbackImage:feedbackImage ,
+      rating: rating,
+      goalAchieve:goalAchieve
+
+    );
+    FirebaseFirestore.instance
+        .collection('feedback')
+        .add(model.toMap())
+        .then((value) {
+          emit(CreateFeedBackSuccessState());
+    }).catchError((error){
+      emit(CreateFeedBackErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+  void updateRecipe(String Id,{
+    required num totalRating,
+    required num averageRating,
+    required num numOfRates,
+    required String uId,
+    required String image,
+    required double calories,
+    required double carbs,
+    required String category,
+    required String directions,
+    required double fats,
+    required String ingredients,
+    required double protein,
+    required String title,
+    required double weight,
+
+  })
+  {
+    RecipeModel model = RecipeModel(
+     totalRating: totalRating,
+      averageRating:averageRating ,
+      numOfRates: numOfRates,
+      uId:uId ,
+      image:image ,
+      calories: calories,
+      carbs:carbs ,
+      category:category ,
+      directions:directions ,
+      fats:fats ,
+      ingredients:ingredients ,
+      protein:protein ,
+      title:title ,
+      weight:weight ,
+    );
+    FirebaseFirestore.instance
+        .collection('recipes').doc(Id).update(model.toMap())
+        .then((value) {
+      emit(UpdateRecipeSuccessState());
+    }).catchError((error){
+      emit(UpdateRecipeErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+
 
 
 

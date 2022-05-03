@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 class CompleteDiaryScreen extends StatelessWidget {
 
@@ -20,7 +21,7 @@ class CompleteDiaryScreen extends StatelessWidget {
         {
           return Scaffold(
             appBar: buildAppBar(
-              title: 'Complete Diary',
+              title: AppLocalizations.of(context).translate("complete_daily"),//'Complete Diary',
               icon: IconBroken.Arrow___Left_2,
               onPressed: ()
               {
@@ -62,6 +63,7 @@ class CompleteDiaryScreen extends StatelessWidget {
       ));
     },
     child: defaultContainer(
+      context,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -78,13 +80,13 @@ class CompleteDiaryScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text('${model.Calories} cal,' ,style: Theme.of(context).textTheme.caption,),
+                      Text('${model.Calories} ${AppLocalizations.of(context).translate("cal")},' ,style: Theme.of(context).textTheme.caption,),
                       SizedBox(width: 3,),
-                      Text('${model.Protein}g Protein,',style: Theme.of(context).textTheme.caption,),
+                      Text('${model.Protein}${AppLocalizations.of(context).translate("Protein")},',style: Theme.of(context).textTheme.caption,),
                       SizedBox(width: 3,),
-                      Text('${model.Carbs}g Carbs,',style: Theme.of(context).textTheme.caption,),
+                      Text('${model.Carbs}${AppLocalizations.of(context).translate("Carbs")},',style: Theme.of(context).textTheme.caption,),
                       SizedBox(width: 3,),
-                      Text('${model.Fat}g Fats',style: Theme.of(context).textTheme.caption,),
+                      Text('${model.Fat}${AppLocalizations.of(context).translate("Fats")}',style: Theme.of(context).textTheme.caption,),
                       SizedBox(width: 3,)
                     ],
                   ) ,

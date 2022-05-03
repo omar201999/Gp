@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -27,6 +28,7 @@ class MealItemScreen extends StatelessWidget {
           children:
           [
             defaultContainer(
+              context,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -37,7 +39,8 @@ class MealItemScreen extends StatelessWidget {
                   [
                     defaultHeadLineText(
                         context,
-                        text: 'Measure is ${mealsModel.Measure} ',
+                      //AppLocalizations.of(context).translate("  "),//
+                        text: '${AppLocalizations.of(context).translate("Measure is")} ${mealsModel.Measure} ',
                     ),
                     SizedBox(
                       height: 5,
@@ -45,12 +48,13 @@ class MealItemScreen extends StatelessWidget {
                     if (mealsModel.Grams == null)
                       defaultHeadLineText(
                       context,
-                      text: 'Grams is Follow the Recipe',
+                      text: AppLocalizations.of(context).translate("Grams is Follow the Recipe"),//'Grams is Follow the Recipe',
                       ),
                     if(mealsModel.Grams != null)
                       defaultHeadLineText(
                       context,
-                      text: 'Grams is ${mealsModel.Grams}',
+                       // AppLocalizations.of(context).translate("  "),//
+                      text: '${AppLocalizations.of(context).translate("Grams is")} ${mealsModel.Grams}',
                     ),
                   ],
                 ),
@@ -60,13 +64,15 @@ class MealItemScreen extends StatelessWidget {
               height: 15,
             ),
             defaultContainer(
+              context,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     defaultHeadLineText(
-                        context, text: 'Nutrition Per Serving'),
+                        context, text: AppLocalizations.of(context).translate("Nutrition Per Serving"),//'Nutrition Per Serving',
+                    ),
                     const SizedBox(height: 5,),
                     Row(
                       children: [
@@ -84,7 +90,7 @@ class MealItemScreen extends StatelessWidget {
                                 [
                                   defaultBodyText(context, text: '${mealsModel.Calories}',
                                       fontWeight: FontWeight.bold),
-                                  defaultBodyText(context, text: 'Cal',
+                                  defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
                                       color: Colors.grey),
                                 ],
                               ),
@@ -93,15 +99,15 @@ class MealItemScreen extends StatelessWidget {
                         ),
                         afterTitleOfRecipeItem(context,
                             numberOfGrams: '${mealsModel.Carbs}',
-                            nameOfType: 'Carbs',
+                            nameOfType: AppLocalizations.of(context).translate("Carbs"),//'Carbs',
                             color: Colors.grey),
                         afterTitleOfRecipeItem(context,
                             numberOfGrams: '${mealsModel.Protein}',
-                            nameOfType: 'Proteins',
+                            nameOfType:AppLocalizations.of(context).translate("Protein"),// 'Proteins',
                             color: Colors.red),
                         afterTitleOfRecipeItem(context,
                             numberOfGrams: '${mealsModel.Fat}',
-                            nameOfType: 'Fats',
+                            nameOfType: AppLocalizations.of(context).translate("Fats"),//'Fats',
                             color: defaultColor),
                       ],
                     )

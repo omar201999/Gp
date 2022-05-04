@@ -14,6 +14,9 @@
   "validate_phone_form":"Phone must not be empty",
   "validate_phone":"Pleas enter your phone ",
   "change_app_bar":"Change Your Contact info ",
+  "change_phone": "Change Your Phone and address",
+  "delete_diary_message":"Delete this meal successfully",
+
   "Update contact Info":"Update contact Info",
   "Update":"Update",
   "yes":"Yes",
@@ -122,6 +125,7 @@
   "weight": "Weight",
   "height": "Height",
   "age": "Age",
+  "Delete this meal": "Delete this meal",
   "Password": "Password",
   "register": "Register Now",
   "photo":"Photo",

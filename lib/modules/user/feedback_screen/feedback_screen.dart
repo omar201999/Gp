@@ -194,6 +194,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                   RatingBar.builder(
                                     initialRating: rating!,
                                     itemCount: 5,
+                                    minRating: 1,
                                     updateOnDrag: true,
                                     itemPadding: EdgeInsets.symmetric(horizontal: 5),
                                     itemBuilder: (context, index) {

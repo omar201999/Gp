@@ -262,7 +262,7 @@ class MarketitemScreen extends StatelessWidget {
                              {
                                navigateTo(context, AddressAndPhoneChangeScreen());
                              },
-                             text: AppLocalizations.of(context).translate("change"),
+                             text: AppLocalizations.of(context).translate("change_phone"),
                            ),
                        ],
                      ),

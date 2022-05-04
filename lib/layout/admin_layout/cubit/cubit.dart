@@ -889,6 +889,50 @@ class AdminCubit extends Cubit<AdminStates>
     }
     return averageRateApp / feedback.length ;
   }
+  int yesAchievementCount =0;
+  int yesAchievement()
+  {
+    yesAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'yes')
+      {
+        yesAchievementCount = yesAchievementCount + 1;
+      }
+
+    }
+    return yesAchievementCount ;
+  }
+
+  int partiallyAchievementCount =0;
+  int partiallyAchievement()
+  {
+    partiallyAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'partially')
+      {
+        partiallyAchievementCount = partiallyAchievementCount + 1;
+      }
+
+    }
+    return partiallyAchievementCount ;
+  }
+
+  int noAchievementCount =0;
+  int noAchievement()
+  {
+    noAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'no')
+      {
+        noAchievementCount = noAchievementCount + 1;
+      }
+
+    }
+    return noAchievementCount ;
+  }
 
  /*
  List<ProductModel> productsOrders = [];

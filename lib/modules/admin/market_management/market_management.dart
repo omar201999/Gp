@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/layout/home-layout/cubit/cubit.dart';
-import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/layout/admin_layout/cubit/cubit.dart';
+import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/new_product/new_product_screen.dart';
@@ -13,10 +13,10 @@ class MarketManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocConsumer<HomeCubit, HomeStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-            condition: HomeCubit.get(context).products.isNotEmpty && state is !GetProductsLoadingState,
+            condition: AdminCubit.get(context).products.isNotEmpty && state is !GetProductsLoadingState,
             builder: (context) => Scaffold(
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -46,8 +46,8 @@ class MarketManagementScreen extends StatelessWidget {
                           crossAxisSpacing: 5,
                           childAspectRatio: 1 / 1.43,
                           children: List.generate(
-                            HomeCubit.get(context).products.length,
-                                (index) => buildProductItem(HomeCubit.get(context).products[index], context),
+                            AdminCubit.get(context).products.length,
+                                (index) => buildProductItem(AdminCubit.get(context).products[index], context),
                           ),
                         ),
                       ],

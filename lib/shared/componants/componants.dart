@@ -896,48 +896,68 @@ Widget defaultRawButton ({
 
 Widget  BuildUserItem (UserModel model,context)=> Padding(
   padding: const EdgeInsets.all(20.0),
-  child: Row(
-    children:
-    [
-      CircleAvatar(
-        radius: 40.0,
-        backgroundImage: NetworkImage(
-            '${model.profileImage}'
-        ),
+  child: Dismissible(
+    key: Key(model.uId!),
+    onDismissed: (direction)
+    {
+      AdminCubit.get(context).deleteUser(model.uId);
+
+    },
+    background: Container(
+      alignment: Alignment.centerLeft,
+      child:Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: defaultHeadLineText(context, text: 'Delete Abuser',color: Colors.white),
       ),
-      SizedBox(
-        width: 20,),
-      Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-          [
-            Text(
-              '${model.name}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              '${model.email}',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration:BoxDecoration(
+        color: defaultColor,//HexColor('#4d4d4d')
+        borderRadius: BorderRadius.circular(10),
       ),
-      IconButton(
-          icon: Icon(
-              Icons.delete_forever
+    ),
+    child: Row(
+      children:
+      [
+        CircleAvatar(
+          radius: 40.0,
+          backgroundImage: NetworkImage(
+              '${model.profileImage}'
           ),
-          onPressed: () {
-            AdminCubit.get(context).deleteUser(model.uId);
-          }
-      ),
-    ],
+        ),
+        SizedBox(
+          width: 20,),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Text(
+                '${model.name}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${model.email}',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+        IconButton(
+            icon: Icon(
+                Icons.delete_forever
+            ),
+            onPressed: () {
+              AdminCubit.get(context).deleteUser(model.uId);
+            }
+        ),
+      ],
+    ),
   ),
 );
 

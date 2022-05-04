@@ -229,6 +229,127 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+                              //color: constantColor1,
+                              height: 170,
+                             // width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users That Achieve Their Goal is ${AdminCubit.get(context).yesAchievement()}',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black45
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).yesAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+
+                              //color: constantColor1,
+                              height: 170,
+                              //width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users That Partially Achieve Their Goal is ${AdminCubit.get(context).partiallyAchievement()}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black45,
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).partiallyAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+
+                              //color: constantColor1,
+                              height: 170,
+                              //width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users that No Achieve Their Goal is ${AdminCubit.get(context).noAchievement()}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black45,
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).noAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

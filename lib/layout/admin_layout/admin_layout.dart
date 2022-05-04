@@ -9,6 +9,7 @@ import 'package:gp/modules/admin/recipe_management/search_recipe/search_recipe_s
 import 'package:gp/modules/admin/users_management/search_users/search_users_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 import 'cubit/cubit.dart';
@@ -34,12 +35,25 @@ class AdminLayout extends StatelessWidget {
               actions:
               [
                 if(cubit.currentIndex == 0)
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      navigateTo(context,FeedBackManagementScreen());
-                    },
-                    icon: const Icon(Icons.feedback_outlined),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: 5,
+                    ),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
+                      children: [
+
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            navigateTo(context,FeedBackManagementScreen());
+                          },
+                          icon: const Icon(Icons.feedback_outlined),
+                        ),
+                        defaultBodyText(context, text: '${AdminCubit.get(context).feedback.length}',color: defaultColor,fontSize: 12),
+
+                      ],
+                    ),
                   ),
                 if(cubit.currentIndex == 0)
                   IconButton(
@@ -76,12 +90,27 @@ class AdminLayout extends StatelessWidget {
 
                   ),
                 if(cubit.currentIndex == 3)
-                  IconButton(
-                    onPressed: () {
-                      navigateTo(context, OrderLayoutScreen());
-                    },
-                    icon: Icon(Icons.notification_important),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: 5,
+                      end: 5
+                    ),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
 
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            navigateTo(context, OrderLayoutScreen());
+                          },
+                          icon: Icon(Icons.notification_important),
+
+                        ),
+                        defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length+AdminCubit.get(context).confirmedOrders.length+AdminCubit.get(context).canceledOrders.length}',color: defaultColor,fontSize: 16),
+
+                      ],
+                    ),
                   ),
 
               ],

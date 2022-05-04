@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/user/login/cubit/states.dart';
 
 class LoginCubit extends Cubit<LoginStates>
@@ -31,7 +29,7 @@ class LoginCubit extends Cubit<LoginStates>
          email: email.trim(),
          password: password,
      ).then((value) {
-       emit(LoginSuccessState(value.user!.uid));
+       emit(LoginSuccessState());//value.user!.uid
      }).catchError((error){
        emit(LoginErrorState(error.toString()));
        print(error.toString());
@@ -55,7 +53,7 @@ class LoginCubit extends Cubit<LoginStates>
     });
   }*/
 
- List<UserModel> users = [];
+/* List<UserModel> users = [];
   void getUsers()
   {
     FirebaseFirestore.instance.collection('users').get().then((value)
@@ -71,7 +69,7 @@ class LoginCubit extends Cubit<LoginStates>
       print(error.toString());
 
     });
-  }
+  }*/
 
 
   /*List<UserModel> users1 = [];

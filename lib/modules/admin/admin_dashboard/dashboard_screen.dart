@@ -163,15 +163,15 @@ class DashboardScreen extends StatelessWidget {
                                         const SizedBox(
                                           height: 5.0,
                                         ),
-                                         Text(
-                                          'All Confirmed Orders ${AdminCubit.get(context).confirmedOrders.length}',
+                                         const Text(
+                                          'All Confirmed Orders ',
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.black45
                                           ),
                                         ),
                                         defaultHeadLineText(
-                                            context, text: '0')
+                                            context, text: '${AdminCubit.get(context).confirmedOrders.length}')
                                       ],
                                     ),
                                   ),

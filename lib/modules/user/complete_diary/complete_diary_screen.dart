@@ -86,9 +86,14 @@ class CompleteDiaryScreen extends StatelessWidget {
     child: InkWell(
       onTap: ()
       {
-        navigateTo(context, MealItemScreen(
+        /*navigateTo(context, MealItemScreen(
           mealsModel: model,
-        ));
+        ));*/
+        showDialog(
+            context: context,
+            builder: (context) => MealItemScreen(mealsModel: model),
+          barrierDismissible: true,
+        );
       },
       child: defaultContainer(
         context,

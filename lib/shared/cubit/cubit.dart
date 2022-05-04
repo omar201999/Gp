@@ -10,7 +10,7 @@ class AppCubit extends Cubit<AppStates>
   AppCubit() : super(AppInitialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
-  Color constantColor1 = Color(0xFFE3F4FB);
+   Color constantColor1 = Color(0xFFE3F4FB);
 
   bool isDark = false;
   void changeAppMode({fromCache}) {

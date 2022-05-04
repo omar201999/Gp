@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -6,6 +5,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -326,6 +326,14 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                     fat: (widget.recipeModel.fats)!.round(),
                     protein: (widget.recipeModel.protein)!.round(),
                   );
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(
+                    SnackBar(
+                      backgroundColor:AppCubit.get(context).constantColor1 ,
+                      content: defaultBodyText(context, text: AppLocalizations.of(context).translate("Recipe_add")),
+                      duration: const Duration(seconds: 2),
+                    )
+                );
               }
               },
               label: Text(AppLocalizations.of(context).translate("Add to yours Meal")),//'Add to yours Meal'),

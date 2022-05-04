@@ -107,7 +107,7 @@ class AdminLayout extends StatelessWidget {
                           icon: Icon(Icons.notification_important),
 
                         ),
-                        defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length+AdminCubit.get(context).confirmedOrders.length+AdminCubit.get(context).canceledOrders.length}',color: defaultColor,fontSize: 16),
+                        defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length}',color: defaultColor,fontSize: 16),
 
                       ],
                     ),

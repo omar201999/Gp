@@ -132,7 +132,7 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
-  void uploadNewImage({
+  void uploadNewImage(String? recipeId,{
     required String title,
     required String ingredients,
     required String directions,
@@ -144,7 +144,7 @@ class AdminCubit extends Cubit<AdminStates>
     required num totalRating,
     required num averageRating,
     required num numOfRates,
-    required String? uId,
+    //required String? uId,
     required String? category,
 })
   {
@@ -156,7 +156,8 @@ class AdminCubit extends Cubit<AdminStates>
       value.ref.getDownloadURL().then((value)
       {
         updateRecipe(
-            title: title,
+          recipeId,
+          title: title,
             ingredients: ingredients,
             directions: directions,
             calories: calories,
@@ -164,7 +165,7 @@ class AdminCubit extends Cubit<AdminStates>
             carbs: carbs,
             protein: protein,
             weight: weight,
-            uId: uId,
+            //uId: uId,
             category: category,
             newRecipeImage: value,
           totalRating: totalRating,
@@ -183,7 +184,7 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
-  void updateRecipe({
+  void updateRecipe(String? recipeID,{
     required String title,
     required String ingredients,
     required String directions,
@@ -192,10 +193,10 @@ class AdminCubit extends Cubit<AdminStates>
     required double carbs,
     required double protein,
     required double weight,
+    //required String? uId,
     required num numOfRates,
     required num averageRating,
     required num totalRating,
-    required String? uId,
     required String? category,
     String? newRecipeImage,
 })
@@ -210,7 +211,7 @@ class AdminCubit extends Cubit<AdminStates>
       carbs: carbs,
       protein: protein,
       weight: weight,
-      uId: uId,
+      //uId: uId,
       category: category,
       numOfRates:numOfRates,
       averageRating:averageRating ,
@@ -219,7 +220,7 @@ class AdminCubit extends Cubit<AdminStates>
 
     FirebaseFirestore.instance
     .collection('recipes')
-    .doc(uId)
+    .doc(recipeID)
     .update(model.toMap())
     .then((value) {
       //emit(UpdateRecipeSuccessState());
@@ -242,7 +243,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-     required String? uId,
+     //required String? uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -267,7 +268,7 @@ class AdminCubit extends Cubit<AdminStates>
             ingredients: ingredients,
             directions: directions,
             category: category,
-            uId: uId,
+            //uId: uId,
           //totalTime: totalTime
         );
 
@@ -293,8 +294,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String ingredients,
     required String directions,
     required String category,
-    required String? uId,
-
+    //required String? uId,
     //required int totalTime,
   }){
     emit(CreateRecipeLoadingState());
@@ -308,7 +308,9 @@ class AdminCubit extends Cubit<AdminStates>
         weight: weight,
         ingredients: ingredients,
         directions: directions,
-        uId:uId,
+        //uId:uId,
+        category: category
+        //uId:uId,
         category: category,
         averageRating: 0 ,
         numOfRates: 0 ,
@@ -317,8 +319,7 @@ class AdminCubit extends Cubit<AdminStates>
 
     FirebaseFirestore.instance
         .collection('recipes')
-        .doc(uId)
-        .set(model.toMap())
+        .add(model.toMap())
         .then((value){
 
           //print(uId1.toString());
@@ -331,14 +332,19 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
   List<RecipeModel> breakfastRecipe = [];
+  List<String> breakfastRecID = [];
   void getBreakfastRecipe()
   {
-    /*.get()
-      .then((value) {
-  value.docs.forEach((element)
-  {
-  breakfastRecipe.add(RecipeModel.fromJson(element.data()));
-  });
+    //emit(GetAllBreakFastRecipeLoadingState());
+    /*FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'breakfast')
+        .get()
+        .then((value) {
+      value.docs.forEach((element)
+      {
+        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
+      });
 
   emit(GetAllBreakFastRecipeSuccessState());
   }).catchError((error) {
@@ -353,27 +359,36 @@ class AdminCubit extends Cubit<AdminStates>
         .snapshots()
         .listen((event) {
       breakfastRecipe = [];
+      breakfastRecID = [];
       event.docs.forEach((element) {
+        breakfastRecID.add(element.id);
         breakfastRecipe.add(RecipeModel.fromJson(element.data()));
       });
       emit(GetAllBreakFastRecipeSuccessState());
     });
   }
   List<RecipeModel> lunchRecipe = [];
+  List<String> lunchRecID = [];
   void getLunchRecipe()
   {
     emit(GetAllLunchRecipeLoadingState());
+    lunchRecipe = [];
+    lunchRecID = [];
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'lunch').snapshots().listen((event) {
       lunchRecipe = [];
+      lunchRecID = [];
       event.docs.forEach((element) {
         lunchRecipe.add(RecipeModel.fromJson(element.data()));
+        lunchRecID.add(element.id);
       });
+
       emit(GetAllLunchRecipeSuccessState());
     });
   }
   List<RecipeModel> dinnerRecipe = [];
+  List<String> dinnerRecID = [];
   void getDinnerRecipe()
   {
     emit(GetAllDinnerRecipeLoadingState());
@@ -383,11 +398,13 @@ class AdminCubit extends Cubit<AdminStates>
       dinnerRecipe = [];
       event.docs.forEach((element) {
         dinnerRecipe.add(RecipeModel.fromJson(element.data()));
+        dinnerRecID.add(element.id);
       });
       emit(GetAllDinnerRecipeSuccessState());
     });
   }
   List<RecipeModel> allRecipe = [];
+  List<String> recipesIds = [];
   void getAllRecipe()
   {
     FirebaseFirestore.instance
@@ -397,6 +414,8 @@ class AdminCubit extends Cubit<AdminStates>
       allRecipe = [];
       event.docs.forEach((element) {
         allRecipe.add(RecipeModel.fromJson(element.data()));
+        recipesIds.add(element.id);
+
       });
       emit(GetAllRecipeSuccessState());
     });
@@ -455,7 +474,7 @@ class AdminCubit extends Cubit<AdminStates>
 
   File? newProductImage;
 
-  Future? getnewProductImage() async {
+  Future? getNewProductImage() async {
     final pickedFile = await picker?.pickImage(
         source: ImageSource.gallery
     );
@@ -469,15 +488,15 @@ class AdminCubit extends Cubit<AdminStates>
     }
   }
 
-  void uploadNewProductImage({
+  void uploadNewProductImage(String? id,{
     required String name,
     required String description,
     required int quantity,
     required double currentPrice,
     required double oldPrice,
     required double discount,
-
-    required String? uId,
+    required String? status
+    //required String? uId,
   })
   {
     firebase_storage.FirebaseStorage.instance
@@ -488,14 +507,15 @@ class AdminCubit extends Cubit<AdminStates>
       value.ref.getDownloadURL().then((value)
       {
         updateProduct(
+          id,
           name: name,
           description: description,
           currentPrice: currentPrice,
           oldPrice: oldPrice,
           discount: discount,
           quantity: quantity,
-
-          uId: uId,
+          status: status,
+          //uId: uId,
           newProductImage: value,
         );
       }).catchError((error)
@@ -510,15 +530,16 @@ class AdminCubit extends Cubit<AdminStates>
     });
   }
 
-  void updateProduct({
+  void updateProduct(String? id,{
     required String name,
     required String description,
     required int quantity,
     required double currentPrice,
     required double oldPrice,
     required double discount,
+    required String? status,
     String? newProductImage,
-    required String? uId,
+    //required String? uId,
   })
   {
     ProductModel model = ProductModel(
@@ -529,16 +550,18 @@ class AdminCubit extends Cubit<AdminStates>
       oldPrice: oldPrice,
       discount: discount,
       quantity: quantity,
+      status: status,
 
-      uId: uId,
+      //uId: uId,
 
     );
 
     FirebaseFirestore.instance
         .collection('products')
-        .doc(uId)
+        .doc(id)
         .update(model.toMap())
         .then((value) {
+      emit(UpdateProductsSuccessState());
           getProducts();
       //emit(UpdateRecipeSuccessState());
 
@@ -560,7 +583,7 @@ class AdminCubit extends Cubit<AdminStates>
     required int quantity,
     required String description,
     String? status,
-    required String uId,
+    //required String uId,
     //required int totalTime,
   }){
     emit(CreateProductLoadingState());
@@ -582,7 +605,7 @@ class AdminCubit extends Cubit<AdminStates>
           discount: discount,
           quantity: quantity,
           description: description,
-          uId:uId,
+          //uId:uId,
           status: status
         );
 
@@ -607,7 +630,7 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
-    required String uId,
+    //required String uId,
     String? status,
 
   }){
@@ -620,15 +643,15 @@ class AdminCubit extends Cubit<AdminStates>
         discount: discount,
         quantity: quantity,
         description: description,
-        uId:uId,
+        //uId:uId,
         status: status
 
     );
 
     FirebaseFirestore.instance
         .collection('products')
-        .doc(uId.toString())
-        .set(model.toMap())
+        //.doc(uId.toString())
+        .add(model.toMap())
         .then((value){
 
       //print(uId1.toString());
@@ -641,6 +664,7 @@ class AdminCubit extends Cubit<AdminStates>
   }
 
   List<ProductModel> products = [];
+  List<String> productsIDs = [];
   void getProducts()
   {
     emit(GetProductsLoadingState());
@@ -649,17 +673,19 @@ class AdminCubit extends Cubit<AdminStates>
         .snapshots()
         .listen((event) {
       products = [];
+      productsIDs = [];
       event.docs.forEach((element) {
         products.add(ProductModel.fromJson(element.data()));
+        productsIDs.add(element.id);
       });
       emit(GetProductsSuccessState());
     });
   }
 
-  void deleteProduct(String? uId){
+  void deleteProduct(String? id){
     FirebaseFirestore.instance
         .collection('products')
-        .doc(uId)
+        .doc(id)
         .delete()
         .then((value) {
           getProducts();
@@ -837,36 +863,34 @@ class AdminCubit extends Cubit<AdminStates>
    double? total,
    double? shipping,
    List<dynamic>? cardItemList,
-})
-  {
-    NewOrderModel model = NewOrderModel(
-      status: status,
-      quantity: quantity,
-      productName:productName,
-      dateTime: dateTime,
-      address:address ,
-      orderId: orderId,
-      phone:phone ,
-      shipping:shipping ,
-      total: total,
-      totalPrice: totalPrice,
-      userName:userName,
-      cardItemList:cardItemList ,
-    );
-    FirebaseFirestore.instance
-        .collection('orders')
-        .doc(id)
-        .update(model.toMap())
-        .then((value) {
-      getOrders();
-    }).catchError((error){
-      emit(UpdateOrdersErrorState(error.toString()));
-      print(error.toString());
-    });
-  }
-
+}) {
+   NewOrderModel model = NewOrderModel(
+     status: status,
+     quantity: quantity,
+     productName: productName,
+     dateTime: dateTime,
+     address: address,
+     orderId: orderId,
+     phone: phone,
+     shipping: shipping,
+     total: total,
+     totalPrice: totalPrice,
+     userName: userName,
+     cardItemList: cardItemList,
+   );
+   FirebaseFirestore.instance
+       .collection('orders')
+       .doc(id)
+       .update(model.toMap())
+       .then((value) {
+     getOrders();
+   }).catchError((error) {
+     emit(UpdateOrdersErrorState(error.toString()));
+     print(error.toString());
+   });
+ }
   List<FeedBackModel> feedback = [];
-  
+
   void getFeedBack()
   {
     FirebaseFirestore.instance

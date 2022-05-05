@@ -582,11 +582,12 @@ Widget buildNutritionItem(BuildContext context,{
   ),
 );
 
-Widget buildmarket_item(ProductModel model,context) => defaultGestureDetector(
+Widget buildmarket_item(ProductModel model, context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, MarketitemScreen(
+    navigateTo(context, MarketItemScreen(
       productModel: model,
+      index: index,
     ));
   },
   child: defaultContainer(
@@ -985,13 +986,17 @@ indicator({
       const SizedBox(
         width: 4,
       ),
-      Text(
-        text,
-        style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: textColor
-        ),
+      Expanded(
+        child: Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+            ),
+          ),
       ),
 
       const Spacer(),

@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^0.8.3+3
   fl_chart: ^0.45.0
   flutter_rating_bar: ^4.0.0
+  glass: ^1.0.1+1
 
 
 

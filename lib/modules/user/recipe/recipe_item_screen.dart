@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass/glass.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
@@ -8,7 +9,9 @@ import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:hexcolor/hexcolor.dart';
+
 class RecipeItemScreen extends StatefulWidget {
 
   RecipeModel recipeModel;
@@ -31,11 +34,6 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
     listener: (context,state){},
       builder: (context,state)
       {
-        /*if(widget.recipeModel.rating != null)
-        {
-          rating = widget.recipeModel.rating;
-        }*/
-
         return Scaffold(
           //backgroundColor: Colors.grey[50],
           body: SingleChildScrollView(
@@ -58,14 +56,22 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                          top: 30
+                          top: 30,
+                         start: 5,
                       ),
-                      child: IconButton(
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon( Icons.arrow_back, ),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        child: IconButton(
+                          color: defaultColor,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon( IconBroken.Arrow___Left_2, ),
+                        ),
+                      ).asGlass(
+                        tintColor: Colors.transparent,
+                        clipBorderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
                   ],

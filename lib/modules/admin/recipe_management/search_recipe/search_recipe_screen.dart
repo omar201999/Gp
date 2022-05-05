@@ -68,7 +68,7 @@ class SearchRecipeItemScreen extends StatelessWidget {
                     condition:  list.length >0,
                     builder: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildRecipe(list[index],context),
+                        itemBuilder: (context,index) => buildRecipe(list[index],context, index),
                         separatorBuilder: (context,index) =>  SizedBox(height: 8,),
                         itemCount: list.length),
                     fallback: (context) => Center(child: Container()),

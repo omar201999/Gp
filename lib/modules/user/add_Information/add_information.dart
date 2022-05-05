@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/modules/user/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/cubit/cubit.dart';
@@ -77,7 +78,8 @@ class _AddInformationState extends State<AddInformation>
           title: AppLocalizations.of(context).translate("Add_info"),
           icon: IconBroken.Arrow___Left_2,
           onPressed: () {
-          Navigator.pop(context);
+          //Navigator.pop(context);
+            navigateToAndReplacement(context, OnBoardingScreen());
          },
       ),
       body: SingleChildScrollView(

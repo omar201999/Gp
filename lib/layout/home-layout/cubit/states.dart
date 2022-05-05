@@ -1,12 +1,12 @@
 abstract class HomeStates {}
 
-class HomeIntitialState extends HomeStates{}
+class HomeInitialState extends HomeStates{}
 
 class ChangeThemeDarkState extends HomeStates{}
 
 class ChangeThemeLightState extends HomeStates{}
 
-class HomeChangeBottonNavState extends HomeStates{}
+class HomeChangeBottomNavState extends HomeStates{}
 
 class GetUserDataLoadingState extends HomeStates{}
 
@@ -270,6 +270,23 @@ class DeleteCartItemErrorState extends HomeStates
 class minusState extends HomeStates{}
 
 class plusState extends HomeStates{}
+
+class AddQuantityState extends HomeStates{}
+
+class MinusQuantityState extends HomeStates{}
+
+class GetProductLoadingState extends HomeStates {}
+class GetProductSuccessState extends HomeStates {}
+class GetProductErrorState extends HomeStates {
+  final String error;
+  GetProductErrorState(this.error);
+}
+
+class UpdateProductSuccessState extends HomeStates{}
+class UpdateProductsErrorState extends HomeStates{
+  final String error;
+  UpdateProductsErrorState(this.error);
+}
 
 class CreateOrderLoadingState extends HomeStates {}
 

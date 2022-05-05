@@ -68,7 +68,7 @@ class SearchProductScreen extends StatelessWidget {
                     condition:  list.length >0,
                     builder: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildProductItem(list[index],context),
+                        itemBuilder: (context,index) => buildProductItem(list[index],context,index),
                         separatorBuilder: (context,index) =>  SizedBox(height: 8,),
                         itemCount: list.length),
                     fallback: (context) => Center(child: Container()),

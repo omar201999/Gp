@@ -1,5 +1,4 @@
 
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -137,7 +136,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()..changeAppMode(fromCache: widget.isDark)),
-        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()),
+        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()..getProducts()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()..getFeedBack()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
@@ -205,21 +204,6 @@ class MainPage extends StatelessWidget
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null ) {
-            //print(snapshot.data!.delete().toString());
-            //print(snapshot.data.toString());
-           /* print(snapshot.hasData.toString());
-            print(snapshot.hasError.toString());
-            print(snapshot.error.toString());
-            print(snapshot.connectionState.toString());
-            print(snapshot.data.toString());
-            print(snapshot.data!.phoneNumber);
-
-*/
-
-
-
-
-
             //CacheHelper.saveData(key: 'uId', value: snapshot.data!.uid);
             uId =snapshot.data!.uid;
             //print(uId.toString());
@@ -228,16 +212,11 @@ class MainPage extends StatelessWidget
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                 if(snapshot.hasData && snapshot.data != null) {
                   final user = snapshot.data!.data();
-                  /*print(snapshot.data!.data().toString());
-                  print(user.toString());
-                  print(snapshot.hasData.toString());
-                  print(snapshot.data!.data().toString());*/
-
-                  HomeCubit.get(context).userModel = userModel;
-                  if (user!['status'] == 'admin') {
+                  HomeCubit.get(context).userModel=userModel;
+                  if(user!['status'] == 'admin') {
                     return AdminLayout();
                   } else {
-                   // print(userModel!.name.toString());
+                    //print(userModel.name.toString());
                     return HomeLayout();
                   }
                 }

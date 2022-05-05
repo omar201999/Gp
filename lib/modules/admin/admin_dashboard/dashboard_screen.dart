@@ -27,7 +27,7 @@ class DashboardScreen extends StatelessWidget {
     int sumTotalAmountProducts(){
       totalAmount = 0;
       for( int index = 0; index < AdminCubit.get(context).products.length; index++ ){
-        totalAmount += AdminCubit.get(context).products[index].quantity!;
+        totalAmount = totalAmount + (AdminCubit.get(context).products[index].quantity!).toInt();
       }
       return totalAmount;
     }
@@ -88,7 +88,7 @@ class DashboardScreen extends StatelessWidget {
                                         const Text(
                                           'Main Products in Stock',
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 13,
                                               color: Colors.black45
                                           ),
                                         ),
@@ -122,7 +122,7 @@ class DashboardScreen extends StatelessWidget {
                                         const Text(
                                           'Main Products Not in Stock',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 13,
                                             color: Colors.black45,
                                           ),
                                         ),
@@ -166,7 +166,7 @@ class DashboardScreen extends StatelessWidget {
                                          const Text(
                                           'All Confirmed Orders ',
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 13,
                                               color: Colors.black45
                                           ),
                                         ),
@@ -199,7 +199,7 @@ class DashboardScreen extends StatelessWidget {
                                         const Text(
                                           'Users of Application',
                                           style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             color: Colors.black45,
                                           ),
                                         ),

@@ -11,13 +11,15 @@ import 'package:gp/shared/styles/icon_broken.dart';
 class EditProductScreen extends StatelessWidget {
 
   ProductModel productModel;
+  int index;
   EditProductScreen({
     required this.productModel,
+    required this.index,
   });
 
   var nameController = TextEditingController();
   var descriptionController = TextEditingController();
-  var currentPriceController = TextEditingController();
+  //var currentPriceController = TextEditingController();
   var oldPriceController = TextEditingController();
   var discountController = TextEditingController();
   var quantityController = TextEditingController();
@@ -30,7 +32,7 @@ class EditProductScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           var newProductImage = AdminCubit.get(context).newProductImage;
-          if(productModel.discount == 0)
+          /*if(productModel.discount == 0)
           {
             currentPriceController.text ='${productModel.currentPrice}';
             oldPriceController.text = currentPriceController.text ;
@@ -39,12 +41,14 @@ class EditProductScreen extends StatelessWidget {
           {
             oldPriceController.text = '${productModel.oldPrice}';
             currentPriceController.text = '${productModel.currentPrice}';
-          }
+          }*/
           nameController.text = productModel.name!;
           descriptionController.text = productModel.description!;
+          //currentPriceController.text = '${productModel.currentPrice}';
+          oldPriceController.text = '${productModel.oldPrice}';
           discountController.text = '${productModel.discount}';
           quantityController.text = '${productModel.quantity}';
-          uIdController.text = '${productModel.uId}';
+          //uIdController.text = '${productModel.uId}';
           return Scaffold(
 
             body: SingleChildScrollView(
@@ -87,9 +91,12 @@ class EditProductScreen extends StatelessWidget {
                               context,
                               color: defaultColor,
                               function: () {
-                                AdminCubit.get(context).deleteProduct(
-                                    productModel.uId);
+                                AdminCubit.get(context).deleteProduct(AdminCubit.get(context).productsIDs[index]);
                                 Navigator.pop(context);
+                                showToast(
+                                    text: 'Product has deleted successfully!',
+                                    state: ToastStates.SUCCESS
+                                );
                               },
                               text: 'Delete',
                             ),
@@ -106,7 +113,7 @@ class EditProductScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             onPressed: () {
-                              AdminCubit.get(context).getnewProductImage();
+                              AdminCubit.get(context).getNewProductImage();
                             },
                             icon: const CircleAvatar(
                               radius: 30,
@@ -124,7 +131,7 @@ class EditProductScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
-                        defaultContainer(
+                        /*defaultContainer(
                           context,
                           height: 65,
                           child: defaultTextFormField(
@@ -136,7 +143,7 @@ class EditProductScreen extends StatelessWidget {
                         ),
                         const SizedBox(
                           height: 10.0,
-                        ),
+                        ),*/
                         defaultContainer(
                           context,
                           height: 65,
@@ -169,11 +176,9 @@ class EditProductScreen extends StatelessWidget {
                           height: 10.0,
                         ),
 
-                        defaultContainer(
-                          context,
-
+                        /*defaultContainer(
                           height: 65,
-                          //color: constantColor5,
+                          color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: currentPriceController,
@@ -183,7 +188,7 @@ class EditProductScreen extends StatelessWidget {
                         ),
                         const SizedBox(
                           height: 10.0,
-                        ),
+                        ),*/
                         defaultContainer(
                           context,
 
@@ -239,26 +244,31 @@ class EditProductScreen extends StatelessWidget {
                             if(newProductImage == null)
                             {
                               AdminCubit.get(context).updateProduct(
+                                AdminCubit.get(context).productsIDs[index],
                                 name: nameController.text,
                                 description: descriptionController.text,
-                                currentPrice: double.parse(currentPriceController.text),
+                                currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
                                 oldPrice: double.parse(oldPriceController.text),
                                 discount: double.parse(discountController.text),
                                 quantity : int.parse(quantityController.text),
-                                uId: productModel.uId,
+                                status: productModel.status,
+
+                                //uId: productModel.uId,
                                 newProductImage:productModel.image,
                               );
 
                             } else
                             {
                               AdminCubit.get(context).uploadNewProductImage(
+                                  AdminCubit.get(context).productsIDs[index],
                                   name: nameController.text,
                                   description: descriptionController.text,
-                                  currentPrice: double.parse(currentPriceController.text),
+                                  currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
                                   oldPrice: double.parse(oldPriceController.text),
                                   discount: double.parse(discountController.text),
                                   quantity : int.parse(quantityController.text),
-                                  uId: productModel.uId,
+                                  status: productModel.status,
+                                  //uId: productModel.uId,
                               );
                             }
 
@@ -284,7 +294,12 @@ class EditProductScreen extends StatelessWidget {
           );
         },
         listener: (context, state) {
-
+          if (state is UpdateProductsSuccessState || state is UploadNewProductImageSuccessState) {
+            showToast(
+                text: 'Product has updated successfully!',
+                state: ToastStates.SUCCESS
+            );
+          }
         }
     );
   }

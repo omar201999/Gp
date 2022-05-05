@@ -17,7 +17,7 @@ import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/localization/language.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
-
+import 'package:gp/shared/styles/colors.dart';
 import 'cubit/cubit.dart';
 
 class HomeLayout extends StatefulWidget {
@@ -59,7 +59,13 @@ class _HomeLayoutState extends State<HomeLayout> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                drawerHeader(HomeCubit.get(context).userModel!),
+                Container(
+                  color: defaultColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: drawerHeader(HomeCubit.get(context).userModel!),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SwitchListTile(

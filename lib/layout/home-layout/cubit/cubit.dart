@@ -29,7 +29,10 @@ class HomeCubit extends Cubit<HomeStates> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
- void getUserData()
+  ProductModel? productModel;
+  OrderModel? orderModel;
+
+  void getUserData()
  {
    emit(GetUserDataLoadingState());
    FirebaseFirestore.instance.
@@ -70,7 +73,13 @@ class HomeCubit extends Cubit<HomeStates> {
     RecipeScreen(),
     CustomerDashBoardScreen(),
   ];
-
+  List<String> titleAppBar =
+  [
+    'Home',
+    'Market',
+    'Recipe',
+    'Me'
+  ];
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -182,7 +191,21 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-
+  List<ProductModel> products = [];
+  void getProducts()
+  {
+    emit(GetProductsLoadingState());
+    FirebaseFirestore.instance
+        .collection('products')
+        .snapshots()
+        .listen((event) {
+      products = [];
+      event.docs.forEach((element) {
+        products.add(ProductModel.fromJson(element.data()));
+      });
+      emit(GetProductsSuccessState());
+    });
+  }
 
   List<MealsModel> allMeals = [];
 
@@ -241,21 +264,6 @@ class HomeCubit extends Cubit<HomeStates> {
     searchPredictedMeal = allMeals.where((element) => element.Food!.toLowerCase() == value.toLowerCase()).toList();
     print(value.toLowerCase());
     emit(SearchPredictedMealState());
-  }
-List<ProductModel> products = [];
-  void getProducts()
-  {
-    emit(GetProductsLoadingState());
-    FirebaseFirestore.instance
-        .collection('products')
-        .snapshots()
-        .listen((event) {
-      products = [];
-      event.docs.forEach((element) {
-        products.add(ProductModel.fromJson(element.data()));
-      });
-      emit(GetProductsSuccessState());
-    });
   }
 
   List<bool> isCheckedBreakFast = List<bool>.filled(334, false);
@@ -504,24 +512,26 @@ List<ProductModel> products = [];
   void addCartItem(String? prodId, {
     required String? name,
     String? image,
+    int? quantity,
     required double? currentPrice,
     required double? oldPrice,
     required double? discount,
-    required int? quantity,
+    required int? selectedQuantity,
     required String? description,
-    required String? uId1,
+    //required String? uId1,
     required String? status,
 
   }) {
     ProductModel model = ProductModel(
       name: name,
       image: image,
+      quantity: quantity,
       description: description,
       currentPrice: currentPrice,
       oldPrice: oldPrice,
       discount: discount,
-      quantity: quantity,
-      uId: uId1,
+      selectedQuantity: selectedQuantity,
+      //uId: uId1,
       status: status
     );
 
@@ -532,7 +542,7 @@ List<ProductModel> products = [];
         .doc(prodId)
         .set(model.toMap())
         .then((value) {
-      getCartItem();
+          getCartItem();
       emit(AddCartItemSuccessState());
 
     }).catchError((error) {
@@ -542,89 +552,47 @@ List<ProductModel> products = [];
 
   }
 
-  void updateProductForOneBuy(String? prodId, {
+
+  void updateCartItem(String? prodId, {
     required String? name,
     String? image,
     required double? currentPrice,
     required double? oldPrice,
     required double? discount,
     required int? quantity,
+    required int? selectedQuantity,
     required String? description,
-    required String? uId,
     required String? status,
+    //required String? uId1,
   }) {
     ProductModel model = ProductModel(
       name: name,
       image: image,
       description: description,
+      status: status,
       currentPrice: currentPrice,
       oldPrice: oldPrice,
       discount: discount,
       quantity: quantity,
-      uId: uId,
-      status: status
+      selectedQuantity: selectedQuantity,
+      //uId: uId1,
     );
 
     FirebaseFirestore.instance
-        .collection('products')
+        .collection('users')
         .doc(uId)
+        .collection('yourCart')
+        .doc(prodId)
         .update(model.toMap())
         .then((value) {
-      //getProducts();
-      emit(UpdateCartItemSuccessState());
+      getCartItem();
+      //emit(UpdateCartItemSuccessState());
 
     }).catchError((error) {
-      emit(UpdateCartItemErrorState(error.toString()));
+      emit(UpdateCartItemErrorState(error));
       print(error.toString());
     });
   }
- /* Future<void> createOrderModel ({
-    required double totalPrice,
-    required double total,
-    required List<dynamic>? cart,
-  }) async{
-    NewOrderModel createOrder = NewOrderModel(
-        orderId: creatOrderNumber().toString(),
-        userName: userModel!.name,
-        total: total,
-        totalPrice: totalPrice,
-        shipping: 100,
-        phone: userModel!.phone,
-        address: userModel!.address,
-        dateTime: DateTime.now().toString(),
-        cardItemList: cart
-    );
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .add(createOrder.toMap())
-        .then((value)
-    {
-      emit(CreateOrderSuccessState());
-    }).catchError((error)
-    {
-      emit(CreateOrderErrorState(error.toString()));
-      print(error.toString());
-    });
-  }*/
-/*  void updateProductForCartItem({
-  int? quantity,
-  }) {
-    for(int i =0 ; i < cart.length;i++)
-    {
-      FirebaseFirestore.instance
-          .collection('products')
-          .doc(cart[i].uId)
-          .update(cart[i].toMap())
-          .then((value) {
-        getProducts();
-        //emit(UpdateCartItemSuccessState());
-      }).catchError((error) {
-        emit(UpdateCartItemErrorState(error.toString()));
-        print(error.toString());
-      });
-    }
-
-  }*/
 
   List<ProductModel> cart = [];
 
@@ -685,6 +653,118 @@ List<ProductModel> products = [];
     }
   }
 
+
+  int selectedQuantity = 1;
+
+  int addQuantity(ProductModel productModel) {
+    if (selectedQuantity < productModel.quantity!.toInt()) {
+      selectedQuantity++;
+      //productModel!.selectedQuantity = selectedQuantity;
+      emit(AddQuantityState());
+    }
+
+    return selectedQuantity;
+  }
+
+  int minusQuantity() {
+    if (selectedQuantity > 1) {
+      selectedQuantity--;
+      //productModel!.selectedQuantity = selectedQuantity;
+      emit(MinusQuantityState());
+    }
+
+    return selectedQuantity;
+  }
+
+  int initSelectedQuantity() {
+    selectedQuantity =1;
+    return selectedQuantity;
+  }
+  int? productQuantity;
+
+  int? addStockQuantity(ProductModel model) {
+    productQuantity = model.quantity! + model.selectedQuantity!.toInt();
+    return productQuantity;
+  }
+
+ /* void updateQuantityProduct({
+    required int? quantity,
+    required int? selectedQuantity,
+    String? status,
+    String? name,
+    String? image,
+    String? description,
+    double? discount,
+    double? oldPrice,
+    double? currentPrice,
+    String? uId
+}) {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      oldPrice: oldPrice,
+      discount: discount,
+      currentPrice: currentPrice,
+      quantity: quantity,
+      selectedQuantity: selectedQuantity,
+      status: status,
+      uId: uId
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+          getProducts();
+          emit(UpdateProductSuccessState());
+    }).catchError((error) {
+      emit(UpdateProductsErrorState(error.toString()));
+      print(error.toString());
+    });
+  }*/
+
+  void updateProductForOneBuy(String? prodId, {
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required int? selectedQuantity,
+    required String? description,
+    //required String? uId,
+    required String? status,
+
+  }) {
+    ProductModel model = ProductModel(
+        name: name,
+        image: image,
+        description: description,
+        currentPrice: currentPrice,
+        oldPrice: oldPrice,
+        discount: discount,
+        quantity: quantity,
+        selectedQuantity: selectedQuantity,
+        //uId: uId,
+        status: status
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+      getProducts();
+      emit(UpdateCartItemSuccessState());
+
+    }).catchError((error) {
+      emit(UpdateCartItemErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
 
 
  /* void addProductToOrders() {
@@ -797,10 +877,11 @@ List<ProductModel> products = [];
     required double total,
     required String productName,
     required int quantity,
-    required int quantityAfterBuy,
+    required int selectedQuantity,
+    //required int quantityAfterBuy,
     required String prodId,
     required String image,
-    required String uId,
+    //required String uId,
     required String description,
     required double currentPrice,
     required double oldPrice,
@@ -832,9 +913,10 @@ List<ProductModel> products = [];
          currentPrice: currentPrice,
          oldPrice: oldPrice,
          discount: discount,
-         quantity: quantityAfterBuy,
+         quantity: quantity,
+         selectedQuantity: selectedQuantity,
          description: description,
-         uId: uId,
+         //uId: uId,
          image: image,
          status: status
      );
@@ -985,7 +1067,7 @@ List<ProductModel> products = [];
      totalRating: totalRating,
       averageRating:averageRating ,
       numOfRates: numOfRates,
-      uId:uId ,
+      //uId:uId ,
       image:image ,
       calories: calories,
       carbs:carbs ,

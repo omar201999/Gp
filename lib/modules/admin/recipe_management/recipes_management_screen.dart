@@ -78,7 +78,7 @@ class RecipesManagementScreen extends StatelessWidget {
                           condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty && state is !GetAllBreakFastRecipeLoadingState,
                           builder: (context) => ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context),
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context, index),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
                             itemCount: AdminCubit.get(context).breakfastRecipe.length ,
                           ),
@@ -121,7 +121,7 @@ class RecipesManagementScreen extends StatelessWidget {
                           condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
                           builder: (context) => ListView.separated(
                               scrollDirection: Axis.horizontal,
-                              itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context),
+                              itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context, index),
                               separatorBuilder: (context,index) =>  SizedBox(width: 10,),
                               itemCount: AdminCubit.get(context).lunchRecipe.length  ),
                           fallback: (context) => Center(child: CircularProgressIndicator()),
@@ -155,10 +155,10 @@ class RecipesManagementScreen extends StatelessWidget {
                         height: 230,
                         //color: Colors.grey[50],
                         child: ConditionalBuilder(
-                          condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState,
+                          condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState ,
                           builder: (context) => ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context),
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context, index),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
                             itemCount: AdminCubit.get(context).dinnerRecipe.length,
                           ),
@@ -182,10 +182,10 @@ class RecipesManagementScreen extends StatelessWidget {
 
 }
 
-Widget buildRecipe(RecipeModel model,context) => defaultGestureDetector(
+Widget buildRecipe(RecipeModel model,context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditRecipeScreen(recipeModel: model,));
+    navigateTo(context, EditRecipeScreen(recipeModel: model, index: index,));
   },
   child: defaultContainer(
     context,

@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
@@ -11,11 +10,11 @@ class NewProductSrceen extends StatelessWidget {
 
   var nameController = TextEditingController();
   var descriptionController = TextEditingController();
-  var currentPriceController = TextEditingController();
+  //var currentPriceController = TextEditingController();
   var oldPriceController = TextEditingController();
   var discountController = TextEditingController();
   var quantityController = TextEditingController();
-  var uIdController = TextEditingController();
+  //var uIdController = TextEditingController();
 
 
   //var timeController = TextEditingController();
@@ -24,7 +23,12 @@ class NewProductSrceen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
-
+        if (state is CreateProductSuccessState) {
+          showToast(
+              text: 'Product has added successfully!',
+              state: ToastStates.SUCCESS
+          );
+        }
       },
       builder: (context, state) {
         var productImage = AdminCubit.get(context).productImage;
@@ -45,13 +49,13 @@ class NewProductSrceen extends StatelessWidget {
 
                    AdminCubit.get(context).uploadProductImage(
                       name: nameController.text,
-                      currentPrice: double.parse(currentPriceController.text),
+                      currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
                       oldPrice: double.parse(oldPriceController.text),
                       discount: double.parse(discountController.text),
                       quantity: int.parse(quantityController.text),
                       description: descriptionController.text,
                       status: 'inStock',
-                      uId: uIdController.text,
+                      //uId: uIdController.text,
                       //totalTime: totalTime
                     );
                    AdminCubit.get(context).removeProductImage();
@@ -74,9 +78,8 @@ class NewProductSrceen extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),
-                    defaultContainer(
+                    /*defaultContainer(
                       context,
-
                       height: 65,
                       child: defaultTextFormField(
                         controller: uIdController,
@@ -87,7 +90,7 @@ class NewProductSrceen extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 10.0,
-                    ),
+                    ),*/
                     defaultContainer(
                       context,
                       height: 65,
@@ -117,9 +120,8 @@ class NewProductSrceen extends StatelessWidget {
                       height: 10.0,
                     ),
 
-                    defaultContainer(
+                    /*defaultContainer(
                       context,
-
                       height: 65,
                       //color: constantColor5,
                       child: defaultTextFormField(
@@ -130,7 +132,7 @@ class NewProductSrceen extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 10.0,
-                    ),
+                    ),*/
                     defaultContainer(
                       context,
 
@@ -139,7 +141,7 @@ class NewProductSrceen extends StatelessWidget {
                       child: defaultTextFormField(
                         type: TextInputType.number,
                         controller: oldPriceController,
-                        hintText: 'Old Price',
+                        hintText: 'Price',
                       ),
                     ),
                     const SizedBox(

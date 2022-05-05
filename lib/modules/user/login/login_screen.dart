@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/modules/user/add_Information/add_information.dart';
 import 'package:gp/modules/user/login/cubit/cubit.dart';
 import 'package:gp/modules/user/login/cubit/states.dart';
+import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 
 
@@ -139,7 +140,7 @@ class LoginScreen extends StatelessWidget
                               {
                                 navigateTo(
                                   context,
-                                  AddInformation(),
+                                  OnBoardingScreen(),
                                 );
                               },
 

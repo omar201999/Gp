@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 class RecipeItemScreen extends StatelessWidget {
 
   RecipeModel recipeModel;
@@ -40,14 +42,22 @@ class RecipeItemScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                          top: 30
+                          top: 30,
+                         start: 5,
                       ),
-                      child: IconButton(
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon( Icons.arrow_back, ),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        child: IconButton(
+                          color: defaultColor,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon( IconBroken.Arrow___Left_2, ),
+                        ),
+                      ).asGlass(
+                        tintColor: Colors.transparent,
+                        clipBorderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
                   ],

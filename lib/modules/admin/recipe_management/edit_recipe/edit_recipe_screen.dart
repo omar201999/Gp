@@ -20,9 +20,10 @@ class EditRecipeScreen extends StatelessWidget {
   var weightController = TextEditingController();
 
   RecipeModel recipeModel;
-
+  int index;
   EditRecipeScreen({
     required this.recipeModel,
+    required this.index
   });
 
 
@@ -35,7 +36,14 @@ class EditRecipeScreen extends StatelessWidget {
 
 
     return BlocConsumer<AdminCubit, AdminStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is UpdateRecipeSuccessState || state is UploadNewRecipeImageSuccessState) {
+          showToast(
+              text: 'Recipe has updated successfully',
+              state: ToastStates.SUCCESS
+          );
+        }
+      },
         builder: (context, state) {
           var recipeImage = AdminCubit.get(context).newRecipeImage;
           titleController.text = recipeModel.title!;
@@ -86,7 +94,7 @@ class EditRecipeScreen extends StatelessWidget {
                               context,
                               //color: Colors.white,
                               function: () {
-                                 AdminCubit.get(context).deleteRecipe(recipeModel.uId);
+                                 AdminCubit.get(context).deleteRecipe(AdminCubit.get(context).recipesIds[index]);
                                  Navigator.pop(context);
                               },
                               text : 'Delete',
@@ -235,37 +243,102 @@ class EditRecipeScreen extends StatelessWidget {
                           context,
                           onPreesed: () {
                             print(recipeImage);
-                            print(recipeModel.uId);
+                            //print(recipeModel.uId);
 
                             if(recipeImage == null)
                             {
-                              AdminCubit.get(context).updateRecipe(
-                                title: titleController.text,
-                                ingredients: ingredientsController.text,
-                                directions: directionsController.text,
-                                carbs: double.parse(carbsController.text),
-                                protein: double.parse(proteinController.text),
-                                fats: double.parse(fatsController.text),
-                                calories: double.parse(calsController.text),
-                                weight: double.parse(weightController.text),
-                                uId: recipeModel.uId,
-                                category: recipeModel.category,
-                                newRecipeImage:recipeModel.image,
-                              );
+                              if(recipeModel.category == 'breakfast') {
+                                AdminCubit.get(context).updateRecipe(
+                                  AdminCubit.get(context).breakfastRecID[index],
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  weight: double.parse(weightController.text),
+                                  //uId: recipeModel.uId,
+                                  category: recipeModel.category,
+                                  newRecipeImage:recipeModel.image,
+                                );
+                              } else if(recipeModel.category == 'lunch') {
+                                AdminCubit.get(context).updateRecipe(
+                                  AdminCubit.get(context).lunchRecID[index],
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  weight: double.parse(weightController.text),
+                                  //uId: recipeModel.uId,
+                                  category: recipeModel.category,
+                                  newRecipeImage:recipeModel.image,
+                                );
+                              } else {
+                                  AdminCubit.get(context).updateRecipe(
+                                    AdminCubit.get(context).dinnerRecID[index],
+                                    title: titleController.text,
+                                    ingredients: ingredientsController.text,
+                                    directions: directionsController.text,
+                                    carbs: double.parse(carbsController.text),
+                                    protein: double.parse(proteinController.text),
+                                    fats: double.parse(fatsController.text),
+                                    calories: double.parse(calsController.text),
+                                    weight: double.parse(weightController.text),
+                                    //uId: recipeModel.uId,
+                                    category: recipeModel.category,
+                                    newRecipeImage:recipeModel.image,
+                                  );
+                                }
+
                             } else
                             {
-                              AdminCubit.get(context).uploadNewImage(
-                                title: titleController.text,
-                                ingredients: ingredientsController.text,
-                                directions: directionsController.text,
-                                carbs: double.parse(carbsController.text),
-                                protein: double.parse(proteinController.text),
-                                fats: double.parse(fatsController.text),
-                                calories: double.parse(calsController.text),
-                                weight: double.parse(weightController.text),
-                                uId: recipeModel.uId,
-                                category: recipeModel.category,
-                              );
+                              if(recipeModel.category == 'breakfast') {
+                                AdminCubit.get(context).uploadNewImage(
+                                  AdminCubit.get(context).lunchRecID[index],
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  weight: double.parse(weightController.text),
+                                  //uId: recipeModel.uId,
+                                  category: recipeModel.category,
+                                );
+                              } else if(recipeModel.category == 'lunch') {
+                                AdminCubit.get(context).uploadNewImage(
+                                  AdminCubit.get(context).dinnerRecID[index],
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  weight: double.parse(weightController.text),
+                                  //uId: recipeModel.uId,
+                                  category: recipeModel.category,
+                                );
+                              } else {
+                                AdminCubit.get(context).uploadNewImage(
+                                  AdminCubit.get(context).recipesIds[index],
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  weight: double.parse(weightController.text),
+                                  //uId: recipeModel.uId,
+                                  category: recipeModel.category,
+                                );
+                              }
                             }
 
                           },

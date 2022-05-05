@@ -28,7 +28,7 @@ class MarketingScreen extends StatelessWidget {
                  childAspectRatio: 1 / 1.50,
                  children: List.generate(
                    AdminCubit.get(context).products.length,
-                       (index) => buildmarket_item(AdminCubit.get(context).products[index], context),
+                       (index) => buildmarket_item(AdminCubit.get(context).products[index], context, index),
                  ),
                ),
              ],

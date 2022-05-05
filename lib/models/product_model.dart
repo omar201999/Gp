@@ -6,8 +6,9 @@ class ProductModel{
   double? oldPrice;
   double? discount;
   int? quantity;
+  int? selectedQuantity;
   String? status;
-  String? uId;
+  //String? uId;
 
   ProductModel({
     this.name,
@@ -17,13 +18,14 @@ class ProductModel{
     this.oldPrice,
     this.discount,
     this.quantity,
+    this.selectedQuantity,
     this.status,
-    this.uId,
+    //this.uId,
   });
 
   ProductModel.fromJson(Map<String, dynamic>? json) {
-    uId = json!['uId'];
-    name = json['name'];
+    //uId = json['uId'];
+    name = json!['name'];
     image = json['image'];
     description = json['description'];
     currentPrice = json['currentPrice'];
@@ -31,13 +33,14 @@ class ProductModel{
     discount = json['discount'];
     status = json['status'];
     quantity = json['quantity'];
+    selectedQuantity = json['selectedQuantity'];
 
   }
 
   Map<String, dynamic> toMap()
   {
     return {
-      'uId': uId,
+      //'uId': uId,
       'name': name,
       'image': image,
       'description':description,
@@ -46,6 +49,7 @@ class ProductModel{
       'discount': discount,
       'status': status,
       'quantity': quantity,
+      'selectedQuantity': selectedQuantity,
     };
   }
 

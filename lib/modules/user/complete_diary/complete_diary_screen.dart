@@ -12,46 +12,46 @@ class CompleteDiaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit,HomeStates>(
-        listener: (context, state)
-        {
+            listener: (context, state)
+            {
 
-        },
-        builder: (context,state)
-        {
-          return Scaffold(
-            appBar: buildAppBar(
-              title: 'Complete Diary',
-              icon: IconBroken.Arrow___Left_2,
-              onPressed: ()
-              {
-                Navigator.pop(context);
-              },
-            ),
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    ConditionalBuilder(
-                        condition: HomeCubit.get(context).completeDiary.length > 0 && state is !GetAllUsersMealsLoadingState,
-                        builder: (context) => ListView.separated(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
-                          separatorBuilder: (context, index) => SizedBox(height: 10,),
-                          itemCount: HomeCubit.get(context).completeDiary.length,
-                        ),
-                        fallback: (context) => Center(child: CircularProgressIndicator())
-                    ),
-                  ],
+            },
+            builder: (context,state)
+            {
+              return Scaffold(
+                appBar: buildAppBar(
+                  title: 'Complete Diary',
+                  icon: IconBroken.Arrow___Left_2,
+                  onPressed: ()
+                  {
+                    Navigator.pop(context);
+                  },
                 ),
-              ),
-            ),
-          );
+                body: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        ConditionalBuilder(
+                            condition: HomeCubit.get(context).completeDiary.length > 0 && state is !GetAllUsersMealsLoadingState,
+                            builder: (context) => ListView.separated(
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
+                              separatorBuilder: (context, index) => SizedBox(height: 10,),
+                              itemCount: HomeCubit.get(context).completeDiary.length,
+                            ),
+                            fallback: (context) => Center(child: CircularProgressIndicator())
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
 
-        }
-    );
+            }
+        );
   }
 
   Widget buildCompleteDiaryItem(MealsModel model,context,index)=> InkWell(

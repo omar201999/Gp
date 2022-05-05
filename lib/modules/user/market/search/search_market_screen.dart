@@ -68,7 +68,7 @@ class SearchMarketingscreen extends StatelessWidget
                     condition:  list.length > 0,
                     builder: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildProductSearchItem(list[index],context),
+                        itemBuilder: (context,index) => buildProductSearchItem(list[index], context, index),
                         separatorBuilder: (context,index) =>  SizedBox(height: 8,),
                         itemCount: list.length),
                     fallback: (context) => Center(child: Container()),
@@ -87,10 +87,10 @@ class SearchMarketingscreen extends StatelessWidget
 
     );
   }
-  Widget buildProductSearchItem(ProductModel model,context) => defaultGestureDetector(
+  Widget buildProductSearchItem(ProductModel model,context, index) => defaultGestureDetector(
     onTap: ()
     {
-      navigateTo(context, MarketitemScreen(productModel: model,));
+      navigateTo(context, MarketItemScreen(productModel: model, index: index,));
     },
     child: defaultContainer(
       color: constantColor5,

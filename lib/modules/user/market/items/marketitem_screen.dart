@@ -6,15 +6,31 @@ import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-class MarketitemScreen extends StatelessWidget {
+class MarketItemScreen extends StatefulWidget {
+
   late ProductModel productModel;
-  MarketitemScreen({
+  late int index;
+  MarketItemScreen({
     required this.productModel,
+    required this.index,
   });
-  var quantityController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
+  @override
+  State<MarketItemScreen> createState() => _MarketItemScreenState();
+}
+
+
+class _MarketItemScreenState extends State<MarketItemScreen> {
+
+  late ProductModel productModel = widget.productModel;
+  late int index = widget.index;
+
+  //var quantityController = TextEditingController();
+  //var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+
+    int selectedQuantity = HomeCubit.get(context).selectedQuantity;
+
     return BlocConsumer<HomeCubit,HomeStates>(
      listener: (context,state){},
       builder: (context,state)
@@ -22,8 +38,8 @@ class MarketitemScreen extends StatelessWidget {
         return Scaffold(
           //backgroundColor: Colors.grey[50],
           body: SingleChildScrollView(
-            child: Form(
-              key: formKey,
+            /*child: Form(
+              key: formKey,*/
               child: Column(
                 children:
                 [
@@ -47,9 +63,10 @@ class MarketitemScreen extends StatelessWidget {
                         child: IconButton(
                           color: Colors.blue,
                           onPressed: () {
+                            HomeCubit.get(context).initSelectedQuantity();
                             Navigator.pop(context);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             IconBroken.Arrow___Left_2,
                           ),
                         ),
@@ -151,7 +168,7 @@ class MarketitemScreen extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        defaultTextFormField(
+                        /*defaultTextFormField(
                           controller: quantityController,
                           type: TextInputType.number,
                           validate: (String? value)
@@ -164,63 +181,233 @@ class MarketitemScreen extends StatelessWidget {
                           label: 'Quantity',
                           border: OutlineInputBorder(),
 
+                        ),*/
+
+                        if(productModel.quantity != 0)
+                          Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                            defaultRawButton(
+                                onPressed: () {
+                                  setState(() {
+                                    HomeCubit.get(context).addQuantity(productModel);
+                                    productModel.selectedQuantity = selectedQuantity;
+                                  });
+
+                                },
+                                icon: Icons.add
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '$selectedQuantity',
+                              style: TextStyle(
+                                  fontSize: 15
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+
+                            defaultRawButton(
+                                onPressed: () {
+                                  setState(() {
+                                    HomeCubit.get(context).minusQuantity();
+                                    productModel.selectedQuantity = selectedQuantity;
+                                  });
+
+                                },
+                                icon: Icons.remove
+                            )
+                          ],
                         ),
+
 
                         const SizedBox(
                           height: 10,
                         ),
 
-                       if (productModel.quantity != 0)
+                       //if (productModel.quantity != 0)
                         defaultButton(
                             context,
                             onPreesed: ()
                             {
-                              if(formKey.currentState!.validate())
-                              {
-                                HomeCubit.get(context).addCartItem(
-                                  productModel.uId,
-                                  name: productModel.name,
-                                  image: productModel.image,
-                                  uId1: productModel.uId,
-                                  oldPrice: productModel.oldPrice,
-                                  currentPrice: productModel.currentPrice,
-                                  discount: productModel.discount,
-                                  quantity: int.parse(quantityController.text),
-                                  description: productModel.description,
-                                  status: productModel.status,
+                              /*if(formKey.currentState!.validate())
+                              {*/
+
+
+                              if (productModel.quantity != 0) {
+
+                               if(HomeCubit.get(context).cart.isNotEmpty) {
+                                    for(int i = 0; i < HomeCubit.get(context).cart.length; i++) {
+                                      if(productModel.name == HomeCubit.get(context).cart[i].name) {
+                                        productModel.quantity = HomeCubit.get(context).addStockQuantity(HomeCubit.get(context).cart[i])! - selectedQuantity;
+                                        HomeCubit.get(context).addStockQuantity(HomeCubit.get(context).cart[i]);
+                                        HomeCubit.get(context).updateCartItem(
+                                          HomeCubit.get(context).productsIDs[index],
+                                          name: productModel.name,
+                                          currentPrice: productModel.currentPrice,
+                                          oldPrice: productModel.oldPrice,
+                                          discount: productModel.discount,
+                                          quantity: productModel.quantity,
+                                          selectedQuantity: selectedQuantity,
+                                          description: productModel.description,
+                                          image: productModel.image,
+                                          //uId1: productModel.uId,
+                                          status: productModel.status
+                                      );
+                                      } else {
+                                        productModel.quantity = productModel.quantity! - selectedQuantity;
+                                        HomeCubit.get(context).addCartItem(
+                                          HomeCubit.get(context).productsIDs[index],
+                                          name: productModel.name,
+                                          image: productModel.image,
+                                          //uId1: productModel.uId,
+                                          oldPrice: productModel.oldPrice,
+                                          currentPrice: productModel.currentPrice,
+                                          discount: productModel.discount,
+                                          quantity: productModel.quantity,
+                                          selectedQuantity: selectedQuantity,
+                                          //int.parse(quantityController.text),
+                                          description: productModel.description,
+                                          status: productModel.status,
+                                        );
+                                      }
+                                    }
+                               } else {
+                                 productModel.quantity = productModel.quantity! - selectedQuantity;
+                                 HomeCubit.get(context).addCartItem(
+                                   HomeCubit.get(context).productsIDs[index],
+                                   name: productModel.name,
+                                   image: productModel.image,
+                                   //uId1: productModel.uId,
+                                   oldPrice: productModel.oldPrice,
+                                   currentPrice: productModel.currentPrice,
+                                   discount: productModel.discount,
+                                   quantity: productModel.quantity,
+                                   selectedQuantity: selectedQuantity,
+                                   //int.parse(quantityController.text),
+                                   description: productModel.description,
+                                   status: productModel.status,
+                                 );
+                               }
+
+                                HomeCubit.get(context).updateProductForOneBuy(
+                                  HomeCubit.get(context).productsIDs[index],
+                                    quantity: productModel.quantity,
+                                    selectedQuantity: selectedQuantity,
+                                    name: productModel.name,
+                                    image: productModel.image,
+                                    status: productModel.status,
+                                    oldPrice: productModel.oldPrice,
+                                    currentPrice: productModel.currentPrice,
+                                    discount: productModel.discount,
+                                    description: productModel.description,
+                                    //uId: productModel.uId
+
                                 );
+
+                                HomeCubit.get(context).initSelectedQuantity();
                                 navigateTo(context, CartScreen());
                               }
+                              else {
+                                HomeCubit.get(context).updateProductForOneBuy(
+                                  HomeCubit.get(context).productsIDs[index],
+                                    quantity: productModel.quantity,
+                                    selectedQuantity: selectedQuantity,
+                                    name: productModel.name,
+                                    image: productModel.image,
+                                    status: 'notInStock',
+                                    oldPrice: productModel.oldPrice,
+                                    currentPrice: productModel.currentPrice,
+                                    discount: productModel.discount,
+                                    description: productModel.description,
+                                    //uId: productModel.uId
 
+
+                                );
+                                showToast(text: 'You can\'t buy this product currently. It\'s not available in stock now.',
+                                    state: ToastStates.ERROR
+                                );
+                              }
+
+                              //}
 
                             },
-                            text: 'Add to Your Card'),
+                            text: 'Add to Your Card'
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
-                        if (productModel.quantity != 0)
+                        //if (productModel.quantity != 0)
                           defaultButton(
                             context,
                             onPreesed: ()
                             {
-                              if(formKey.currentState!.validate())
-                              {
-                                if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
+                              /*if(formKey.currentState!.validate())
+                              {*/
+                                if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != "" && productModel.quantity != 0 )
                                 {
+
+                                  productModel.quantity = productModel.quantity! - selectedQuantity;
+                                  HomeCubit.get(context).updateProductForOneBuy(
+                                      HomeCubit.get(context).productsIDs[index],
+                                      quantity: productModel.quantity,
+                                      name: productModel.name,
+                                      image: productModel.image,
+                                      status: productModel.status,
+                                      oldPrice: productModel.oldPrice,
+                                      currentPrice: productModel.currentPrice,
+                                      discount: productModel.discount,
+                                      description: productModel.description,
+                                      //uId: productModel.uId,
+                                      selectedQuantity: selectedQuantity
+
+
+                                  );
+
                                   HomeCubit.get(context).createOrderForOneProduct(
                                       total: productModel.currentPrice! + 100 ,
                                       totalPrice: productModel.currentPrice!,
                                     productName: productModel.name!,
-                                    quantity: int.parse(quantityController.text),
+                                    quantity: selectedQuantity,
+                                    //int.parse(quantityController.text),
                                   );
+
+                                  HomeCubit.get(context).initSelectedQuantity();
+
+
                                   showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
                                 }
-                                else
+
+                                if(HomeCubit.get(context).userModel!.address == null && HomeCubit.get(context).userModel!.phone == null && HomeCubit.get(context).userModel!.address == "" && HomeCubit.get(context).userModel!.phone == "")
                                 {
                                   showToast(text: 'please enter your address and your phone', state: ToastStates.ERROR);
                                 }
-                              }
 
+                              //}
+                                if (productModel.quantity == 0) {
+                                  HomeCubit.get(context).updateProductForOneBuy(
+                                      HomeCubit.get(context).productsIDs[index],
+                                      quantity: productModel.quantity,
+                                      name: productModel.name,
+                                      image: productModel.image,
+                                      status: 'notInStock',
+                                      oldPrice: productModel.oldPrice,
+                                      currentPrice: productModel.currentPrice,
+                                      discount: productModel.discount,
+                                      description: productModel.description,
+                                      //uId: productModel.uId,
+                                      selectedQuantity: selectedQuantity
+
+
+                                  );
+                                  showToast(text: 'You can\'t add this product to cart currently. It\'s not available in stock now.',
+                                      state: ToastStates.ERROR
+                                  );
+                                }
                             },
                             text: 'Buy Now',
                         ),
@@ -230,7 +417,7 @@ class MarketitemScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+         // ),
 
         );
       },

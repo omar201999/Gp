@@ -23,12 +23,15 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage ;
 
 class HomeCubit extends Cubit<HomeStates> {
 
-  HomeCubit() : super(HomeIntitialState());
+  HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
- void getUserData()
+  ProductModel? productModel;
+  OrderModel? orderModel;
+
+  void getUserData()
  {
    emit(GetUserDataLoadingState());
    FirebaseFirestore.instance.
@@ -79,7 +82,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
-    emit(HomeChangeBottonNavState());
+    emit(HomeChangeBottomNavState());
   }
 
 
@@ -188,20 +191,22 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   List<ProductModel> products = [];
-
-  void getProduct() {
-    FirebaseFirestore.instance
-        .collection('products')
+  List<String> productsIDs = [];
+  void getProducts()
+  {
+    emit(GetProductLoadingState());
+    products = [];
+    FirebaseFirestore.instance.collection('products')
         .get()
         .then((value) {
       value.docs.forEach((element) {
         products.add(ProductModel.fromJson(element.data()));
+        productsIDs.add(element.id);
       });
-
-      emit(protienSuccessState());
+      emit(GetProductSuccessState());
     }).catchError((error) {
       print(error.toString());
-      emit(protienErrorState(error.toString()));
+      emit(GetProductErrorState(error.toString()));
     });
   }
 
@@ -505,24 +510,26 @@ class HomeCubit extends Cubit<HomeStates> {
   void addCartItem(String? prodId, {
     required String? name,
     String? image,
+    int? quantity,
     required double? currentPrice,
     required double? oldPrice,
     required double? discount,
-    required int? quantity,
+    required int? selectedQuantity,
     required String? description,
-    required String? uId1,
+    //required String? uId1,
     required String? status,
 
   }) {
     ProductModel model = ProductModel(
       name: name,
       image: image,
+      quantity: quantity,
       description: description,
       currentPrice: currentPrice,
       oldPrice: oldPrice,
       discount: discount,
-      quantity: quantity,
-      uId: uId1,
+      selectedQuantity: selectedQuantity,
+      //uId: uId1,
       status: status
     );
 
@@ -533,7 +540,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(prodId)
         .set(model.toMap())
         .then((value) {
-      getCartItem();
+          getCartItem();
       emit(AddCartItemSuccessState());
 
     }).catchError((error) {
@@ -551,18 +558,22 @@ class HomeCubit extends Cubit<HomeStates> {
     required double? oldPrice,
     required double? discount,
     required int? quantity,
+    required int? selectedQuantity,
     required String? description,
-    required String? uId1,
+    required String? status,
+    //required String? uId1,
   }) {
     ProductModel model = ProductModel(
       name: name,
       image: image,
       description: description,
+      status: status,
       currentPrice: currentPrice,
       oldPrice: oldPrice,
       discount: discount,
       quantity: quantity,
-      uId: uId1,
+      selectedQuantity: selectedQuantity,
+      //uId: uId1,
     );
 
     FirebaseFirestore.instance
@@ -640,6 +651,118 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
+
+  int selectedQuantity = 1;
+
+  int addQuantity(ProductModel productModel) {
+    if (selectedQuantity < productModel.quantity!.toInt()) {
+      selectedQuantity++;
+      //productModel!.selectedQuantity = selectedQuantity;
+      emit(AddQuantityState());
+    }
+
+    return selectedQuantity;
+  }
+
+  int minusQuantity() {
+    if (selectedQuantity > 1) {
+      selectedQuantity--;
+      //productModel!.selectedQuantity = selectedQuantity;
+      emit(MinusQuantityState());
+    }
+
+    return selectedQuantity;
+  }
+
+  int initSelectedQuantity() {
+    selectedQuantity =1;
+    return selectedQuantity;
+  }
+  int? productQuantity;
+
+  int? addStockQuantity(ProductModel model) {
+    productQuantity = model.quantity! + model.selectedQuantity!.toInt();
+    return productQuantity;
+  }
+
+ /* void updateQuantityProduct({
+    required int? quantity,
+    required int? selectedQuantity,
+    String? status,
+    String? name,
+    String? image,
+    String? description,
+    double? discount,
+    double? oldPrice,
+    double? currentPrice,
+    String? uId
+}) {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      oldPrice: oldPrice,
+      discount: discount,
+      currentPrice: currentPrice,
+      quantity: quantity,
+      selectedQuantity: selectedQuantity,
+      status: status,
+      uId: uId
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+          getProducts();
+          emit(UpdateProductSuccessState());
+    }).catchError((error) {
+      emit(UpdateProductsErrorState(error.toString()));
+      print(error.toString());
+    });
+  }*/
+
+  void updateProductForOneBuy(String? prodId, {
+    required String? name,
+    String? image,
+    required double? currentPrice,
+    required double? oldPrice,
+    required double? discount,
+    required int? quantity,
+    required int? selectedQuantity,
+    required String? description,
+    //required String? uId,
+    required String? status,
+
+  }) {
+    ProductModel model = ProductModel(
+        name: name,
+        image: image,
+        description: description,
+        currentPrice: currentPrice,
+        oldPrice: oldPrice,
+        discount: discount,
+        quantity: quantity,
+        selectedQuantity: selectedQuantity,
+        //uId: uId,
+        status: status
+    );
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+      getProducts();
+      emit(UpdateCartItemSuccessState());
+
+    }).catchError((error) {
+      emit(UpdateCartItemErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
 
 
  /* void addProductToOrders() {
@@ -771,17 +894,19 @@ class HomeCubit extends Cubit<HomeStates> {
         .add(createOrderForOneProduct.toMap());
     emit(CreateOrderSuccessState());
   }
-  int creatOrderNumber()
+
+  int createOrderNumber()
   {
     return Random().nextInt(1000);
   }
+
   Future<void> createOrderModel ({
     required double totalPrice,
     required double total,
     required List<dynamic>? cart,
   }) async{
     NewOrderModel createOrder = NewOrderModel(
-      orderId: creatOrderNumber().toString(),
+      orderId: createOrderNumber().toString(),
       userName: userModel!.name,
       total: total,
       totalPrice: totalPrice,

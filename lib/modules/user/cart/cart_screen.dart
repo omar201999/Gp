@@ -10,10 +10,13 @@ import 'package:gp/shared/styles/icon_broken.dart';
 
 class CartScreen extends StatelessWidget {
   //List<int>? cartQuantity;
-  int? productQuantity;
+  ProductModel? productModel;
 
   @override
   Widget build(BuildContext context) {
+
+    int? productQuantity;
+
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state)
         {
@@ -69,7 +72,28 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
             ),
-              fallback: (context) => Center(child: CircularProgressIndicator())
+              fallback: (context) => Scaffold(
+                appBar: buildAppBar(
+                title: 'Your Cart',
+                icon: IconBroken.Arrow___Left_2,
+
+                onPressed: ()
+                {
+                  Navigator.pop(context);
+                },
+              ),
+                body: const Center(
+                  child: Text(
+                      'No products here!',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black38,
+                    ),
+                  ),
+                ),
+              )
+                  //Center(child: CircularProgressIndicator())
           );
 
         }
@@ -106,7 +130,21 @@ class CartScreen extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        HomeCubit.get(context).deleteCartItem(model.uId);
+
+                        HomeCubit.get(context).deleteCartItem(HomeCubit.get(context).productsIDs[index],);
+                        HomeCubit.get(context).updateProductForOneBuy(
+                            HomeCubit.get(context).productsIDs[index],
+                            name: model.name,
+                            currentPrice: model.currentPrice,
+                            image: model.image,
+                            oldPrice: model.oldPrice,
+                            discount: model.discount,
+                            quantity: (HomeCubit.get(context).addStockQuantity(model))!.toInt(),
+                            selectedQuantity: model.selectedQuantity,
+                            description: model.description,
+                            //uId: model.uId,
+                            status: model.status
+                        );
                       },
                       icon: Icon (Icons.delete_forever),
                     ),
@@ -115,7 +153,7 @@ class CartScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    defaultBodyText(context, text: 'Quantity : ${model.quantity}'),
+                    defaultBodyText(context, text: 'Quantity : ${model.selectedQuantity}'),
                     /*IconButton(
                       onPressed: () {
                         HomeCubit.get(context).minus(index);
@@ -148,7 +186,7 @@ class CartScreen extends StatelessWidget {
                       icon: Icon (Icons.add),
                     ),*/
                     Spacer(),
-                    defaultBodyText(context, text: '${model.currentPrice! * (model.quantity)!.round()}'),
+                    defaultBodyText(context, text: '${model.currentPrice! * (model.selectedQuantity)!.round()}'),
                   ],
                 ),
               ],

@@ -12,7 +12,7 @@ class RecipeModel
   String? directions;
   String? category;
   //int? totalTime;
-  String? uId;
+  //String? uId;
 
   RecipeModel({
     this.title,
@@ -26,12 +26,12 @@ class RecipeModel
     this.directions,
     this.category,
     //this.totalTime,
-    this.uId
+    //this.uId
   });
 
   RecipeModel.fromJson(Map<String, dynamic>? json){
-    uId = json!['uId'];
-    title = json['title'];
+    //uId = json!['uId'];
+    title = json!['title'];
     image = json['image'];
     carbs = json['carbs'];
     protein = json['protein'];
@@ -58,7 +58,7 @@ class RecipeModel
       'ingredients':ingredients,
       'directions':directions,
       'category':category,
-      'uId':uId
+      //'uId':uId
       //'totalTime':totalTime
 
     };

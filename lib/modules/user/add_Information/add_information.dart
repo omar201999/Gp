@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/modules/user/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -75,7 +76,8 @@ class _AddInformationState extends State<AddInformation>
           title: 'Add Information',
           icon: IconBroken.Arrow___Left_2,
           onPressed: () {
-          Navigator.pop(context);
+          //Navigator.pop(context);
+            navigateToAndReplacement(context, OnBoardingScreen());
          },
       ),
       body: SingleChildScrollView(

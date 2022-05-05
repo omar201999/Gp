@@ -49,7 +49,7 @@ class MarketManagementScreen extends StatelessWidget {
                           childAspectRatio: 1 / 1.43,
                           children: List.generate(
                             AdminCubit.get(context).products.length,
-                                (index) => buildProductItem(AdminCubit.get(context).products[index], context),
+                                (index) => buildProductItem(AdminCubit.get(context).products[index], context, index),
                           ),
                         ),
                       ],
@@ -76,102 +76,102 @@ class MarketManagementScreen extends StatelessWidget {
 
 }
 
-Widget buildProductItem(ProductModel model,context) => defaultGestureDetector(
+Widget buildProductItem(ProductModel model,context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditProductScreen(productModel: model,));
+    navigateTo(context, EditProductScreen(productModel: model, index: index,));
   },
   child: defaultContainer(
-    color: constantColor5,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-      [
-        Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          children: [
-            Image(
-              image: NetworkImage('${model.image}'),
-              width: double.infinity,
-              //height: 180.0,
-              fit: BoxFit.cover,
-            ),
-
-            if (model.discount != 0)
-              Container(
-              color: Colors.red,
-              padding: EdgeInsets.symmetric(
-                horizontal: 5.0
-              ),
-              child: Text(
-                'DISCOUNT',
-                style: TextStyle(
-                  fontSize: 8.0,
-                  color: Colors.white,
+        color: constantColor5,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: [
+                Image(
+                  image: NetworkImage('${model.image}'),
+                  width: double.infinity,
+                  //height: 180.0,
+                  fit: BoxFit.cover,
                 ),
-              )
+
+                if (model.discount != 0)
+                  Container(
+                      color: Colors.red,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 5.0
+                      ),
+                      child: Text(
+                        'DISCOUNT',
+                        style: TextStyle(
+                          fontSize: 8.0,
+                          color: Colors.white,
+                        ),
+                      )
+                  ),
+              ],
+            ),
+            Padding(
+              padding: /*EdgeInsetsDirectional.only(
+                start: 10,
+            ),*/
+              const EdgeInsets.symmetric(
+                vertical: 5.0,
+                horizontal: 6.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${model.name}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      height: 1.3,
+                    ),
+                  ),
+                  Row(
+                    children:
+                    [
+                      Text(
+                        '${model.currentPrice}',
+                        style: const TextStyle(
+                          fontSize: 13.0,
+                          color: defaultColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      if (model.discount != 0)
+                        Text(
+                          '${model.oldPrice}',
+                          style: const TextStyle(
+                            fontSize: 10.0,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      const Spacer(),
+                      if (model.quantity == 0)
+                        const Text(
+                          'Not available now',
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.red
+                          ),
+                        )
+                    ],
+                  ),
+
+                ],
+              ),
             ),
           ],
         ),
-        Padding(
-            padding: /*EdgeInsetsDirectional.only(
-                start: 10,
-            ),*/
-            const EdgeInsets.symmetric(
-              vertical: 5.0,
-              horizontal: 6.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${model.name}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.3,
-                  ),
-                ),
-                Row(
-                  children:
-                  [
-                    Text(
-                      '${model.currentPrice}',
-                      style: const TextStyle(
-                        fontSize: 13.0,
-                        color: defaultColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    if (model.discount != 0)
-                      Text(
-                      '${model.oldPrice}',
-                      style: const TextStyle(
-                        fontSize: 10.0,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                    const Spacer(),
-                    if (model.quantity == 0)
-                      const Text(
-                            'Not available now',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.red
-                            ),
-                          )
-                  ],
-                ),
-
-              ],
-            ),
-          ),
-      ],
-    ),
-  ),
+      ),
 );

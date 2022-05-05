@@ -65,27 +65,7 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          /*RawMaterialButton(
-                            shape:const CircleBorder(),
-                            elevation: 1.0,
-                            //fillColor: Colors.grey[300],
-                            fillColor: defaultColor,
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 16.0,
-                            ),
-                            onPressed: (){
-                              setState(() {
-                                HomeCubit.get(context).addWaterGlass();
-                                HomeCubit.get(context).addCountLiter();
-                              });
-                            },
-                            constraints: const BoxConstraints.tightFor(
-                              width: 30.0,
-                              height: 30.0,
-                            ),
-                          ),*/
+
                           defaultRawButton(
                               onPressed: () {
                                 setState(() {

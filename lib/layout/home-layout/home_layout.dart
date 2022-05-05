@@ -10,6 +10,7 @@ import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
 import 'package:gp/modules/user/search_recipe_screen/search_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -36,7 +37,13 @@ class HomeLayout extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                drawerHeader(HomeCubit.get(context).userModel!),
+                Container(
+                  color: defaultColor,
+                  child: Padding(
+                   padding: const EdgeInsets.all(10),
+                    child: drawerHeader(HomeCubit.get(context).userModel!),
+                  ),
+                ),
 
                   buildMenuItem(
                     text: 'Buy Now',

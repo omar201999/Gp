@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()),
-        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()),
+        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()..getProducts()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
@@ -128,7 +128,7 @@ class MyApp extends StatelessWidget
 
 class MainPage extends StatelessWidget
 {
-  late UserModel userModel;
+  UserModel? userModel;
   Future<DocumentSnapshot> getUserData() async{
     DocumentSnapshot x = await FirebaseFirestore.instance.
     collection('users').
@@ -165,7 +165,7 @@ class MainPage extends StatelessWidget
                   if(user!['status'] == 'admin') {
                     return AdminLayout();
                   } else {
-                    print(userModel.name.toString());
+                    print(userModel!.name.toString());
                     return HomeLayout();
                   }
                 }

@@ -30,7 +30,10 @@ class NewRecipeScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
             if (state is CreateRecipeSuccessState) {
-              Navigator.pop(context);
+              showToast(
+                  text: 'Recipe has added successfully',
+                  state: ToastStates.SUCCESS
+              );
             }
         },
         builder: (context, state)
@@ -60,7 +63,7 @@ class NewRecipeScreen extends StatelessWidget {
                              ingredients: ingredientsController.text,
                              directions: directionsController.text,
                              category: category,
-                             uId:uIdController.text,
+                             //uId:uIdController.text,
                              //totalTime: totalTime
                          );
                          AdminCubit.get(context).removeRecipeImage();
@@ -80,7 +83,7 @@ class NewRecipeScreen extends StatelessWidget {
                         const SizedBox(
                           height: 10.0,
                         ),
-                      defaultContainer(
+                      /*defaultContainer(
                           height: 65,
                           child: defaultTextFormField(
                               controller: uIdController,
@@ -91,7 +94,7 @@ class NewRecipeScreen extends StatelessWidget {
                               ),
                       const SizedBox(
                         height: 10.0,
-                      ),
+                      ),*/
                       defaultContainer(
                         height: 65,
                         child: defaultTextFormField(

@@ -27,12 +27,16 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_localizations:
+    sdk: flutter
+
   flutter:
     sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+
   cupertino_icons: ^1.0.2
   sqflite:
   intl: ^0.17.0
@@ -48,6 +52,7 @@ dependencies:
   iconsax: ^0.0.8
   image_picker: ^0.8.3+3
   fl_chart: ^0.45.0
+  flutter_rating_bar: ^4.0.0
   glass: ^1.0.1+1
 
 
@@ -96,6 +101,8 @@ flutter:
   assets:
     - assets/images/
     - assets/model/
+    - assets/translation/ar.json
+    - assets/translation/en.json
 
   fonts:
     - family: Jannah

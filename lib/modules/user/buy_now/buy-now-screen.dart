@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/address_and_phone_change_screen/address_and_phone_change_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 import '../../../shared/styles/icon_broken.dart';
 
@@ -25,7 +26,7 @@ class BuyNowScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: buildAppBar(
-            title: 'Buy Now',
+            title: AppLocalizations.of(context).translate("buy_now"),//'Buy Now',
             icon: IconBroken.Arrow___Left_2,
 
             onPressed: () {
@@ -38,17 +39,23 @@ class BuyNowScreen extends StatelessWidget {
             {
               if(HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != ""  )
               {
-                HomeCubit.get(context).createOrderModel(total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100 , totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems(),cart: HomeCubit.get(context).cart);
-                showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
+                HomeCubit.get(context).createOrderModel(
+                    total: HomeCubit.get(context).calculateTotalPriceOfCartItems()+100,
+                    totalPrice: HomeCubit.get(context).calculateTotalPriceOfCartItems(),
+                    //cart: HomeCubit.get(context).cart as List<dynamic>,
+                );
+                showToast(text: AppLocalizations.of(context).translate("Your order done Successfully"),//'Your order done Successfully',
+                    state: ToastStates.SUCCESS);
               }
               else
               {
-                showToast(text: 'please enter your address and your phone', state: ToastStates.ERROR);
+                showToast(text: AppLocalizations.of(context).translate("validate_phone_and_address"),//'please enter your address and your phone',
+                    state: ToastStates.ERROR);
               }
 
 
             },
-            label: Text('Buy Now'),
+            label: Text(AppLocalizations.of(context).translate("buy_now")),//'Buy Now'),
 
           ),
           body: SingleChildScrollView(
@@ -58,6 +65,7 @@ class BuyNowScreen extends StatelessWidget {
               child: Column(
                 children: [
                   defaultContainer(
+                    context,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -65,7 +73,7 @@ class BuyNowScreen extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              defaultHeadLineText(context, text: 'Address : '),
+                              defaultHeadLineText(context, text: AppLocalizations.of(context).translate("address")),//'Address : '),
                               SizedBox(width: 5,),
                               if(HomeCubit.get(context).userModel!.address != null)
                                 Expanded(
@@ -82,7 +90,7 @@ class BuyNowScreen extends StatelessWidget {
                               if(HomeCubit.get(context).userModel!.address == null)
                                 Expanded(
                                 child: Text(
-                                  'Pleas enter your address ',
+                                  AppLocalizations.of(context).translate("validate_address"),//'Pleas enter your address ',
                                   style: Theme
                                       .of(context)
                                       .textTheme
@@ -97,7 +105,7 @@ class BuyNowScreen extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              defaultHeadLineText(context, text: 'Phone : '),
+                              defaultHeadLineText(context, text: AppLocalizations.of(context).translate("phone")),//'Phone : '),
                               SizedBox(width: 5,),
                               if(HomeCubit.get(context).userModel!.phone != null)
                                 Text(
@@ -111,7 +119,7 @@ class BuyNowScreen extends StatelessWidget {
                               ),
                               if(HomeCubit.get(context).userModel!.phone == null)
                                 Text(
-                                 'Please enter your phone',
+                                  AppLocalizations.of(context).translate("validate_phone"),//'Please enter your phone',
                                   style: Theme
                                       .of(context)
                                       .textTheme
@@ -123,7 +131,7 @@ class BuyNowScreen extends StatelessWidget {
                               TextButton(
                                   onPressed: () {
                                     navigateTo(context, AddressAndPhoneChangeScreen());
-                                  }, child: Text('change'))
+                                  }, child: Text(AppLocalizations.of(context).translate("change"))),//'change'))
                             ],
                           ),
                         ],
@@ -223,6 +231,7 @@ class BuyNowScreen extends StatelessWidget {
                     ),*/
                   SizedBox(height: 10,),
                   defaultContainer(
+                    context,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -231,10 +240,10 @@ class BuyNowScreen extends StatelessWidget {
                           Row(
                             children: [
                               defaultBodyText(
-                                  context, text: 'Total Price : '),
+                                  context, text: AppLocalizations.of(context).translate("total_price"),//'Total Price : ',
+                              ),
                               Text(
-                                '${(HomeCubit.get(context)
-                                    .calculateTotalPriceOfCartItems())  } \$',
+                                '${(HomeCubit.get(context).calculateTotalPriceOfCartItems())} \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
@@ -257,7 +266,8 @@ class BuyNowScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              defaultBodyText(context, text: 'Shipping: '),
+                              defaultBodyText(context, text: AppLocalizations.of(context).translate("price_shipping"),//'Shipping: ',
+                              ),
                               Text(
                                 '100 \$',
                                 style: Theme
@@ -270,7 +280,8 @@ class BuyNowScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              defaultBodyText(context, text: 'Total  : '),
+                              defaultBodyText(context, text: AppLocalizations.of(context).translate("total"),//'Total  : ',
+                              ),
                               Text(
                                 '${(HomeCubit.get(context)
                                     .calculateTotalPriceOfCartItems())  + 100} \$',
@@ -335,6 +346,7 @@ class BuyNowScreen extends StatelessWidget {
 
   Widget buyNowItem(BuildContext context, ProductModel model, index) =>
       defaultContainer(
+        context,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -356,7 +368,8 @@ class BuyNowScreen extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            defaultBodyText(context, text: 'Name : '),
+                            defaultBodyText(context, text: AppLocalizations.of(context).translate("product_name"),//'Name : ',
+                            ),
                             Expanded(
                               child: Text(
                                 '${model.name}',
@@ -373,7 +386,7 @@ class BuyNowScreen extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            defaultBodyText(context, text: 'Quantity : '),
+                            defaultBodyText(context, text: AppLocalizations.of(context).translate("quantity")),//'Quantity : '),
                             Text(
                               '${model.quantity}',
                               style: Theme
@@ -387,7 +400,7 @@ class BuyNowScreen extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            defaultBodyText(context, text: 'Price per one : '),
+                            defaultBodyText(context, text: AppLocalizations.of(context).translate("price_per_one")),//'Price per one : '),
                             Text(
                               '${model.currentPrice} \$',
                               style: Theme

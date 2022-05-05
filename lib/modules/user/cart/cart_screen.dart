@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class CartScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class CartScreen extends StatelessWidget {
             condition: HomeCubit.get(context).cart.isNotEmpty,
             builder: (context)=>Scaffold(
               appBar: buildAppBar(
-                title: 'Your Cart',
+                title: AppLocalizations.of(context).translate("your_cart_app_bar"),//'Your Cart',
                 icon: IconBroken.Arrow___Left_2,
 
                 onPressed: ()
@@ -47,11 +48,11 @@ class CartScreen extends StatelessWidget {
                   else
                   {
                     showToast(
-                        text: 'Your Cart is Empty',
+                        text: AppLocalizations.of(context).translate("your_cart"),//'Your Cart is Empty',
                         state: ToastStates.ERROR);
                   }
                 },
-                label: const Text('Buy Now'),
+                label:  Text(AppLocalizations.of(context).translate("buy_now")),//'Buy Now'),
 
               ),
               body: SingleChildScrollView(
@@ -105,6 +106,7 @@ class CartScreen extends StatelessWidget {
     child: Column(
       children: [
         defaultContainer(
+          context,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -118,15 +120,8 @@ class CartScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 20),
                     Expanded(
-                      child: Text(
-                        '${model.name}',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          //fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
+                      //fontSize: 14,
+                      child: defaultBodyText(context, text: '${model.name}',maxLines: 2,overflow: TextOverflow.ellipsis,fontSize: 14),
                     ),
                     IconButton(
                       onPressed: () {
@@ -153,7 +148,8 @@ class CartScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    defaultBodyText(context, text: 'Quantity : ${model.selectedQuantity}'),
+                    //AppLocalizations.of(context).translate("  "),//
+                    defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")} : ${model.quantity}'),
                     /*IconButton(
                       onPressed: () {
                         HomeCubit.get(context).minus(index);

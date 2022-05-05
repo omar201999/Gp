@@ -1,5 +1,4 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
@@ -59,6 +58,7 @@ class DashboardScreen extends StatelessWidget {
           return ConditionalBuilder(
               condition: state is! GetStockProductsLoadingState ,
               builder: (context) => SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   //crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -71,6 +71,7 @@ class DashboardScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: defaultContainer(
+                                  context,
                                   //color: constantColor1,
                                   height: 150,
                                   width: 140,
@@ -103,6 +104,8 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 child: defaultContainer(
+                                  context,
+
                                   //color: constantColor1,
                                   height: 150,
                                   width: 140,
@@ -146,6 +149,7 @@ class DashboardScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: defaultContainer(
+                                  context,
                                   //color: constantColor1,
                                   height: 150,
                                   width: 140,
@@ -159,15 +163,15 @@ class DashboardScreen extends StatelessWidget {
                                         const SizedBox(
                                           height: 5.0,
                                         ),
-                                        const Text(
-                                          'All Confirmed Orders',
+                                         const Text(
+                                          'All Confirmed Orders ',
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: Colors.black45
                                           ),
                                         ),
                                         defaultHeadLineText(
-                                            context, text: '0')
+                                            context, text: '${AdminCubit.get(context).confirmedOrders.length}')
                                       ],
                                     ),
                                   ),
@@ -178,6 +182,8 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 child: defaultContainer(
+                                  context,
+
                                   //color: constantColor1,
                                   height: 150,
                                   width: 140,
@@ -211,6 +217,138 @@ class DashboardScreen extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: defaultContainer(
+                          context,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: defaultHeadLineText(context, text: 'Average Ratings and reviews is ${AdminCubit.get(context).averageRate().toStringAsFixed(1)}',maxLines: 2),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+                              //color: constantColor1,
+                              height: 170,
+                             // width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users That Achieve Their Goal is ${AdminCubit.get(context).yesAchievement()}',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black45
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).yesAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+
+                              //color: constantColor1,
+                              height: 170,
+                              //width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users That Partially Achieve Their Goal is ${AdminCubit.get(context).partiallyAchievement()}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black45,
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).partiallyAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: defaultContainer(
+                              context,
+
+                              //color: constantColor1,
+                              height: 170,
+                              //width: 140,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+
+                                    const SizedBox(
+                                      height: 5.0,
+                                    ),
+                                     Expanded(
+                                       child: Text(
+                                        'Users that No Achieve Their Goal is ${AdminCubit.get(context).noAchievement()}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black45,
+                                        ),
+                                    ),
+                                     ),
+                                    defaultHeadLineText(
+                                        context,
+                                        text: '${((AdminCubit.get(context).noAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,11 +432,11 @@ class DashboardScreen extends StatelessWidget {
                               vertical: 10,
                               horizontal: 15
                           ),
-                          child: defaultContainer(
+                          child: Container(
                             color: Colors.grey[50],
                             height: 200,
                             child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: AdminCubit.get(context).products.length,
                                 itemBuilder: (context, index) => indicator(
                                     color: colors[index],

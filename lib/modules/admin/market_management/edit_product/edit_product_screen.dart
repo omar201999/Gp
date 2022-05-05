@@ -32,7 +32,16 @@ class EditProductScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           var newProductImage = AdminCubit.get(context).newProductImage;
-
+          /*if(productModel.discount == 0)
+          {
+            currentPriceController.text ='${productModel.currentPrice}';
+            oldPriceController.text = currentPriceController.text ;
+          }
+          else
+          {
+            oldPriceController.text = '${productModel.oldPrice}';
+            currentPriceController.text = '${productModel.currentPrice}';
+          }*/
           nameController.text = productModel.name!;
           descriptionController.text = productModel.description!;
           //currentPriceController.text = '${productModel.currentPrice}';
@@ -51,6 +60,7 @@ class EditProductScreen extends StatelessWidget {
                     children:
                     [
                       defaultContainer(
+                        context,
                         width: double.infinity,
                         height: 350,
                         decoration: BoxDecoration(
@@ -122,6 +132,7 @@ class EditProductScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         /*defaultContainer(
+                          context,
                           height: 65,
                           child: defaultTextFormField(
                             controller: uIdController,
@@ -134,6 +145,7 @@ class EditProductScreen extends StatelessWidget {
                           height: 10.0,
                         ),*/
                         defaultContainer(
+                          context,
                           height: 65,
                           child: defaultTextFormField(
                             type: TextInputType.text,
@@ -147,8 +159,10 @@ class EditProductScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 150,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                               controller: descriptionController,
                               type: TextInputType.multiline,
@@ -176,8 +190,10 @@ class EditProductScreen extends StatelessWidget {
                           height: 10.0,
                         ),*/
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: oldPriceController,
@@ -189,8 +205,10 @@ class EditProductScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: discountController,
@@ -204,8 +222,10 @@ class EditProductScreen extends StatelessWidget {
                         ),
 
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: quantityController,

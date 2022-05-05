@@ -66,6 +66,8 @@ class EditRecipeScreen extends StatelessWidget {
                     children:
                     [
                       defaultContainer(
+                        context,
+
                         width: double.infinity,
                         height: 350,
                         decoration: BoxDecoration(
@@ -131,8 +133,10 @@ class EditRecipeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.text,
                             controller: titleController,
@@ -146,8 +150,10 @@ class EditRecipeScreen extends StatelessWidget {
                         ),
 
                         defaultContainer(
-                            height: 150,
-                            color: constantColor5,
+                          context,
+
+                          height: 150,
+                            //color: constantColor5,
                             child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
@@ -161,8 +167,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
-                            height: 150,
-                            color: constantColor5,
+                          context,
+
+                          height: 150,
+                            //color: constantColor5,
                             child: defaultTextFormField(
                                 controller: directionsController,
                                 type: TextInputType.multiline,
@@ -175,8 +183,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: carbsController,
@@ -188,8 +198,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: proteinController,
@@ -201,8 +213,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: fatsController,
@@ -214,8 +228,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: calsController,
@@ -227,8 +243,10 @@ class EditRecipeScreen extends StatelessWidget {
                           height: 10.0,
                         ),
                         defaultContainer(
+                          context,
+
                           height: 65,
-                          color: constantColor5,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                             type: TextInputType.number,
                             controller: weightController,
@@ -261,6 +279,9 @@ class EditRecipeScreen extends StatelessWidget {
                                   //uId: recipeModel.uId,
                                   category: recipeModel.category,
                                   newRecipeImage:recipeModel.image,
+                                    numOfRates: recipeModel.numOfRates!,
+                                    averageRating: recipeModel.averageRating!,
+                                    totalRating: recipeModel.totalRating!
                                 );
                               } else if(recipeModel.category == 'lunch') {
                                 AdminCubit.get(context).updateRecipe(
@@ -276,6 +297,9 @@ class EditRecipeScreen extends StatelessWidget {
                                   //uId: recipeModel.uId,
                                   category: recipeModel.category,
                                   newRecipeImage:recipeModel.image,
+                                    numOfRates: recipeModel.numOfRates!,
+                                    averageRating: recipeModel.averageRating!,
+                                    totalRating: recipeModel.totalRating!
                                 );
                               } else {
                                   AdminCubit.get(context).updateRecipe(
@@ -291,6 +315,10 @@ class EditRecipeScreen extends StatelessWidget {
                                     //uId: recipeModel.uId,
                                     category: recipeModel.category,
                                     newRecipeImage:recipeModel.image,
+                                      numOfRates: recipeModel.numOfRates!,
+                                      averageRating: recipeModel.averageRating!,
+                                      totalRating: recipeModel.totalRating!
+
                                   );
                                 }
 
@@ -309,6 +337,9 @@ class EditRecipeScreen extends StatelessWidget {
                                   weight: double.parse(weightController.text),
                                   //uId: recipeModel.uId,
                                   category: recipeModel.category,
+                                    numOfRates: recipeModel.numOfRates!,
+                                    averageRating: recipeModel.averageRating!,
+                                    totalRating: recipeModel.totalRating!
                                 );
                               } else if(recipeModel.category == 'lunch') {
                                 AdminCubit.get(context).uploadNewImage(
@@ -323,6 +354,9 @@ class EditRecipeScreen extends StatelessWidget {
                                   weight: double.parse(weightController.text),
                                   //uId: recipeModel.uId,
                                   category: recipeModel.category,
+                                    numOfRates: recipeModel.numOfRates!,
+                                    averageRating: recipeModel.averageRating!,
+                                    totalRating: recipeModel.totalRating!
                                 );
                               } else {
                                 AdminCubit.get(context).uploadNewImage(
@@ -337,6 +371,9 @@ class EditRecipeScreen extends StatelessWidget {
                                   weight: double.parse(weightController.text),
                                   //uId: recipeModel.uId,
                                   category: recipeModel.category,
+                                    numOfRates: recipeModel.numOfRates!,
+                                    averageRating: recipeModel.averageRating!,
+                                    totalRating: recipeModel.totalRating!
                                 );
                               }
                             }

@@ -19,6 +19,7 @@ ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontFamily: 'Jannah',
     ),
+
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
@@ -39,24 +40,27 @@ ThemeData lightTheme = ThemeData(
       fontSize: 16,
       fontWeight: FontWeight.w400,
     ),
+
   ),
   iconTheme: const IconThemeData(
-      color: defaultColor
+      color: Colors.black
   ),
   fontFamily: 'Jannah',
 );
 
+//HexColor('333739'),
 ThemeData darkTheme = ThemeData(
   primarySwatch: defaultColor,
-  scaffoldBackgroundColor: HexColor('333739'),
+  scaffoldBackgroundColor: HexColor('#1c1c1c '),
   appBarTheme: AppBarTheme(
     titleSpacing: 20,
-    backwardsCompatibility: false,
+    //backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: HexColor('333739'),
+        statusBarColor: HexColor('#1c1c1c'),
         statusBarBrightness: Brightness.light
     ),
-    backgroundColor: HexColor('333739'),
+    backgroundColor: HexColor('#1c1c1c '),
+    elevation: 0.0,
     iconTheme: const IconThemeData(
       color: Colors.white,
     ),
@@ -66,10 +70,13 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontFamily: 'Jannah',
     ),
+    actionsIconTheme: const IconThemeData(
+      color: Colors.white,
+    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    backgroundColor: HexColor('333739'),
+    backgroundColor:HexColor('#1c1c1c '),
     selectedItemColor: Colors.white,
     unselectedItemColor: Colors.grey,
     elevation: 0,
@@ -86,6 +93,16 @@ ThemeData darkTheme = ThemeData(
       fontSize: 16,
       fontWeight: FontWeight.w400,
     ),
+    caption:  TextStyle(
+      color: Color(0xFFD4D4D4),
+    )
+
   ),
   fontFamily: 'Jannah',
+  iconTheme: IconThemeData(
+    color: defaultDarkTextColor
+  ),
+  drawerTheme: DrawerThemeData(
+    backgroundColor: HexColor('#000000'),
+  ),
 );

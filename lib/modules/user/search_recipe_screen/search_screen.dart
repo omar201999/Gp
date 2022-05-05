@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 class SearchRecipeScreen extends StatelessWidget {
 
@@ -21,7 +22,9 @@ class SearchRecipeScreen extends StatelessWidget {
 
         var list = AdminCubit.get(context).searchRecipe;
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).translate("search")),
+          ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -40,13 +43,13 @@ class SearchRecipeScreen extends StatelessWidget {
                   {
                     if(value!.isEmpty)
                     {
-                      return 'search must not be empty';
+                      return AppLocalizations.of(context).translate("search must not be empty");
 
                     }
                     return null;
 
                   },
-                  label: 'serach',
+                  hintText: AppLocalizations.of(context).translate("search"),
                   prefix: Icons.search,
                 ),
                   SizedBox(
@@ -57,9 +60,9 @@ class SearchRecipeScreen extends StatelessWidget {
                     child: ConditionalBuilder(
                     condition:  list.length >0,
                     builder: (context) => ListView.separated(
-                    physics: BouncingScrollPhysics(), // بتشيل الload اللي فوق دا بيخليه ينط كدا
+                    physics: const BouncingScrollPhysics(), // بتشيل الload اللي فوق دا بيخليه ينط كدا
                     itemBuilder: (context,index) => buildRecipeItem(list[index],context),
-                        separatorBuilder: (context,index) =>  SizedBox(height: 8,),
+                        separatorBuilder: (context,index) =>  const SizedBox(height: 8,),
                     itemCount: list.length),
                       fallback: (context) => Center(child: Container()),
                 ),

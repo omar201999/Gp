@@ -16,15 +16,13 @@ class MarketManagementScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-            condition: AdminCubit.get(context).products.length > 0 && state is !GetProductsLoadingState,
+            condition: AdminCubit.get(context).products.isNotEmpty && state is !GetProductsLoadingState,
             builder: (context) => Scaffold(
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: defaultContainer(
-                    color: Colors.grey[50],
-                    child: Column(
+                  child:Column(
                       children:
                       [
                         /*defaultContainer(
@@ -44,8 +42,8 @@ class MarketManagementScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          mainAxisSpacing: 2.0,
-                          crossAxisSpacing: 1.8,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 5,
                           childAspectRatio: 1 / 1.43,
                           children: List.generate(
                             AdminCubit.get(context).products.length,
@@ -54,7 +52,7 @@ class MarketManagementScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+
                 ),
               ),
               floatingActionButton: FloatingActionButton(
@@ -82,40 +80,41 @@ Widget buildProductItem(ProductModel model,context, index) => defaultGestureDete
     navigateTo(context, EditProductScreen(productModel: model, index: index,));
   },
   child: defaultContainer(
-        color: constantColor5,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-          [
-            Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                Image(
-                  image: NetworkImage('${model.image}'),
-                  width: double.infinity,
-                  //height: 180.0,
-                  fit: BoxFit.cover,
-                ),
-
-                if (model.discount != 0)
-                  Container(
-                      color: Colors.red,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 5.0
-                      ),
-                      child: Text(
-                        'DISCOUNT',
-                        style: TextStyle(
-                          fontSize: 8.0,
-                          color: Colors.white,
-                        ),
-                      )
-                  ),
-              ],
+    context,
+    //color: constantColor5,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        Stack(
+          alignment: AlignmentDirectional.bottomStart,
+          children: [
+            Image(
+              image: NetworkImage('${model.image}'),
+              width: double.infinity,
+              //height: 180.0,
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: /*EdgeInsetsDirectional.only(
+
+            if (model.discount != 0)
+              Container(
+              color: Colors.red,
+              padding: EdgeInsets.symmetric(
+                horizontal: 5.0
+              ),
+              child: Text(
+                'DISCOUNT',
+                style: TextStyle(
+                  fontSize: 8.0,
+                  color: Colors.white,
+                ),
+              )
+            ),
+          ],
+        ),
+        Padding(
+            padding: /*EdgeInsetsDirectional.only(
                 start: 10,
             ),*/
               const EdgeInsets.symmetric(
@@ -163,15 +162,15 @@ Widget buildProductItem(ProductModel model,context, index) => defaultGestureDete
                           style: TextStyle(
                               fontSize: 12.0,
                               color: Colors.red
-                          ),
-                        )
-                    ],
-                  ),
+                            ),
+                          )
+                  ],
+                ),
 
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+      ],
+    ),
+  ),
 );

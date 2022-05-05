@@ -2,12 +2,14 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
-import 'package:gp/modules/admin/market_management/confirm_order_screen.dart';
+import 'package:gp/modules/admin/feedback_management/feedback_management_screen.dart';
+import 'package:gp/modules/admin/orders_management/order_layout_screen/order_layout_creen.dart';
 import 'package:gp/modules/admin/market_management/search_product/search_product_screen.dart';
 import 'package:gp/modules/admin/recipe_management/search_recipe/search_recipe_screen.dart';
 import 'package:gp/modules/admin/users_management/search_users/search_users_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
 import 'cubit/cubit.dart';
@@ -33,10 +35,25 @@ class AdminLayout extends StatelessWidget {
               actions:
               [
                 if(cubit.currentIndex == 0)
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {},
-                    icon: const Icon(IconBroken.Notification),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: 5,
+                    ),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
+                      children: [
+
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            navigateTo(context,FeedBackManagementScreen());
+                          },
+                          icon: const Icon(Icons.feedback_outlined),
+                        ),
+                        defaultBodyText(context, text: '${AdminCubit.get(context).feedback.length}',color: defaultColor,fontSize: 12),
+
+                      ],
+                    ),
                   ),
                 if(cubit.currentIndex == 0)
                   IconButton(
@@ -73,12 +90,27 @@ class AdminLayout extends StatelessWidget {
 
                   ),
                 if(cubit.currentIndex == 3)
-                  IconButton(
-                    onPressed: () {
-                      navigateTo(context, ConfirmOrderScreen());
-                    },
-                    icon: Icon(Icons.notification_important),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: 5,
+                      end: 5
+                    ),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
 
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            navigateTo(context, OrderLayoutScreen());
+                          },
+                          icon: Icon(Icons.notification_important),
+
+                        ),
+                        defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length}',color: defaultColor,fontSize: 16),
+
+                      ],
+                    ),
                   ),
 
               ],

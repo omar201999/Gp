@@ -1,19 +1,33 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glass/glass.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/cubit/cubit.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-class RecipeItemScreen extends StatelessWidget {
+import 'package:hexcolor/hexcolor.dart';
+
+class RecipeItemScreen extends StatefulWidget {
 
   RecipeModel recipeModel;
   RecipeItemScreen({
    required this.recipeModel,
 });
+
+  @override
+  State<RecipeItemScreen> createState() => _RecipeItemScreenState();
+}
+
+class _RecipeItemScreenState extends State<RecipeItemScreen>
+{
+
+  double? rating = 3 ;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit,HomeStates>(
@@ -35,7 +49,7 @@ class RecipeItemScreen extends StatelessWidget {
                       height: 350,
                       decoration:  BoxDecoration(
                         image: DecorationImage(
-                          image:NetworkImage('${recipeModel.image}'),
+                          image:NetworkImage('${widget.recipeModel.image}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -69,6 +83,7 @@ class RecipeItemScreen extends StatelessWidget {
                     children:
                     [
                       defaultContainer(
+                        context,
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Column(
@@ -76,7 +91,7 @@ class RecipeItemScreen extends StatelessWidget {
                             children: [
                               defaultHeadLineText(
                                   context,
-                                  text: '${recipeModel.title}',
+                                  text: '${widget.recipeModel.title}',
                                   maxLines: 2
                               ),
                             ],
@@ -86,15 +101,98 @@ class RecipeItemScreen extends StatelessWidget {
                         height: 100,
                       ),
                       const SizedBox(height: 15,),
+                      defaultContainer(
+                        context,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                children:
+                                [
+                                  defaultHeadLineText(
+                                      context,
+                                      text: widget.recipeModel.averageRating!.toStringAsFixed(1),fontSize: 40,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context).translate("Avg rating"),
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 3,
+                                height: 110,
+                                color: HexColor('#FE617E'),//#FF5A53#ED2C47#FE617E
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Rate This Recipe"),),
+                                    RatingBar.builder(
+                                      initialRating: rating!,
+                                      //minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      updateOnDrag: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating)
+                                      {
+                                        this.rating = rating;
+                                      },
+                                    ),
+                                    defaultTextButton(
+                                        context,
+                                        function: ()
+                                        {
+                                          HomeCubit.get(context).updateRecipe(
+                                            widget.recipeModel.uId!,
+                                            uId: widget.recipeModel.uId!,
+                                            image: widget.recipeModel.image!,
+                                            calories: widget.recipeModel.calories!,
+                                            carbs: widget.recipeModel.carbs!,
+                                            category: widget.recipeModel.category!,
+                                            directions: widget.recipeModel.directions!,
+                                            fats: widget.recipeModel.fats!,
+                                            ingredients: widget.recipeModel.ingredients!,
+                                            protein: widget.recipeModel.protein!,
+                                            title: widget.recipeModel.title!,
+                                            weight: widget.recipeModel.weight!,
+                                            averageRating: (widget.recipeModel.totalRating! + rating!) / (widget.recipeModel.numOfRates! + 1)  ,
+                                            numOfRates: widget.recipeModel.numOfRates! + 1 ,
+                                            totalRating:widget.recipeModel.totalRating! + rating!,
+                                          );
+                                        },
+                                        text: 'Send'
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15,),
 
                       defaultContainer(
+                        context,
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               defaultHeadLineText(
-                                  context, text: 'Nutrition Per Serving'),
+                                  context, text:AppLocalizations.of(context).translate("Nutrition Per Serving")),// 'Nutrition Per Serving'),
                               const SizedBox(height: 5,),
                               Row(
                                 children: [
@@ -104,15 +202,15 @@ class RecipeItemScreen extends StatelessWidget {
                                       radius: 40,
                                       child: CircleAvatar(
                                         radius: 35,
-                                        backgroundColor: Colors.white,
+                                        backgroundColor:Colors.white,
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment
                                               .center,
                                           children:
                                           [
-                                            defaultBodyText(context, text: '${recipeModel.calories}',
-                                                fontWeight: FontWeight.bold),
-                                            defaultBodyText(context, text: 'Cal',
+                                            defaultBodyText(context, text: '${widget.recipeModel.calories}',
+                                                fontWeight: FontWeight.bold,color: defaultColor),
+                                            defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
                                                 color: Colors.grey),
                                           ],
                                         ),
@@ -120,16 +218,16 @@ class RecipeItemScreen extends StatelessWidget {
                                     ),
                                   ),
                                   afterTitleOfRecipeItem(context, //percentage: '17%',
-                                      numberOfGrams: '${recipeModel.carbs}',
-                                      nameOfType: 'Carbs',
+                                      numberOfGrams: '${widget.recipeModel.carbs}',
+                                      nameOfType: AppLocalizations.of(context).translate("Carbs"),//'Carbs',
                                       color: Colors.grey),
                                   afterTitleOfRecipeItem(context, //percentage: '5%',
-                                      numberOfGrams: '${recipeModel.protein}',
-                                      nameOfType: 'Proteins',
+                                      numberOfGrams: '${widget.recipeModel.protein}',
+                                      nameOfType: AppLocalizations.of(context).translate("Protein"),//'Proteins',
                                       color: Colors.red),
                                   afterTitleOfRecipeItem(context, //percentage: '2%',
-                                      numberOfGrams: '${recipeModel.fats}',
-                                      nameOfType: 'Fats',
+                                      numberOfGrams: '${widget.recipeModel.fats}',
+                                      nameOfType: AppLocalizations.of(context).translate("Fats"),//'Fats',
                                       color: defaultColor),
 
                                 ],
@@ -144,13 +242,14 @@ class RecipeItemScreen extends StatelessWidget {
 
 
                       defaultContainer(
+                          context,
                           width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                defaultHeadLineText(context, text: 'Ingredients'),
+                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Ingredients")),//'Ingredients'),
                                 const SizedBox(height: 5,),
                                 ListView.separated(
                                     padding: const EdgeInsetsDirectional.only(
@@ -161,7 +260,7 @@ class RecipeItemScreen extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) =>
                                         defaultBodyText(context,
-                                            text: '${recipeModel.ingredients}'
+                                            text: '${widget.recipeModel.ingredients}'
                                         ),
                                     separatorBuilder: (context, index) =>
                                     const SizedBox(height: 5,),
@@ -177,13 +276,14 @@ class RecipeItemScreen extends StatelessWidget {
                       ),
 
                       defaultContainer(
+                          context,
                           width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                defaultHeadLineText(context, text: 'Directions'),
+                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Directions")),//'Directions'),
                                 const SizedBox(height: 5,),
                                 ListView.separated(
                                     padding: const EdgeInsetsDirectional.only(
@@ -194,7 +294,7 @@ class RecipeItemScreen extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) =>
                                         defaultBodyText(context,
-                                          text: '${recipeModel.directions}',
+                                          text: '${widget.recipeModel.directions}',
                                         ),
                                     separatorBuilder: (context, index) =>
                                     const SizedBox(height: 5,),
@@ -220,20 +320,29 @@ class RecipeItemScreen extends StatelessWidget {
               {
               if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
               {
-              showToast(text: 'Please reduce Your Meal your goal is ${HomeCubit.get(context).userModel!.totalCalorie} and your total food is ${HomeCubit.get(context).totalFood} ', state: ToastStates.SUCCESS);
+                //AppLocalizations.of(context).translate("  "),//
+                showToast(text: '${AppLocalizations.of(context).translate("validate_Food")} ${HomeCubit.get(context).userModel!.totalCalorie} ${AppLocalizations.of(context).translate("and your total food is")} ${HomeCubit.get(context).totalFood} ', state: ToastStates.WARNING);
               }
               else
               {
                 HomeCubit.get(context).addRecipeToMeals(
-                  title: recipeModel.title,
-                    calories: (recipeModel.calories)!.round(),
-                    carbs: (recipeModel.carbs)!.round(),
-                    fat: (recipeModel.fats)!.round(),
-                    protein: (recipeModel.protein)!.round(),
+                  title: widget.recipeModel.title,
+                    calories: (widget.recipeModel.calories)!.round(),
+                    carbs: (widget.recipeModel.carbs)!.round(),
+                    fat: (widget.recipeModel.fats)!.round(),
+                    protein: (widget.recipeModel.protein)!.round(),
                   );
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(
+                    SnackBar(
+                      backgroundColor:AppCubit.get(context).constantColor1 ,
+                      content: defaultBodyText(context, text: AppLocalizations.of(context).translate("Recipe_add")),
+                      duration: const Duration(seconds: 2),
+                    )
+                );
               }
               },
-              label: Text('Add to yours Meal'),
+              label: Text(AppLocalizations.of(context).translate("Add to yours Meal")),//'Add to yours Meal'),
 
             ),
 

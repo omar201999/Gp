@@ -4,6 +4,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class WaterTrackerScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
             builder: (context, state) {
               return Scaffold(
                 appBar: buildAppBar(
-                  title: 'Water Tracker',
+                  title: AppLocalizations.of(context).translate("Water Tracker"),
                   onPressed: () {
                     Navigator.pop(context);
                     HomeCubit.get(context).updateUser(

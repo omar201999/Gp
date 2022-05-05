@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 class RecipeScreen extends StatelessWidget {
   @override
@@ -56,7 +57,7 @@ class RecipeScreen extends StatelessWidget {
                        //headOfRecipeItem(context,head: 'Snacks'),
                        defaultHeadLineText(
                          context,
-                         text: 'Breakfast',
+                         text:  AppLocalizations.of(context).translate("breakfast"),//'Breakfast',
                        ),
 
                      ],
@@ -89,7 +90,7 @@ class RecipeScreen extends StatelessWidget {
                        //headOfRecipeItem(context,head: 'Snacks'),
                        defaultHeadLineText(
                          context,
-                         text: 'Lunch',
+                         text:  AppLocalizations.of(context).translate("lunch"),//'Lunch',
                        ),
 
                      ],
@@ -97,7 +98,7 @@ class RecipeScreen extends StatelessWidget {
                    Container(
                      height: 280,
                      child: ConditionalBuilder(
-                       condition:AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
+                       condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
                        builder: (context) => ListView.separated(
                            scrollDirection: Axis.horizontal,
                            itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).lunchRecipe[index],context),
@@ -118,7 +119,7 @@ class RecipeScreen extends StatelessWidget {
                        //headOfRecipeItem(context,head: 'Snacks'),
                        defaultHeadLineText(
                          context,
-                         text: 'Dinner',
+                         text:  AppLocalizations.of(context).translate("dinner"),//'Dinner',
                        ),
 
                      ],

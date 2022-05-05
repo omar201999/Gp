@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -44,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         return Scaffold(
           appBar: buildAppBar(
             title:
-              'Edit profile',
+            AppLocalizations.of(context).translate("Edit profile"),//'Edit profile',
             titleSpacing: 0,
             icon: IconBroken.Arrow___Left_2,
             onPressed: () {
@@ -112,13 +113,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       [
                         defaultTextFormField(
                             type: TextInputType.text,
-                            label: 'Name',
+                            label: AppLocalizations.of(context).translate("product_name"),//'Name',
                             border: OutlineInputBorder(),
                             prefix: Icons.person,
                             controller: nameController,
                           validate: (value){
                             if(value!.isEmpty){
-                              return 'name must not be empty';
+                              return AppLocalizations.of(context).translate("name must not be empty");//'name must not be empty';
                             }
                           }
                         ),
@@ -131,20 +132,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             controller: ageController,
                             validate: (value){
                               if(value!.isEmpty){
-                                return 'Age must not be empty';
+                                return AppLocalizations.of(context).translate("validate_age");//'Age must not be empty';
                               }
                             }
                         ),
                         SizedBox(height: 10,),
-                        defaultTextFormField(type: TextInputType.number,label: 'weight',border: OutlineInputBorder(),prefix: Icons.accessibility_new_sharp,controller: weightController,validate: (value){
+                        defaultTextFormField(type: TextInputType.number,label: AppLocalizations.of(context).translate("weight"),border: OutlineInputBorder(),prefix: Icons.accessibility_new_sharp,controller: weightController,validate: (value){
                           if(value!.isEmpty){
-                            return 'Weight must not be empty';
+                            return AppLocalizations.of(context).translate("validate_weight");//'Weight must not be empty';
                           }
                         }),
                         SizedBox(height: 10,),
-                        defaultTextFormField(type: TextInputType.number,label: 'Goal Weight',border: OutlineInputBorder(),prefix: Icons.accessibility_new_sharp,controller: goalWeightController,validate: (value){
+                        defaultTextFormField(
+                            type: TextInputType.number,
+                            label: AppLocalizations.of(context).translate("goal_weight"),//'Goal Weight',
+                            border: OutlineInputBorder(),
+                            prefix: Icons.accessibility_new_sharp,controller: goalWeightController,validate: (value)
+                        {
                           if(value!.isEmpty){
-                            return 'Goal Weight must not be empty';
+                            return AppLocalizations.of(context).translate("validate_goal_weight");//'Goal Weight must not be empty';
                           }
                         }),
 
@@ -169,7 +175,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             );
                           }
                         },
-                            text: 'Update'
+                            text: AppLocalizations.of(context).translate("Update"),//'Update'
                         ),
                         if(state is UploadProfileImageLoadingState)
                           LinearProgressIndicator(),

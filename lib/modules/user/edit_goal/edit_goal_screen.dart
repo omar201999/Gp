@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 class EditGoalScreen extends StatefulWidget {
   @override
@@ -101,11 +102,12 @@ class _State extends State<EditGoalScreen> {
         }
 
         return Scaffold(
-            appBar: buildAppBar(title:'Edit Goal'),
+            appBar: buildAppBar(title:AppLocalizations.of(context).translate("edit_goal")),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   defaultContainer(
+                    context,
                     radius: 15,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -114,7 +116,7 @@ class _State extends State<EditGoalScreen> {
                         [
                           RadioListTile<goalList>(
                             contentPadding: EdgeInsets.zero,
-                            title:  Text('Gain'),
+                            title: Text(AppLocalizations.of(context).translate("gain")),
                             value: goalList.gain,
                             groupValue: goalGroup,
                             onChanged: (goalList? value) {
@@ -129,7 +131,7 @@ class _State extends State<EditGoalScreen> {
                           RadioListTile<goalList>(
                             contentPadding: EdgeInsets.zero,
 
-                            title:  Text('Maintain'),
+                            title: Text(AppLocalizations.of(context).translate("maintain")),
                             value: goalList.maintain,
                             groupValue: goalGroup,
                             onChanged: (goalList? value) {
@@ -143,7 +145,7 @@ class _State extends State<EditGoalScreen> {
                           RadioListTile<goalList>(
                             contentPadding: EdgeInsets.zero,
 
-                            title:  Text('Lose'),
+                            title:  Text(AppLocalizations.of(context).translate("lose")),
                             value: goalList.loss,
                             groupValue: goalGroup,
                             onChanged: (goalList? value) {
@@ -161,6 +163,7 @@ class _State extends State<EditGoalScreen> {
                   ),
                   SizedBox(height: 10,),
                   defaultContainer(
+                    context,
                     radius: 15,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -175,13 +178,13 @@ class _State extends State<EditGoalScreen> {
                               [
                                 defaultBodyText(
                                   context,
-                                  text: 'Not Active',
+                                  text: AppLocalizations.of(context).translate("not_active"),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
                                 Text(
-                                  'Spend most of the day sitting (e.g., desk jop)',
+                                  AppLocalizations.of(context).translate("ex_not_active"),
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -204,13 +207,12 @@ class _State extends State<EditGoalScreen> {
                               [
                                 defaultBodyText(
                                   context,
-                                  text: 'Lightly Active',
-                                ),
+                                  text: AppLocalizations.of(context).translate("lightly_active"),),
                                 SizedBox(
                                   height: 4,
                                 ),
                                 Text(
-                                  'Spend a good part of the day on your feet and train from 1 to 3 days (e.g., teacher, salesperson)',
+                                    AppLocalizations.of(context).translate("ex_lightly_active"),
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -233,13 +235,13 @@ class _State extends State<EditGoalScreen> {
                               [
                                 defaultBodyText(
                                   context,
-                                  text: 'Active',
+                                  text: AppLocalizations.of(context).translate("active"),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
                                 Text(
-                                  'Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).',
+                                  AppLocalizations.of(context).translate("ex_active"),
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -262,13 +264,13 @@ class _State extends State<EditGoalScreen> {
                               [
                                 defaultBodyText(
                                   context,
-                                  text: 'Very Active',
+                                  text: AppLocalizations.of(context).translate("very_active"),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
                                 Text(
-                                  'Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).',
+                                  AppLocalizations.of(context).translate("ex_very_active"),
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -291,13 +293,13 @@ class _State extends State<EditGoalScreen> {
                               [
                                 defaultBodyText(
                                   context,
-                                  text: 'Hulk',
+                                  text:  AppLocalizations.of(context).translate("hulk"),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
                                 Text(
-                                  'Spend most of the day Hard training ',
+                                  AppLocalizations.of(context).translate("ex_hulk"),
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -326,7 +328,9 @@ class _State extends State<EditGoalScreen> {
                       totalCarbs: totalCarbs,
                       totalCalorie: totalCalorie,
                     );
-                  }, text: 'UPDATE')
+                  }, text: AppLocalizations.of(context).translate("Update"),
+
+                  )
                 ],
               ),
             )

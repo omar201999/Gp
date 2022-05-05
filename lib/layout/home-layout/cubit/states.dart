@@ -2,6 +2,10 @@ abstract class HomeStates {}
 
 class HomeInitialState extends HomeStates{}
 
+class ChangeThemeDarkState extends HomeStates{}
+
+class ChangeThemeLightState extends HomeStates{}
+
 class HomeChangeBottomNavState extends HomeStates{}
 
 class GetUserDataLoadingState extends HomeStates{}
@@ -21,15 +25,37 @@ class GetProfileImageSuccessState extends HomeStates{}
 
 class GetProfileImageErrorState extends HomeStates{}
 
+class GetFeedBackImageSuccessState extends HomeStates{}
+
+class GetFeedBackImageErrorState extends HomeStates {}
+
+class RemoveFeedBackImageState extends HomeStates {}
+
 class UpdateUserDataSuccessState extends HomeStates{}
 
 class UpdateUserDataErrorState extends HomeStates{}
+
+class UpdateRecipeSuccessState extends HomeStates{}
+
+class UpdateRecipeErrorState extends HomeStates{
+  final String error;
+
+  UpdateRecipeErrorState(this.error);
+}
 
 class UploadProfileImageLoadingState extends HomeStates{}
 
 class UploadProfileImageSuccessState extends HomeStates{}
 
 class UploadProfileImageErrorState extends HomeStates{}
+
+class UploadFeedBackImageErrorState extends HomeStates
+{
+  final String error;
+
+  UploadFeedBackImageErrorState(this.error);
+}
+
 
 class GetAllBreakFastRecipeSuccessState extends HomeStates {}
 
@@ -128,13 +154,15 @@ class SearchErrorState extends HomeStates
   SearchErrorState(this.error);
 }
 
-class protienSuccessState extends HomeStates {}
+class GetProductsSuccessState extends HomeStates {}
 
-class protienErrorState extends HomeStates
+class GetProductsLoadingState extends HomeStates {}
+
+class GetProductsErrorState extends HomeStates
 {
   final String error;
 
-  protienErrorState(this.error);
+  GetProductsErrorState(this.error);
 }
 class ChangeCheckBoxState extends HomeStates{}
 
@@ -271,9 +299,6 @@ class CreateOrderErrorState extends HomeStates
   CreateOrderErrorState(this.error);
 }
 
-class GetOrderIdSuccessState extends HomeStates {}
-
-class GetOrderIdErrorState extends HomeStates {}
 class DeleteCompleteDiaryItemSuccessState extends HomeStates {}
 
 class DeleteCompleteDiaryItemErrorState extends HomeStates
@@ -281,4 +306,13 @@ class DeleteCompleteDiaryItemErrorState extends HomeStates
   final String error;
 
   DeleteCompleteDiaryItemErrorState(this.error);
+}
+
+class CreateFeedBackSuccessState extends HomeStates {}
+
+class CreateFeedBackErrorState extends HomeStates
+{
+  final String error;
+
+  CreateFeedBackErrorState(this.error);
 }

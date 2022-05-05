@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class NewRecipeScreen extends StatelessWidget {
@@ -96,6 +95,8 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),*/
                       defaultContainer(
+                        context,
+
                         height: 65,
                         child: defaultTextFormField(
                           type: TextInputType.text,
@@ -109,8 +110,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
-                          height: 150,
-                          color: constantColor5,
+                        context,
+
+                        height: 150,
+                         // color: constantColor5,
                           child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
@@ -123,8 +126,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
-                          height: 150,
-                          color: constantColor5,
+                        context,
+
+                        height: 150,
+                          //color: constantColor5,
                           child: defaultTextFormField(
                               controller: directionsController,
                               type: TextInputType.multiline,
@@ -136,8 +141,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
+                        context,
+
                         height: 65,
-                        color: constantColor5,
+                        //color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.number,
                           controller: carbsController,
@@ -148,8 +155,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
+                        context,
+
                         height: 65,
-                        color: constantColor5,
+                        //color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.number,
                           controller: proteinController,
@@ -160,8 +169,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
+                        context,
+
                         height: 65,
-                        color: constantColor5,
+                        //color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.number,
                           controller: fatsController,
@@ -173,8 +184,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
+                        context,
+
                         height: 65,
-                        color: constantColor5,
+                        //color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.number,
                           controller: calsController,
@@ -185,8 +198,10 @@ class NewRecipeScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       defaultContainer(
+                        context,
+
                         height: 65,
-                        color: constantColor5,
+                        //color: constantColor5,
                         child: defaultTextFormField(
                           type: TextInputType.number,
                           controller: weightController,
@@ -221,6 +236,8 @@ class NewRecipeScreen extends StatelessWidget {
                           alignment: AlignmentDirectional.topEnd,
                           children: [
                             defaultContainer(
+                              context,
+
                               height: 140.0,
                               width: double.infinity,
                               decoration: BoxDecoration(

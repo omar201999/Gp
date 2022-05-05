@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 
 class BreakFastScreen extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class BreakFastScreen extends StatelessWidget {
       builder: (context,state)
       {
         var list = HomeCubit.get(context).searchBreakFast;
-        return  buildSerachMealItem(list, context, title: 'BreakFast',
+        return  buildSerachMealItem(list, context, title: AppLocalizations.of(context).translate("breakfast"),//'BreakFast',
           onChangedSearch: (value )
           {
             HomeCubit.get(context).getSearchBreakFast(value);
@@ -31,7 +32,9 @@ class BreakFastScreen extends StatelessWidget {
             {
               if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
               {
-                showToast(text: 'Please reduce Your Meal your goal is ${HomeCubit.get(context).userModel!.totalCalorie} and your total food is ${HomeCubit.get(context).totalFood} ', state: ToastStates.SUCCESS);
+                //Please reduce Your Meal your goal is
+                //and your total food is
+                showToast(text: '${AppLocalizations.of(context).translate("validate_Food")} ${HomeCubit.get(context).userModel!.totalCalorie} ${AppLocalizations.of(context).translate("and your total food is")} ${HomeCubit.get(context).totalFood} ', state: ToastStates.WARNING);
               }else
               {
                 HomeCubit.get(context).addBreakFastMeal();

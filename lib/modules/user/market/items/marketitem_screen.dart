@@ -1,10 +1,13 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/modules/user/address_and_phone_change_screen/address_and_phone_change_screen.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 class MarketItemScreen extends StatefulWidget {
 
@@ -37,7 +40,9 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
       {
         return Scaffold(
           //backgroundColor: Colors.grey[50],
-          body: SingleChildScrollView(
+          body: ConditionalBuilder(
+            condition: state is !GetProductsLoadingState,
+            builder: (context) => SingleChildScrollView(
             /*child: Form(
               key: formKey,*/
               child: Column(
@@ -80,12 +85,14 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                       children:
                       [
                         defaultContainer(
-                          child: Padding(
+                          context,
+                           child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 defaultContainer(
+                                  context,
                                   child: defaultHeadLineText(
                                       context,
                                       fontWeight: FontWeight.w900,
@@ -105,13 +112,14 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                           height: 10,
                         ),
                         defaultContainer(
+                            context,
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  defaultHeadLineText(context, text: 'Price',
+                                  defaultHeadLineText(context, text: AppLocalizations.of(context).translate("price"),//'Price',
                                     fontWeight: FontWeight.w900,
                                   ),
                                   defaultBodyText(context,
@@ -125,6 +133,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                           height: 10,
                         ),
                         defaultContainer(
+                            context,
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
@@ -146,40 +155,42 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             )
                         ),
 
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        defaultContainer(
-                            width: double.infinity,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    defaultHeadLineText(
+                         const SizedBox(
+                           height: 10,
+                         ),
+                         defaultContainer(
+                             context,
+                             width: double.infinity,
+                             child: Padding(
+                               padding: const EdgeInsets.all(10),
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   defaultHeadLineText(
                                        context, text:
-                                     'Availability In Stock ${productModel.quantity }',
-                                     fontWeight: FontWeight.w900
-                                    ),
-                                ],
-                              ),
-                            )
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        /*defaultTextFormField(
-                          controller: quantityController,
-                          type: TextInputType.number,
-                          validate: (String? value)
-                          {
-                            if(value!.isEmpty)
-                            {
-                              return 'please enter your quantity';
-                            }
-                          },
-                          label: 'Quantity',
-                          border: OutlineInputBorder(),
+                                   //AppLocalizations.of(context).translate("  "),//
+                                   '${AppLocalizations.of(context).translate("Availability In Stock")} ${productModel.quantity }',
+                                       fontWeight: FontWeight.w900
+                                   ),
+                                 ],
+                               ),
+                             )
+                         ),
+                         const SizedBox(
+                           height: 10,
+                         ),
+                         /*defaultTextFormField(
+                           controller: quantityController,
+                           type: TextInputType.number,
+                           validate: (String? value)
+                           {
+                             if(value!.isEmpty)
+                             {
+                               return AppLocalizations.of(context).translate("please enter your quantity");//'please enter your quantity';
+                             }
+                           },
+                           label: AppLocalizations.of(context).translate("quantity"),//'Quantity',
+                           border: OutlineInputBorder(),
 
                         ),*/
 
@@ -336,7 +347,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               //}
 
                             },
-                            text: 'Add to Your Card'
+                            text: AppLocalizations.of(context).translate("Add to Your Card"),//'Add to Your Card',
                         ),
                         const SizedBox(
                           height: 10,
@@ -348,8 +359,9 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             {
                               /*if(formKey.currentState!.validate())
                               {*/
-                                if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != "" && productModel.quantity != 0 )
-                                {
+                                //if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null && HomeCubit.get(context).userModel!.address != "" && HomeCubit.get(context).userModel!.phone != "" && productModel.quantity != 0 )
+                              if( HomeCubit.get(context).userModel!.address != null && HomeCubit.get(context).userModel!.phone != null)
+                              {
 
                                   productModel.quantity = productModel.quantity! - selectedQuantity;
                                   HomeCubit.get(context).updateProductForOneBuy(
@@ -363,16 +375,27 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                       discount: productModel.discount,
                                       description: productModel.description,
                                       //uId: productModel.uId,
-                                      selectedQuantity: selectedQuantity
+                                      selectedQuantity: selectedQuantity,
+
+                                      showToast(text:AppLocalizations.of(context).translate("Your order done Successfully"),// 'Your order done Successfully',
+                                          state: ToastStates.SUCCESS);
 
 
                                   );
 
                                   HomeCubit.get(context).createOrderForOneProduct(
-                                      total: productModel.currentPrice! + 100 ,
-                                      totalPrice: productModel.currentPrice!,
+                                    currentPrice: productModel.currentPrice!,
+                                    description: productModel.description!,
+                                    discount: productModel.discount!,
+                                    image: productModel.image!,
+                                    name: productModel.name!,
+                                    oldPrice: productModel.oldPrice!,
+                                    total: productModel.currentPrice! + 100,
+                                    totalPrice: productModel.currentPrice!,
                                     productName: productModel.name!,
+                                    status: productModel.status!,
                                     quantity: selectedQuantity,
+
                                     //int.parse(quantityController.text),
                                   );
 
@@ -418,6 +441,25 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
               ),
             ),
          // ),
+                         if( HomeCubit.get(context).userModel!.address == null || HomeCubit.get(context).userModel!.phone == null)
+                           defaultButton(
+                             context,
+                             onPreesed: ()
+                             {
+                               navigateTo(context, AddressAndPhoneChangeScreen());
+                             },
+                             text: AppLocalizations.of(context).translate("change_phone"),
+                           ),
+                       ],
+                     ),
+                   ),
+                 ],
+               ),
+             ),
+           ),
+            fallback: (context) => const Center(child: CircularProgressIndicator()),
+
+          ),
 
         );
       },

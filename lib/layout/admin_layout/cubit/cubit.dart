@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/models/feedback_model.dart';
 import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
@@ -43,12 +44,11 @@ class AdminCubit extends Cubit<AdminStates>
   List<UserModel> users = [];
   void getUsers()
   {
-    emit(AdminGetAllUsersLoadingState());
-    users = [];
+    /*users = [];
     FirebaseFirestore.instance.collection('users').
     where('status',isEqualTo: 'user')
-        .get().then((value)
-    {
+        .get()
+        .then((value) {
       value.docs.forEach((element)
       {
         users.add(UserModel.fromJson(element.data()));
@@ -58,6 +58,19 @@ class AdminCubit extends Cubit<AdminStates>
     }).catchError((error) {
       print(error.toString());
       emit(AdminGetAllUsersErrorState(error.toString()));
+    });*/
+
+    emit(AdminGetAllUsersLoadingState());
+    FirebaseFirestore.instance.collection('users').
+    where('status',isEqualTo: 'user')
+        .snapshots()
+        .listen((event)
+    {
+      users = [];
+      event.docs.forEach((element) {
+        users.add(UserModel.fromJson(element.data()));
+      });
+      emit(AdminGetAllUsersSuccessState());
     });
   }
 
@@ -128,6 +141,9 @@ class AdminCubit extends Cubit<AdminStates>
     required double carbs,
     required double protein,
     required double weight,
+    required num totalRating,
+    required num averageRating,
+    required num numOfRates,
     //required String? uId,
     required String? category,
 })
@@ -152,6 +168,9 @@ class AdminCubit extends Cubit<AdminStates>
             //uId: uId,
             category: category,
             newRecipeImage: value,
+          totalRating: totalRating,
+          averageRating: averageRating,
+          numOfRates: numOfRates
         );
       }).catchError((error)
       {
@@ -175,6 +194,9 @@ class AdminCubit extends Cubit<AdminStates>
     required double protein,
     required double weight,
     //required String? uId,
+    required num numOfRates,
+    required num averageRating,
+    required num totalRating,
     required String? category,
     String? newRecipeImage,
 })
@@ -191,7 +213,9 @@ class AdminCubit extends Cubit<AdminStates>
       weight: weight,
       //uId: uId,
       category: category,
-
+      numOfRates:numOfRates,
+      averageRating:averageRating ,
+      totalRating: totalRating,
     );
 
     FirebaseFirestore.instance
@@ -204,7 +228,6 @@ class AdminCubit extends Cubit<AdminStates>
      getLunchRecipe();
      getDinnerRecipe();
     }).catchError((error){
-
       emit(UpdateRecipeErrorState(error.toString()));
       print(error.toString());
     });
@@ -260,8 +283,6 @@ class AdminCubit extends Cubit<AdminStates>
     });
 
   }
-
-
   void createRecipe({
     required String title,
     String? recipeImage,
@@ -289,6 +310,11 @@ class AdminCubit extends Cubit<AdminStates>
         directions: directions,
         //uId:uId,
         category: category
+        //uId:uId,
+        category: category,
+        averageRating: 0 ,
+        numOfRates: 0 ,
+        totalRating:0 ,
     );
 
     FirebaseFirestore.instance
@@ -309,24 +335,36 @@ class AdminCubit extends Cubit<AdminStates>
   List<String> breakfastRecID = [];
   void getBreakfastRecipe()
   {
-    emit(GetAllBreakFastRecipeLoadingState());
-    breakfastRecipe = [];
-    breakfastRecID = [];
-    FirebaseFirestore.instance
+    //emit(GetAllBreakFastRecipeLoadingState());
+    /*FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'breakfast')
         .get()
         .then((value) {
       value.docs.forEach((element)
       {
-        breakfastRecID.add(element.id);
         breakfastRecipe.add(RecipeModel.fromJson(element.data()));
       });
 
+  emit(GetAllBreakFastRecipeSuccessState());
+  }).catchError((error) {
+  print(error.toString());
+  emit(GetAllBreakFastRecipeErrorState(error.toString()));
+  });*/
+
+    emit(GetAllBreakFastRecipeLoadingState());
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .where('category',isEqualTo: 'breakfast')
+        .snapshots()
+        .listen((event) {
+      breakfastRecipe = [];
+      breakfastRecID = [];
+      event.docs.forEach((element) {
+        breakfastRecID.add(element.id);
+        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
+      });
       emit(GetAllBreakFastRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetAllBreakFastRecipeErrorState(error.toString()));
     });
   }
   List<RecipeModel> lunchRecipe = [];
@@ -338,19 +376,15 @@ class AdminCubit extends Cubit<AdminStates>
     lunchRecID = [];
     FirebaseFirestore.instance
         .collection('recipes')
-        .where('category',isEqualTo: 'lunch')
-        .get()
-        .then((value) {
-      value.docs.forEach((element)
-      {
+        .where('category',isEqualTo: 'lunch').snapshots().listen((event) {
+      lunchRecipe = [];
+      lunchRecID = [];
+      event.docs.forEach((element) {
         lunchRecipe.add(RecipeModel.fromJson(element.data()));
         lunchRecID.add(element.id);
       });
 
       emit(GetAllLunchRecipeSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetAllLunchRecipeErrorState(error.toString()));
     });
   }
   List<RecipeModel> dinnerRecipe = [];
@@ -358,48 +392,32 @@ class AdminCubit extends Cubit<AdminStates>
   void getDinnerRecipe()
   {
     emit(GetAllDinnerRecipeLoadingState());
-    dinnerRecipe = [];
-    dinnerRecID = [];
     FirebaseFirestore.instance
         .collection('recipes')
-        .where('category',isEqualTo: 'dinner')
-        .get()
-        .then((value) {
-      value.docs.forEach((element)
-      {
+        .where('category',isEqualTo: 'dinner').snapshots().listen((event) {
+      dinnerRecipe = [];
+      event.docs.forEach((element) {
         dinnerRecipe.add(RecipeModel.fromJson(element.data()));
         dinnerRecID.add(element.id);
       });
-
       emit(GetAllDinnerRecipeSuccessState());
-    }).catchError((error) {
-      emit(GetAllDinnerRecipeErrorState(error.toString()));
-      print(error.toString());
-
     });
   }
   List<RecipeModel> allRecipe = [];
   List<String> recipesIds = [];
   void getAllRecipe()
   {
-    emit(GetAllRecipeLoadingState());
-    allRecipe = [];
-    recipesIds = [];
     FirebaseFirestore.instance
         .collection('recipes')
-        .get()
-        .then((value) {
-      value.docs.forEach((element)
-      {
+        .snapshots()
+        .listen((event) {
+      allRecipe = [];
+      event.docs.forEach((element) {
         allRecipe.add(RecipeModel.fromJson(element.data()));
         recipesIds.add(element.id);
 
       });
       emit(GetAllRecipeSuccessState());
-    }).catchError((error) {
-      emit(GetAllRecipeErrorState(error.toString()));
-      print(error.toString());
-
     });
   }
 
@@ -544,10 +562,12 @@ class AdminCubit extends Cubit<AdminStates>
         .update(model.toMap())
         .then((value) {
       emit(UpdateProductsSuccessState());
+          getProducts();
+      //emit(UpdateRecipeSuccessState());
 
     }).catchError((error){
 
-      emit(UpdateProductErrorState(error.toString()));
+      emit(UpdateRecipeErrorState(error.toString()));
       print(error.toString());
     });
 
@@ -648,18 +668,17 @@ class AdminCubit extends Cubit<AdminStates>
   void getProducts()
   {
     emit(GetProductsLoadingState());
-    products = [];
-    FirebaseFirestore.instance.collection('products')
-        .get()
-        .then((value) {
-          value.docs.forEach((element) {
-            products.add(ProductModel.fromJson(element.data()));
-            productsIDs.add(element.id);
-          });
-         emit(GetProductsSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetProductsErrorState(error.toString()));
+    FirebaseFirestore.instance
+        .collection('products')
+        .snapshots()
+        .listen((event) {
+      products = [];
+      productsIDs = [];
+      event.docs.forEach((element) {
+        products.add(ProductModel.fromJson(element.data()));
+        productsIDs.add(element.id);
+      });
+      emit(GetProductsSuccessState());
     });
   }
 
@@ -694,47 +713,249 @@ class AdminCubit extends Cubit<AdminStates>
   List<ProductModel> stockProducts = [];
   void countStockProducts()
   {
+   /* .get()
+      .then((value) {
+  value.docs.forEach((element) {
+  stockProducts.add(ProductModel.fromJson(element.data()));
+  });
+  emit(GetDashboardProductsSuccessState());
+  }).catchError((error) {
+  emit(GetDashboardProductsErrorState());
+  });*/
     emit(GetStockProductsLoadingState());
     FirebaseFirestore.instance
         .collection('products')
-        .where('status', isEqualTo: 'inStock')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
+        .where('status', isEqualTo: 'inStock').snapshots().listen((event) {
+      stockProducts = [];
+      event.docs.forEach((element) {
         stockProducts.add(ProductModel.fromJson(element.data()));
       });
       emit(GetDashboardProductsSuccessState());
-    }).catchError((error) {
-      emit(GetDashboardProductsErrorState());
     });
+
   }
 
 
-  List<NewOrderModel> orders = [];
-  //List<String> ordersId = [];
+  List<NewOrderModel> newOrders = [];
+  List<NewOrderModel> confirmedOrders = [];
+  List<NewOrderModel> canceledOrders = [];
+  List<String> ordersNewId = [];
+  List<String> ordersConfirmedId = [];
+  List<String> ordersCanceledId = [];
+
 
   void getOrders()
   {
+    /*.get()
+      .then((value)
+    {
+    for (var element in value.docs) {
+    orders.add(NewOrderModel.fromJson(element.data()));
+    }
+    emit(AdminGetAllOrdersSuccessState());
+    print(orders);
+    }).catchError((error) {
+  emit(AdminGetAllOrdersErrorState(error.toString()));
+  print(orders);
+  print(error.toString());
+  //print(orders);
+  });*/
     emit(AdminGetAllOrdersLoadingState());
-    orders = [];
+    {
+      newOrders = [];
+      confirmedOrders = [];
+      canceledOrders = [];
+      ordersNewId = [];
+      ordersConfirmedId = [];
+      ordersCanceledId = [];
+      FirebaseFirestore.instance
+          .collection('orders')
+          //.where('status', isEqualTo: status)
+          .orderBy('dateTime',descending: true)
+          .get()
+          .then((value) {
+            for (var element in value.docs) {
+              if(element.get('status') == 'new')
+              {
+                ordersNewId.add(element.id);
+                newOrders.add(NewOrderModel.fromJson(element.data()));
+              }
+              else if(element.get('status') == 'confirmed') {
+                ordersConfirmedId.add(element.id);
+                confirmedOrders.add(NewOrderModel.fromJson(element.data()));
+              }
+              else {
+                ordersCanceledId.add(element.id);
+                canceledOrders.add(NewOrderModel.fromJson(element.data()));
+              }
+            }
+
+            //print(newOrders.toString());
+            //print(newOrders.length);
+            //print(newOrders[0].cardItemList);
+            //print(newOrders);
+           // print(newOrders[0].orderId);
+            //print(canceledOrders.length);
+            //print(confirmedOrders.length);
+            //getOrderId();
+            emit(AdminGetAllOrdersSuccessState());
+      }).catchError((error){
+        emit(AdminGetAllOrdersErrorState(error.toString()));
+        print(error.toString());
+      });
+        /*  .snapshots()
+          .listen((event) {
+        newOrders = [];
+        confirmedOrders = [];
+        canceledOrders = [];
+        ordersId = [];
+        for (var element in event.docs) {
+          if(status == 'new') {
+            ordersId.add(element.id);
+            newOrders.add(NewOrderModel.fromJson(element.data()));
+          } else if(status == 'confirmed') {
+            ordersId.add(element.id);
+            confirmedOrders.add(NewOrderModel.fromJson(element.data()));
+          }
+          else {
+            ordersId.add(element.id);
+            canceledOrders.add(NewOrderModel.fromJson(element.data()));
+          }
+        }
+        print(ordersId.toString());
+        print(newOrders.length);
+        print(canceledOrders.length);
+        print(confirmedOrders.length);
+
+        emit(AdminGetAllNewOrdersSuccessState());
+      });*/
+    }
+  }
+
+ /* List<String> ordersId = [];
+  void getOrderId()
+  {
+    ordersId = [];
     FirebaseFirestore.instance
         .collection('orders')
-        .orderBy('dateTime',descending: true)
         .get()
-        .then((value)
-    {
-      for (var element in value.docs) {
-        orders.add(NewOrderModel.fromJson(element.data()));
-      }
-      emit(AdminGetAllOrdersSuccessState());
-      print(orders);
-    }).catchError((error) {
-      emit(AdminGetAllOrdersErrorState(error.toString()));
-      print(orders);
+        .then((value) {
+          value.docs.forEach((element)
+          {
+            ordersId.add(element.id);
+          });
+      print(ordersId.toString());
+    }).catchError((error){
       print(error.toString());
-      //print(orders);
     });
+  }*/
 
+ void updateStatusOfOrdres(String id,{
+  required String status,
+   int? quantity,
+   String? productName,
+   String? dateTime,
+   String? phone,
+   String? address,
+   String? orderId,
+   String? userName,
+   double? totalPrice,
+   double? total,
+   double? shipping,
+   List<dynamic>? cardItemList,
+}) {
+   NewOrderModel model = NewOrderModel(
+     status: status,
+     quantity: quantity,
+     productName: productName,
+     dateTime: dateTime,
+     address: address,
+     orderId: orderId,
+     phone: phone,
+     shipping: shipping,
+     total: total,
+     totalPrice: totalPrice,
+     userName: userName,
+     cardItemList: cardItemList,
+   );
+   FirebaseFirestore.instance
+       .collection('orders')
+       .doc(id)
+       .update(model.toMap())
+       .then((value) {
+     getOrders();
+   }).catchError((error) {
+     emit(UpdateOrdersErrorState(error.toString()));
+     print(error.toString());
+   });
+ }
+  List<FeedBackModel> feedback = [];
+
+  void getFeedBack()
+  {
+    FirebaseFirestore.instance
+        .collection('feedback')
+        .snapshots()
+        .listen((event) {
+       event.docs.forEach((element) {
+         feedback.add(FeedBackModel.fromjson(element.data()));
+       });
+       emit(AdminGetAllFeedbackSuccessState());
+    });
+  }
+  double averageRateApp =0;
+  double averageRate()
+  {
+    averageRateApp =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      averageRateApp = averageRateApp + (feedback[i].rating)!.round() ;
+    }
+    return averageRateApp / feedback.length ;
+  }
+  int yesAchievementCount =0;
+  int yesAchievement()
+  {
+    yesAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'yes')
+      {
+        yesAchievementCount = yesAchievementCount + 1;
+      }
+
+    }
+    return yesAchievementCount ;
+  }
+
+  int partiallyAchievementCount =0;
+  int partiallyAchievement()
+  {
+    partiallyAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'partially')
+      {
+        partiallyAchievementCount = partiallyAchievementCount + 1;
+      }
+
+    }
+    return partiallyAchievementCount ;
+  }
+
+  int noAchievementCount =0;
+  int noAchievement()
+  {
+    noAchievementCount =0;
+    for(int i =0 ; i < feedback.length; i++)
+    {
+      if(feedback[i].goalAchieve == 'no')
+      {
+        noAchievementCount = noAchievementCount + 1;
+      }
+
+    }
+    return noAchievementCount ;
   }
 
  /*

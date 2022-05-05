@@ -1,11 +1,15 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gp/main.dart';
 import 'package:gp/modules/user/add_Information/add_information.dart';
 import 'package:gp/modules/user/login/cubit/cubit.dart';
 import 'package:gp/modules/user/login/cubit/states.dart';
 import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
+import 'package:gp/shared/localization/language.dart';
 
 
 class LoginScreen extends StatelessWidget
@@ -15,9 +19,12 @@ class LoginScreen extends StatelessWidget
   var formKey = GlobalKey<FormState>();
 
 
-
   @override
   Widget build(BuildContext context) {
+    void _changeLanguage(Language language) async {
+      Locale _locale = await setLocale(language.languageCode);
+      MyApp.setLocale(context, _locale);
+    }
     return BlocProvider(
       create: (BuildContext context) => LoginCubit(),//..getUsers()
       child: BlocConsumer<LoginCubit,LoginStates>(
@@ -51,7 +58,7 @@ class LoginScreen extends StatelessWidget
                       [
                         defaultHeadLineText(
                           context,
-                          text: 'Login',
+                          text: AppLocalizations.of(context).translate("login"),
                         ),
                         const SizedBox(
                           height: 10,
@@ -59,7 +66,7 @@ class LoginScreen extends StatelessWidget
 
                         defaultBodyText(
                           context,
-                          text: 'LOGIN now to be Hulk',
+                          text: AppLocalizations.of(context).translate("LOGIN now to be Hulk"),
                         ),
                         const SizedBox(
                           height: 30.0,
@@ -71,11 +78,11 @@ class LoginScreen extends StatelessWidget
                           {
                             if(value!.isEmpty)
                             {
-                              return 'please enter your email address ';
+                              return AppLocalizations.of(context).translate("please enter your email");//'please enter your email address ';
                             }
 
                           },
-                          label: 'Email',
+                          label: AppLocalizations.of(context).translate("Email"),//'Email',
                           prefix: Icons.email_outlined,
                           border: const OutlineInputBorder(),
 
@@ -91,7 +98,7 @@ class LoginScreen extends StatelessWidget
                             {
                               if(value!.isEmpty)
                               {
-                                return 'password is too Short ';
+                                return AppLocalizations.of(context).translate("check_pass");//'password is too Short ';
                               }
                             },
                             obscure: LoginCubit.get(context).obScure,
@@ -99,7 +106,7 @@ class LoginScreen extends StatelessWidget
                             {
                               LoginCubit.get(context).changePasswordVisibility();
                             },
-                            label: 'Password',
+                            label: AppLocalizations.of(context).translate("Password"),//'Password',
                             prefix: Icons.lock_outline,
                             border: const OutlineInputBorder(),
                             suffix:LoginCubit.get(context).suffix,
@@ -122,20 +129,20 @@ class LoginScreen extends StatelessWidget
                               }
 
                             },
-                            text: 'Login',
+                            text: AppLocalizations.of(context).translate("login"),//'Login',
                           ),
-                          fallback: (context) => const Center(child: CircularProgressIndicator()),
+                          fallback: (context) =>  Center(child: CircularProgressIndicator()),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:
                           [
-                            const Text(
-                              'Don\'t have an account?',
+                             Text(
+                              AppLocalizations.of(context).translate("Don't have an account?"),
                             ),
                             defaultTextButton(
                               context,
-                              text: 'Sign Up',
+                              text: AppLocalizations.of(context).translate("Sign Up"),//'Sign Up',
                               function: ()
                               {
                                 navigateTo(
@@ -143,10 +150,39 @@ class LoginScreen extends StatelessWidget
                                   OnBoardingScreen(),
                                 );
                               },
-
                             )
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DropdownButton<Language>(
+                              iconSize: 30,
+                              hint: defaultBodyText(context,text: AppLocalizations.of(context).translate("change_language")),
+                              onChanged: (Language? language) {
+                                _changeLanguage(language!);
+                              },
+                              items: Language.languageList()
+                                  .map<DropdownMenuItem<Language>>(
+                                    (e) => DropdownMenuItem<Language>(
+                                  value: e,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Text(
+                                        e.flag,
+                                        style: TextStyle(fontSize: 30),
+                                      ),
+                                      Text(e.name)
+                                    ],
+                                  ),
+                                ),
+                              ).toList(),
+                            ),
+                          ],
+                        ),
+
+
                       ],
                     ),
                   ),

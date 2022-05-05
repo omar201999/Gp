@@ -10,6 +10,8 @@ class OrderModel{
   String? dateTime;
   String? productName;
   int? quantity;
+  String? status;
+
 
 
 
@@ -25,6 +27,7 @@ class OrderModel{
     this.dateTime,
     this.productName,
     this.quantity,
+    this.status,
 
 
   });
@@ -42,6 +45,7 @@ class OrderModel{
     dateTime=json['dateTime'];
     productName=json['productName'];
     quantity = json['quantity'];
+    status = json['status'];
 
 
   }
@@ -59,6 +63,7 @@ class OrderModel{
       'dateTime': dateTime,
       'productName': productName,
       'quantity': quantity,
+      'status': status,
 
 
 

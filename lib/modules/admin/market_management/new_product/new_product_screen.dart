@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class NewProductSrceen extends StatelessWidget {
@@ -32,9 +31,7 @@ class NewProductSrceen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        var productImage = AdminCubit
-            .get(context)
-            .productImage;
+        var productImage = AdminCubit.get(context).productImage;
 
         return Scaffold(
             appBar: buildAppBar(
@@ -82,6 +79,7 @@ class NewProductSrceen extends StatelessWidget {
                         height: 10.0,
                       ),
                     /*defaultContainer(
+                      context,
                       height: 65,
                       child: defaultTextFormField(
                         controller: uIdController,
@@ -94,6 +92,7 @@ class NewProductSrceen extends StatelessWidget {
                       height: 10.0,
                     ),*/
                     defaultContainer(
+                      context,
                       height: 65,
                       child: defaultTextFormField(
                         type: TextInputType.text,
@@ -106,8 +105,9 @@ class NewProductSrceen extends StatelessWidget {
                       height: 10.0,
                     ),
                     defaultContainer(
+                      context,
                       height: 150,
-                      color: constantColor5,
+                      //color: constantColor5,
                       child: defaultTextFormField(
                         controller: descriptionController,
                         type: TextInputType.multiline,
@@ -121,8 +121,9 @@ class NewProductSrceen extends StatelessWidget {
                     ),
 
                     /*defaultContainer(
+                      context,
                       height: 65,
-                      color: constantColor5,
+                      //color: constantColor5,
                       child: defaultTextFormField(
                         type: TextInputType.number,
                         controller: currentPriceController,
@@ -133,8 +134,10 @@ class NewProductSrceen extends StatelessWidget {
                       height: 10.0,
                     ),*/
                     defaultContainer(
+                      context,
+
                       height: 65,
-                      color: constantColor5,
+                      //color: constantColor5,
                       child: defaultTextFormField(
                         type: TextInputType.number,
                         controller: oldPriceController,
@@ -145,8 +148,10 @@ class NewProductSrceen extends StatelessWidget {
                       height: 10.0,
                     ),
                     defaultContainer(
+                      context,
+
                       height: 65,
-                      color: constantColor5,
+                      //color: constantColor5,
                       child: defaultTextFormField(
                         type: TextInputType.number,
                         controller: discountController,
@@ -159,8 +164,10 @@ class NewProductSrceen extends StatelessWidget {
                     ),
 
                     defaultContainer(
+                      context,
+
                       height: 65,
-                      color: constantColor5,
+                      //color: constantColor5,
                       child: defaultTextFormField(
                         type: TextInputType.number,
                         controller: quantityController,
@@ -171,13 +178,12 @@ class NewProductSrceen extends StatelessWidget {
                       height: 20.0,
                     ),
 
-                    if(AdminCubit
-                        .get(context)
-                        .productImage != null)
+                    if(AdminCubit.get(context).productImage != null)
                       Stack(
                         alignment: AlignmentDirectional.topEnd,
                         children: [
                           defaultContainer(
+                            context,
                             height: 140.0,
                             width: double.infinity,
                             decoration: BoxDecoration(

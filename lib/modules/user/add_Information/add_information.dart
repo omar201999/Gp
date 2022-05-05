@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/modules/user/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/cubit/cubit.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 class AddInformation extends StatefulWidget {
 
@@ -73,7 +75,7 @@ class _AddInformationState extends State<AddInformation>
 
   return Scaffold(
       appBar: buildAppBar(
-          title: 'Add Information',
+          title: AppLocalizations.of(context).translate("Add_info"),
           icon: IconBroken.Arrow___Left_2,
           onPressed: () {
           //Navigator.pop(context);
@@ -101,8 +103,8 @@ class _AddInformationState extends State<AddInformation>
                             isMale = true;
                           });
                         },
-                        child: defaultContainer(
-                          color: isMale ? Colors.blue : Colors.white ,
+                        child: Container(
+                          color: isMale ? Colors.blue : AppCubit.get(context).constantColor1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:
@@ -117,7 +119,7 @@ class _AddInformationState extends State<AddInformation>
                               ),
                               defaultHeadLineText(
                                   context,
-                                  text: 'Male',
+                                  text: AppLocalizations.of(context).translate("male"),
                               ),
                             ],
                           ),
@@ -135,8 +137,8 @@ class _AddInformationState extends State<AddInformation>
                             isMale = false;
                           });
                         },
-                        child: defaultContainer(
-                          color: !isMale ? Colors.blue : Colors.white ,
+                        child: Container(
+                          color: !isMale ? Colors.blue : AppCubit.get(context).constantColor1 ,
 
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +154,7 @@ class _AddInformationState extends State<AddInformation>
                               ),
                               defaultHeadLineText(
                                 context,
-                                text: 'Female',
+                                text: AppLocalizations.of(context).translate("female"),
                               ),
                             ],
                           ),
@@ -166,12 +168,13 @@ class _AddInformationState extends State<AddInformation>
                 ),
                 defaultHeadLineText(
                     context,
-                    text: 'Your Goal',
+                    text: AppLocalizations.of(context).translate("your_goal"),
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 defaultContainer(
+                  context,
                   radius: 15,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -180,7 +183,7 @@ class _AddInformationState extends State<AddInformation>
                       [
                         RadioListTile<goalList>(
                           contentPadding: EdgeInsets.zero,
-                          title:  Text('Gain'),
+                          title:  Text(AppLocalizations.of(context).translate("gain")),
                           value: goalList.gain,
                           groupValue: goalGroup,
                           onChanged: (goalList? value) {
@@ -194,7 +197,7 @@ class _AddInformationState extends State<AddInformation>
                         RadioListTile<goalList>(
                           contentPadding: EdgeInsets.zero,
 
-                          title:  Text('Maintain'),
+                          title: Text(AppLocalizations.of(context).translate("maintain")),
                           value: goalList.maintain,
                           groupValue: goalGroup,
                           onChanged: (goalList? value) {
@@ -208,7 +211,7 @@ class _AddInformationState extends State<AddInformation>
                         RadioListTile<goalList>(
                           contentPadding: EdgeInsets.zero,
 
-                          title:  Text('Lose'),
+                          title:  Text(AppLocalizations.of(context).translate("lose")),
                           value: goalList.loss,
                           groupValue: goalGroup,
                           onChanged: (goalList? value) {
@@ -318,12 +321,13 @@ class _AddInformationState extends State<AddInformation>
                 ),
                 defaultHeadLineText(
                   context,
-                  text: 'Active Level',
+                  text: AppLocalizations.of(context).translate("active_level"),
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 defaultContainer(
+                  context,
                   radius: 15,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -338,13 +342,13 @@ class _AddInformationState extends State<AddInformation>
                             [
                               defaultBodyText(
                                 context,
-                                text: 'Not Active',
+                                text: AppLocalizations.of(context).translate("not_active"),
                               ),
                               SizedBox(
                                 height: 4,
                               ),
                               Text(
-                                'Spend most of the day sitting (e.g., desk jop)',
+                                AppLocalizations.of(context).translate("ex_not_active"),//'Spend most of the day sitting (e.g., desk jop)'
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -367,13 +371,13 @@ class _AddInformationState extends State<AddInformation>
                             [
                               defaultBodyText(
                                 context,
-                                text: 'Lightly Active',
+                                text: AppLocalizations.of(context).translate("lightly_active"),
                               ),
                               SizedBox(
                                 height: 4,
                               ),
                               Text(
-                                'Spend a good part of the day on your feet and train from 1 to 3 days (e.g., teacher, salesperson)',
+                                AppLocalizations.of(context).translate("ex_lightly_active"),//Spend a good part of the day on your feet and train from 1 to 3 days (e.g., teacher, salesperson)
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -396,13 +400,13 @@ class _AddInformationState extends State<AddInformation>
                           [
                             defaultBodyText(
                               context,
-                              text: 'Active',
+                              text: AppLocalizations.of(context).translate("active"),
                             ),
                             SizedBox(
                               height: 4,
                             ),
                             Text(
-                              'Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).',
+                              AppLocalizations.of(context).translate("ex_active"),//'Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).'
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],
@@ -425,13 +429,13 @@ class _AddInformationState extends State<AddInformation>
                             [
                               defaultBodyText(
                                 context,
-                                text: 'Very Active',
+                                text: AppLocalizations.of(context).translate("very_active"),
                               ),
                               SizedBox(
                                 height: 4,
                               ),
                               Text(
-                                'Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).',
+                                AppLocalizations.of(context).translate("ex_very_active"),//'Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -454,13 +458,13 @@ class _AddInformationState extends State<AddInformation>
                             [
                               defaultBodyText(
                                 context,
-                                text: 'Hulk',
+                                text:  AppLocalizations.of(context).translate("hulk"),
                               ),
                               SizedBox(
                                 height: 4,
                               ),
                               Text(
-                                'Spend most of the day Hard training ',
+                                AppLocalizations.of(context).translate("ex_hulk"),//'Spend most of the day Hard training ',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -649,12 +653,12 @@ class _AddInformationState extends State<AddInformation>
                       {
                         if(value!.isEmpty)
                         {
-                          return 'please enter your Weight';
+                          return  AppLocalizations.of(context).translate("validate_weight"); //'please enter your Weight';
                         }
                       },
-                      label: 'Weight',
+                      label:  AppLocalizations.of(context).translate("weight"),//'Weight',
                       border: OutlineInputBorder(),
-                      hintText: 'Weight into Kg',
+                      hintText: AppLocalizations.of(context).translate("convert_weight"),//'Weight into Kg',
                   ),
 
                 SizedBox(
@@ -667,12 +671,12 @@ class _AddInformationState extends State<AddInformation>
                     {
                       if(value!.isEmpty)
                       {
-                        return 'please enter your Height';
+                        return AppLocalizations.of(context).translate("validate_height");//'please enter your Height';
                       }
                     },
-                    label: 'Height',
+                    label: AppLocalizations.of(context).translate("height"),//'Height',
                    border: OutlineInputBorder(),
-                    hintText: 'Height into cm',
+                    hintText: AppLocalizations.of(context).translate("convert_height"),//'Height into cm',
 
                   ),
 
@@ -686,12 +690,12 @@ class _AddInformationState extends State<AddInformation>
                       {
                         if(value!.isEmpty)
                         {
-                          return 'please enter Goal Weight';
+                          return AppLocalizations.of(context).translate("validate_goal_weight");//'please enter Goal Weight';
                         }
                       },
-                      label: 'Goal Weight',
+                      label: AppLocalizations.of(context).translate("goal_weight"),//'Goal Weight',
                      border:OutlineInputBorder(),
-                      hintText: 'Goal Weight into Kg',
+                      hintText: AppLocalizations.of(context).translate("convert_goal_weight"),//'Goal Weight into Kg',
                     ),
                 SizedBox(
                   height: 10,
@@ -703,10 +707,10 @@ class _AddInformationState extends State<AddInformation>
                    {
                      if(value!.isEmpty)
                      {
-                       return 'please enter your Age';
+                       return AppLocalizations.of(context).translate("validate_age");//'please enter your Age';
                      }
                    },
-                   label: 'Age',
+                   label: AppLocalizations.of(context).translate("age"),//'Age',
                    border: OutlineInputBorder(),
                  ),
 
@@ -717,13 +721,13 @@ class _AddInformationState extends State<AddInformation>
                 ),
                 defaultButton(
                   context,
-                  text: 'Register Now ',
+                  text: AppLocalizations.of(context).translate("register"),//'Register Now ',
                   onPreesed: ()
                     {
                       if(formKey.currentState!.validate()) {
                         if (active == null || goal == null) {
                           showToast(
-                              text: 'please enter your active and your goal',
+                              text: AppLocalizations.of(context).translate("validate_active_and_goal"),//'please enter your active and your goal',
                               state: ToastStates.ERROR);
                         }
                         else {

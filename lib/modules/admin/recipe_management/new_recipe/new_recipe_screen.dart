@@ -19,8 +19,11 @@ class NewRecipeScreen extends StatelessWidget {
  var fatsController = TextEditingController();
  var proteinController = TextEditingController();
  var calsController = TextEditingController();
- var weightController = TextEditingController();
+ //var weightController = TextEditingController();
  var uIdController = TextEditingController();
+ var titleArController = TextEditingController();
+ var ingredientsArController = TextEditingController();
+ var directionsArController = TextEditingController();
 
  //var timeController = TextEditingController();
 
@@ -58,10 +61,13 @@ class NewRecipeScreen extends StatelessWidget {
                              protein: double.parse(proteinController.text),
                              fats: double.parse(fatsController.text),
                              calories: double.parse(calsController.text),
-                             weight: double.parse(weightController.text),
+                            // weight: double.parse(weightController.text),
                              ingredients: ingredientsController.text,
                              directions: directionsController.text,
                              category: category,
+                             directionsAr: directionsArController.text,
+                             ingredientsAr: ingredientsArController.text,
+                             titleAr: titleArController.text
                              //uId:uIdController.text,
                              //totalTime: totalTime
                          );
@@ -96,16 +102,27 @@ class NewRecipeScreen extends StatelessWidget {
                       ),*/
                       defaultContainer(
                         context,
-
                         height: 65,
                         child: defaultTextFormField(
                           type: TextInputType.text,
                           controller: titleController,
-                          hintText: 'Title',
+                          hintText: 'Title in English',
                               //prefixIcon: Icon(IconBroken.Search),
-
                           ),
                         ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      defaultContainer(
+                        context,
+                        height: 65,
+                        child: defaultTextFormField(
+                          type: TextInputType.text,
+                          controller: titleArController,
+                          hintText: 'Title in Arabic',
+                          //prefixIcon: Icon(IconBroken.Search),
+                        ),
+                      ),
                       const SizedBox(
                         height: 10.0,
                       ),
@@ -117,9 +134,24 @@ class NewRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                                 controller: ingredientsController,
                                 type: TextInputType.multiline,
-                                hintText: 'Enter Ingredients ... ',
+                                hintText: 'Enter Ingredients in English ... ',
                                 maxLines: 30,
                               ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      defaultContainer(
+                        context,
+
+                        height: 150,
+                        // color: constantColor5,
+                        child: defaultTextFormField(
+                          controller: ingredientsArController,
+                          type: TextInputType.multiline,
+                          hintText: 'Enter Ingredients in  Arabic ... ',
+                          maxLines: 30,
+                        ),
                       ),
 
                       const SizedBox(
@@ -133,9 +165,24 @@ class NewRecipeScreen extends StatelessWidget {
                           child: defaultTextFormField(
                               controller: directionsController,
                               type: TextInputType.multiline,
-                              hintText: 'Enter Directions ... ',
+                              hintText: 'Enter Directions in English ... ',
                               maxLines: 30
                             ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      defaultContainer(
+                        context,
+
+                        height: 150,
+                        //color: constantColor5,
+                        child: defaultTextFormField(
+                            controller: directionsArController,
+                            type: TextInputType.multiline,
+                            hintText: 'Enter Directions in Arabic ... ',
+                            maxLines: 30
+                        ),
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -194,7 +241,7 @@ class NewRecipeScreen extends StatelessWidget {
                           hintText: 'Calories',
                         ),
                       ),
-                      const SizedBox(
+                    /*  const SizedBox(
                         height: 10.0,
                       ),
                       defaultContainer(
@@ -207,7 +254,7 @@ class NewRecipeScreen extends StatelessWidget {
                           controller: weightController,
                           hintText: 'Weight',
                         ),
-                      ),
+                      ),*/
                       const SizedBox(
                         height: 20.0,
                       ),

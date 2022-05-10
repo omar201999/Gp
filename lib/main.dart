@@ -61,6 +61,7 @@ async{
       // background fcm
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
       bool? isDark =  CacheHelper.getData(key: 'isDark');
+      print(isDark);
 
       //Widget widget;
       //uId =   CacheHelper.getData(key: 'uId');
@@ -107,6 +108,7 @@ class MyApp extends StatefulWidget
 
   @override
   State<MyApp> createState() => _MyAppState();
+  //Locale? _locale;
 
   static void setLocale(BuildContext context, Locale newLocale) async {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
@@ -119,13 +121,24 @@ class _MyAppState extends State<MyApp> {
   changeLanguage(Locale locale) {
     setState(() {
       _locale = locale;
+      if(locale == const Locale('en', 'US'))
+      {
+        lan = 'en' ;
+      }
+      else
+        {
+          lan = 'ar';
+        }
+
     });
   }
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
       setState(() {
-        this._locale = locale;
+        _locale = locale;
+
+        //lan=locale;
       });
     });
     super.didChangeDependencies();
@@ -136,7 +149,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()..changeAppMode(fromCache: widget.isDark)),
-        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()..getProducts()),
+        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()..getFeedBack()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(

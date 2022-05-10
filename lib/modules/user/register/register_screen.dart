@@ -6,6 +6,7 @@ import 'package:gp/modules/user/register/cubit/cubit.dart';
 import 'package:gp/modules/user/register/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 
@@ -37,7 +38,10 @@ class RegisterScreen extends StatelessWidget
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var userNameController = TextEditingController();
+  var phoneController = TextEditingController();
+  var smsController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+  var formKeyPhone = GlobalKey<FormState>();
   int? totalCalorie;
   int? totalProtein;
   int? totalFats;
@@ -52,17 +56,29 @@ class RegisterScreen extends StatelessWidget
       child: BlocConsumer<RegisterCubit,RegisterStates>(
           listener: (context,state)
           {
+            if(state is RegisterErrorState)
+            {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(
+                    backgroundColor:AppCubit.get(context).constantColor1 ,
+                    content: defaultBodyText(context, text: state.error),
+                    duration: const Duration(seconds: 3),
+                  )
+              );
+            }
             if (state is CreateUserSuccessState)
             {
-              CacheHelper.saveData(
+              navigateToAndReplacement(context, HomeLayout());
+            /*  CacheHelper.saveData(
                 key: 'uId',
                 value: state.uId,
               ).then((value) async {
                 uId = state.uId;
-                navigateToAndReplacement(context, HomeLayout());
+
               }).catchError((error){
                 print(error.toString());
-              });
+              });*/
             }
           },
           builder: (context,state)
@@ -219,24 +235,96 @@ class RegisterScreen extends StatelessWidget
                               onPreesed: ()
                               {
                                 if(formKey.currentState!.validate())
-                                {
-                                  RegisterCubit.get(context).userRegister(
-                                    name: userNameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    weight: weight,
-                                    height: height,
-                                    goalWeight: goalWeight,
-                                    gender: gender,
-                                    age: age,
-                                    weeklyGoal: (goalWeight-weight)/4.round(),
-                                    goal: goal,
-                                    active: active,
-                                    totalCalorie: totalCalorie,
-                                    totalProtein: totalProtein,
-                                    totalFats: (totalFats! / 8).round(),
-                                    totalCarbs:totalCarbs,
-                                  );
+                                 {
+                                  /* showDialog(
+                                    context: context,
+                                    builder: (context) => BlocProvider(
+                                      create: (BuildContext context) => RegisterCubit(),                                      child: BlocConsumer<RegisterCubit,RegisterStates>(
+                                        listener: (context,state){},
+                                        builder: (context,state){
+                                          return Dialog(
+                                            child: Form(
+                                              key: formKeyPhone,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children:
+                                                  [
+                                                    defaultTextFormField(
+
+                                                      //color: AppCubit.get(context).constantColor1,
+                                                        type: TextInputType.phone,
+                                                        label: 'Phone',
+                                                        border: OutlineInputBorder(),
+                                                        prefix: Icons.phone,
+                                                        controller: phoneController,
+                                                        //hintText: AppLocalizations.of(context).translate("validate_phone"),
+                                                        validate: (value){
+                                                          if(value!.isEmpty){
+                                                            return  AppLocalizations.of(context).translate("validate_phone_form");//'Phone must not be empty';
+                                                          }
+                                                        }
+                                                    ),
+                                                    SizedBox(height: 10,),
+                                                    defaultTextFormField(
+                                                      //color: AppCubit.get(context).constantColor1,
+                                                        type: TextInputType.phone,
+                                                        label: 'Sms message',
+                                                        border: OutlineInputBorder(),
+                                                        prefix: Icons.phone,
+                                                        controller: smsController,
+                                                        //hintText: AppLocalizations.of(context).translate("validate_phone"),
+                                                        validate: (value){
+                                                          if(value!.isEmpty){
+                                                            return  AppLocalizations.of(context).translate("validate_phone_form");//'Phone must not be empty';
+                                                          }
+                                                        }
+                                                    ),
+
+                                                    SizedBox(height: 10,),
+
+                                                    defaultButton(
+                                                      context,
+                                                      onPreesed: ()
+                                                      {
+
+                                                        RegisterCubit.get(context).verifyPhoneNumber(phoneNumber: phoneController.text);
+
+
+                                                      },
+                                                      text:  AppLocalizations.of(context).translate("Registration"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    barrierDismissible: true,
+                                  );*/
+                                   RegisterCubit.get(context).userRegister(
+                                     name: userNameController.text,
+                                     email: emailController.text,
+                                     password: passwordController.text,
+                                     weight: weight,
+                                     height: height,
+                                     goalWeight: goalWeight,
+                                     gender: gender,
+                                     age: age,
+                                     weeklyGoal: (goalWeight-weight)/4.round(),
+                                     goal: goal,
+                                     active: active,
+                                     totalCalorie: totalCalorie,
+                                     totalProtein: totalProtein,
+                                     totalFats: (totalFats! / 8).round(),
+                                     totalCarbs:totalCarbs,
+                                   );
+
+
                                 }
 
                               },

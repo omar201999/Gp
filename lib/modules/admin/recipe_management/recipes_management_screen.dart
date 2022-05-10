@@ -185,7 +185,7 @@ class RecipesManagementScreen extends StatelessWidget {
 Widget buildRecipe(RecipeModel model,context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditRecipeScreen(recipeModel: model, index: index,));
+    navigateTo(context, EditRecipeScreen(recipeModel: model,));
   },
   child: defaultContainer(
     context,

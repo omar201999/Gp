@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
@@ -26,7 +27,7 @@ class CartScreen extends StatelessWidget {
         builder: (context,state)
         {
           return ConditionalBuilder(
-            condition: HomeCubit.get(context).cart.isNotEmpty,
+            condition: HomeCubit.get(context).cart.isNotEmpty ,
             builder: (context)=>Scaffold(
               appBar: buildAppBar(
                 title: AppLocalizations.of(context).translate("your_cart_app_bar"),//'Your Cart',
@@ -75,7 +76,7 @@ class CartScreen extends StatelessWidget {
             ),
               fallback: (context) => Scaffold(
                 appBar: buildAppBar(
-                title: 'Your Cart',
+                title: AppLocalizations.of(context).translate("your_cart_app_bar"),
                 icon: IconBroken.Arrow___Left_2,
 
                 onPressed: ()
@@ -119,16 +120,21 @@ class CartScreen extends StatelessWidget {
                       width: 90,
                     ),
                     SizedBox(width: 20),
-                    Expanded(
+                    if(lan=='en')
+                      Expanded(
                       //fontSize: 14,
                       child: defaultBodyText(context, text: '${model.name}',maxLines: 2,overflow: TextOverflow.ellipsis,fontSize: 14),
                     ),
+                    if(lan=='ar')
+                      Expanded(
+                        //fontSize: 14,
+                        child: defaultBodyText(context, text: '${model.nameAr}',maxLines: 2,overflow: TextOverflow.ellipsis,fontSize: 14),
+                      ),
                     IconButton(
                       onPressed: () {
-
-                        HomeCubit.get(context).deleteCartItem(HomeCubit.get(context).productsIDs[index],);
+                        HomeCubit.get(context).deleteCartItem(HomeCubit.get(context).cartId[index],);
                         HomeCubit.get(context).updateProductForOneBuy(
-                            HomeCubit.get(context).productsIDs[index],
+                            HomeCubit.get(context).cartId[index],
                             name: model.name,
                             currentPrice: model.currentPrice,
                             image: model.image,
@@ -138,7 +144,9 @@ class CartScreen extends StatelessWidget {
                             selectedQuantity: model.selectedQuantity,
                             description: model.description,
                             //uId: model.uId,
-                            status: model.status
+                            status: model.status,
+                            nameAr: model.nameAr,
+                            descriptionAr: model.descriptionAr,
                         );
                       },
                       icon: Icon (Icons.delete_forever),
@@ -149,7 +157,7 @@ class CartScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     //AppLocalizations.of(context).translate("  "),//
-                    defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")} : ${model.quantity}'),
+                    defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")}${model.selectedQuantity}'),
                     /*IconButton(
                       onPressed: () {
                         HomeCubit.get(context).minus(index);
@@ -182,7 +190,7 @@ class CartScreen extends StatelessWidget {
                       icon: Icon (Icons.add),
                     ),*/
                     Spacer(),
-                    defaultBodyText(context, text: '${model.currentPrice! * (model.selectedQuantity)!.round()}'),
+                    defaultBodyText(context, text: (model.currentPrice! * (model.selectedQuantity)!.round()).toStringAsFixed(2)),
                   ],
                 ),
               ],

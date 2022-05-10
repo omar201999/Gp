@@ -1,13 +1,16 @@
 class ProductModel{
   String? name;
+  String? nameAr;
   String? image;
   String? description;
+  String? descriptionAr;
   double? currentPrice;
   double? oldPrice;
   double? discount;
   int? quantity;
   int? selectedQuantity;
   String? status;
+
   //String? uId;
 
   ProductModel({
@@ -20,6 +23,9 @@ class ProductModel{
     this.quantity,
     this.selectedQuantity,
     this.status,
+    this.nameAr,
+    this.descriptionAr
+
     //this.uId,
   });
 
@@ -34,6 +40,10 @@ class ProductModel{
     status = json['status'];
     quantity = json['quantity'];
     selectedQuantity = json['selectedQuantity'];
+    nameAr = json['nameAr'];
+    descriptionAr = json['descriptionAr'];
+
+
 
   }
 
@@ -50,6 +60,9 @@ class ProductModel{
       'status': status,
       'quantity': quantity,
       'selectedQuantity': selectedQuantity,
+      'nameAr':nameAr,
+      'descriptionAr':descriptionAr,
+
     };
   }
 

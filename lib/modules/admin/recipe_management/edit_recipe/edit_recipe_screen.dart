@@ -11,19 +11,20 @@ class EditRecipeScreen extends StatelessWidget {
   var titleController = TextEditingController();
   var ingredientsController = TextEditingController();
   var directionsController = TextEditingController();
+  var titleArController = TextEditingController();
+  var ingredientsArController = TextEditingController();
+  var directionsArController = TextEditingController();
 
   //var categoryController = TextEditingController();
   var carbsController = TextEditingController();
   var fatsController = TextEditingController();
   var proteinController = TextEditingController();
   var calsController = TextEditingController();
-  var weightController = TextEditingController();
+  //var weightController = TextEditingController();
 
   RecipeModel recipeModel;
-  int index;
   EditRecipeScreen({
     required this.recipeModel,
-    required this.index
   });
 
 
@@ -53,7 +54,11 @@ class EditRecipeScreen extends StatelessWidget {
           fatsController.text = '${recipeModel.fats}';
           proteinController.text = '${recipeModel.protein}';
           calsController.text = '${recipeModel.calories}';
-          weightController.text = '${recipeModel.weight}';
+          //weightController.text = '${recipeModel.weight}';
+          //ssstitleArController.text = recipeModel.titleAr!;
+          //ingredientsArController.text = recipeModel.ingredientsAr!;
+          //directionsArController.text = recipeModel.directionsAr!;
+
 
           return Scaffold(
             //backgroundColor: Colors.grey[200],
@@ -96,7 +101,7 @@ class EditRecipeScreen extends StatelessWidget {
                               context,
                               //color: Colors.white,
                               function: () {
-                                 AdminCubit.get(context).deleteRecipe(AdminCubit.get(context).recipesIds[index]);
+                                 AdminCubit.get(context).deleteRecipe(recipeModel.uId);
                                  Navigator.pop(context);
                               },
                               text : 'Delete',
@@ -142,7 +147,23 @@ class EditRecipeScreen extends StatelessWidget {
                             controller: titleController,
                             prefix: IconBroken.Paper,
                             border: InputBorder.none,
-                            label: 'Title',
+                            label: 'Title in English',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+
+                          height: 65,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            type: TextInputType.text,
+                            controller: titleArController,
+                            prefix: IconBroken.Paper,
+                            border: InputBorder.none,
+                            label: 'Title in Arabic',
                           ),
                         ),
                         const SizedBox(
@@ -159,9 +180,27 @@ class EditRecipeScreen extends StatelessWidget {
                                 type: TextInputType.multiline,
                                 maxLines: 30,
                                 border: InputBorder.none,
-                                label: 'Ingredients',
+                                label: 'Ingredients in English',
 
                               ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+
+                        defaultContainer(
+                          context,
+
+                          height: 150,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: ingredientsArController,
+                            type: TextInputType.multiline,
+                            maxLines: 30,
+                            border: InputBorder.none,
+                            label: 'Ingredients in Arabic',
+
+                          ),
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -176,8 +215,24 @@ class EditRecipeScreen extends StatelessWidget {
                                 type: TextInputType.multiline,
                                 maxLines: 30,
                                 border: InputBorder.none,
-                                label: 'Directions',
+                                label: 'Directions in English',
                               ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+
+                          height: 150,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: directionsArController,
+                            type: TextInputType.multiline,
+                            maxLines: 30,
+                            border: InputBorder.none,
+                            label: 'Directions in Arabic',
+                          ),
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -239,7 +294,7 @@ class EditRecipeScreen extends StatelessWidget {
                             label: 'Calories',
                           ),
                         ),
-                        const SizedBox(
+                        /*const SizedBox(
                           height: 10.0,
                         ),
                         defaultContainer(
@@ -253,21 +308,22 @@ class EditRecipeScreen extends StatelessWidget {
                             border: InputBorder.none,
                             label: 'Weight',
                           ),
-                        ),
+                        ),*/
                         const SizedBox(
                           height: 10.0,
                         ),
                         defaultButton(
                           context,
                           onPreesed: () {
-                            print(recipeImage);
+                            print(recipeModel.numOfRates);
+                            print(recipeModel.averageRating);
+                            print(recipeModel.totalRating);
                             //print(recipeModel.uId);
 
                             if(recipeImage == null)
                             {
-                              if(recipeModel.category == 'breakfast') {
-                                AdminCubit.get(context).updateRecipe(
-                                  AdminCubit.get(context).breakfastRecID[index],
+                              AdminCubit.get(context).updateRecipe(
+                                  recipeModel.uId,
                                   title: titleController.text,
                                   ingredients: ingredientsController.text,
                                   directions: directionsController.text,
@@ -275,35 +331,21 @@ class EditRecipeScreen extends StatelessWidget {
                                   protein: double.parse(proteinController.text),
                                   fats: double.parse(fatsController.text),
                                   calories: double.parse(calsController.text),
-                                  weight: double.parse(weightController.text),
-                                  //uId: recipeModel.uId,
+                                  //weight: double.parse(weightController.text),
                                   category: recipeModel.category,
                                   newRecipeImage:recipeModel.image,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!
-                                );
-                              } else if(recipeModel.category == 'lunch') {
-                                AdminCubit.get(context).updateRecipe(
-                                  AdminCubit.get(context).lunchRecID[index],
-                                  title: titleController.text,
-                                  ingredients: ingredientsController.text,
-                                  directions: directionsController.text,
-                                  carbs: double.parse(carbsController.text),
-                                  protein: double.parse(proteinController.text),
-                                  fats: double.parse(fatsController.text),
-                                  calories: double.parse(calsController.text),
-                                  weight: double.parse(weightController.text),
-                                  //uId: recipeModel.uId,
-                                  category: recipeModel.category,
-                                  newRecipeImage:recipeModel.image,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!
-                                );
-                              } else {
-                                  AdminCubit.get(context).updateRecipe(
-                                    AdminCubit.get(context).dinnerRecID[index],
+                                  numOfRates: recipeModel.numOfRates!,
+                                  averageRating: recipeModel.averageRating!,
+                                  totalRating: recipeModel.totalRating!,
+                                  uId: recipeModel.uId,
+                                  directionsAr: directionsArController.text,
+                                  titleAr: titleArController.text,
+                                  ingredientsAr: ingredientsArController.text,
+                              );
+                            } else
+                              {
+                                AdminCubit.get(context).uploadNewImage(
+                                    recipeModel.uId,
                                     title: titleController.text,
                                     ingredients: ingredientsController.text,
                                     directions: directionsController.text,
@@ -311,72 +353,17 @@ class EditRecipeScreen extends StatelessWidget {
                                     protein: double.parse(proteinController.text),
                                     fats: double.parse(fatsController.text),
                                     calories: double.parse(calsController.text),
-                                    weight: double.parse(weightController.text),
-                                    //uId: recipeModel.uId,
+                                    //weight: double.parse(weightController.text),
                                     category: recipeModel.category,
-                                    newRecipeImage:recipeModel.image,
-                                      numOfRates: recipeModel.numOfRates!,
-                                      averageRating: recipeModel.averageRating!,
-                                      totalRating: recipeModel.totalRating!
-
-                                  );
-                                }
-
-                            } else
-                            {
-                              if(recipeModel.category == 'breakfast') {
-                                AdminCubit.get(context).uploadNewImage(
-                                  AdminCubit.get(context).lunchRecID[index],
-                                  title: titleController.text,
-                                  ingredients: ingredientsController.text,
-                                  directions: directionsController.text,
-                                  carbs: double.parse(carbsController.text),
-                                  protein: double.parse(proteinController.text),
-                                  fats: double.parse(fatsController.text),
-                                  calories: double.parse(calsController.text),
-                                  weight: double.parse(weightController.text),
-                                  //uId: recipeModel.uId,
-                                  category: recipeModel.category,
                                     numOfRates: recipeModel.numOfRates!,
                                     averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!
-                                );
-                              } else if(recipeModel.category == 'lunch') {
-                                AdminCubit.get(context).uploadNewImage(
-                                  AdminCubit.get(context).dinnerRecID[index],
-                                  title: titleController.text,
-                                  ingredients: ingredientsController.text,
-                                  directions: directionsController.text,
-                                  carbs: double.parse(carbsController.text),
-                                  protein: double.parse(proteinController.text),
-                                  fats: double.parse(fatsController.text),
-                                  calories: double.parse(calsController.text),
-                                  weight: double.parse(weightController.text),
-                                  //uId: recipeModel.uId,
-                                  category: recipeModel.category,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!
-                                );
-                              } else {
-                                AdminCubit.get(context).uploadNewImage(
-                                  AdminCubit.get(context).recipesIds[index],
-                                  title: titleController.text,
-                                  ingredients: ingredientsController.text,
-                                  directions: directionsController.text,
-                                  carbs: double.parse(carbsController.text),
-                                  protein: double.parse(proteinController.text),
-                                  fats: double.parse(fatsController.text),
-                                  calories: double.parse(calsController.text),
-                                  weight: double.parse(weightController.text),
-                                  //uId: recipeModel.uId,
-                                  category: recipeModel.category,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!
+                                    totalRating: recipeModel.totalRating!,
+                                    ingredientsAr:  ingredientsArController.text,
+                                    directionsAr: directionsArController.text,
+                                    uId: recipeModel.uId,
+                                    titleAr:  titleArController.text,
                                 );
                               }
-                            }
 
                           },
                           text: 'UPDATE',

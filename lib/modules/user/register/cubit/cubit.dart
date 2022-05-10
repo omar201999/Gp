@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -227,6 +228,40 @@ class RegisterCubit extends Cubit<RegisterStates>
       emit(RegisterUploadProfileImageErrorState());
     });
   }
+
+  int creatOrderNumber()
+  {
+    return Random().nextInt(1000);
+  }
+  Future<void> verifyPhoneNumber({
+  required String phoneNumber,
+  //required String smsCode,
+
+})
+  async{
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  await auth.verifyPhoneNumber(
+  phoneNumber: '+20 $phoneNumber',
+    timeout: const Duration(seconds: 60),
+    codeSent: (String verificationId, int? resendToken) async {
+  // Update the UI - wait for the user to enter the SMS code
+  String smsCode = 'xxxx';
+
+  // Create a PhoneAuthCredential with the code
+  PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+
+  // Sign the user in (or link) with the credential
+  await auth.signInWithCredential(credential);
+}, codeAutoRetrievalTimeout: (String verificationId) {  }, verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+    print('success');
+  }, verificationFailed: (FirebaseAuthException error) {
+    print(error.toString());
+
+  },
+);
+  }
+
 
 
 }

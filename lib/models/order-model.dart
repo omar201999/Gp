@@ -1,7 +1,9 @@
 
 class OrderModel{
-  //String? orderId;
+  String? orderId;
+  String? orderNumber;
   String? userName;
+  String? userEmail;
   double? totalPrice;
   double? shipping;
   double? total;
@@ -9,6 +11,7 @@ class OrderModel{
   String? address;
   String? dateTime;
   String? productName;
+  String? productNameAr;
   int? quantity;
   String? status;
 
@@ -17,7 +20,8 @@ class OrderModel{
 
 
   OrderModel({
-    //this.orderId,
+    this.orderId,
+    this.orderNumber,
     this.userName,
     this.totalPrice,
     this.shipping,
@@ -28,6 +32,8 @@ class OrderModel{
     this.productName,
     this.quantity,
     this.status,
+    this.userEmail,
+    this.productNameAr,
 
 
   });
@@ -35,8 +41,9 @@ class OrderModel{
 
 
   OrderModel.fromJson(Map<String, dynamic>? json) {
-    //orderId = json!['orderId'];
-    userName = json!['userName'];
+    orderId = json!['orderId'];
+    orderNumber = json['orderNumber'];
+    userName = json['userName'];
     totalPrice = json['totalPrice'];
     shipping = json['shipping'];
     total = json['total'];
@@ -46,6 +53,8 @@ class OrderModel{
     productName=json['productName'];
     quantity = json['quantity'];
     status = json['status'];
+    userEmail = json['userEmail'];
+    productNameAr = json['productNameAr'];
 
 
   }
@@ -53,7 +62,8 @@ class OrderModel{
   Map<String, dynamic> toMap()
   {
     return {
-      //'orderId':orderId,
+      'orderId':orderId,
+      'orderNumber':orderNumber,
       'userName': userName,
       'totalPrice': totalPrice,
       'shipping': shipping,
@@ -64,9 +74,8 @@ class OrderModel{
       'productName': productName,
       'quantity': quantity,
       'status': status,
-
-
-
+      'userEmail': userEmail,
+      'productNameAr': productNameAr,
     };
   }
 

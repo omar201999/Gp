@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/main.dart';
 import 'package:gp/shared/cubit/cubit.dart';
+import 'package:gp/shared/localization/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> signOut(context)
@@ -24,6 +25,7 @@ async{
 String? uId = '';
 ThemeMode appMode = ThemeMode.light;
 
+String? lan = 'en';
 const String LAGUAGE_CODE = 'languageCode';
 
 //languages code
@@ -34,12 +36,14 @@ const String arabic = 'ar';
 Future<Locale> setLocale(String languageCode) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(LAGUAGE_CODE, languageCode);
+  //lan = languageCode;
   return _locale(languageCode);
 }
 
 Future<Locale> getLocale() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String languageCode = _prefs.getString(LAGUAGE_CODE) ?? "en";
+  String languageCode = _prefs.getString(LAGUAGE_CODE)! ;
+  lan = languageCode;
   return _locale(languageCode);
 }
 

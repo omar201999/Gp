@@ -9,7 +9,9 @@ import 'package:gp/shared/styles/icon_broken.dart';
 class NewProductSrceen extends StatelessWidget {
 
   var nameController = TextEditingController();
+  var nameArController = TextEditingController();
   var descriptionController = TextEditingController();
+  var descriptionArController = TextEditingController();
   //var currentPriceController = TextEditingController();
   var oldPriceController = TextEditingController();
   var discountController = TextEditingController();
@@ -55,6 +57,8 @@ class NewProductSrceen extends StatelessWidget {
                       quantity: int.parse(quantityController.text),
                       description: descriptionController.text,
                       status: 'inStock',
+                     descriptionAr: descriptionArController.text,
+                     nameAr: nameArController.text,
                       //uId: uIdController.text,
                       //totalTime: totalTime
                     );
@@ -97,7 +101,20 @@ class NewProductSrceen extends StatelessWidget {
                       child: defaultTextFormField(
                         type: TextInputType.text,
                         controller: nameController,
-                        hintText: 'Name',
+                        hintText: 'Name in English',
+                        //prefixIcon: Icon(IconBroken.Paper),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    defaultContainer(
+                      context,
+                      height: 65,
+                      child: defaultTextFormField(
+                        type: TextInputType.text,
+                        controller: nameArController,
+                        hintText: 'Name in Arabic',
                         //prefixIcon: Icon(IconBroken.Paper),
                       ),
                     ),
@@ -112,7 +129,22 @@ class NewProductSrceen extends StatelessWidget {
                         controller: descriptionController,
                         type: TextInputType.multiline,
                         maxLines: 30,
-                        hintText: 'Enter Description ... ',
+                        hintText: 'Enter Description in English ... ',
+
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    defaultContainer(
+                      context,
+                      height: 150,
+                      //color: constantColor5,
+                      child: defaultTextFormField(
+                        controller: descriptionArController,
+                        type: TextInputType.multiline,
+                        maxLines: 30,
+                        hintText: 'Enter Description in Arabic... ',
 
                       ),
                     ),

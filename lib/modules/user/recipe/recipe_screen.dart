@@ -47,9 +47,6 @@ class RecipeScreen extends StatelessWidget {
                     ),
                   ),
 */
-               const SizedBox(
-                 height: 20.0,
-               ),
                Column(
                  children: [
                    Row(

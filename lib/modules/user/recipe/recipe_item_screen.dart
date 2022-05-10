@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
@@ -46,7 +47,7 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                   [
                     Container(
                       width: double.infinity,
-                      height: 350,
+                      height: 400,
                       decoration:  BoxDecoration(
                         image: DecorationImage(
                           image:NetworkImage('${widget.recipeModel.image}'),
@@ -56,8 +57,8 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
-                          top: 30,
-                         start: 5,
+                          top: 40,
+                         start: 8,
                       ),
                       child: Container(
                         height: 40,
@@ -89,11 +90,18 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              if(lan =='en')
                               defaultHeadLineText(
                                   context,
-                                  text: '${widget.recipeModel.title}',
+                                  text:  '${widget.recipeModel.title}',
                                   maxLines: 2
                               ),
+                              if(lan =='ar')
+                                defaultHeadLineText(
+                                    context,
+                                    text:  '${widget.recipeModel.titleAr}',
+                                    maxLines: 2
+                                ),
                             ],
                           ),
                         ),
@@ -157,7 +165,6 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                                         {
                                           HomeCubit.get(context).updateRecipe(
                                             widget.recipeModel.uId!,
-                                            uId: widget.recipeModel.uId!,
                                             image: widget.recipeModel.image!,
                                             calories: widget.recipeModel.calories!,
                                             carbs: widget.recipeModel.carbs!,
@@ -167,10 +174,16 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                                             ingredients: widget.recipeModel.ingredients!,
                                             protein: widget.recipeModel.protein!,
                                             title: widget.recipeModel.title!,
-                                            weight: widget.recipeModel.weight!,
+                                            //weight: widget.recipeModel.weight!,
                                             averageRating: (widget.recipeModel.totalRating! + rating!) / (widget.recipeModel.numOfRates! + 1)  ,
                                             numOfRates: widget.recipeModel.numOfRates! + 1 ,
                                             totalRating:widget.recipeModel.totalRating! + rating!,
+                                            uId: widget.recipeModel.uId!,
+                                            directionsAr: widget.recipeModel.directionsAr!,
+                                            ingredientsAr:widget.recipeModel.ingredientsAr!,
+                                            titleAr: widget.recipeModel.titleAr!,
+
+
                                           );
                                         },
                                         text: 'Send'
@@ -250,22 +263,15 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Ingredients")),//'Ingredients'),
-                                const SizedBox(height: 5,),
-                                ListView.separated(
-                                    padding: const EdgeInsetsDirectional.only(
-                                        top: 5,
-                                        start: 5
-                                    ),
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) =>
-                                        defaultBodyText(context,
-                                            text: '${widget.recipeModel.ingredients}'
-                                        ),
-                                    separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 5,),
-                                    itemCount: 1
+                                const SizedBox(height: 5),
+                                if(lan=='en')
+                                defaultBodyText(context,
+                                    text: '${widget.recipeModel.ingredients}'
                                 ),
+                                if(lan=='ar')
+                                  defaultBodyText(context,
+                                      text: '${widget.recipeModel.ingredientsAr}'
+                                  ),
                               ],
                             ),
                           )
@@ -285,21 +291,14 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                               children: [
                                 defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Directions")),//'Directions'),
                                 const SizedBox(height: 5,),
-                                ListView.separated(
-                                    padding: const EdgeInsetsDirectional.only(
-                                        top: 5,
-                                        start: 5
-                                    ),
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) =>
-                                        defaultBodyText(context,
-                                          text: '${widget.recipeModel.directions}',
-                                        ),
-                                    separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 5,),
-                                    itemCount: 1
+                                if(lan=='en')
+                                defaultBodyText(context,
+                                  text: '${widget.recipeModel.directions}',
                                 ),
+                                if(lan=='ar')
+                                  defaultBodyText(context,
+                                    text: '${widget.recipeModel.directionsAr}',
+                                  ),
                               ],
                             ),
                           )

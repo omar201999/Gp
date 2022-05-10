@@ -8,6 +8,8 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/result_of_detection/photo_details.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -197,10 +199,54 @@ class CameraScreenState extends State<CameraScreen>
                   ),
                 ),
               ),);*/
-              var sheetController = showModalBottomSheet(
-                  context: context,
-                  builder: (context) => CameraImagePicker());
-              sheetController.then((value) {});
+              showDialog(
+                context: context,
+                builder: (context) =>  Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Card(
+                      color: AppCubit.get(context).constantColor1,
+                      child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children:
+                            [
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition1_to_upload")),//'1.Make Sure you take photo for one meal'),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition2_to_upload")),//'2.Focus for one meal to best dedication'),
+                                  ],
+                                ),
+                              ),
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundColor: defaultColor,
+                                child: IconButton(onPressed: ()
+                                {
+                                  chooseImage();
+                                },
+                                  icon: const Icon(
+                                    IconBroken.Camera,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+
+                            ],
+                          ),
+                        ),
+                    ),
+                  ),
+                ),
+
+                barrierDismissible: true,
+              );
 
 
 
@@ -335,44 +381,46 @@ class  CameraImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return defaultContainer(
-    context,
-    radius: 0,
-    child: Padding(
-    padding: const EdgeInsets.all(30.0),
-    child: Row(
-    mainAxisSize: MainAxisSize.min,
-    children:
-    [
-    Expanded(
-    child: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition1_to_upload")),//'1.Make Sure you take photo for one meal'),
-    SizedBox(
-    height: 5,
-    ),
-    defaultBodyText(context, text: AppLocalizations.of(context).translate("condition2_to_upload")),//'2.Focus for one meal to best dedication'),
-    ],
-    ),
-    ),
-    CircleAvatar(
-    radius: 25,
-    backgroundColor: defaultColor,
-    child: IconButton(onPressed: ()
-{
+    return  defaultContainer(
+      context,
+      radius: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children:
+          [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  defaultBodyText(context, text: AppLocalizations.of(context).translate("condition1_to_upload")),//'1.Make Sure you take photo for one meal'),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  defaultBodyText(context, text: AppLocalizations.of(context).translate("condition2_to_upload")),//'2.Focus for one meal to best dedication'),
+                ],
+              ),
+            ),
+            CircleAvatar(
+              radius: 25,
+              backgroundColor: defaultColor,
+              child: IconButton(onPressed: ()
+              {
+                print(lan);
+                CameraScreenState().chooseImage();
+              },
+                icon: const Icon(
+                IconBroken.Camera,
+                color: Colors.white,
+              ),
+              ),
+            )
 
-}, icon: const Icon(
-IconBroken.Camera,
-color: Colors.white,
-),
-),
-)
-
-],
-),
-),
-);
+          ],
+        ),
+      ),
+    );
   }
 }
 

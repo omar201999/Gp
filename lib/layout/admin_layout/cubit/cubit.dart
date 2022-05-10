@@ -140,12 +140,15 @@ class AdminCubit extends Cubit<AdminStates>
     required double fats,
     required double carbs,
     required double protein,
-    required double weight,
+    //required double weight,
     required num totalRating,
     required num averageRating,
     required num numOfRates,
-    //required String? uId,
     required String? category,
+    required String? titleAr,
+    required String? ingredientsAr,
+    required String? directionsAr,
+    required String? uId,
 })
   {
     firebase_storage.FirebaseStorage.instance
@@ -164,13 +167,17 @@ class AdminCubit extends Cubit<AdminStates>
             fats: fats,
             carbs: carbs,
             protein: protein,
-            weight: weight,
+            //weight: weight,
             //uId: uId,
             category: category,
             newRecipeImage: value,
           totalRating: totalRating,
           averageRating: averageRating,
-          numOfRates: numOfRates
+          numOfRates: numOfRates,
+          uId: uId,
+          directionsAr:directionsAr ,
+            ingredientsAr:ingredientsAr ,
+          titleAr:titleAr
         );
       }).catchError((error)
       {
@@ -192,12 +199,15 @@ class AdminCubit extends Cubit<AdminStates>
     required double fats,
     required double carbs,
     required double protein,
-    required double weight,
-    //required String? uId,
+    //required double weight,
     required num numOfRates,
     required num averageRating,
     required num totalRating,
     required String? category,
+    required String? titleAr,
+    required String? ingredientsAr,
+    required String? directionsAr,
+    required String? uId,
     String? newRecipeImage,
 })
   {
@@ -210,12 +220,16 @@ class AdminCubit extends Cubit<AdminStates>
       fats: fats,
       carbs: carbs,
       protein: protein,
-      weight: weight,
+     // weight: weight,
       //uId: uId,
       category: category,
       numOfRates:numOfRates,
       averageRating:averageRating ,
       totalRating: totalRating,
+      titleAr:titleAr ,
+      ingredientsAr:ingredientsAr ,
+      directionsAr: directionsAr,
+      uId: uId
     );
 
     FirebaseFirestore.instance
@@ -239,12 +253,13 @@ class AdminCubit extends Cubit<AdminStates>
     required double protein,
     required double fats,
     required double calories,
-    required double weight,
+   // required double weight,
     required String ingredients,
     required String directions,
     required String category,
-     //required String? uId,
-    //required int totalTime,
+    required String titleAr,
+    required String ingredientsAr,
+    required String directionsAr,
   }){
     emit(CreateRecipeLoadingState());
 
@@ -256,7 +271,6 @@ class AdminCubit extends Cubit<AdminStates>
       value.ref.getDownloadURL().then((value)
       {
        //print(value);
-
         createRecipe(
             title: title,
             recipeImage: value,
@@ -264,15 +278,15 @@ class AdminCubit extends Cubit<AdminStates>
             protein: protein,
             fats: fats,
             calories: calories,
-            weight: weight,
+            //weight: weight,
             ingredients: ingredients,
             directions: directions,
             category: category,
-            //uId: uId,
-          //totalTime: totalTime
+            titleAr: titleAr,
+            ingredientsAr:ingredientsAr ,
+            directionsAr: directionsAr,
+
         );
-
-
       }).catchError((error)
       {
         emit(CreateRecipeErrorState());
@@ -283,21 +297,25 @@ class AdminCubit extends Cubit<AdminStates>
     });
 
   }
-  void createRecipe({
+  Future<void> createRecipe({
     required String title,
     String? recipeImage,
     required double carbs,
     required double protein,
     required double fats,
     required double calories,
-    required double weight,
+    //required double weight,
     required String ingredients,
     required String directions,
     required String category,
-    //required String? uId,
+    required String directionsAr,
+    required String ingredientsAr,
+    required String titleAr,
     //required int totalTime,
-  }){
+  })async
+  {
     emit(CreateRecipeLoadingState());
+    DocumentReference? recipe;
     RecipeModel model = RecipeModel(
         title: title.toLowerCase(),
         image: recipeImage,
@@ -305,53 +323,52 @@ class AdminCubit extends Cubit<AdminStates>
         protein: protein,
         fats: fats,
         calories: calories,
-        weight: weight,
+       // weight: weight,
         ingredients: ingredients,
         directions: directions,
-        //uId:uId,
-        category: category
         //uId:uId,
         category: category,
         averageRating: 0 ,
         numOfRates: 0 ,
         totalRating:0 ,
+      directionsAr: directionsAr,
+      ingredientsAr:ingredientsAr ,
+      titleAr: titleAr
     );
-
-    FirebaseFirestore.instance
+    recipe = await FirebaseFirestore.instance
         .collection('recipes')
-        .add(model.toMap())
-        .then((value){
-
-          //print(uId1.toString());
+        .add(model.toMap());
+    FirebaseFirestore.instance.collection('recipes').doc(recipe.id).update({
+      'uId':recipe.id,
+      'title':model.title,
+      'image':model.image,
+      'carbs':model.carbs,
+      'protein':model.protein,
+      'fats':model.fats,
+      'calories':model.calories,
+      //'weight':model.weight,
+      'ingredients':model.ingredients,
+      'directions':model.directions,
+      'category':model.category,
+      'totalRating' :model.totalRating,
+      'numOfRates' :model.numOfRates,
+      'averageRating' :model.averageRating,
+      'titleAr' :model.titleAr,
+      'directionsAr' :model.directionsAr,
+      'ingredientsAr' :model.ingredientsAr,
+    }).then((value){
       emit(CreateRecipeSuccessState());
     }).catchError((error)
     {
       emit(CreateRecipeErrorState());
     });
 
+
   }
 
   List<RecipeModel> breakfastRecipe = [];
-  List<String> breakfastRecID = [];
   void getBreakfastRecipe()
   {
-    //emit(GetAllBreakFastRecipeLoadingState());
-    /*FirebaseFirestore.instance
-        .collection('recipes')
-        .where('category',isEqualTo: 'breakfast')
-        .get()
-        .then((value) {
-      value.docs.forEach((element)
-      {
-        breakfastRecipe.add(RecipeModel.fromJson(element.data()));
-      });
-
-  emit(GetAllBreakFastRecipeSuccessState());
-  }).catchError((error) {
-  print(error.toString());
-  emit(GetAllBreakFastRecipeErrorState(error.toString()));
-  });*/
-
     emit(GetAllBreakFastRecipeLoadingState());
     FirebaseFirestore.instance
         .collection('recipes')
@@ -359,36 +376,29 @@ class AdminCubit extends Cubit<AdminStates>
         .snapshots()
         .listen((event) {
       breakfastRecipe = [];
-      breakfastRecID = [];
       event.docs.forEach((element) {
-        breakfastRecID.add(element.id);
         breakfastRecipe.add(RecipeModel.fromJson(element.data()));
       });
       emit(GetAllBreakFastRecipeSuccessState());
     });
   }
   List<RecipeModel> lunchRecipe = [];
-  List<String> lunchRecID = [];
   void getLunchRecipe()
   {
     emit(GetAllLunchRecipeLoadingState());
     lunchRecipe = [];
-    lunchRecID = [];
     FirebaseFirestore.instance
         .collection('recipes')
         .where('category',isEqualTo: 'lunch').snapshots().listen((event) {
       lunchRecipe = [];
-      lunchRecID = [];
       event.docs.forEach((element) {
         lunchRecipe.add(RecipeModel.fromJson(element.data()));
-        lunchRecID.add(element.id);
       });
 
       emit(GetAllLunchRecipeSuccessState());
     });
   }
   List<RecipeModel> dinnerRecipe = [];
-  List<String> dinnerRecID = [];
   void getDinnerRecipe()
   {
     emit(GetAllDinnerRecipeLoadingState());
@@ -398,13 +408,11 @@ class AdminCubit extends Cubit<AdminStates>
       dinnerRecipe = [];
       event.docs.forEach((element) {
         dinnerRecipe.add(RecipeModel.fromJson(element.data()));
-        dinnerRecID.add(element.id);
       });
       emit(GetAllDinnerRecipeSuccessState());
     });
   }
   List<RecipeModel> allRecipe = [];
-  List<String> recipesIds = [];
   void getAllRecipe()
   {
     FirebaseFirestore.instance
@@ -414,8 +422,6 @@ class AdminCubit extends Cubit<AdminStates>
       allRecipe = [];
       event.docs.forEach((element) {
         allRecipe.add(RecipeModel.fromJson(element.data()));
-        recipesIds.add(element.id);
-
       });
       emit(GetAllRecipeSuccessState());
     });
@@ -495,7 +501,9 @@ class AdminCubit extends Cubit<AdminStates>
     required double currentPrice,
     required double oldPrice,
     required double discount,
-    required String? status
+    required String? status ,
+    required String? descriptionAr ,
+    required String? nameAr ,
     //required String? uId,
   })
   {
@@ -515,6 +523,8 @@ class AdminCubit extends Cubit<AdminStates>
           discount: discount,
           quantity: quantity,
           status: status,
+          descriptionAr:descriptionAr ,
+          nameAr: nameAr,
           //uId: uId,
           newProductImage: value,
         );
@@ -538,6 +548,8 @@ class AdminCubit extends Cubit<AdminStates>
     required double oldPrice,
     required double discount,
     required String? status,
+    required String? descriptionAr,
+    required String? nameAr,
     String? newProductImage,
     //required String? uId,
   })
@@ -551,6 +563,8 @@ class AdminCubit extends Cubit<AdminStates>
       discount: discount,
       quantity: quantity,
       status: status,
+      descriptionAr:descriptionAr ,
+      nameAr:nameAr ,
 
       //uId: uId,
 
@@ -582,6 +596,8 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
+    required String nameAr,
+    required String descriptionAr,
     String? status,
     //required String uId,
     //required int totalTime,
@@ -606,7 +622,9 @@ class AdminCubit extends Cubit<AdminStates>
           quantity: quantity,
           description: description,
           //uId:uId,
-          status: status
+          status: status,
+            nameAr:nameAr ,
+            descriptionAr: descriptionAr
         );
 
 
@@ -630,6 +648,8 @@ class AdminCubit extends Cubit<AdminStates>
     required double discount,
     required int quantity,
     required String description,
+    required String descriptionAr,
+    required String nameAr,
     //required String uId,
     String? status,
 
@@ -644,7 +664,9 @@ class AdminCubit extends Cubit<AdminStates>
         quantity: quantity,
         description: description,
         //uId:uId,
-        status: status
+        status: status,
+      descriptionAr:descriptionAr ,
+      nameAr: nameAr,
 
     );
 
@@ -675,9 +697,10 @@ class AdminCubit extends Cubit<AdminStates>
       products = [];
       productsIDs = [];
       event.docs.forEach((element) {
-        products.add(ProductModel.fromJson(element.data()));
         productsIDs.add(element.id);
+        products.add(ProductModel.fromJson(element.data()));
       });
+
       emit(GetProductsSuccessState());
     });
   }
@@ -702,12 +725,17 @@ class AdminCubit extends Cubit<AdminStates>
 
 
   List<ProductModel> searchProduct = [];
-  void getSearchProduct(String value)
+  void getSearchProduct(String value,lan)
   {
-    searchProduct = [];
-    searchProduct = products.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
-    emit(SearchProductSuccessState());
-
+    if(lan == 'en') {
+      searchProduct = [];
+      searchProduct = products.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+      emit(SearchProductSuccessState());
+    }else{
+      searchProduct = [];
+      searchProduct = products.where((element) => element.nameAr!.contains(value)).toList();
+      emit(SearchProductSuccessState());
+    }
   }
 
   List<ProductModel> stockProducts = [];
@@ -739,9 +767,11 @@ class AdminCubit extends Cubit<AdminStates>
   List<NewOrderModel> newOrders = [];
   List<NewOrderModel> confirmedOrders = [];
   List<NewOrderModel> canceledOrders = [];
+/*
   List<String> ordersNewId = [];
   List<String> ordersConfirmedId = [];
   List<String> ordersCanceledId = [];
+*/
 
 
   void getOrders()
@@ -765,9 +795,9 @@ class AdminCubit extends Cubit<AdminStates>
       newOrders = [];
       confirmedOrders = [];
       canceledOrders = [];
-      ordersNewId = [];
+     /* ordersNewId = [];
       ordersConfirmedId = [];
-      ordersCanceledId = [];
+      ordersCanceledId = [];*/
       FirebaseFirestore.instance
           .collection('orders')
           //.where('status', isEqualTo: status)
@@ -777,15 +807,15 @@ class AdminCubit extends Cubit<AdminStates>
             for (var element in value.docs) {
               if(element.get('status') == 'new')
               {
-                ordersNewId.add(element.id);
+                //ordersNewId.add(element.id);
                 newOrders.add(NewOrderModel.fromJson(element.data()));
               }
               else if(element.get('status') == 'confirmed') {
-                ordersConfirmedId.add(element.id);
+               // ordersConfirmedId.add(element.id);
                 confirmedOrders.add(NewOrderModel.fromJson(element.data()));
               }
               else {
-                ordersCanceledId.add(element.id);
+               // ordersCanceledId.add(element.id);
                 canceledOrders.add(NewOrderModel.fromJson(element.data()));
               }
             }
@@ -858,37 +888,60 @@ class AdminCubit extends Cubit<AdminStates>
    String? phone,
    String? address,
    String? orderId,
+   String? orderNumber,
    String? userName,
    double? totalPrice,
    double? total,
    double? shipping,
+   String? userEmail,
    List<dynamic>? cardItemList,
-}) {
-   NewOrderModel model = NewOrderModel(
-     status: status,
-     quantity: quantity,
-     productName: productName,
-     dateTime: dateTime,
-     address: address,
-     orderId: orderId,
-     phone: phone,
-     shipping: shipping,
-     total: total,
-     totalPrice: totalPrice,
-     userName: userName,
-     cardItemList: cardItemList,
-   );
-   FirebaseFirestore.instance
-       .collection('orders')
-       .doc(id)
-       .update(model.toMap())
-       .then((value) {
-     getOrders();
-   }).catchError((error) {
-     emit(UpdateOrdersErrorState(error.toString()));
-     print(error.toString());
-   });
- }
+})
+  {
+/*
+    NewOrderModel model = NewOrderModel(
+      status: status,
+      quantity: quantity,
+      productName:productName,
+      dateTime: dateTime,
+      address:address ,
+      orderId: orderId,
+      phone:phone ,
+      shipping:shipping ,
+      total: total,
+      totalPrice: totalPrice,
+      userName:userName,
+      userEmail: userEmail,
+      cardItemList:cardItemList ,
+
+    );
+*/
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc(id)
+        .update({
+      'orderId':orderId,
+      'userName': userName,
+      'totalPrice': totalPrice,
+      'shipping': shipping,
+      'total': total,
+      'phone': phone,
+      'address': address,
+      'dateTime': dateTime,
+      'status': status,
+      'productName': productName,
+      'quantity': quantity,
+      'userEmail': userEmail,
+      'orderNumber': orderNumber,
+      'cardItemList' : cardItemList?.toList(),
+    })
+        .then((value) {
+      getOrders();
+    }).catchError((error){
+      emit(UpdateOrdersErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
   List<FeedBackModel> feedback = [];
 
   void getFeedBack()

@@ -2,54 +2,64 @@
 class RecipeModel
 {
   String? title;
+  String? titleAr;
   String? image;
   double? carbs;
   double? protein;
   double? fats;
   double? calories;
-  double? weight;
+  //double? weight;
   String? ingredients;
+  String? ingredientsAr;
   String? directions;
+  String? directionsAr;
   String? category;
   //int? totalTime;
-  //String? uId;
+  String? uId;
   num? totalRating;
   num? numOfRates;
   num? averageRating;
 
   RecipeModel({
+    this.uId,
     this.title,
     this.image,
     this.carbs,
     this.protein,
     this.fats,
     this.calories,
-    this.weight,
+    //this.weight,
     this.ingredients,
     this.directions,
     this.category,
     this.totalRating,
     this.numOfRates,
     this.averageRating,
+    this.titleAr,
+    this.directionsAr,
+    this.ingredientsAr,
 
 
   });
 
   RecipeModel.fromJson(Map<String, dynamic>? json){
-    //uId = json!['uId'];
-    title = json!['title'];
+    uId = json!['uId'];
+    title = json['title'];
     image = json['image'];
     carbs = json['carbs'];
     protein = json['protein'];
     fats = json['fats'];
     calories = json['calories'];
-    weight = json['weight'];
+   // weight = json['weight'];
     ingredients = json['ingredients'];
     directions = json['directions'];
     category = json['category'];
     totalRating=json['totalRating'];
     numOfRates=json['numOfRates'];
     averageRating=json['averageRating'];
+    titleAr=json['titleAr'];
+    directionsAr=json['directionsAr'];
+    ingredientsAr=json['ingredientsAr'];
 
     //totalTime = json['totalTime'];
 
@@ -58,20 +68,23 @@ class RecipeModel
   Map<String, dynamic> toMap()
   {
     return {
-      'title':title!.toLowerCase(),
+      'uId':uId,
+      'title':title,
       'image':image,
       'carbs':carbs,
       'protein':protein,
       'fats':fats,
       'calories':calories,
-      'weight':weight,
+      //'weight':weight,
       'ingredients':ingredients,
       'directions':directions,
       'category':category,
-      //'uId':uId
       'totalRating' :totalRating,
       'numOfRates' :numOfRates,
       'averageRating' :averageRating,
+      'titleAr' :titleAr,
+      'directionsAr' :directionsAr,
+      'ingredientsAr' :ingredientsAr,
 
       //'totalTime':totalTime
 

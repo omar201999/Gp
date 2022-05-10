@@ -18,7 +18,9 @@ class EditProductScreen extends StatelessWidget {
   });
 
   var nameController = TextEditingController();
+  var nameArController = TextEditingController();
   var descriptionController = TextEditingController();
+  var descriptionArController = TextEditingController();
   //var currentPriceController = TextEditingController();
   var oldPriceController = TextEditingController();
   var discountController = TextEditingController();
@@ -43,7 +45,9 @@ class EditProductScreen extends StatelessWidget {
             currentPriceController.text = '${productModel.currentPrice}';
           }*/
           nameController.text = productModel.name!;
+        //  nameArController.text = productModel.nameAr!;
           descriptionController.text = productModel.description!;
+         // descriptionArController.text = productModel.descriptionAr!;
           //currentPriceController.text = '${productModel.currentPrice}';
           oldPriceController.text = '${productModel.oldPrice}';
           discountController.text = '${productModel.discount}';
@@ -152,7 +156,21 @@ class EditProductScreen extends StatelessWidget {
                             controller: nameController,
                             //prefixIcon: Icon(IconBroken.Paper),
                               border: InputBorder.none,
-                              label: 'Name'
+                              label: 'Name in English'
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+                          height: 65,
+                          child: defaultTextFormField(
+                              type: TextInputType.text,
+                              controller: nameArController,
+                              //prefixIcon: Icon(IconBroken.Paper),
+                              border: InputBorder.none,
+                              label: 'Name in Arabic'
                           ),
                         ),
                         const SizedBox(
@@ -168,8 +186,24 @@ class EditProductScreen extends StatelessWidget {
                               type: TextInputType.multiline,
                               maxLines: 30,
                               border: InputBorder.none,
-                              label: 'Description'
+                              label: 'Description in English'
 
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+
+                          height: 150,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                              controller: descriptionArController,
+                              type: TextInputType.multiline,
+                              maxLines: 30,
+                              border: InputBorder.none,
+                              label: 'Description in Arabic'
                           ),
                         ),
                         const SizedBox(
@@ -255,6 +289,8 @@ class EditProductScreen extends StatelessWidget {
 
                                 //uId: productModel.uId,
                                 newProductImage:productModel.image,
+                                nameAr: nameArController.text,
+                                descriptionAr: descriptionArController.text
                               );
 
                             } else
@@ -268,6 +304,8 @@ class EditProductScreen extends StatelessWidget {
                                   discount: double.parse(discountController.text),
                                   quantity : int.parse(quantityController.text),
                                   status: productModel.status,
+                                  nameAr: nameArController.text,
+                                  descriptionAr: descriptionArController.text
                                   //uId: productModel.uId,
                               );
                             }

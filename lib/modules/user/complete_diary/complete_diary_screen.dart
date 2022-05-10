@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
@@ -105,12 +106,20 @@ class CompleteDiaryScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    defaultBodyText(
+                    if(lan=='en')
+                      defaultBodyText(
                         context,
                         text: '${model.Food}',
                       fontWeight: FontWeight.bold,
                       maxLines: 1,
                     ),
+                    if(lan=='ar')
+                      defaultBodyText(
+                        context,
+                        text: '${model.foodAr}',
+                        fontWeight: FontWeight.bold,
+                        maxLines: 1,
+                      ),
                     Row(
                       children: [
                         Text('${model.Calories} ${AppLocalizations.of(context).translate("cal")},' ,style: Theme.of(context).textTheme.caption,),

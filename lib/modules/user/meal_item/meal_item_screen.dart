@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp/models/meals_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 
@@ -32,11 +33,17 @@ class MealItemScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:
                     [
+                      if(lan=='en')
                       defaultHeadLineText(
                           context,
                         //AppLocalizations.of(context).translate("  "),//
                           text: '${AppLocalizations.of(context).translate("Measure is")} ${mealsModel.Measure} ',
                       ),
+                      if(lan=='ar')
+                        defaultHeadLineText(
+                          context,
+                          text: '${AppLocalizations.of(context).translate("Measure is")} ${mealsModel.measureAr} ',
+                        ),
 
                       if (mealsModel.Grams == null)
                         defaultHeadLineText(

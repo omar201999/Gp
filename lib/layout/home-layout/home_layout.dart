@@ -9,6 +9,7 @@ import 'package:gp/modules/user/complete_diary/complete_diary_screen.dart';
 import 'package:gp/modules/user/feedback_screen/feedback_screen.dart';
 import 'package:gp/modules/user/market/search/search_market_screen.dart';
 import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
+import 'package:gp/modules/user/orders_layout/order_layout_screen/order_layout_creen.dart';
 import 'package:gp/modules/user/search_recipe_screen/search_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -53,7 +54,8 @@ class _HomeLayoutState extends State<HomeLayout> {
 
         HomeCubit cubit = HomeCubit.get(context);
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).userModel != null && HomeCubit.get(context).userModel!.userActive != null && state is! GetUserDataLoadingState,
+        //&& HomeCubit.get(context).userModel!.userActive != null
+          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState,
           builder: (context)=>Scaffold(
           drawer:Drawer(
             child: ListView(
@@ -162,6 +164,15 @@ class _HomeLayoutState extends State<HomeLayout> {
                     icon:Icons.feedback_outlined,
                     onClicked: () {
                       navigateTo(context, FeedbackScreen());
+                    }
+                ),
+                SizedBox(height: 5,),
+                buildMenuItem(
+                    context,
+                    text:'Orders',
+                    icon:IconBroken.Category,
+                    onClicked: () {
+                      navigateTo(context, OrderLayoutScreen());
                     }
                 ),
                 const Divider(),

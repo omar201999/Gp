@@ -1,7 +1,9 @@
 class NewOrderModel
 {
   String? orderId;
+  String? orderNumber;
   String? userName;
+  String? userEmail;
   double? totalPrice;
   double? shipping;
   double? total;
@@ -9,6 +11,7 @@ class NewOrderModel
   String? address;
   String? dateTime;
   String? productName;
+  String? productNameAr;
   String? status;
   int? quantity;
   //List<ProductModel>? cardItemList;
@@ -26,6 +29,9 @@ class NewOrderModel
     this.quantity,
     this.productName,
     this.status,
+    this.userEmail,
+    this.orderNumber,
+    this.productNameAr,
   });
 
   NewOrderModel.fromJson(Map<String, dynamic>? json)
@@ -38,15 +44,18 @@ class NewOrderModel
     phone=json['phone'];
     address=json['address'];
     dateTime=json['dateTime'];
-   /* json['cardItemList'].forEach((element) {
+    /* json['cardItemList'].forEach((element) {
       cardItemList?.add(ProductModel.fromJson(element));
     });*/
     cardItemList=json['cardItemList'];
-   /* List<dynamic> temp = json['cardItemList'] as List<dynamic>;
+    /* List<dynamic> temp = json['cardItemList'] as List<dynamic>;
     cardItemList?.addAll(temp.map((e) => ProductModel.fromJson(e)).toList());*/
     quantity=json['quantity'];
     productName=json['productName'];
     status=json['status'];
+    userEmail=json['userEmail'];
+    orderNumber=json['orderNumber'];
+    productNameAr=json['productNameAr'];
   }
   Map<String, dynamic> toMap()
   {
@@ -62,6 +71,9 @@ class NewOrderModel
       'status': status,
       'productName': productName,
       'quantity': quantity,
+      'userEmail': userEmail,
+      'orderNumber': orderNumber,
+      'productNameAr': productNameAr,
       'cardItemList' : cardItemList?.map((e) => e.toMap()).toList(),//ProductModel?? []
     };
   }

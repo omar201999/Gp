@@ -124,6 +124,8 @@ class SearchErrorSnacksState extends HomeStates
   SearchErrorSnacksState(this.error);
 }
 class SearchLoadingLunchState extends HomeStates {}
+class GetAllOrdersLoadingState extends HomeStates {}
+class GetAllOrdersSuccessState extends HomeStates {}
 
 class SearchSuccessLunchState extends HomeStates {}
 

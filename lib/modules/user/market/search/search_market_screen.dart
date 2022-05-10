@@ -6,6 +6,7 @@ import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
@@ -44,7 +45,10 @@ class SearchMarketingscreen extends StatelessWidget
                   type: TextInputType.text,
                   onChanged: (value)
                   {
-                    AdminCubit.get(context).getSearchProduct(value);
+                    //print(lan);
+                    //print(lan1);
+
+                      AdminCubit.get(context).getSearchProduct(value,lan!);
 
                   },
 
@@ -92,7 +96,7 @@ class SearchMarketingscreen extends StatelessWidget
   Widget buildProductSearchItem(ProductModel model,context, index) => defaultGestureDetector(
     onTap: ()
     {
-      navigateTo(context, MarketItemScreen(productModel: model, index: index,));
+      navigateTo(context, MarketItemScreen(productModel: model, index: index));
     },
     child: defaultContainer(
       context,
@@ -138,7 +142,8 @@ class SearchMarketingscreen extends StatelessWidget
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                if(lan == 'en')
+                  Text(
                   '${model.name}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -147,6 +152,16 @@ class SearchMarketingscreen extends StatelessWidget
                     height: 1.3,
                   ),
                 ),
+                if(lan == 'ar')
+                  Text(
+                    '${model.nameAr}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      height: 1.3,
+                    ),
+                  ),
                 Row(
                   children:
                   [

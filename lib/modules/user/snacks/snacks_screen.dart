@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 
 class SnacksScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class SnacksScreen extends StatelessWidget {
         return  buildSerachMealItem(list, context, title: AppLocalizations.of(context).translate("snacks"),//'Snacks',
           onChangedSearch: (value )
           {
-            HomeCubit.get(context).getSearchSnacks(value);
+            HomeCubit.get(context).getSearchSnacks(value,lan!);
           },
           isChecked: HomeCubit.get(context).isCheckedSnacks,
           //value: isChecked,
@@ -33,6 +34,8 @@ class SnacksScreen extends StatelessWidget {
             if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
             {
               showToast(text: '${AppLocalizations.of(context).translate("validate_Food")} ${HomeCubit.get(context).userModel!.totalCalorie} ${AppLocalizations.of(context).translate("and your total food is")} ${HomeCubit.get(context).totalFood} ', state: ToastStates.WARNING);
+              HomeCubit.get(context).addSnacksMeal();
+
             }
             else
             {

@@ -31,7 +31,8 @@ class HomePage extends StatelessWidget
 
 
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).userModel != null && HomeCubit.get(context).userModel!.userActive != null && state is! GetUserDataLoadingState,
+        //&& HomeCubit.get(context).userModel!.userActive != null
+          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState,
           builder: (context) => SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(

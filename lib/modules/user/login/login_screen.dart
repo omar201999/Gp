@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:gp/main.dart';
-import 'package:gp/modules/user/add_Information/add_information.dart';
 import 'package:gp/modules/user/login/cubit/cubit.dart';
 import 'package:gp/modules/user/login/cubit/states.dart';
 import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
@@ -26,10 +26,11 @@ class LoginScreen extends StatelessWidget
       MyApp.setLocale(context, _locale);
     }
     return BlocProvider(
-      create: (BuildContext context) => LoginCubit(),//..getUsers()
+      create: (BuildContext context) => LoginCubit(),//..getUsers().changeAppMode(fromCache: false)
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context, state)
         {
+
          if(state is LoginErrorState)
           {
             showToast(
@@ -120,6 +121,7 @@ class LoginScreen extends StatelessWidget
                             context,
                             onPreesed: ()
                             {
+                          print(lan);
                               if(formKey.currentState!.validate())
                               {
                                 LoginCubit.get(context).userLogin(
@@ -153,6 +155,32 @@ class LoginScreen extends StatelessWidget
                             )
                           ],
                         ),
+                      /*  InkWell(
+                          onTap: ()
+                          {
+                            LoginCubit.get(context).signInWithFacebook();
+                          },
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: AssetImage('assets/images/5053.jpg'),
+                          ),
+                        ),*/
+                       /* SignInButton(
+                          Buttons.Google,
+                          onPressed: () {
+                            LoginCubit.get(context).signInWithGoogle();
+                          },
+                        ),
+                        InkWell(
+                          onTap: ()
+                          {
+                            //LoginCubit.get(context).createOrder2();
+                          },
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: AssetImage('assets/images/5053.jpg'),
+                          ),
+                        ),*/
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

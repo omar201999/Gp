@@ -40,7 +40,7 @@ class SnacksScreen extends StatelessWidget {
             else
             {
               HomeCubit.get(context).addSnacksMeal();
-
+              // HomeCubit.get(context).getCompleteDiaryItems();
             }
           }
         );

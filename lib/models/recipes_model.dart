@@ -8,13 +8,11 @@ class RecipeModel
   double? protein;
   double? fats;
   double? calories;
-  //double? weight;
   String? ingredients;
   String? ingredientsAr;
   String? directions;
   String? directionsAr;
   String? category;
-  //int? totalTime;
   String? uId;
   num? totalRating;
   num? numOfRates;
@@ -28,7 +26,6 @@ class RecipeModel
     this.protein,
     this.fats,
     this.calories,
-    //this.weight,
     this.ingredients,
     this.directions,
     this.category,
@@ -38,8 +35,6 @@ class RecipeModel
     this.titleAr,
     this.directionsAr,
     this.ingredientsAr,
-
-
   });
 
   RecipeModel.fromJson(Map<String, dynamic>? json){

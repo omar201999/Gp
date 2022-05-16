@@ -330,6 +330,7 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                     carbs: (widget.recipeModel.carbs)!.round(),
                     fat: (widget.recipeModel.fats)!.round(),
                     protein: (widget.recipeModel.protein)!.round(),
+                    //Date: DateFormat.yMMMEd().format(DateTime.now())
                   );
                 ScaffoldMessenger.of(context)
                     .showSnackBar(
@@ -339,6 +340,7 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                       duration: const Duration(seconds: 2),
                     )
                 );
+
               }
               },
               label: Text(AppLocalizations.of(context).translate("Add to yours Meal")),//'Add to yours Meal'),

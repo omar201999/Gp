@@ -1,5 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
@@ -11,10 +14,26 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-class CompleteDiaryScreen extends StatelessWidget {
+import 'package:intl/intl.dart';
+class CompleteDiaryScreen extends StatefulWidget {
 
   @override
+  State<CompleteDiaryScreen> createState() => _CompleteDiaryScreenState();
+
+
+
+}
+
+class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
+  @override
+  void initState(){
+    HomeCubit.get(context).getCompleteDiaryItems(selectedDate: DateTime.now());
+  }
+
+  DateTime selectedDate = DateTime.now()  ;
+
   Widget build(BuildContext context) {
+
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state)
         {
@@ -22,6 +41,7 @@ class CompleteDiaryScreen extends StatelessWidget {
         },
         builder: (context,state)
         {
+
           return Scaffold(
             appBar: buildAppBar(
               title: AppLocalizations.of(context).translate("complete_daily"),//'Complete Diary',
@@ -37,16 +57,42 @@ class CompleteDiaryScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
+                    defaultContainer(
+                      context,
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () {
+                          print('omar essam $selectedDate');
+                          pickDate(context);
+                        },
+                        child: Text(
+                          '${DateFormat('yyyy-MM-dd').format(selectedDate)}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20,),
                     ConditionalBuilder(
-                        condition: HomeCubit.get(context).completeDiary.length > 0 && state is !GetAllUsersMealsLoadingState,
+                        condition: HomeCubit.get(context).completeDiaryByDate.length > 0 && state is !GetAllUsersMealsLoadingState,
                         builder: (context) => ListView.separated(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
+                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiaryByDate[index],context,index),
                           separatorBuilder: (context, index) => SizedBox(height: 10,),
-                          itemCount: HomeCubit.get(context).completeDiary.length,
+                          itemCount: HomeCubit.get(context).completeDiaryByDate.length,
                         ),
-                        fallback: (context) => Center(child: CircularProgressIndicator())
+                        fallback: (context) => Center(
+                          child: Column(
+                            children: [
+                              Icon(IconBroken.Bookmark,color: Colors.grey,),
+                              SizedBox(height: 20,),
+                              defaultHeadLineText(context, text: 'No Meals Yet',color: Colors.grey),
+                            ],
+                          ),
+                        )
                     ),
                   ],
                 ),
@@ -157,4 +203,22 @@ class CompleteDiaryScreen extends StatelessWidget {
       ),
     ),
   );
+
+  pickDate(BuildContext context)async{
+    DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2205),
+    );
+    if(selected != null && selected != selectedDate)
+      {
+
+        setState(() {
+          selectedDate = selected ;
+          HomeCubit.get(context).getCompleteDiaryItems(selectedDate: selectedDate);
+        });
+      }
+  }
+
 }

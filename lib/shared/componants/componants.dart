@@ -845,7 +845,8 @@ Widget buildSerachMealItem (list,context,
             if(state is ChangeCheckBoxState && isChecked.any((element) => element == true) )
               defaultTextButton(context,
                 function: function,
-                text:AppLocalizations.of(context).translate("Add"),// 'Add',
+                text:AppLocalizations.of(context).translate("Add"),
+                // 'Add',
               ),
 
           ]

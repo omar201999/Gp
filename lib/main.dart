@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()..changeAppMode(fromCache: widget.isDark)),
-        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
+        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems2()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()..getFeedBack()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(

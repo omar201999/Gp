@@ -29,6 +29,9 @@ class HomeLayout extends StatefulWidget {
 }
 
 class _HomeLayoutState extends State<HomeLayout> {
+
+
+
   void _changeLanguage(Language language) async {
     Locale _locale = await setLocale(language.languageCode);
     MyApp.setLocale(context, _locale);
@@ -55,7 +58,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         HomeCubit cubit = HomeCubit.get(context);
         return ConditionalBuilder(
         //&& HomeCubit.get(context).userModel!.userActive != null
-          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState,
+          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState  ,
           builder: (context)=>Scaffold(
           drawer:Drawer(
             child: ListView(

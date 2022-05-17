@@ -1,5 +1,5 @@
-class MealsModel
-{
+
+class MealsModel {
   String? Measure;
   String? measureAr;
   String? Food;
@@ -9,6 +9,8 @@ class MealsModel
   num? Fat;
   num? Calories;
   num? Grams;
+  //String? Date = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
+  DateTime? Date ;
 
   MealsModel({
     this.Food,
@@ -20,10 +22,10 @@ class MealsModel
     this.Measure,
     this.foodAr,
     this.measureAr,
+    this.Date,
   });
 
-  MealsModel.fromJson(Map<String, dynamic>? json){
-
+  MealsModel.fromJson(Map<String, dynamic>? json) {
     Food = json!['Food'];
     Carbs = json['Carbs'];
     Protein = json['Protein'];
@@ -33,24 +35,21 @@ class MealsModel
     Measure = json['Measure'];
     foodAr = json['foodAr'];
     measureAr = json['measureAr'];
-
+    Date = json['Date'] == null ? DateTime.now() : json['Date'].toDate();
   }
 
-  Map<String, dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
-      'Food':Food,
-      'Carbs':Carbs,
-      'Protein':Protein,
-      'Fat':Fat,
-      'Calories':Calories,
-      'Grams':Grams,
-      'Measure':Measure,
-      'foodAr':foodAr,
-      'measureAr':measureAr,
-
+      'Food': Food,
+      'Carbs': Carbs,
+      'Protein': Protein,
+      'Fat': Fat,
+      'Calories': Calories,
+      'Grams': Grams,
+      'Measure': Measure,
+      'foodAr': foodAr,
+      'measureAr': measureAr,
+      'Date': DateTime.now(),
     };
   }
-
-
 }

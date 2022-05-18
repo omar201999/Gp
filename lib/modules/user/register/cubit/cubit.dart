@@ -113,7 +113,7 @@ class RegisterCubit extends Cubit<RegisterStates>
     required double weight,
     required double height,
     required double goalWeight,
-    required String gender,
+    required String? gender,
     required String? goal,
     required double? active,
     required double weeklyGoal,

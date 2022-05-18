@@ -9,7 +9,6 @@ class MealsModel {
   num? Fat;
   num? Calories;
   num? Grams;
-  //String? Date = DateFormat('yyyy-MM-dd').format(DateTime.now()) ;
   DateTime? Date ;
 
   MealsModel({

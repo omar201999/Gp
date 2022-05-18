@@ -26,6 +26,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
+  MealsModel? mealsModel ;
 
   void getUserData() {
     emit(GetUserDataLoadingState());
@@ -136,19 +137,19 @@ class HomeCubit extends Cubit<HomeStates> {
       uId: userModel!.uId,
       name: name ?? userModel!.name,
       email: userModel!.email,
-      active: userModel!.active,
+      active: active ?? userModel!.active,
       age: age ?? userModel!.age,
       gender: userModel!.gender,
-      goal: userModel!.goal,
+      goal: goal ?? userModel!.goal,
       goalWeight: goalWeight ?? userModel!.goalWeight,
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
-      totalCalorie: userModel!.totalCalorie,
-      totalCarbs: userModel!.totalCarbs,
-      totalFats: userModel!.totalFats,
-      totalProtein: userModel!.totalProtein,
+      totalCalorie: totalCalorie ?? userModel!.totalCalorie,
+      totalCarbs:  totalCarbs ?? userModel!.totalCarbs,
+      totalFats: totalFats ?? userModel!.totalFats,
+      totalProtein: totalProtein ?? userModel!.totalProtein,
       weight: weight ?? userModel!.weight,
-      totalWater: userModel!.totalWater ?? totalWater,
+      totalWater: totalWater ?? userModel!.totalWater ,
       phone: phone ?? userModel!.phone,
       address: address ?? userModel!.address,
       userActive: true,
@@ -159,8 +160,9 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(userModel!.uId)
         .update(model.toMap())
         .then((value) {
-      getUserData();
-      //emit(UpdateUserDataSuccessState());
+          getUserData() ;
+          showToast(text: 'Updated successfully', state: ToastStates.SUCCESS) ;
+          emit(UpdateUserDataSuccessState());
     }).catchError((error) {
       emit(UpdateUserDataErrorState());
     });
@@ -308,6 +310,7 @@ class HomeCubit extends Cubit<HomeStates> {
           //emit(SearchAddSnacksSuccessState());
           isCheckedSnacks = List<bool>.filled(334, false, growable: true);
           calculateTotalFoodCalories();
+          getUserData();
           getCompleteDiaryItems2();
         }).catchError((error) {
           emit(SearchAddSnacksErrorState(error.toString()));
@@ -334,6 +337,8 @@ class HomeCubit extends Cubit<HomeStates> {
           getCompleteDiaryItems2();
 
           calculateTotalFoodCalories();
+          getUserData();
+
         }).catchError((error) {
           emit(SearchAddLunchErrorState(error.toString()));
           print(error.toString());
@@ -357,6 +362,7 @@ class HomeCubit extends Cubit<HomeStates> {
           //emit(SearchAddBreakFastSuccessState());
           calculateTotalFoodCalories();
           getCompleteDiaryItems2();
+          getUserData();
         }).catchError((error) {
           emit(SearchAddBreakFastErrorState(error.toString()));
           print(error.toString());
@@ -378,6 +384,8 @@ class HomeCubit extends Cubit<HomeStates> {
           isCheckedDinner = List<bool>.filled(334, false, growable: true);
           //emit(SearchAddDinnerSuccessState());
           calculateTotalFoodCalories();
+          getUserData();
+
           getCompleteDiaryItems2();
         }).catchError((error) {
           emit(SearchAddDinnerErrorState(error.toString()));
@@ -411,6 +419,8 @@ class HomeCubit extends Cubit<HomeStates> {
         .add(model.toMap())
         .then((value) {
       calculateTotalFoodCalories();
+      getUserData();
+
       getCompleteDiaryItems2();
     }).catchError((error) {
       emit(AddRecipeToMealErrorState(error.toString()));
@@ -440,10 +450,9 @@ class HomeCubit extends Cubit<HomeStates> {
         .collection('userMeal')
         .snapshots()
         .listen((event) {
-      completeDiaryId = [];
       completeDiaryByDate = [];
       event.docs.forEach((element) {
-        completeDiaryId.add(element.id);
+
         completeDiaryByDate = completeDiary
             .where((element) =>
                 element.Date!.year == selectedDate!.year &&
@@ -460,6 +469,7 @@ class HomeCubit extends Cubit<HomeStates> {
   void getCompleteDiaryItems2() {
     emit(GetAllUsersMealsLoadingState());
     completeDiary = [];
+    completeDiaryId = [];
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId!)
@@ -468,6 +478,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .then((value) {
       value.docs.forEach((element) {
         completeDiary.add(MealsModel.fromJson(element.data()));
+        completeDiaryId.add(element.id);
       });
       print('hello ${completeDiary[0].Date}');
       emit(GetAllUsersMealsSuccessState());
@@ -493,6 +504,8 @@ class HomeCubit extends Cubit<HomeStates> {
       print(error.toString());
     });
   }
+
+
 
   int counter = 0;
   int maximum = 16;

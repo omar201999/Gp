@@ -32,7 +32,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main()
 async{
-  BlocOverrides.runZoned(
+  var runZoned = BlocOverrides.runZoned(
         () async {
           WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gp">
    <application
-        android:label="gp"
+        android:label="H.Partner"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

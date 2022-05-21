@@ -707,11 +707,11 @@ Widget buildMealItem(MealsModel model,context,{
 
     {
 
-      navigateTo(context, MealItemScreen(
-
-        mealsModel: model,
-
-      ));
+      showDialog(
+        context: context,
+        builder: (context) => MealItemScreen(mealsModel: model),
+        barrierDismissible: true,
+      );
 
     },
 
@@ -1759,7 +1759,7 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
       }
       else
       {
-        showToast(text: 'You buy one Product', state: ToastStates.WARNING);
+        showToast(text:  AppLocalizations.of(context).translate("You buy one Product"), state: ToastStates.WARNING);
       }
     },
     child: Column(
@@ -1777,51 +1777,51 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:
                     [
-                      defaultBodyText(context, text: 'User name is ${model.userName}'),
+                      defaultBodyText(context, text: '${AppLocalizations.of(context).translate("User name is")} ${model.userName}'),
                       SizedBox(
                         height: 5,
                       ),
-                      defaultBodyText(context, text: 'Address is ${model.address}'),
+                      defaultBodyText(context, text: '${AppLocalizations.of(context).translate("address")}:${model.address}'),
                       SizedBox(
                         height: 5,
                       ),
-                      defaultBodyText(context, text: 'Phone is ${model.phone}'),
+                      defaultBodyText(context, text: '${AppLocalizations.of(context).translate("phone")}:${model.phone}'),
                       SizedBox(
                         height: 5,
                       ),
-                      defaultBodyText(context, text: 'Order is ${model.orderNumber}'),
+                      defaultBodyText(context, text: '${AppLocalizations.of(context).translate("Order Number")}: ${model.orderNumber}'),
                       SizedBox(
                         height: 5,
                       ),
                       if(model.status == 'new')
-                        defaultBodyText(context, text: 'Be patient Your order is under review '),
+                        defaultBodyText(context, text: AppLocalizations.of(context).translate("Be patient Your order is under review")),
                       if(model.status == 'new')
                         SizedBox(
                         height: 5,
                       ),
                       if(model.status == 'confirmed')
-                        defaultBodyText(context, text: 'your order will arrive soon in two or three days'),
+                        defaultBodyText(context, text: AppLocalizations.of(context).translate("Your order will arrive soon in two or three days")),
                       if(model.status == 'confirmed')
                         SizedBox(
                         height: 5,
                       ),
                       if(model.status == 'canceled')
-                        defaultBodyText(context, text: 'we are sorry your order canceled '),
+                        defaultBodyText(context, text: AppLocalizations.of(context).translate("We are sorry your order canceled")),
                       if(model.status == 'confirmed')
                         SizedBox(
                           height: 5,
                         ),
-                      defaultBodyText(context, text: 'Data is ${convertToDataTime(model.dateTime!)} '),
+                      defaultBodyText(context, text: '${AppLocalizations.of(context).translate("date")}:${convertToDataTime(model.dateTime!)} '),
                       if(model.productName != null)
                         SizedBox(
                           height: 5,
                         ),
                       if(model.productName != null && lan=='en')
-                          defaultBodyText(context, text: 'productName : ${model.productName}'),
+                          defaultBodyText(context, text: '${AppLocalizations.of(context).translate("productName")}:${model.productName}'),
                       if(model.productName != null && lan=='ar')
-                          defaultBodyText(context, text: 'productName : ${model.productNameAr}'),
+                          defaultBodyText(context, text: '${AppLocalizations.of(context).translate("productName")}:${model.productNameAr}'),
                       if(model.quantity != null)
-                        defaultBodyText(context, text: 'quantity is ${model.quantity}'),
+                        defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")}: ${model.quantity}'),
 
                     ],
                   ),
@@ -1830,7 +1830,10 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
                 if(model.status == 'new')
                   defaultTextButton(
                   context,
-                  function: () {
+                  function: ()
+                  {
+
+                    HomeCubit.get(context).cancelOrder(model.orderId);
                   /*  timer.listen((data){
                       //2022-05-08 16:59:16.910646
                      if(data=='2022-05-08 17:02:00')
@@ -1844,7 +1847,7 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
                       //if it reached the given time do something on your button
                     });*/
                   },
-                  text: 'Canceled',
+                  text: AppLocalizations.of(context).translate("Canceled"),
                 ),
               ],
             ),

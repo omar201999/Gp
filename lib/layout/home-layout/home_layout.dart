@@ -172,7 +172,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                 SizedBox(height: 5,),
                 buildMenuItem(
                     context,
-                    text:'Orders',
+                    text:AppLocalizations.of(context).translate("Orders"),
                     icon:IconBroken.Category,
                     onClicked: () {
                       navigateTo(context, OrderLayoutScreen());

@@ -1,5 +1,6 @@
 
 class MealsModel {
+  num? id;
   String? Measure;
   String? measureAr;
   String? Food;
@@ -22,10 +23,12 @@ class MealsModel {
     this.foodAr,
     this.measureAr,
     this.Date,
+    this.id
   });
 
   MealsModel.fromJson(Map<String, dynamic>? json) {
-    Food = json!['Food'];
+    id = json!['id'];
+    Food = json['Food'];
     Carbs = json['Carbs'];
     Protein = json['Protein'];
     Fat = json['Fat'];
@@ -40,6 +43,7 @@ class MealsModel {
   Map<String, dynamic> toMap() {
     return {
       'Food': Food,
+      'id': id,
       'Carbs': Carbs,
       'Protein': Protein,
       'Fat': Fat,

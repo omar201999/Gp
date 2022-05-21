@@ -108,7 +108,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
     key: Key(model.Food!),
     onDismissed: (direction)
     {
-      HomeCubit.get(context).deleteCompleteDiaryItem(HomeCubit.get(context).completeDiaryId[index]);
+      HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
       ScaffoldMessenger.of(context)
           .showSnackBar(
           SnackBar(
@@ -186,7 +186,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                       Icons.delete_forever
                   ),
                   onPressed: () {
-                    HomeCubit.get(context).deleteCompleteDiaryItem(HomeCubit.get(context).completeDiaryId[index]);
+                    HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
                     ScaffoldMessenger.of(context)
                         .showSnackBar(
                         SnackBar(

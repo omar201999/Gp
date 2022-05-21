@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,19 +7,17 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/result_of_detection/photo_details.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
+import 'package:tflite/tflite.dart';
 
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
-
 
   @override
   State<CameraScreen> createState() => CameraScreenState();
@@ -244,7 +241,6 @@ class CameraScreenState extends State<CameraScreen>
                     ),
                   ),
                 ),
-
                 barrierDismissible: true,
               );
 
@@ -303,8 +299,7 @@ class CameraScreenState extends State<CameraScreen>
 
   ImagePicker? picker = ImagePicker();
   Future? chooseImage() async {
-    final image = await picker?.pickImage(
-        source: ImageSource.camera
+    final image = await picker?.pickImage(source: ImageSource.gallery
     );
     if (image == null ) return null;
     setState(() {
@@ -312,14 +307,14 @@ class CameraScreenState extends State<CameraScreen>
       _image = File(image.path);
     });
     print(File(image.path));
-    runModelOnImage(File(image.path));
+    recognizeImageBinary(File(image.path));
   }
 
  runModelOnImage(File image)
   async {
     var output = await Tflite.runModelOnImage(
         path: image.path,
-      numResults: 33,
+      numResults: 100,
       imageMean: 127.5,
       imageStd: 127.5,
       threshold: 0.5
@@ -332,12 +327,16 @@ class CameraScreenState extends State<CameraScreen>
   }
 
   Future recognizeImageBinary(File image) async {
-    var imageBytes = (await rootBundle.load(image.path)).buffer;
-    img.Image? oriImage = img.decodeJpg(imageBytes.asUint8List());
+   var imageBytes = await image.readAsBytesSync();
+    var bytes = imageBytes.buffer.asUint8List();
+    img.Image? oriImage = img.decodeJpg(bytes);
     img.Image resizedImage = img.copyResize(oriImage!, height: 224, width: 224);
+    /*var imageBytes = (await rootBundle.load(image.path)).buffer;
+   img.Image? oriImage = img.decodeJpg(imageBytes.asUint8List());
+   img.Image resizedImage = img.copyResize(oriImage!, height: 224, width: 224);*/
     var output = await Tflite.runModelOnBinary(
       binary: imageToByteListFloat32(resizedImage, 224, 127.5, 127.5),
-      numResults: 10,
+      numResults: 100,
       threshold: 0.05,
     );
     setState(() {
@@ -362,66 +361,37 @@ class CameraScreenState extends State<CameraScreen>
     return convertedBytes.buffer.asUint8List();
   }
 
+  /*
+  Uint8List imageToByteListUint8(img.Image image, int inputSize) {
+    var convertedBytes = Uint8List(1 * inputSize * inputSize * 3);
+    var buffer = Uint8List.view(convertedBytes.buffer);
+    int pixelIndex = 0;
+    for (var i = 0; i < inputSize; i++) {
+      for (var j = 0; j < inputSize; j++) {
+        var pixel = image.getPixel(j, i);
+        buffer[pixelIndex++] = img.getRed(pixel);
+        buffer[pixelIndex++] = img.getGreen(pixel);
+        buffer[pixelIndex++] = img.getBlue(pixel);
+      }
+    }
+    return convertedBytes.buffer.asUint8List();
+  }
+  */
 
 
   Future loadModel()
   async {
     await Tflite.loadModel(
-      model: "assets/model/model.tflite",
+      model: "assets/model/food_101_kaggel_2.tflite",
       labels: "assets/model/labels.txt",
-
     );
   }
+
+
 
 
 }
 
 
-class  CameraImagePicker extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return  defaultContainer(
-      context,
-      radius: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children:
-          [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  defaultBodyText(context, text: AppLocalizations.of(context).translate("condition1_to_upload")),//'1.Make Sure you take photo for one meal'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  defaultBodyText(context, text: AppLocalizations.of(context).translate("condition2_to_upload")),//'2.Focus for one meal to best dedication'),
-                ],
-              ),
-            ),
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: defaultColor,
-              child: IconButton(onPressed: ()
-              {
-                print(lan);
-                CameraScreenState().chooseImage();
-              },
-                icon: const Icon(
-                IconBroken.Camera,
-                color: Colors.white,
-              ),
-              ),
-            )
-
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 

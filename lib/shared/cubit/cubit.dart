@@ -15,7 +15,7 @@ class AppCubit extends Cubit<AppStates>
   bool isDark = false;
   void changeAppMode({fromCache}) {
     if (fromCache == null) {
-      isDark = !isDark;
+      isDark = isDark;
     } else {
       isDark = fromCache;
     }

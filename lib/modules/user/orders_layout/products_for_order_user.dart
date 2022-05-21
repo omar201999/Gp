@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
-import 'package:gp/shared/cubit/cubit.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class ProductsForOrderUser extends StatelessWidget {
@@ -17,7 +17,7 @@ class ProductsForOrderUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(
-        title: 'Order number #$orderNumber',
+        title: '${AppLocalizations.of(context).translate("Order Number")} #$orderNumber',
         icon: IconBroken.Arrow___Left_2,
         onPressed: ()
         {
@@ -35,6 +35,31 @@ class ProductsForOrderUser extends StatelessWidget {
                   context,
                 child: Column(
                   children: [
+                   /* IconButton(
+                        icon: Icon(
+                            Icons.delete_forever
+                        ),
+                        onPressed: ()
+                        {
+
+                          for(int i=0;i<products.length;i++)
+                          {
+                            HomeCubit.get(context).updateProductForOneBuy(
+                              HomeCubit.get(context).productsIDs[index],
+                              name: name,
+                              currentPrice: currentPrice,
+                              oldPrice: oldPrice,
+                              discount: discount,
+                              quantity: quantity!+selectedQuantity!,
+                              selectedQuantity: selectedQuantity,
+                              description: description,
+                              status: status,
+                              descriptionAr: descriptionAr,
+                              nameAr: nameAr,
+                            );
+                          }
+                        }
+                    ),*/
                     Image(
                       image: NetworkImage('${products[index]['image']}'),
                       width: double.infinity,
@@ -47,17 +72,17 @@ class ProductsForOrderUser extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if(lan=='en')
-                            defaultBodyText(context, text: 'Product name is ${products[index]['name']}'),
+                            defaultBodyText(context, text: '${AppLocalizations.of(context).translate("productName")} : ${products[index]['name']}'),
                           if(lan=='ar')
-                            defaultBodyText(context, text: '${products[index]['nameAr']}'),
-                          defaultBodyText(context, text: 'Price Per one : ${products[index]['currentPrice']}'),
+                            defaultBodyText(context, text: '${AppLocalizations.of(context).translate("productName")} : ${products[index]['nameAr']}'),
+                          defaultBodyText(context, text: '${AppLocalizations.of(context).translate("price_per_one")} : ${products[index]['currentPrice']}'),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              defaultBodyText(context, text: ' Total : ${products[index]['currentPrice'] * products[index]['selectedQuantity'] }'),
+                              defaultBodyText(context, text: '${AppLocalizations.of(context).translate("total")} : ${products[index]['currentPrice'] * products[index]['selectedQuantity'] }'),
                               Spacer(),
-                              defaultBodyText(context, text: 'Quantity : ${products[index]['selectedQuantity']}'),
+                              defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")} : ${products[index]['selectedQuantity']}'),
                             ],
                           ),
                         ],

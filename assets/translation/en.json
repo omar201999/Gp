@@ -48,7 +48,6 @@
   "Ingredients":"Ingredients",
   "Directions":"Directions",
   "DISCOUNT":"DISCOUNT",
-  "pb chocolate sheet pancake": "pb chocolate sheet pancake ",
 
   "Add to yours Meal":"Add to yours Meal",
   "Recipe_add":"Recipe Add successfully to Your Meals",
@@ -94,7 +93,6 @@
   "phone": "Phone ",
   "Grams is Follow the Recipe": "Grams is Follow the Recipe ",
   "Grams is": "Grams is  ",
-  "quantity": "Quantity : ",
   "price_per_one": " Price per one",
   "price": " Price ",
   "Description": " Description ",
@@ -107,6 +105,22 @@
   "Add to Your Card": "Add to Your Card",
   "Water Tracker": "Water Tracker ",
   "name must not be empty": "Please enter your name : ",
+  "not_in_stock": "You can't buy this product currently. It's not available in stock now. ",
+  "new_order": "New Order",
+  "confirm_order": "Confirm Order",
+  "cancel_order": "Cancel Order",
+  "You buy one Product": "You buy one Product",
+  "User name is": "User name:",
+  "Order Number": "Order Number",
+  "Be patient Your order is under review": "Be patient Your order is under review",
+  "Your order will arrive soon in two or three days": "Your order will arrive soon in two or three days",
+  "We are sorry your order canceled": "We are sorry your order canceled ",
+  "productName": "Product Name",
+  "quantity": "Quantity",
+  "date": "Date",
+  "Canceled": "Canceled",
+  "Orders": "Orders",
+
 
   "total_price": "Total Price : ",
   "price_shipping": "Shipping",
@@ -154,4 +168,5 @@
   "ex_active": "Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).",
   "ex_very_active": "Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).",
   "ex_hulk": "Spend most of the day Hard training "
+
 }

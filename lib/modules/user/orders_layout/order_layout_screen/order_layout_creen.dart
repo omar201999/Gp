@@ -6,6 +6,7 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/orders_layout/canceled_order_screen.dart';
 import 'package:gp/modules/user/orders_layout/confirmed_order_screen.dart';
 import 'package:gp/modules/user/orders_layout/new_order_screen.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 
@@ -33,9 +34,11 @@ class _OrderLayoutScreenState extends State<OrderLayoutScreen> with TickerProvid
   {
     List<String> titleAppBar =
     [
-      'New Order',
-      'Confirm Order',
-      'Cancel Order',
+      AppLocalizations.of(context).translate("new_order"),
+      AppLocalizations.of(context).translate("confirm_order"),//New Order 'Confirm Order', 'Confirm Order',
+      AppLocalizations.of(context).translate("cancel_order"),//New Order 'Confirm Order', 'Confirm Order',
+
+
 
     ];
     return  BlocConsumer<HomeCubit, HomeStates>(
@@ -62,13 +65,13 @@ class _OrderLayoutScreenState extends State<OrderLayoutScreen> with TickerProvid
                   controller: tabController,
                   tabs: [
                     Tab(
-                      text:'New Order' ,
+                      text: AppLocalizations.of(context).translate("new_order"),
                     ),
                     Tab(
-                      text:'Confirm Order' ,
+                      text:AppLocalizations.of(context).translate("confirm_order"),
                     ),
                     Tab(
-                      text:'Cancel Order' ,
+                      text: AppLocalizations.of(context).translate("cancel_order"),
                     ),
                   ],
                 ),

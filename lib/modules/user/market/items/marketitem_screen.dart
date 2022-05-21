@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/modules/user/address_and_phone_change_screen/address_and_phone_change_screen.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -40,6 +41,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
         return Scaffold(
           //backgroundColor: Colors.grey[50],
           body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             /*child: Form(
               key: formKey,*/
             child: Column(
@@ -50,7 +52,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                   [
                     Container(
                       width: double.infinity,
-                      height: 350,
+                      height: 400,
                       decoration:  BoxDecoration(
                         image: DecorationImage(
                           image:NetworkImage('${productModel.image}'),
@@ -128,7 +130,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                defaultHeadLineText(context, text: 'Price',
+                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("price"),
                                   fontWeight: FontWeight.w900,
                                 ),
                                 defaultBodyText(context,
@@ -151,7 +153,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               children: [
                                 defaultHeadLineText(
                                   context,
-                                  text: 'Description',
+                                  text: AppLocalizations.of(context).translate("Description"),//'Description',
                                   fontWeight: FontWeight.w900,
                                 ),
                                 if(lan=='en')
@@ -182,7 +184,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               children: [
                                 defaultHeadLineText(
                                     context, text:
-                                'Availability In Stock ${productModel.quantity }',
+                                '${AppLocalizations.of(context).translate("Availability In Stock")} ${productModel.quantity }',
                                     fontWeight: FontWeight.w900
                                 ),
                               ],
@@ -350,7 +352,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                 //uId: productModel.uId
 
                               );
-                              showToast(text: 'You can\'t buy this product currently. It\'s not available in stock now.',
+                              showToast(text: AppLocalizations.of(context).translate("not_in_stock"),
                                   state: ToastStates.ERROR
                               );
                             }
@@ -358,7 +360,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             //}
 
                           },
-                          text: 'Add to Your Card'
+                        text: AppLocalizations.of(context).translate("Add to Your Card"),//'Add to Your Card',
                       ),
                       const SizedBox(
                         height: 10,
@@ -394,8 +396,8 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               prodId: HomeCubit.get(context).productsIDs[index],
                               productName: productModel.name!,
                               totalPrice:  productModel.currentPrice!,
-                              total: productModel.currentPrice! + 100,
-                              descriptionAr: "productModel.descriptionAr!",
+                              total: productModel.currentPrice! + 30,
+                              descriptionAr: "productModel.descriptionAr!",//productModel.descriptionAr!
                               nameAr:  productModel.nameAr!,
                             );
 
@@ -410,12 +412,14 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             HomeCubit.get(context).initSelectedQuantity();
 
 
-                            showToast(text: 'Your order done Successfully', state: ToastStates.SUCCESS);
+                            showToast(text:AppLocalizations.of(context).translate("Your order done Successfully"),// 'Your order done Successfully',
+                                state: ToastStates.SUCCESS);
                           }
 
                           if(HomeCubit.get(context).userModel!.address == null && HomeCubit.get(context).userModel!.phone == null && HomeCubit.get(context).userModel!.address == "" && HomeCubit.get(context).userModel!.phone == "")
                           {
-                            showToast(text: 'please enter your address and your phone', state: ToastStates.ERROR);
+                            showToast(text: AppLocalizations.of(context).translate("validate_phone_and_address"),//'please enter your address and your phone',
+                                state: ToastStates.ERROR);
                           }
 
                           //}
@@ -437,13 +441,25 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
 
 
                             );
-                            showToast(text: AppLocalizations.of(context).translate("key"),
+                            showToast(text: AppLocalizations.of(context).translate("not_in_stock"),
                                 state: ToastStates.ERROR
                             );
                           }
                         },
-                        text: 'Buy Now',
+                        text: AppLocalizations.of(context).translate("buy_now"),//'Buy Now',
                       ),
+
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defaultButton(
+                          context,
+                          onPreesed: ()
+                          {
+                            navigateTo(context, AddressAndPhoneChangeScreen());
+                          },
+                          text: AppLocalizations.of(context).translate("change_phone"),
+                        ),
                     ],
                   ),
                 ),

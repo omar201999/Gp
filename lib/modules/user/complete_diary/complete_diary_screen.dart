@@ -109,6 +109,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
     onDismissed: (direction)
     {
       HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
+
       ScaffoldMessenger.of(context)
           .showSnackBar(
           SnackBar(
@@ -118,6 +119,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
           )
       );
     },
+
     background: Container(
       //alignment: Alignment.centerLeft,
       child:Padding(

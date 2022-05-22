@@ -73,7 +73,7 @@ class HomeCubit extends Cubit<HomeStates> {
   ImagePicker? picker = ImagePicker();
 
   Future? getProfileImage() async {
-    final pickedFile = await picker!.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker!.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
       emit(GetProfileImageSuccessState());
@@ -1142,7 +1142,7 @@ class HomeCubit extends Cubit<HomeStates> {
   File? feedBackImage;
 
   Future? getFeedbackImage() async {
-    final pickedFile = await picker!.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker!.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       feedBackImage = File(pickedFile.path);
       emit(GetFeedBackImageSuccessState());

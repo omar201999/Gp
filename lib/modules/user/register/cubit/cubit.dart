@@ -166,7 +166,7 @@ class RegisterCubit extends Cubit<RegisterStates>
   File? profileImage;
   ImagePicker? picker = ImagePicker();
   Future? getProfileImage() async {
-    final pickedFile = await picker?.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker?.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
       emit(RegisterImagePickerSuccessState());

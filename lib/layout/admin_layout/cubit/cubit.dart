@@ -103,7 +103,7 @@ class AdminCubit extends Cubit<AdminStates>
   ImagePicker? picker = ImagePicker();
   File? recipeImage;
   Future? getRecipeImage() async {
-    final pickedFile = await picker?.pickImage(
+    final pickedFile = await picker?.getImage(
         source: ImageSource.gallery
     );
 
@@ -119,7 +119,7 @@ class AdminCubit extends Cubit<AdminStates>
   File? newRecipeImage;
 
   Future? getNewRecipeImage() async {
-    final pickedFile = await picker?.pickImage(
+    final pickedFile = await picker?.getImage(
         source: ImageSource.gallery
     );
 
@@ -465,7 +465,7 @@ class AdminCubit extends Cubit<AdminStates>
   File? productImage;
 
   Future? getProductImage() async {
-    final pickedFile = await picker?.pickImage(
+    final pickedFile = await picker?.getImage(
         source: ImageSource.gallery
     );
 
@@ -481,7 +481,7 @@ class AdminCubit extends Cubit<AdminStates>
   File? newProductImage;
 
   Future? getNewProductImage() async {
-    final pickedFile = await picker?.pickImage(
+    final pickedFile = await picker?.getImage(
         source: ImageSource.gallery
     );
 

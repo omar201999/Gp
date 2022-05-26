@@ -167,6 +167,11 @@
   "ex_lightly_active": "Spend a good part of the day on your feet and train from 1 to 3 days (e.g., teacher, salesperson).",
   "ex_active": "Spend a good part of the day doing some physical activity and train from 3 to 5 days (e.g., food server, postal carrier).",
   "ex_very_active": "Spend a good part of the day doing heavy physical activity train from 5 to 7 days (e.g., bike messenger, carpenter).",
-  "ex_hulk": "Spend most of the day Hard training "
-
+  "ex_hulk": "Spend most of the day Hard training ",
+  "update_successful" : "updated successful",
+  "goal-weight-greater-current-weight" : "the goal weight greater than current weight so you can only gain weight",
+  "goal-weight-smaller-current-weight" : "the goal weight smaller than current weight so you can only loss weight",
+  "goal-weight-equal-current-weight" : "the goal weight equal than current weight so you can only maintain weight",
+  "reached-water-track-goal" : "Great job! You\\'re reached your goal.",
+  "remember-drink-more-water" : "Remember to drink more if you\\'re thirsty or if you exercise."
 }

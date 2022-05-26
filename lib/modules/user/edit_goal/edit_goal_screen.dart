@@ -306,22 +306,22 @@ class _State extends State<EditGoalScreen> {
                       onPreesed: () {
 
                         if(model.weight! < model.goalWeight!.round() && goal == 'loss'){
-                          showToast(text: 'the goal weight greater than current weight so you can only gain weight', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-greater-current-weight"), state: ToastStates.WARNING);
                         }
                         else if(model.weight! < model.goalWeight!.round() && goal == 'maintain'){
-                          showToast(text: 'the goal weight greater than current weight so you can only gain weight', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-greater-current-weight"), state: ToastStates.WARNING);
                         }
                         else if(model.weight! > model.goalWeight!.round() && goal == 'maintain'){
-                          showToast(text: 'the goal weight smaller than current weight so you can only loss weight', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-smaller-current-weight"), state: ToastStates.WARNING);
                         }
                         else if(model.weight! > model.goalWeight!.round() && goal == 'gain'){
-                          showToast(text: 'the goal weight smaller than current weight so you can only loss weight ', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-smaller-current-weight"), state: ToastStates.WARNING);
                         }
                         else if(model.weight! == model.goalWeight!.round() && goal == 'gain'){
-                          showToast(text: 'the goal weight equal than current weight so you can only maintain weight', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-equal-current-weight"), state: ToastStates.WARNING);
                         }
                         else if(model.weight! == model.goalWeight!.round() && goal == 'loss'){
-                          showToast(text: 'the goal weight equal than current weight so you can only maintain weight', state: ToastStates.WARNING);
+                          showToast(text: AppLocalizations.of(context).translate("goal-weight-equal-current-weight"), state: ToastStates.WARNING);
                         }
                         else {
                           HomeCubit.get(context).updateUser(
@@ -332,6 +332,8 @@ class _State extends State<EditGoalScreen> {
                             totalCarbs: totalCarbs,
                             totalCalorie: totalCalorie,
                           );
+                          showToast(text: AppLocalizations.of(context).translate("update_successful"), state: ToastStates.SUCCESS);
+
                         }
 
 

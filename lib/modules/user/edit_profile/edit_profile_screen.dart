@@ -183,6 +183,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 goalWeight: double.parse(goalWeightController.text),
                                 weight: double.parse(weightController.text),
                               );
+                              showToast(text: AppLocalizations.of(context).translate("update_successful"), state: ToastStates.SUCCESS);
                             } else {
                               HomeCubit.get(context).uploadProfileImage(
                                 name: nameController.text,
@@ -190,6 +191,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 goalWeight: double.parse(goalWeightController.text),
                                 weight: double.parse(weightController.text),
                               );
+                              showToast(text: AppLocalizations.of(context).translate("update_successful"), state: ToastStates.SUCCESS);
                             }
                           },
                           text: AppLocalizations.of(context)

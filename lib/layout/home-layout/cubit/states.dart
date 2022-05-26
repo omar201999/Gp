@@ -318,3 +318,7 @@ class CreateFeedBackErrorState extends HomeStates
 
   CreateFeedBackErrorState(this.error);
 }
+
+class GetImageDetectionDataLoadingState extends HomeStates {}
+class GetImageDetectionDataSuccessState extends HomeStates {}
+class GetImageDetectionDataErrorState extends HomeStates {}

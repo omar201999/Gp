@@ -57,11 +57,10 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                         width: 125,
                         height: 185,
                       ),
-                      Text(
+                      defaultBodyText(
+                        context,
+                        text:
                         '$countLiter''L',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

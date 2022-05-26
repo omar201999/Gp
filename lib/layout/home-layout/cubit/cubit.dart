@@ -159,7 +159,6 @@ class HomeCubit extends Cubit<HomeStates> {
         .update(model.toMap())
         .then((value) {
       getUserData();
-      showToast(text: 'Updated successfully', state: ToastStates.SUCCESS);
       emit(UpdateUserDataSuccessState());
     }).catchError((error) {
       emit(UpdateUserDataErrorState());

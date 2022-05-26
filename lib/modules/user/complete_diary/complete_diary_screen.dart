@@ -65,12 +65,9 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                           print('omar essam $selectedDate');
                           pickDate(context);
                         },
-                        child: Text(
-                          '${DateFormat('yyyy-MM-dd').format(selectedDate)}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: Colors.black),
+                        child: defaultBodyText(
+                          context,
+                          text: '${DateFormat('yyyy-MM-dd').format(selectedDate)}',
                         ),
                       ),
                     ),

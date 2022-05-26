@@ -44,20 +44,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 16,left: 16,right: 16),
-                  child: defaultContainer(
-                    context,
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () {
-                        print('omar essam $selectedDate');
-                        pickDate(context);
-                      },
-                      child: Text(
-                        '${DateFormat('yyyy-MM-dd').format(selectedDate)}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black),
+                  child: Center(
+                    child: defaultContainer(
+                      context,
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () {
+                          print('omar essam $selectedDate');
+                          pickDate(context);
+                        },
+                        child: defaultBodyText(
+                          context,
+                          text:'${DateFormat('yyyy-MM-dd').format(selectedDate)}',
+                        ),
                       ),
                     ),
                   ),

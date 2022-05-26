@@ -143,11 +143,11 @@ class HomeCubit extends Cubit<HomeStates> {
       status: userModel!.status,
       weeklyGoal: userModel!.weeklyGoal,
       totalCalorie: totalCalorie ?? userModel!.totalCalorie,
-      totalCarbs:  totalCarbs ?? userModel!.totalCarbs,
+      totalCarbs: totalCarbs ?? userModel!.totalCarbs,
       totalFats: totalFats ?? userModel!.totalFats,
       totalProtein: totalProtein ?? userModel!.totalProtein,
       weight: weight ?? userModel!.weight,
-      totalWater: totalWater ?? userModel!.totalWater ,
+      totalWater: totalWater ?? userModel!.totalWater,
       phone: phone ?? userModel!.phone,
       address: address ?? userModel!.address,
       userActive: true,
@@ -158,9 +158,9 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(userModel!.uId)
         .update(model.toMap())
         .then((value) {
-          getUserData() ;
-          showToast(text: 'Updated successfully', state: ToastStates.SUCCESS) ;
-          emit(UpdateUserDataSuccessState());
+      getUserData();
+      showToast(text: 'Updated successfully', state: ToastStates.SUCCESS);
+      emit(UpdateUserDataSuccessState());
     }).catchError((error) {
       emit(UpdateUserDataErrorState());
     });
@@ -305,7 +305,6 @@ class HomeCubit extends Cubit<HomeStates> {
             .collection('userMeal')
             .doc(searchSnacks[i].id.toString())
             .set(searchSnacks[i].toMap())
-
             .then((value) {
           //emit(SearchAddSnacksSuccessState());
           isCheckedSnacks = List<bool>.filled(334, false, growable: true);
@@ -339,7 +338,6 @@ class HomeCubit extends Cubit<HomeStates> {
 
           calculateTotalFoodCalories();
           getUserData();
-
         }).catchError((error) {
           emit(SearchAddLunchErrorState(error.toString()));
           print(error.toString());
@@ -404,8 +402,6 @@ class HomeCubit extends Cubit<HomeStates> {
     required num fat,
     required num protein,
     required String? title,
-
-
   }) {
     MealsModel model = MealsModel(
       Food: title,
@@ -441,8 +437,10 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   List<MealsModel> completeDiary = [];
+
   //List<String> completeDiaryId = [];
   List<MealsModel> completeDiaryByDate = [];
+
   //List<String> completeDiaryByDateID = [];
 
   void getCompleteDiaryItems({DateTime? selectedDate}) {
@@ -454,7 +452,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .collection('userMeal')
         .snapshots()
         .listen((event) {
-     // completeDiaryId = [];
+      // completeDiaryId = [];
       completeDiaryByDate = [];
       event.docs.forEach((element) {
         //completeDiaryId.add(element.id);
@@ -853,21 +851,20 @@ class HomeCubit extends Cubit<HomeStates> {
   int totalFood = 0;
 
   int? calculateTotalFoodCalories() {
-      totalFood = 0;
-      //completeDiaryByDate = [];
-      for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-        totalFood = totalFood + (completeDiaryByDate[i].Calories)!.round();
-      }
-      // if (totalFood >= (userModel!.totalCalorie)!.round()) {
-      //   //totalFood = 0;
-      //   print('the biggest $totalFood');
-      //   return totalFood;
-      // } else {
-      //   print('the smallest $totalFood');
-      //   return totalFood;
-      // }
-    return totalFood ;
-
+    totalFood = 0;
+    //completeDiaryByDate = [];
+    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
+      totalFood = totalFood + (completeDiaryByDate[i].Calories)!.round();
+    }
+    // if (totalFood >= (userModel!.totalCalorie)!.round()) {
+    //   //totalFood = 0;
+    //   print('the biggest $totalFood');
+    //   return totalFood;
+    // } else {
+    //   print('the smallest $totalFood');
+    //   return totalFood;
+    // }
+    return totalFood;
   }
 
   num totalProtein = 0;
@@ -878,9 +875,9 @@ class HomeCubit extends Cubit<HomeStates> {
 
   num calculateTotalProtein() {
     totalProtein = 0;
-      for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-        totalProtein = totalProtein + (completeDiaryByDate[i].Protein)!.round();
-      }
+    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
+      totalProtein = totalProtein + (completeDiaryByDate[i].Protein)!.round();
+    }
     return totalProtein;
   }
 
@@ -981,8 +978,7 @@ class HomeCubit extends Cubit<HomeStates> {
     required String status,
     required String nameAr,
     required String descriptionAr,
-
-  }) async{
+  }) async {
     DocumentReference? orderForOneProduct;
     NewOrderModel createOrderForOneProduct = NewOrderModel(
       orderNumber: creatOrderNumberForOneBuy().toString(),
@@ -998,20 +994,21 @@ class HomeCubit extends Cubit<HomeStates> {
       quantity: selectedQuantity,
       productNameAr: nameAr,
       status: 'new',
-
-
     );
     orderForOneProduct = await FirebaseFirestore.instance
         .collection('orders')
         .add(createOrderForOneProduct.toMap());
-    FirebaseFirestore.instance.collection('orders').doc(orderForOneProduct.id).update({
-      'orderId':orderForOneProduct.id,
-      'orderNumber':createOrderForOneProduct.orderNumber,
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc(orderForOneProduct.id)
+        .update({
+      'orderId': orderForOneProduct.id,
+      'orderNumber': createOrderForOneProduct.orderNumber,
       'userName': createOrderForOneProduct.userName,
       'totalPrice': createOrderForOneProduct.totalPrice,
-      'shipping':createOrderForOneProduct.shipping,
+      'shipping': createOrderForOneProduct.shipping,
       'total': createOrderForOneProduct.total,
-      'phone':createOrderForOneProduct.phone,
+      'phone': createOrderForOneProduct.phone,
       'address': createOrderForOneProduct.address,
       'dateTime': createOrderForOneProduct.dateTime,
       'productName': createOrderForOneProduct.productName,
@@ -1019,11 +1016,8 @@ class HomeCubit extends Cubit<HomeStates> {
       'status': createOrderForOneProduct.status,
       'userEmail': createOrderForOneProduct.userEmail,
       'productNameAr': createOrderForOneProduct.productNameAr,
-
-
     }).then((value) {
-      updateProductForOneBuy(
-          prodId,
+      updateProductForOneBuy(prodId,
           name: name,
           currentPrice: currentPrice,
           oldPrice: oldPrice,
@@ -1034,11 +1028,10 @@ class HomeCubit extends Cubit<HomeStates> {
           //uId: uId,
           image: image,
           status: status,
-        descriptionAr:descriptionAr ,
-        nameAr: nameAr
-      );
+          descriptionAr: descriptionAr,
+          nameAr: nameAr);
       getOrdersForUser();
-    }).catchError((error){
+    }).catchError((error) {
       emit(GetProductsErrorState(error.toString()));
       print(error.toString());
     });
@@ -1080,58 +1073,53 @@ class HomeCubit extends Cubit<HomeStates> {
       cardItemList: cart,
       status: 'new',
       orderNumber: creatOrderNumber().toString(),
-
     );
-     order = await FirebaseFirestore.instance
+    order = await FirebaseFirestore.instance
         .collection('orders')
         .add(createOrder.toMap());
-       FirebaseFirestore.instance.collection('orders').doc(order.id).update({
-         'orderId':order.id,
-         'userName': createOrder.userName,
-         'totalPrice': createOrder.totalPrice,
-         'shipping': createOrder.shipping,
-         'total':createOrder.total,
-         'phone': createOrder.phone,
-         'address':createOrder.address,
-         'dateTime':createOrder.dateTime,
-         'status': createOrder.status,
-         'productName':createOrder.productName,
-         'quantity': createOrder.quantity,
-         'userEmail': createOrder.userEmail,
-         'orderNumber':createOrder.orderNumber,
-         'cardItemList' :cart.map((e) => e.toMap()).toList(),
-       }).then((value) {
-         getOrdersForUser();
-         //emit(CreateOrderSuccessState());
-       }).catchError((error){
-         emit(CreateOrderErrorState(error.toString()));
-         print(error.toString());
-       });
-       //print(creatOrderNumber().toString());
-       //updateProductForCartItem();
+    FirebaseFirestore.instance.collection('orders').doc(order.id).update({
+      'orderId': order.id,
+      'userName': createOrder.userName,
+      'totalPrice': createOrder.totalPrice,
+      'shipping': createOrder.shipping,
+      'total': createOrder.total,
+      'phone': createOrder.phone,
+      'address': createOrder.address,
+      'dateTime': createOrder.dateTime,
+      'status': createOrder.status,
+      'productName': createOrder.productName,
+      'quantity': createOrder.quantity,
+      'userEmail': createOrder.userEmail,
+      'orderNumber': createOrder.orderNumber,
+      'cardItemList': cart.map((e) => e.toMap()).toList(),
+    }).then((value) {
+      getOrdersForUser();
+      //emit(CreateOrderSuccessState());
+    }).catchError((error) {
+      emit(CreateOrderErrorState(error.toString()));
+      print(error.toString());
+    });
+    //print(creatOrderNumber().toString());
+    //updateProductForCartItem();
   }
 
-
-  void cancelOrder(String? id, {
-    String? name,
-    double? currentPrice,
-    double? oldPrice,
-    double? discount,
-    int? quantity,
-    int? selectedQuantity,
-    String? description,
-    String? status,
-    String? descriptionAr,
-    String? nameAr,
-    int? index
-  })
-  {
+  void cancelOrder(String? id,
+      {String? name,
+      double? currentPrice,
+      double? oldPrice,
+      double? discount,
+      int? quantity,
+      int? selectedQuantity,
+      String? description,
+      String? status,
+      String? descriptionAr,
+      String? nameAr,
+      int? index}) {
     FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
         .delete()
-        .then((value)
-    {
+        .then((value) {
       getOrdersForUser();
     }).catchError((error) {
       print(error.toString());
@@ -1225,28 +1213,26 @@ class HomeCubit extends Cubit<HomeStates> {
     required double protein,
     required String title,
     //5required double weight,
-
-  })
-  {
+  }) {
     RecipeModel model = RecipeModel(
-     totalRating: totalRating,
-      averageRating:averageRating ,
-      numOfRates: numOfRates,
-      uId:uId ,
-      image:image ,
-      calories: calories,
-      carbs:carbs ,
-      category:category ,
-      directions:directions ,
-      fats:fats ,
-      ingredients:ingredients ,
-      protein:protein ,
-      title:title ,
-     titleAr: titleAr,
-     ingredientsAr:ingredientsAr ,
-     directionsAr:directionsAr
-     // weight:weight ,
-    );
+        totalRating: totalRating,
+        averageRating: averageRating,
+        numOfRates: numOfRates,
+        uId: uId,
+        image: image,
+        calories: calories,
+        carbs: carbs,
+        category: category,
+        directions: directions,
+        fats: fats,
+        ingredients: ingredients,
+        protein: protein,
+        title: title,
+        titleAr: titleAr,
+        ingredientsAr: ingredientsAr,
+        directionsAr: directionsAr
+        // weight:weight ,
+        );
     FirebaseFirestore.instance
         .collection('recipes')
         .doc(Id)
@@ -1338,4 +1324,27 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }*/
 
+// get data of image detection
+
+  List<MealsModel> imageDetectionData = [];
+
+  /*void getImageDetectionData(String titleOfDetection) {
+    emit(GetImageDetectionDataLoadingState());
+    FirebaseFirestore.instance
+        .collection('meals')
+        .where((element) => titleOfDetection = allMeals[element].Food!)
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            imageDetectionData.add(MealsModel.fromJson(element.data()));
+            print('image detection ${imageDetectionData[0].Food}');
+          });
+          emit(GetImageDetectionDataSuccessState());
+    })
+        .catchError((error) {
+          emit(GetImageDetectionDataErrorState());
+          print(error) ;
+    });
+  }*/
 }
+

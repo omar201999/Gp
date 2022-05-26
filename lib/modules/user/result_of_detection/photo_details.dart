@@ -24,7 +24,7 @@ class PhotoDetails extends StatelessWidget
       {
         print(HomeCubit.get(context).searchPredictedMeal);
         return ConditionalBuilder(
-          condition: HomeCubit.get(context).searchPredictedMeal.length > 0,
+          condition: HomeCubit.get(context).searchPredictedMeal.isNotEmpty,
          builder: (context) => Scaffold(
            body: SingleChildScrollView(
              child: Container(
@@ -33,7 +33,7 @@ class PhotoDetails extends StatelessWidget
                    Stack(
                      children: [
                        Image(
-                         image: FileImage(image) as ImageProvider,
+                         image: FileImage(image),
                          width: double.infinity,
                        ),
                        Padding(

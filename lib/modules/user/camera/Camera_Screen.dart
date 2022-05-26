@@ -47,7 +47,7 @@ class CameraScreenState extends State<CameraScreen> {
         children: outputs != null
             ? outputs!.map((res) {
                 return Text(
-                  "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",
+                  "${res["label"]}",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,

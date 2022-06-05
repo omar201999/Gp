@@ -30,7 +30,7 @@ class CustomerDashBoardScreen extends StatelessWidget {
                 Column(
                   children: [
                     Container(
-                      height: 220,
+                      height: 400,
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
@@ -38,9 +38,9 @@ class CustomerDashBoardScreen extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             child: Image(
                               fit: BoxFit.cover,
-                              height: 180,
-                              width: double.infinity,
-                              image: NetworkImage('https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1380'),
+                              height: 350,
+                              width: MediaQuery.of(context).size.width,
+                              image: AssetImage('assets/images/logo.png'),
                             ),
                           ),
                           CircleAvatar(
@@ -103,15 +103,6 @@ class CustomerDashBoardScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              TextButton(
-                                  onPressed: (){
-                                  },
-                                  child: defaultBodyText(
-                                      context,
-                                      text:  AppLocalizations.of(context).translate("add_weight"),//'add weight',
-                                      color: defaultColor
-                                  )
-                              )
                             ],
                           ),
                         ),

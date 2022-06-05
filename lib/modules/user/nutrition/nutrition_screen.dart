@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -20,54 +21,41 @@ class NutritionScreen extends StatelessWidget
       builder:(context,state)
       {
 
-        var userModel = HomeCubit.get(context).userModel;
-        return  Scaffold(
-          appBar: buildAppBar(
-            icon: IconBroken.Arrow___Left_2,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            title: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
+        //var userModel = HomeCubit.get(context).userModel;
+        return  ConditionalBuilder(
+          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState  ,
 
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children:
-                [
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("protein_remaining"),//'Protein Remaining',
-                    calorieText: '${userModel!.totalProtein}',
-                    foodText: '${HomeCubit.get(context).calculateTotalProtein()}',
-                    remainingText: '${userModel.totalProtein! - HomeCubit.get(context).calculateTotalProtein()}',
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("fats_remaining"),//'Fats Remaining',
-                    calorieText: '${userModel.totalFats}',
-                    foodText: '${HomeCubit.get(context).calculateTotalFats()}',
-                    remainingText: '${userModel.totalFats! - HomeCubit.get(context).calculateTotalFats()}',
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("carb_remaining"),//'Carbohydrates Remaining',
-                    calorieText: '${userModel.totalCarbs}',
-                    foodText: '${HomeCubit.get(context).calculateTotalCarbs()}',
-                    remainingText: '${userModel.totalCarbs! - HomeCubit.get(context).calculateTotalCarbs()}',
-                  ),
+          builder: (context) => Scaffold(
+            appBar: buildAppBar(
+              icon: IconBroken.Arrow___Left_2,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              title: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
 
-                ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children:
+                  [
+                    buildNutritionItem(context),
+                  ],
+                ),
               ),
             ),
           ),
+
+          fallback: (context) => const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                  child: Image(
+                      image: AssetImage('assets/images/logo.png')
+                  )
+              )
+          ),
+
         );
       }
     );

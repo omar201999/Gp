@@ -42,6 +42,13 @@ class UpdateRecipeErrorState extends HomeStates{
 
   UpdateRecipeErrorState(this.error);
 }
+class AddRecipeToFavoritesSuccessState extends HomeStates{}
+
+class AddRecipeToFavoritesErrorState extends HomeStates{
+  final String error;
+
+  AddRecipeToFavoritesErrorState(this.error);
+}
 
 class UploadProfileImageLoadingState extends HomeStates{}
 
@@ -96,6 +103,14 @@ class SearchErrorBreakFastState extends HomeStates
 class GetALlMealsLoadingState extends HomeStates {}
 
 class GetALlMealsSuccessState extends HomeStates {}
+
+class GetFavoritesRecipesSuccessState  extends HomeStates {}
+
+class GetFavoritesRecipesLoadingState  extends HomeStates {}
+
+class GetFavoritesProductsSuccessState  extends HomeStates {}
+
+class GetFavoritesProductsLoadingState  extends HomeStates {}
 
 class GetALlMealsErrorState extends HomeStates
 {
@@ -217,13 +232,29 @@ class SearchAddLunchErrorState extends HomeStates
 }
 class GetAllUsersMealsLoadingState extends HomeStates {}
 
+//class GetAllUsersMealsLoading2State extends HomeStates {}
+
 class GetAllUsersMealsSuccessState extends HomeStates {}
+
+class GetAllRecipeSuccessState extends HomeStates {}
 
 class GetAllUsersMealsErrorState extends HomeStates
 {
   final String error;
 
   GetAllUsersMealsErrorState(this.error);
+}
+class DeleteFavoritesProductsErrorState extends HomeStates
+{
+  final String error;
+
+  DeleteFavoritesProductsErrorState(this.error);
+}
+class DeleteFavoritesRecipesErrorState extends HomeStates
+{
+  final String error;
+
+  DeleteFavoritesRecipesErrorState(this.error);
 }
 
 // for water tracker
@@ -243,11 +274,23 @@ class AddCartItemErrorState extends HomeStates
 
 class UpdateCartItemSuccessState extends HomeStates{}
 
+
+class AppChangeBottomSheetState extends HomeStates{}
+
+class AppChangeBottomIsFavoriteProductSheetState extends HomeStates{}
+
 class UpdateCartItemErrorState extends HomeStates
 {
   final String error;
 
   UpdateCartItemErrorState(this.error);
+}
+
+class AddProductToFavoritesErrorState extends HomeStates
+{
+  final String error;
+
+  AddProductToFavoritesErrorState(this.error);
 }
 
 class GetCartItemSuccessState extends HomeStates{}

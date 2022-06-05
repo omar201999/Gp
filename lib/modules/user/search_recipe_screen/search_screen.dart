@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 
 class SearchRecipeScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class SearchRecipeScreen extends StatelessWidget {
                   type: TextInputType.text,
                   onChanged: (value)
                   {
-                    AdminCubit.get(context).getSearchRecipe(value);
+                    AdminCubit.get(context).getSearchRecipe(value,lan!);
 
                   },
 
@@ -61,10 +62,16 @@ class SearchRecipeScreen extends StatelessWidget {
                     condition:  list.length >0,
                     builder: (context) => ListView.separated(
                     physics: const BouncingScrollPhysics(), // بتشيل الload اللي فوق دا بيخليه ينط كدا
-                    itemBuilder: (context,index) => buildRecipeItem(list[index],context),
+                    itemBuilder: (context,index) => buildRecipeItem(list[index],context,index),
                         separatorBuilder: (context,index) =>  const SizedBox(height: 8,),
-                    itemCount: list.length),
-                      fallback: (context) => Center(child: Container()),
+                    itemCount: list.length
+                    ),
+                      fallback: (context) =>  ListView.separated(
+                          physics: const BouncingScrollPhysics(), // بتشيل الload اللي فوق دا بيخليه ينط كدا
+                          itemBuilder: (context,index) => buildRecipeItem(AdminCubit.get(context).allRecipe[index],context,index),
+                          separatorBuilder: (context,index) =>  const SizedBox(height: 8,),
+                          itemCount: AdminCubit.get(context).allRecipe.length
+                      ),
                 ),
                   ),
 

@@ -290,7 +290,11 @@ class EditProductScreen extends StatelessWidget {
                                 //uId: productModel.uId,
                                 newProductImage:productModel.image,
                                 nameAr: nameArController.text,
-                                descriptionAr: descriptionArController.text
+                                descriptionAr: descriptionArController.text,
+                                numOfRates: productModel.numOfRates!,
+                                averageRating: productModel.averageRating!,
+                                totalRating: productModel.totalRating!,
+                                //isFavorite: productModel.isFavorite!
                               );
 
                             } else
@@ -305,7 +309,12 @@ class EditProductScreen extends StatelessWidget {
                                   quantity : int.parse(quantityController.text),
                                   status: productModel.status,
                                   nameAr: nameArController.text,
-                                  descriptionAr: descriptionArController.text
+                                  descriptionAr: descriptionArController.text,
+                                numOfRates: productModel.numOfRates!,
+                                averageRating: productModel.averageRating!,
+                                totalRating: productModel.totalRating!,
+                                  //isFavorite: productModel.isFavorite!
+
                                   //uId: productModel.uId,
                               );
                             }

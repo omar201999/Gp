@@ -18,7 +18,6 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/cubit/states.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
 import 'layout/admin_layout/cubit/cubit.dart';
-import 'shared/componants/componants.dart';
 import 'shared/localization/app_localization .dart';
 import 'shared/styles/themes.dart';
 
@@ -37,31 +36,30 @@ async{
           WidgetsFlutterBinding.ensureInitialized();
       await CacheHelper.init();
       await Firebase.initializeApp();
-      var token = await FirebaseMessaging.instance.getToken();
-      print(token);
+      //var token = await FirebaseMessaging.instance.getToken();
+      //print(token);
 
       // foreground fcm
       FirebaseMessaging.onMessage.listen((event)
       {
-        print('on message');
-        print(event.data.toString());
+       // print('on message');
+       // print(event.data.toString());
 
-        showToast(text: 'on message', state: ToastStates.SUCCESS,);
+        //showToast(text: 'on message', state: ToastStates.SUCCESS,);
       });
 
       // when click on notification to open app
       FirebaseMessaging.onMessageOpenedApp.listen((event)
       {
-        print('on message opened app');
-        print(event.data.toString());
+        //print('on message opened app');
+       // print(event.data.toString());
 
-        showToast(text: 'on message opened app', state: ToastStates.SUCCESS,);
+        //showToast(text: 'on message opened app', state: ToastStates.SUCCESS,);
       });
 
       // background fcm
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
       bool? isDark =  CacheHelper.getData(key: 'isDark');
-      print(isDark);
 
       //Widget widget;
       //uId =   CacheHelper.getData(key: 'uId');
@@ -99,11 +97,12 @@ async{
 
 class MyApp extends StatefulWidget
 {
-  final Widget? startWidget;
+  //final Widget? startWidget;
    final bool? isDark;
   MyApp({
-    this.startWidget,
-    this.isDark
+   // this.startWidget,
+    this.isDark,
+
   });
 
   @override
@@ -149,7 +148,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()..changeAppMode(fromCache: widget.isDark)),
-        BlocProvider(create: (context) => HomeCubit()..getCompleteDiaryItems2()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
+        BlocProvider(create: (context) => HomeCubit()..getFavoritesProducts()..getFavoritesRecipes()..getAllRecipe()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()..getFeedBack()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
@@ -233,7 +232,15 @@ class MainPage extends StatelessWidget
                     return HomeLayout();
                   }
                 }
-                return const Center(child: CircularProgressIndicator());
+
+                return const Scaffold(
+                  backgroundColor: Colors.white,
+                    body: Center(
+                        child: Image(
+                            image: AssetImage('assets/images/logo.png')
+                        )
+                    )
+                );
               }
           );
         }

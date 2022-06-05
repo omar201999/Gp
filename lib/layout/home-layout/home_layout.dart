@@ -6,6 +6,8 @@ import 'package:gp/main.dart';
 import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/modules/user/complete_diary/complete_diary_screen.dart';
+import 'package:gp/modules/user/favorite_products/favorite_products.dart';
+import 'package:gp/modules/user/favorite_recipes/favorite_recipes.dart';
 import 'package:gp/modules/user/feedback_screen/feedback_screen.dart';
 import 'package:gp/modules/user/market/search/search_market_screen.dart';
 import 'package:gp/modules/user/nutrition/nutrition_screen.dart';
@@ -62,6 +64,8 @@ class _HomeLayoutState extends State<HomeLayout> {
           builder: (context)=>Scaffold(
           drawer:Drawer(
             child: ListView(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
               padding: EdgeInsets.zero,
               children: [
                 Container(
@@ -178,6 +182,24 @@ class _HomeLayoutState extends State<HomeLayout> {
                       navigateTo(context, OrderLayoutScreen());
                     }
                 ),
+                SizedBox(height: 5,),
+                buildMenuItem(
+                    context,
+                    text:AppLocalizations.of(context).translate("Favorite Recipes"),
+                    icon: Icons.restaurant_menu_outlined,
+                    onClicked: () {
+                      navigateTo(context, FavoriteRecipes());
+                    }
+                ),
+                SizedBox(height: 5,),
+                buildMenuItem(
+                    context,
+                    text:AppLocalizations.of(context).translate("Favorite Products"),
+                    icon: Iconsax.shop4,
+                    onClicked: () {
+                      navigateTo(context, FavoriteProducts());
+                    }
+                ),
                 const Divider(),
                 const SizedBox(
                   height: 15,
@@ -189,6 +211,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                     onClicked: () {
                      signOut(context);
                     }
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
@@ -270,7 +295,14 @@ class _HomeLayoutState extends State<HomeLayout> {
           ),
           body: cubit.bodyScreen[cubit.currentIndex],
         ),
-          fallback: (context) => const Center(child: CircularProgressIndicator()),
+          fallback: (context) => const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                  child: Image(
+                      image: AssetImage('assets/images/logo.png')
+                  )
+              )
+          ),
         );
       },
 

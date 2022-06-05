@@ -341,6 +341,7 @@ class EditRecipeScreen extends StatelessWidget {
                                   directionsAr: directionsArController.text,
                                   titleAr: titleArController.text,
                                   ingredientsAr: ingredientsArController.text,
+                                //isFavorite: recipeModel.isFavorite
                               );
                             } else
                               {
@@ -362,6 +363,7 @@ class EditRecipeScreen extends StatelessWidget {
                                     directionsAr: directionsArController.text,
                                     uId: recipeModel.uId,
                                     titleAr:  titleArController.text,
+                                  //isFavorite: recipeModel.isFavorite
                                 );
                               }
 

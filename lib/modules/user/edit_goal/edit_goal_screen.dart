@@ -5,6 +5,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class EditGoalScreen extends StatefulWidget {
   @override
@@ -69,6 +70,7 @@ class _State extends State<EditGoalScreen> {
 
   @override
   void initState() {
+    super.initState();
     //goalGroup = goalList.gain;
     //activeGroup = activeList.not;
     if (HomeCubit.get(context).userModel!.goal == 'maintain' || HomeCubit.get(context).userModel!.weight == HomeCubit.get(context).userModel!.goalWeight) {
@@ -138,7 +140,15 @@ class _State extends State<EditGoalScreen> {
 
         return Scaffold(
             appBar: buildAppBar(
-                title: AppLocalizations.of(context).translate("edit_goal")),
+                title: AppLocalizations.of(context).translate("edit_goal"),
+                icon: IconBroken.Arrow___Left_2,
+                onPressed: ()
+                {
+                  Navigator.pop(context);
+                }
+            ),
+
+
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),

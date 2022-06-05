@@ -3,15 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/states.dart';
 import 'package:gp/shared/network/local/cashe_helper.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class AppCubit extends Cubit<AppStates>
 {
   AppCubit() : super(AppInitialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
-   Color constantColor1 = Color(0xFFE3F4FB);
-
+  Color constantColor1 = Color(0xFFE3F4FB);
+  Color constantColor5 = Color(0xFFEEEEEE);
   bool isDark = false;
   void changeAppMode({fromCache}) {
     if (fromCache == null) {
@@ -21,20 +20,20 @@ class AppCubit extends Cubit<AppStates>
     }
     CacheHelper.saveData(key: 'isDark', value: isDark).then((value) {
       if (isDark) {
-        constantColor1 = HexColor('333739');
+        constantColor1 =Color(0xff3a3b3c);// HexColor('#242526');//333739 0xff242526 0xff3a3b3c
         appMode = ThemeMode.dark;
-        print('HexColor');
+        constantColor5 = Color(0xFFD6D6D6);
         emit(AppChangeModeState());
       }
       else {
         constantColor1 = Color(0xFFE3F4FB);
+        constantColor5 = Color(0xFFEEEEEE);
         appMode = ThemeMode.light;
-        print('Color(0xFFE3F4FB)');
         emit(AppChangeModeState());
       }
     });
   }
-    /*bool isDark = false;
+/*bool isDark = false;
 
   void changeAppMode({ bool? fromShared})
   {
@@ -69,7 +68,7 @@ class AppCubit extends Cubit<AppStates>
       });
     }
   }*/
-    /*bool isDark = true;
+/*bool isDark = true;
   void changeAppMode({bool? value}) async {
     if (value!) {
        isDark = true;

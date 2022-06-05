@@ -11,13 +11,11 @@ import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class CartScreen extends StatelessWidget {
-  //List<int>? cartQuantity;
   ProductModel? productModel;
 
   @override
   Widget build(BuildContext context) {
 
-    int? productQuantity;
 
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state)
@@ -147,6 +145,9 @@ class CartScreen extends StatelessWidget {
                             status: model.status,
                             nameAr: model.nameAr,
                             descriptionAr: model.descriptionAr,
+                          numOfRates: model.numOfRates!,
+                          averageRating: model.averageRating!,
+                          totalRating: model.totalRating!,
                         );
                       },
                       icon: Icon (Icons.delete_forever),

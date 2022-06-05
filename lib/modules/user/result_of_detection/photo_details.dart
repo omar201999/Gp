@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
 class PhotoDetails extends StatelessWidget
@@ -57,7 +59,8 @@ class PhotoDetails extends StatelessWidget
                        child: Row(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: [
-                           Padding(
+                           if(lan=='en')
+                             Padding(
                              padding: const EdgeInsets.all(10.0),
                              child: defaultHeadLineText(
                                context,
@@ -65,6 +68,15 @@ class PhotoDetails extends StatelessWidget
                                fontSize: 30
                              ),
                            ),
+                           if(lan=='ar')
+                             Padding(
+                               padding: const EdgeInsets.all(10.0),
+                               child: defaultHeadLineText(
+                                   context,
+                                   text: '${HomeCubit.get(context).searchPredictedMeal[0].foodAr}',
+                                   fontSize: 30
+                               ),
+                             ),
                          ],
                        ),
                      ),
@@ -83,7 +95,7 @@ class PhotoDetails extends StatelessWidget
                                  children: [
                                    defaultHeadLineText(
                                      context,
-                                     text:'Protein is ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
+                                     text:'${AppLocalizations.of(context).translate("Protein")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
                                      fontWeight: FontWeight.w900
                                    ),
                                    SizedBox(
@@ -91,16 +103,7 @@ class PhotoDetails extends StatelessWidget
                                    ),
                                    defaultHeadLineText(
                                      context,
-                                     text:'Calories is ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
-                                       fontWeight: FontWeight.w900
-
-                                   ),
-                                   SizedBox(
-                                     height: 10,
-                                   ),
-                                   defaultHeadLineText(
-                                     context,
-                                     text:'Carbs is ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                     text:'${AppLocalizations.of(context).translate("cal")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
                                        fontWeight: FontWeight.w900
                                    ),
                                    SizedBox(
@@ -108,7 +111,15 @@ class PhotoDetails extends StatelessWidget
                                    ),
                                    defaultHeadLineText(
                                      context,
-                                     text:'Fat is ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
+                                     text:'${AppLocalizations.of(context).translate("Carbs")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                       fontWeight: FontWeight.w900
+                                   ),
+                                   SizedBox(
+                                     height: 10,
+                                   ),
+                                   defaultHeadLineText(
+                                     context,
+                                     text:'${AppLocalizations.of(context).translate("Fats")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
                                        fontWeight: FontWeight.w900
                                    ),
                                  ],

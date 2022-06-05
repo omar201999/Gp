@@ -69,7 +69,7 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                           defaultRawButton(
                               onPressed: () {
                                 setState(() {
-                                  HomeCubit.get(context).addWaterGlass();
+                                  HomeCubit.get(context).addWaterGlass(context);
                                   HomeCubit.get(context).addCountLiter();
                                 });
 

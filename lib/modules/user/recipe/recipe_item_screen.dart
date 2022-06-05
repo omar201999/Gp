@@ -11,13 +11,27 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
-import 'package:hexcolor/hexcolor.dart';
 
+class CurvePainter extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+   path.lineTo(0,size.height-40);
+    path.quadraticBezierTo(size.width / 4, size.height , size.width / 2, size.height);
+    path.quadraticBezierTo(size.width - (size.width / 4), size.height , size.width, size.height-40);
+    path.lineTo(size.width, 0);
+    return path;
+  }
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
 class RecipeItemScreen extends StatefulWidget {
 
   RecipeModel recipeModel;
+  int index;
   RecipeItemScreen({
    required this.recipeModel,
+   required this.index,
 });
 
   @override
@@ -26,6 +40,28 @@ class RecipeItemScreen extends StatefulWidget {
 
 class _RecipeItemScreenState extends State<RecipeItemScreen>
 {
+  @override
+  void initState() {
+    super.initState();
+    if(HomeCubit.get(context).favoritesRecipes.isNotEmpty)
+    {
+     for(int i=0;i < HomeCubit.get(context).favoritesRecipes.length;i++)
+     {
+       if(HomeCubit.get(context).favoritesRecipes[i].uId == widget.recipeModel.uId)
+       {
+         setState(() {
+           HomeCubit.get(context).isFavorite[widget.index]=true;
+         });
+       }
+     }
+    }
+    else
+    {
+      setState(() {
+        HomeCubit.get(context).isFavorite[widget.index]=false;
+      });
+    }
+  }
 
   double? rating = 3 ;
 
@@ -37,280 +73,309 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
       {
         return Scaffold(
           //backgroundColor: Colors.grey[50],
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children:
-              [
-                Stack(
-                  children:
-                  [
-                    Container(
-                      width: double.infinity,
-                      height: 400,
-                      decoration:  BoxDecoration(
-                        image: DecorationImage(
-                          image:NetworkImage('${widget.recipeModel.image}'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                          top: 40,
-                         start: 8,
-                      ),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        child: IconButton(
-                          color: defaultColor,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon( IconBroken.Arrow___Left_2, ),
-                        ),
-                      ).asGlass(
-                        tintColor: Colors.transparent,
-                        clipBorderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                    [
-                      defaultContainer(
-                        context,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if(lan =='en')
-                              defaultHeadLineText(
-                                  context,
-                                  text:  '${widget.recipeModel.title}',
-                                  maxLines: 2
+          body: SafeArea(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children:
+                [
+                  Stack(
+                    alignment: Alignment.topLeft,
+                    children: [
+                      ClipPath(
+                        clipper: CurvePainter(),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 400,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              //alignment: Alignment.center,
+                              image:NetworkImage('${widget.recipeModel.image}'
                               ),
-                              if(lan =='ar')
-                                defaultHeadLineText(
-                                    context,
-                                    text:  '${widget.recipeModel.titleAr}',
-                                    maxLines: 2
-                                ),
-                            ],
-                          ),
-                        ),
-                        width: double.infinity,
-                        height: 100,
-                      ),
-                      const SizedBox(height: 15,),
-                      defaultContainer(
-                        context,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                children:
-                                [
-                                  defaultHeadLineText(
-                                      context,
-                                      text: widget.recipeModel.averageRating!.toStringAsFixed(1),fontSize: 40,
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context).translate("Avg rating"),
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 3,
-                                height: 110,
-                                color: HexColor('#FE617E'),//#FF5A53#ED2C47#FE617E
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Rate This Recipe"),),
-                                    RatingBar.builder(
-                                      initialRating: rating!,
-                                      //minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      updateOnDrag: true,
-                                      itemCount: 5,
-                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (rating)
-                                      {
-                                        this.rating = rating;
-                                      },
-                                    ),
-                                    defaultTextButton(
-                                        context,
-                                        function: ()
-                                        {
-                                          HomeCubit.get(context).updateRecipe(
-                                            widget.recipeModel.uId!,
-                                            image: widget.recipeModel.image!,
-                                            calories: widget.recipeModel.calories!,
-                                            carbs: widget.recipeModel.carbs!,
-                                            category: widget.recipeModel.category!,
-                                            directions: widget.recipeModel.directions!,
-                                            fats: widget.recipeModel.fats!,
-                                            ingredients: widget.recipeModel.ingredients!,
-                                            protein: widget.recipeModel.protein!,
-                                            title: widget.recipeModel.title!,
-                                            //weight: widget.recipeModel.weight!,
-                                            averageRating: (widget.recipeModel.totalRating! + rating!) / (widget.recipeModel.numOfRates! + 1)  ,
-                                            numOfRates: widget.recipeModel.numOfRates! + 1 ,
-                                            totalRating:widget.recipeModel.totalRating! + rating!,
-                                            uId: widget.recipeModel.uId!,
-                                            directionsAr: widget.recipeModel.directionsAr!,
-                                            ingredientsAr:widget.recipeModel.ingredientsAr!,
-                                            titleAr: widget.recipeModel.titleAr!,
-
-
-                                          );
-                                        },
-                                        text: 'Send'
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15,),
-
-                      defaultContainer(
-                        context,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              defaultHeadLineText(
-                                  context, text:AppLocalizations.of(context).translate("Nutrition Per Serving")),// 'Nutrition Per Serving'),
-                              const SizedBox(height: 5,),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: CircleAvatar(
-                                      backgroundColor: defaultColor,
-                                      radius: 40,
-                                      child: CircleAvatar(
-                                        radius: 35,
-                                        backgroundColor:Colors.white,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
-                                          children:
-                                          [
-                                            defaultBodyText(context, text: '${widget.recipeModel.calories}',
-                                                fontWeight: FontWeight.bold,color: defaultColor),
-                                            defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  afterTitleOfRecipeItem(context, //percentage: '17%',
-                                      numberOfGrams: '${widget.recipeModel.carbs}',
-                                      nameOfType: AppLocalizations.of(context).translate("Carbs"),//'Carbs',
-                                      color: Colors.grey),
-                                  afterTitleOfRecipeItem(context, //percentage: '5%',
-                                      numberOfGrams: '${widget.recipeModel.protein}',
-                                      nameOfType: AppLocalizations.of(context).translate("Protein"),//'Proteins',
-                                      color: Colors.red),
-                                  afterTitleOfRecipeItem(context, //percentage: '2%',
-                                      numberOfGrams: '${widget.recipeModel.fats}',
-                                      nameOfType: AppLocalizations.of(context).translate("Fats"),//'Fats',
-                                      color: defaultColor),
-
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-
-
-                      defaultContainer(
-                          context,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Ingredients")),//'Ingredients'),
-                                const SizedBox(height: 5),
-                                if(lan=='en')
-                                defaultBodyText(context,
-                                    text: '${widget.recipeModel.ingredients}'
-                                ),
-                                if(lan=='ar')
-                                  defaultBodyText(context,
-                                      text: '${widget.recipeModel.ingredientsAr}'
-                                  ),
-                              ],
                             ),
-                          )
+                          ),
+                        ),
                       ),
-
-                      const SizedBox(
-                        height: 15,
-                      ),
-
-                      defaultContainer(
-                          context,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Directions")),//'Directions'),
-                                const SizedBox(height: 5,),
-                                if(lan=='en')
-                                defaultBodyText(context,
-                                  text: '${widget.recipeModel.directions}',
-                                ),
-                                if(lan=='ar')
-                                  defaultBodyText(context,
-                                    text: '${widget.recipeModel.directionsAr}',
-                                  ),
-                              ],
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                              top: 5,
+                              start: 10
                             ),
-                          )
-                      ),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              child: IconButton(
+                                color: defaultColor,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon( IconBroken.Arrow___Left_2, ),
+                              ),
+                            ).asGlass(
+                              tintColor: Colors.transparent,
+                              clipBorderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                                top: 5,
+                                end: 5
+                            ),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              child: IconButton(
+                                color: defaultColor,
+                                onPressed: ()
+                                {
+                                  HomeCubit.get(context).changeFavorites(widget.index);
+                                  if(HomeCubit.get(context).isFavorite[widget.index]==true)
+                                  {
+                                    HomeCubit.get(context).addRecipeToFavorites(
+                                      widget.recipeModel.uId!,
+                                      image: widget.recipeModel.image!,
+                                      calories: widget.recipeModel.calories!,
+                                      carbs: widget.recipeModel.carbs!,
+                                      category: widget.recipeModel.category!,
+                                      directions: widget.recipeModel.directions!,
+                                      fats: widget.recipeModel.fats!,
+                                      ingredients: widget.recipeModel.ingredients!,
+                                      protein: widget.recipeModel.protein!,
+                                      title: widget.recipeModel.title!,
+                                      averageRating: widget.recipeModel.averageRating! ,
+                                      numOfRates: widget.recipeModel.numOfRates! ,
+                                      totalRating:widget.recipeModel.totalRating! ,
+                                      recId: widget.recipeModel.uId!,
+                                      directionsAr: widget.recipeModel.directionsAr!,
+                                      ingredientsAr:widget.recipeModel.ingredientsAr!,
+                                      titleAr: widget.recipeModel.titleAr!,
+                                      isFavorite: true,
+                                    );
+                                  }
+                                  else
+                                    {
+                                      HomeCubit.get(context).deleteFavoritesRecipes(widget.recipeModel.uId!,);
+                                    }
+                                },
+                                icon: Icon(
+                                    Icons.favorite,
+                                    color: HomeCubit.get(context).isFavorite[widget.index]? Color(0xffe41e3f) : Colors.grey,
+                                ),
+                              ),
+                            ).asGlass(
+                              tintColor: Colors.black,
+                              clipBorderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
 
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                      [
+                        if(lan =='en')
+                        defaultHeadLineText(
+                            context,
+                            text:  '${widget.recipeModel.title}',
+                            maxLines: 2
+                        ),
+                        if(lan =='ar')
+                          defaultHeadLineText(
+                              context,
+                              text:  '${widget.recipeModel.titleAr}',
+                              maxLines: 2
+                          ),
+
+
+                        const SizedBox(height: 15,),
+                      Row(
+                        children: [
+                          Column(
+                            children:
+                            [
+                              defaultHeadLineText(
+                                  context,
+                                  text: widget.recipeModel.averageRating!.toStringAsFixed(1),fontSize: 40,
+                              ),
+                              Text(
+                                AppLocalizations.of(context).translate("Avg rating"),
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 3,
+                            height: 110,
+                            color: Color(0xfffe617e),//#FF5A53#ED2C47#FE617E
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Rate This Recipe"),),
+                                RatingBar.builder(
+                                  initialRating: rating!,
+                                  //minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  updateOnDrag: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating)
+                                  {
+                                    this.rating = rating;
+                                  },
+                                ),
+                                defaultTextButton(
+                                    context,
+                                    function: ()
+                                    {
+                                      HomeCubit.get(context).updateRecipe(
+                                        widget.recipeModel.uId!,
+                                        image: widget.recipeModel.image!,
+                                        calories: widget.recipeModel.calories!,
+                                        carbs: widget.recipeModel.carbs!,
+                                        category: widget.recipeModel.category!,
+                                        directions: widget.recipeModel.directions!,
+                                        fats: widget.recipeModel.fats!,
+                                        ingredients: widget.recipeModel.ingredients!,
+                                        protein: widget.recipeModel.protein!,
+                                        title: widget.recipeModel.title!,
+                                        //weight: widget.recipeModel.weight!,
+                                        averageRating: (widget.recipeModel.totalRating! + rating!) / (widget.recipeModel.numOfRates! + 1)  ,
+                                        numOfRates: widget.recipeModel.numOfRates! + 1 ,
+                                        totalRating:widget.recipeModel.totalRating! + rating!,
+                                        uId: widget.recipeModel.uId!,
+                                        directionsAr: widget.recipeModel.directionsAr!,
+                                        ingredientsAr:widget.recipeModel.ingredientsAr!,
+                                        titleAr: widget.recipeModel.titleAr!,
+                                        //isFavorite: widget.recipeModel.isFavorite!,
+
+                                      );
+                                    },
+                                    text: 'Send'
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                        const SizedBox(height: 15,),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            defaultHeadLineText(
+                                context, text:AppLocalizations.of(context).translate("Nutrition Per Serving")),// 'Nutrition Per Serving'),
+                            const SizedBox(height: 5,),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CircleAvatar(
+                                    backgroundColor: defaultColor,
+                                    radius: 40,
+                                    child: CircleAvatar(
+                                      radius: 35,
+                                      backgroundColor:Colors.white,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
+                                        children:
+                                        [
+                                          defaultBodyText(context, text: '${widget.recipeModel.calories}',
+                                              fontWeight: FontWeight.bold,color: defaultColor),
+                                          defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
+                                              color: Colors.grey),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                afterTitleOfRecipeItem(context, //percentage: '17%',
+                                    numberOfGrams: '${widget.recipeModel.carbs}',
+                                    nameOfType: AppLocalizations.of(context).translate("Carbs"),//'Carbs',
+                                    color: Colors.grey),
+                                afterTitleOfRecipeItem(context, //percentage: '5%',
+                                    numberOfGrams: '${widget.recipeModel.protein}',
+                                    nameOfType: AppLocalizations.of(context).translate("Protein"),//'Proteins',
+                                    color: Colors.red),
+                                afterTitleOfRecipeItem(context, //percentage: '2%',
+                                    numberOfGrams: '${widget.recipeModel.fats}',
+                                    nameOfType: AppLocalizations.of(context).translate("Fats"),//'Fats',
+                                    color: defaultColor),
+
+                              ],
+                            )
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Ingredients")),//'Ingredients'),
+                          const SizedBox(height: 5),
+                          if(lan=='en')
+                          defaultBodyText(context,
+                              text: '${widget.recipeModel.ingredients}'
+                          ),
+                          if(lan=='ar')
+                            defaultBodyText(context,
+                                text: '${widget.recipeModel.ingredientsAr}'
+                            ),
+                        ],
+                      ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Directions")),//'Directions'),
+                          const SizedBox(height: 5,),
+                          if(lan=='en')
+                          defaultBodyText(context,
+                            text: '${widget.recipeModel.directions}',
+                          ),
+                          if(lan=='ar')
+                            defaultBodyText(context,
+                              text: '${widget.recipeModel.directionsAr}',
+                            ),
+                        ],
+                      )
+                        ,
+
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                ],
+              ),
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
@@ -325,11 +390,14 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
               else
               {
                 HomeCubit.get(context).addRecipeToMeals(
+                  widget.recipeModel.uId!,
+
                   title: widget.recipeModel.title,
                     calories: (widget.recipeModel.calories)!.round(),
                     carbs: (widget.recipeModel.carbs)!.round(),
                     fat: (widget.recipeModel.fats)!.round(),
                     protein: (widget.recipeModel.protein)!.round(),
+                  foodAr: widget.recipeModel.titleAr,
                     //Date: DateFormat.yMMMEd().format(DateTime.now())
                   );
                 ScaffoldMessenger.of(context)

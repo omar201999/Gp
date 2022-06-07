@@ -6,8 +6,20 @@ import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 
-class FavoriteProducts extends StatelessWidget {
+class FavoriteProducts extends StatefulWidget {
 
+  @override
+  State<FavoriteProducts> createState() => _FavoriteProductsState();
+}
+
+class _FavoriteProductsState extends State<FavoriteProducts> {
+
+  @override
+  void initState()
+  {
+    super.initState();
+    HomeCubit.get(context).getFavoritesProducts();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit,HomeStates>(
@@ -30,7 +42,7 @@ class FavoriteProducts extends StatelessWidget {
               [
                 Expanded(
                   child: ConditionalBuilder(
-                    condition:  list.isNotEmpty && state is !GetFavoritesProductsLoadingState ,
+                    condition:  list.isNotEmpty ,
                     builder: (context) => ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context,index) => buildmarket_item(list[index],context,index),

@@ -25,7 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var boardController = PageController();
   int _current = 0;
 
   final CarouselController _controller = CarouselController();
@@ -38,9 +37,7 @@ class _HomePageState extends State<HomePage> {
   void initState()
   {
     super.initState();
-    boardController = PageController(viewportFraction: 0.9,initialPage: 0);
     HomeCubit.get(context).getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
-    //print( HomeCubit.get(context).completeDiary.length);
   }
 
   DateTime selectedDate = DateTime.now()  ;

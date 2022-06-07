@@ -95,7 +95,7 @@ class CameraScreenState extends State<CameraScreen> {
                       ),
                       outputs != null
                           ? defaultBodyText(context,
-                          text: outputs!.isNotEmpty ? "${outputs![0]["label"]}" : 'take another pic please'
+                          text: outputs!.isNotEmpty ? "${outputs![0]["label"]}" : AppLocalizations.of(context).translate("take_another")
                       )
                           : Container(),
                       //Stack(children: stackChildren),

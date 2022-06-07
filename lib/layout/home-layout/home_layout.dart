@@ -32,8 +32,11 @@ class HomeLayout extends StatefulWidget {
 
 class _HomeLayoutState extends State<HomeLayout> {
 
-
-
+@override
+  void initState() {
+    super.initState();
+    HomeCubit.get(context).getUserData();
+}
   void _changeLanguage(Language language) async {
     Locale _locale = await setLocale(language.languageCode);
     MyApp.setLocale(context, _locale);
@@ -60,7 +63,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         HomeCubit cubit = HomeCubit.get(context);
         return ConditionalBuilder(
         //&& HomeCubit.get(context).userModel!.userActive != null
-          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState  ,
+          condition: HomeCubit.get(context).userModel != null  ,
           builder: (context)=>Scaffold(
           drawer:Drawer(
             child: ListView(
@@ -298,9 +301,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           fallback: (context) => const Scaffold(
               backgroundColor: Colors.white,
               body: Center(
-                  child: Image(
-                      image: AssetImage('assets/images/logo.png')
-                  )
+                  child:CircularProgressIndicator(),
               )
           ),
         );

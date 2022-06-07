@@ -14,11 +14,12 @@
   "validate_phone_form":"Phone must not be empty",
   "validate_phone":"Pleas enter your phone ",
   "change_app_bar":"Change Your Contact info ",
-  "change_phone": "Change Your Phone and address",
+  "change_phone": "Contact info",
   "delete_diary_message":"Delete this meal successfully",
 
   "Update contact Info":"Update contact Info",
   "Update":"Update",
+  "take_another":"take another picture please",
   "yes":"Yes",
   "partially":"Partially",
   "no":"No",

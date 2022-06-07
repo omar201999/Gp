@@ -61,6 +61,7 @@ dependencies:
   carousel_slider: ^4.0.0
   percent_indicator: ^4.0.1
   simple_shadow: ^0.3.0
+  flutter_animated_dialog: ^2.0.1
 
 
 

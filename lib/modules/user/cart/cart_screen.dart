@@ -10,7 +10,19 @@ import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+
+  @override
+  void initState()
+  {
+    super.initState();
+    HomeCubit.get(context).getCartItem();
+  }
   ProductModel? productModel;
 
   @override
@@ -158,7 +170,7 @@ class CartScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     //AppLocalizations.of(context).translate("  "),//
-                    defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")}${model.selectedQuantity}'),
+                    defaultBodyText(context, text: '${AppLocalizations.of(context).translate("quantity")} : ${model.selectedQuantity}'),
                     /*IconButton(
                       onPressed: () {
                         HomeCubit.get(context).minus(index);

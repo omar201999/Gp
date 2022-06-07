@@ -687,7 +687,11 @@ List<RecipeModel> allRecipe = [];
         //uId: uId1,
         status: status,
         descriptionAr: descriptionAr,
-        nameAr: nameAr);
+        nameAr: nameAr,
+      numOfRates: numOfRates,
+      averageRating:averageRating ,
+      totalRating: totalRating
+    );
 
     FirebaseFirestore.instance
         .collection('users')
@@ -713,7 +717,7 @@ List<RecipeModel> allRecipe = [];
         numOfRates: numOfRates,
 
       );
-      getCartItem();
+      //getCartItem();
       //emit(AddCartItemSuccessState());
     }).catchError((error) {
       emit(AddCartItemErrorState(error));
@@ -974,18 +978,9 @@ List<RecipeModel> allRecipe = [];
 
   int? calculateTotalFoodCalories() {
     totalFood = 0;
-    //completeDiaryByDate = [];
     for (int i = 0; i <= completeDiary.length - 1; i++) {
       totalFood = totalFood + (completeDiary[i].Calories)!.round();
     }
-    // if (totalFood >= (userModel!.totalCalorie)!.round()) {
-    //   //totalFood = 0;
-    //   print('the biggest $totalFood');
-    //   return totalFood;
-    // } else {
-    //   print('the smallest $totalFood');
-    //   return totalFood;
-    // }
     return totalFood;
   }
 
@@ -1640,7 +1635,6 @@ List<RecipeModel> allRecipe = [];
         print(error.toString());
       });
     }
-
   }
 
 

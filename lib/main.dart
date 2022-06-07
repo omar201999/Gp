@@ -148,7 +148,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AppCubit()..changeAppMode(fromCache: widget.isDark)),
-        BlocProvider(create: (context) => HomeCubit()..getFavoritesProducts()..getFavoritesRecipes()..getAllRecipe()..getCartItem()..getAllMeals()..getProducts()..getOrdersForUser()),
+        BlocProvider(create: (context) => HomeCubit()..getAllRecipe()..getAllMeals()..getProducts()),
         BlocProvider(create: (context) => AdminCubit()..getUsers()..getLunchRecipe()..getDinnerRecipe()..getBreakfastRecipe()..getProducts()..countStockProducts()..getAllRecipe()..getOrders()..getFeedBack()),
       ],
       child: BlocConsumer<AppCubit,AppStates>(
@@ -192,7 +192,7 @@ class _MyAppState extends State<MyApp> {
 class MainPage extends StatelessWidget
 {
    UserModel? userModel;
-  Future<DocumentSnapshot> getUserData() async{
+   Future<DocumentSnapshot> getUserData() async{
     DocumentSnapshot x = await FirebaseFirestore.instance.
     collection('users').
     doc(uId).
@@ -224,7 +224,7 @@ class MainPage extends StatelessWidget
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                 if(snapshot.hasData && snapshot.data != null) {
                   final user = snapshot.data!.data();
-                  HomeCubit.get(context).userModel=userModel;
+                  HomeCubit.get(context).userModel = userModel;
                   if(user!['status'] == 'admin') {
                     return AdminLayout();
                   } else {

@@ -27,7 +27,10 @@ class CompleteDiaryScreen extends StatefulWidget {
 class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
   @override
   void initState(){
-    HomeCubit.get(context).getCompleteDiaryItems(selectedDate: DateTime.now());
+    super.initState();
+    HomeCubit.get(context).getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+   // print(HomeCubit.get(context).completeDiary.length);
+    //print(selectedDate);
   }
 
   DateTime selectedDate = DateTime.now()  ;
@@ -52,34 +55,51 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
               },
             ),
             body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    defaultContainer(
-                      context,
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () {
-                          print('omar essam $selectedDate');
-                          pickDate(context);
-                        },
-                        child: defaultBodyText(
-                          context,
-                          text: '${DateFormat('yyyy-MM-dd').format(selectedDate)}',
-                        ),
+                    TextButton(
+                      onPressed: () {
+                        //print('omar essam $selectedDate');
+                        pickDate(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                        [
+                          Icon(
+                            IconBroken.Calendar,
+                            color: Theme.of(context).iconTheme.color,
+                          ),
+                          SizedBox(width: 5,),
+                          defaultBodyText(
+                            context,
+                            text:DateFormat('d MMMM y',lan).format(selectedDate),//Today
+                            fontSize: 20,
+                          ),
+                        ],
                       ),
                     ),
+
                     SizedBox(height: 20,),
+                   /* ListView.separated(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
+                      separatorBuilder: (context, index) => SizedBox(height: 10,),
+                      itemCount: HomeCubit.get(context).completeDiary.length,
+                    ),*/
+
                     ConditionalBuilder(
-                        condition: HomeCubit.get(context).completeDiaryByDate.length > 0 && state is !GetAllUsersMealsLoadingState,
+                        condition: HomeCubit.get(context).completeDiary.isNotEmpty  ,
                         builder: (context) => ListView.separated(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiaryByDate[index],context,index),
+                          itemBuilder: (context, index) => buildCompleteDiaryItem(HomeCubit.get(context).completeDiary[index],context,index),
                           separatorBuilder: (context, index) => SizedBox(height: 10,),
-                          itemCount: HomeCubit.get(context).completeDiaryByDate.length,
+                          itemCount: HomeCubit.get(context).completeDiary.length,
                         ),
                         fallback: (context) => Center(
                           child: Column(
@@ -91,6 +111,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                           ),
                         )
                     ),
+
                   ],
                 ),
               ),
@@ -105,8 +126,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
     key: Key(model.Food!),
     onDismissed: (direction)
     {
-      HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
-
+   /*   HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
       ScaffoldMessenger.of(context)
           .showSnackBar(
           SnackBar(
@@ -114,7 +134,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
             content: defaultBodyText(context, text: AppLocalizations.of(context).translate("delete_diary_message")),
             duration: const Duration(seconds: 2),
           )
-      );
+      );*/
     },
 
     background: Container(
@@ -168,13 +188,13 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                     Row(
                       children: [
                         Text('${model.Calories} ${AppLocalizations.of(context).translate("cal")},' ,style: Theme.of(context).textTheme.caption,),
-                        SizedBox(width: 3,),
+                        SizedBox(width: 2,),
                         Text('${model.Protein}${AppLocalizations.of(context).translate("Protein")},',style: Theme.of(context).textTheme.caption,),
-                        SizedBox(width: 3,),
+                        SizedBox(width: 2,),
                         Text('${model.Carbs}${AppLocalizations.of(context).translate("Carbs")},',style: Theme.of(context).textTheme.caption,),
-                        SizedBox(width: 3,),
-                        Text('${model.Fat}${AppLocalizations.of(context).translate("Fats")}',style: Theme.of(context).textTheme.caption,),
-                        SizedBox(width: 3,)
+                        SizedBox(width: 2,),
+                        Text('${model.Fat}${AppLocalizations.of(context).translate("Fats")}',style: Theme.of(context).textTheme.caption!.copyWith(overflow: TextOverflow.ellipsis,),
+                        ),
                       ],
                     ) ,
                   ],
@@ -185,7 +205,8 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                       Icons.delete_forever
                   ),
                   onPressed: () {
-                    HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
+                    HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString(),selectedDate: DateFormat('d MMMM y').format(selectedDate));
+                    print(HomeCubit.get(context).completeDiary.length);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(
                         SnackBar(
@@ -212,10 +233,9 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
     );
     if(selected != null && selected != selectedDate)
       {
-
         setState(() {
           selectedDate = selected ;
-          HomeCubit.get(context).getCompleteDiaryItems(selectedDate: selectedDate);
+          HomeCubit.get(context).getCompleteDiaryItems2(DateFormat('d MMMM y').format(selectedDate));
         });
       }
   }

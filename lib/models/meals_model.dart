@@ -1,4 +1,6 @@
 
+import 'package:intl/intl.dart';
+
 class MealsModel {
   num? id;
   String? Measure;
@@ -10,7 +12,7 @@ class MealsModel {
   num? Fat;
   num? Calories;
   num? Grams;
-  DateTime? Date ;
+  String? Date ;
 
   MealsModel({
     this.Food,
@@ -37,7 +39,7 @@ class MealsModel {
     Measure = json['Measure'];
     foodAr = json['foodAr'];
     measureAr = json['measureAr'];
-    Date = json['Date'] == null ? DateTime.now() : json['Date'].toDate();
+    Date = json['Date'] /*== null ? DateTime.now() : json['Date'].toDate()*/;
   }
 
   Map<String, dynamic> toMap() {
@@ -52,7 +54,7 @@ class MealsModel {
       'Measure': Measure,
       'foodAr': foodAr,
       'measureAr': measureAr,
-      'Date': DateTime.now(),
+      'Date': DateFormat('d MMMM y').format(DateTime.now()),
     };
   }
 }

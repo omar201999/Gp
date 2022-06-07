@@ -42,7 +42,7 @@ class SearchRecipeItemScreen extends StatelessWidget {
                   type: TextInputType.text,
                   onChanged: (value)
                   {
-                    AdminCubit.get(context).getSearchRecipe(value);
+                    AdminCubit.get(context).getSearchRecipe(value,'en');
 
                   },
 

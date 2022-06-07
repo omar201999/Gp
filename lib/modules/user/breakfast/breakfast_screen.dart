@@ -17,7 +17,8 @@ class BreakFastScreen extends StatelessWidget {
       builder: (context,state)
       {
         var list = HomeCubit.get(context).searchBreakFast;
-        return  buildSerachMealItem(list, context, title: AppLocalizations.of(context).translate("breakfast"),//'BreakFast',
+        var listOfEmptySearch = HomeCubit.get(context).allMeals;
+        return  buildSerachMealItem(list,listOfEmptySearch, context, title: AppLocalizations.of(context).translate("breakfast"),//'BreakFast',
           onChangedSearch: (value )
           {
             HomeCubit.get(context).getSearchBreakFast(value,lan!);

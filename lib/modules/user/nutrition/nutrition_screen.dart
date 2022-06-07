@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -74,81 +75,58 @@ class NutritionScreen extends StatelessWidget
       builder:(context,state)
       {
 
-        var userModel = HomeCubit.get(context).userModel;
-        return  Scaffold(
-          appBar: buildAppBar(
-            icon: IconBroken.Arrow___Left_2,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            title: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
+        //var userModel = HomeCubit.get(context).userModel;
+        return  ConditionalBuilder(
+          condition: HomeCubit.get(context).userModel != null  && state is! GetUserDataLoadingState  ,
 
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children:
-                [
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("protein_remaining"),//'Protein Remaining',
-                    calorieText: '${userModel!.totalProtein}',
-                    foodText: '${HomeCubit.get(context).calculateTotalProtein()}',
-                    remainingText: '${userModel.totalProtein! - HomeCubit.get(context).calculateTotalProtein()}',
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("fats_remaining"),//'Fats Remaining',
-                    calorieText: '${userModel.totalFats}',
-                    foodText: '${HomeCubit.get(context).calculateTotalFats()}',
-                    remainingText: '${userModel.totalFats! - HomeCubit.get(context).calculateTotalFats()}',
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  buildNutritionItem(
-                    context,
-                    title: AppLocalizations.of(context).translate("carb_remaining"),//'Carbohydrates Remaining',
-                    calorieText: '${userModel.totalCarbs}',
-                    foodText: '${HomeCubit.get(context).calculateTotalCarbs()}',
-                    remainingText: '${userModel.totalCarbs! - HomeCubit.get(context).calculateTotalCarbs()}',
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  if(HomeCubit.get(context).calculateTotalFats().toInt() != 0 || HomeCubit.get(context).calculateTotalCarbs().toInt() != 0 || HomeCubit.get(context).calculateTotalProtein().toInt() != 0)
-                    Column (
-                     children: [
-                       Padding(
-                         padding: EdgeInsets.all(10),
-                         child: Text(
-                           'Macros',
-                           style: Theme.of(context).textTheme.headline1,
-                         ),
-                       ),
-                       Padding(
-                         padding: const EdgeInsets.symmetric(
-                         horizontal: 15,
-                        ),
-                        child: AspectRatio(
-                         aspectRatio: 1.3,
-                         child: Card(
-                           color: AppCubit.get(context).scaffoldColor,
-                           child: Row(
-                                 children: [
-                                   const SizedBox(
-                                     height: 18,
-                                   ),
-                                   Expanded(
-                                     child: AspectRatio(
-                                       aspectRatio: 1,
-                                       child: PieChart(
-                                         PieChartData(
-                                           /*pieTouchData: PieTouchData(
+          builder: (context) => Scaffold(
+            appBar: buildAppBar(
+              icon: IconBroken.Arrow___Left_2,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              title: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
+
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children:
+                  [
+                    buildNutritionItem(context),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    if(HomeCubit.get(context).calculateTotalFats().toInt() != 0 || HomeCubit.get(context).calculateTotalCarbs().toInt() != 0 || HomeCubit.get(context).calculateTotalProtein().toInt() != 0)
+                      Column (
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'Macros',
+                              style: Theme.of(context).textTheme.headline1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                            ),
+                            child: AspectRatio(
+                              aspectRatio: 1.3,
+                              child: Card(
+                                color: AppCubit.get(context).scaffoldColor,
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      height: 18,
+                                    ),
+                                    Expanded(
+                                      child: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: PieChart(
+                                          PieChartData(
+                                            /*pieTouchData: PieTouchData(
                                         touchCallback: (FlTouchEvent event, pieTouchResponse) {
                                              setState(() {
                                                if (!event.isInterestedForInteractions ||
@@ -160,77 +138,87 @@ class NutritionScreen extends StatelessWidget
                                              touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
                                          });
                                     }),*/
-                                           // centerSpaceRadius: double.infinity,
-                                             borderData: FlBorderData(
-                                               show: false,
-                                             ),
-                                             sectionsSpace: 0,
-                                             centerSpaceRadius: 40,
-                                             sections: showingSections()
-                                         ),
-                                       ),
-                                     ),
-                                   ),
-                                   const SizedBox(
-                                     height: 10,
-                                   ),
+                                            // centerSpaceRadius: double.infinity,
+                                              borderData: FlBorderData(
+                                                show: false,
+                                              ),
+                                              sectionsSpace: 0,
+                                              centerSpaceRadius: 40,
+                                              sections: showingSections()
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
 
-                                 ],
-                               ),
+                                  ],
+                                ),
 
-                         ),
-                       ),
-                     ),
-                       Padding(
-                           padding: const EdgeInsets.symmetric(
-                               horizontal: 15
-                           ),
-                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: const [
-                              Text(
-                              'Total',
                               ),
-                              SizedBox(
-                              width: 20.0,
-                             ),
-                              Text(
-                               'Goal'
-                           )
-                         ],
-                       )
-                     ),
-                       Padding(
-                         padding: const EdgeInsets.symmetric(
-                             vertical: 10,
-                             horizontal: 15
-                         ),
-                         child: defaultContainer(
-                           context,
-                           color: AppCubit.get(context).scaffoldColor,
-                           height: 140,
-                           child: ListView.builder(
-                               physics: NeverScrollableScrollPhysics(),
-                               itemCount: allNutrition.length,
-                               itemBuilder: (context, index) => indicator(
-                                   color: colors[index],
-                                   text: nameOfNut[index],
-                                   isSquare: true,
-                                   secondText: ((allNutrition[index]/totalEaten*100).round()).toString()+'%',
-                                   secondTextColor: colors[index],
-                                   detailsText: gramsOfNut[index],
-                                   thirdText: goalOfNut[index]
-                               )
-                           ),
-                         ),
-                       )
-                   ],
-                  )
-                ],
-
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: const [
+                                  Text(
+                                    'Total',
+                                  ),
+                                  SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  Text(
+                                      'Goal'
+                                  )
+                                ],
+                              )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 15
+                            ),
+                            child: defaultContainer(
+                              context,
+                              color: AppCubit.get(context).scaffoldColor,
+                              height: 140,
+                              child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: allNutrition.length,
+                                  itemBuilder: (context, index) => indicator(
+                                      color: colors[index],
+                                      text: nameOfNut[index],
+                                      isSquare: true,
+                                      secondText: ((allNutrition[index]/totalEaten*100).round()).toString()+'%',
+                                      secondTextColor: colors[index],
+                                      detailsText: gramsOfNut[index],
+                                      thirdText: goalOfNut[index]
+                                  )
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                  ],
+                ),
               ),
             ),
           ),
+
+          fallback: (context) => const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                  child: Image(
+                      image: AssetImage('assets/images/logo.png')
+                  )
+              )
+          ),
+
         );
       }
     );

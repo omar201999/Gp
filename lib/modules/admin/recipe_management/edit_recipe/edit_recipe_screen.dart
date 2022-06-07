@@ -15,6 +15,7 @@ class EditRecipeScreen extends StatelessWidget {
   var titleArController = TextEditingController();
   var ingredientsArController = TextEditingController();
   var directionsArController = TextEditingController();
+
   //var categoryController = TextEditingController();
   var carbsController = TextEditingController();
   var fatsController = TextEditingController();
@@ -373,31 +374,31 @@ class EditRecipeScreen extends StatelessWidget {
                                 print(recipeModel.totalRating);
                                 //print(recipeModel.uId);
 
-                                if(recipeImage == null)
-                                {
-                                  AdminCubit.get(context).updateRecipe(
-                                    recipeModel.uId,
-                                    title: titleController.text,
-                                    ingredients: ingredientsController.text,
-                                    directions: directionsController.text,
-                                    carbs: double.parse(carbsController.text),
-                                    protein: double.parse(proteinController.text),
-                                    fats: double.parse(fatsController.text),
-                                    calories: double.parse(calsController.text),
-                                    //weight: double.parse(weightController.text),
-                                    category: recipeModel.category,
-                                    newRecipeImage:recipeModel.image,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!,
-                                    uId: recipeModel.uId,
-                                    directionsAr: directionsArController.text,
-                                    titleAr: titleArController.text,
-                                    ingredientsAr: ingredientsArController.text,
-                                  );
-                                } else
-                                {
-                                  AdminCubit.get(context).uploadNewImage(
+                            if(recipeImage == null)
+                            {
+                              AdminCubit.get(context).updateRecipe(
+                                  recipeModel.uId,
+                                  title: titleController.text,
+                                  ingredients: ingredientsController.text,
+                                  directions: directionsController.text,
+                                  carbs: double.parse(carbsController.text),
+                                  protein: double.parse(proteinController.text),
+                                  fats: double.parse(fatsController.text),
+                                  calories: double.parse(calsController.text),
+                                  //weight: double.parse(weightController.text),
+                                  category: recipeModel.category,
+                                  newRecipeImage:recipeModel.image,
+                                  numOfRates: recipeModel.numOfRates!,
+                                  averageRating: recipeModel.averageRating!,
+                                  totalRating: recipeModel.totalRating!,
+                                  uId: recipeModel.uId,
+                                  directionsAr: directionsArController.text,
+                                  titleAr: titleArController.text,
+                                  ingredientsAr: ingredientsArController.text,
+                              );
+                            } else
+                              {
+                                AdminCubit.get(context).uploadNewImage(
                                     recipeModel.uId,
                                     title: titleController.text,
                                     ingredients: ingredientsController.text,
@@ -415,8 +416,9 @@ class EditRecipeScreen extends StatelessWidget {
                                     directionsAr: directionsArController.text,
                                     uId: recipeModel.uId,
                                     titleAr:  titleArController.text,
-                                  );
-                                }
+                                  //isFavorite: recipeModel.isFavorite
+                                );
+                              }
 
                               },
                               text: 'UPDATE',

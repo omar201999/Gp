@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/feedback_model.dart';
@@ -17,6 +19,7 @@ import 'package:gp/modules/user/market/MarketScreen.dart';
 import 'package:gp/modules/user/recipe/recipe_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -25,6 +28,22 @@ class HomeCubit extends Cubit<HomeStates> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
+
+List<RecipeModel> allRecipe = [];
+  void getAllRecipe()
+  {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .snapshots()
+        .listen((event) {
+      allRecipe = [];
+      event.docs.forEach((element) {
+        allRecipe.add(RecipeModel.fromJson(element.data()));
+      });
+      emit(GetAllRecipeSuccessState());
+
+    });
+  }
 
   void getUserData() {
     emit(GetUserDataLoadingState());
@@ -62,7 +81,6 @@ class HomeCubit extends Cubit<HomeStates> {
     RecipeScreen(),
     CustomerDashBoardScreen(),
   ];
-  List<String> titleAppBar = ['Home', 'Market', 'Recipe', 'Me'];
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
@@ -96,7 +114,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        print(value);
+       // print(value);
         updateUser(
           weight: weight,
           name: name,
@@ -167,6 +185,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   List<MealsModel> allMeals = [];
 
+
   void getAllMeals() {
     FirebaseFirestore.instance.collection('meals').snapshots().listen((event) {
       event.docs.forEach((element) {
@@ -176,7 +195,7 @@ class HomeCubit extends Cubit<HomeStates> {
       // {
       //   print(allMeals[i].Food);
       // }
-      print(allMeals.length);
+     // print(allMeals.length);
       emit(GetALlMealsSuccessState());
     });
   }
@@ -202,7 +221,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<MealsModel> searchLunch = [];
 
   void getSearchLunch(String value, String lan) {
-    if (lan == 'en') {
+     if (lan == 'en') {
       searchLunch = [];
       searchLunch = allMeals
           .where((element) =>
@@ -260,7 +279,7 @@ class HomeCubit extends Cubit<HomeStates> {
     searchPredictedMeal = allMeals
         .where((element) => element.Food!.toLowerCase() == value.toLowerCase())
         .toList();
-    print(value.toLowerCase());
+   // print(value.toLowerCase());
     emit(SearchPredictedMealState());
   }
 
@@ -268,7 +287,6 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void changeCheckBoxBreakFast(value, index) {
     isCheckedBreakFast[index] = value;
-
     emit(ChangeCheckBoxState());
   }
 
@@ -298,49 +316,96 @@ class HomeCubit extends Cubit<HomeStates> {
     int i = 0;
     for (i; isCheckedSnacks.length > 0; i++) {
       if (isCheckedSnacks[i] == true) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userModel!.uId)
-            .collection('userMeal')
-            .doc(searchSnacks[i].id.toString())
-            .set(searchSnacks[i].toMap())
-            .then((value) {
-          //emit(SearchAddSnacksSuccessState());
-          isCheckedSnacks = List<bool>.filled(334, false, growable: true);
-          calculateTotalFoodCalories();
-          getUserData();
-          getCompleteDiaryItems2();
-        }).catchError((error) {
-          emit(SearchAddSnacksErrorState(error.toString()));
-          print(error.toString());
-        });
+        if(searchSnacks.isNotEmpty)
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(searchSnacks[i].id.toString())
+              .set(searchSnacks[i].toMap())
+              .then((value) {
+            //emit(SearchAddSnacksSuccessState());
+            isCheckedSnacks = List<bool>.filled(334, false, growable: true);
+            calculateTotalFoodCalories();
+            getUserData();
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+          }).catchError((error) {
+            emit(SearchAddSnacksErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+        else
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(allMeals[i].id.toString())
+              .set(allMeals[i].toMap())
+              .then((value) {
+            isCheckedSnacks = List<bool>.filled(334, false, growable: true);
+            //emit(SearchAddLunchSuccessState());
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+            calculateTotalFoodCalories();
+            getUserData();
+          }).catchError((error) {
+            emit(SearchAddLunchErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+
       }
     }
-    getCompleteDiaryItems2();
+    //getCompleteDiaryItems2();
   }
 
   void addLunchMeal() {
     int i = 0;
     for (i; isCheckedLunch.length > 0; i++) {
       if (isCheckedLunch[i] == true) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userModel!.uId)
-            .collection('userMeal')
-            .doc(searchLunch[i].id.toString())
-            .set(searchLunch[i].toMap())
-            .then((value) {
-          isCheckedLunch = List<bool>.filled(334, false, growable: true);
+        if(searchLunch.isNotEmpty)
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(searchLunch[i].id.toString())
+              .set(searchLunch[i].toMap())
+              .then((value) {
+            isCheckedLunch = List<bool>.filled(334, false, growable: true);
 
-          //emit(SearchAddLunchSuccessState());
-          getCompleteDiaryItems2();
+            //emit(SearchAddLunchSuccessState());
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
 
-          calculateTotalFoodCalories();
-          getUserData();
-        }).catchError((error) {
-          emit(SearchAddLunchErrorState(error.toString()));
-          print(error.toString());
-        });
+            calculateTotalFoodCalories();
+            getUserData();
+          }).catchError((error) {
+            emit(SearchAddLunchErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+        else
+          {
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(userModel!.uId)
+                .collection('userMeal')
+                .doc(allMeals[i].id.toString())
+                .set(allMeals[i].toMap())
+                .then((value) {
+              isCheckedLunch = List<bool>.filled(334, false, growable: true);
+              //emit(SearchAddLunchSuccessState());
+              //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+
+              calculateTotalFoodCalories();
+              getUserData();
+            }).catchError((error) {
+              emit(SearchAddLunchErrorState(error.toString()));
+              print(error.toString());
+            });
+          }
+
       }
     }
   }
@@ -348,79 +413,133 @@ class HomeCubit extends Cubit<HomeStates> {
   void addBreakFastMeal() {
     int i = 0;
     for (i; isCheckedBreakFast.length > 0; i++) {
-      if (isCheckedBreakFast[i] == true) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userModel!.uId)
-            .collection('userMeal')
-            .doc(searchBreakFast[i].id.toString())
-            .set(searchBreakFast[i].toMap())
-            .then((value) {
-          isCheckedBreakFast = List<bool>.filled(334, false, growable: true);
+      if (isCheckedBreakFast[i] == true)
+      {
+        if(searchBreakFast.isNotEmpty)
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(searchBreakFast[i].id.toString())
+              .set(searchBreakFast[i].toMap())
+              .then((value) {
+            isCheckedBreakFast = List<bool>.filled(334, false, growable: true);
 
-          //emit(SearchAddBreakFastSuccessState());
-          calculateTotalFoodCalories();
-          getCompleteDiaryItems2();
-          getUserData();
-        }).catchError((error) {
-          emit(SearchAddBreakFastErrorState(error.toString()));
-          print(error.toString());
-        });
+            //emit(SearchAddBreakFastSuccessState());
+            calculateTotalFoodCalories();
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+            getUserData();
+          }).catchError((error) {
+            emit(SearchAddBreakFastErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+        else
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(allMeals[i].id.toString())
+              .set(allMeals[i].toMap())
+              .then((value) {
+            isCheckedBreakFast = List<bool>.filled(334, false, growable: true);
+            //emit(SearchAddLunchSuccessState());
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+
+            calculateTotalFoodCalories();
+            getUserData();
+          }).catchError((error) {
+            emit(SearchAddLunchErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+
       }
     }
   }
 
   void addDinnerMeal() {
     int i = 0;
-    for (i; isCheckedDinner.length > 0; i++) {
+    for (i; isCheckedDinner.length > 0; i++)
+    {
       if (isCheckedDinner[i] == true) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userModel!.uId)
-            .collection('userMeal')
-            .doc(searchDinner[i].id.toString())
-            .set(searchDinner[i].toMap())
-            .then((value) {
-          isCheckedDinner = List<bool>.filled(334, false, growable: true);
-          //emit(SearchAddDinnerSuccessState());
-          calculateTotalFoodCalories();
-          getUserData();
+        if(searchDinner.isNotEmpty)
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(searchDinner[i].id.toString())
+              .set(searchDinner[i].toMap())
+              .then((value) {
+            isCheckedDinner = List<bool>.filled(334, false, growable: true);
+            //emit(SearchAddDinnerSuccessState());
+            calculateTotalFoodCalories();
+            getUserData();
 
-          getCompleteDiaryItems2();
-        }).catchError((error) {
-          emit(SearchAddDinnerErrorState(error.toString()));
-          print(error.toString());
-        });
+            //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+          }).catchError((error) {
+            emit(SearchAddDinnerErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+        else
+        {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userModel!.uId)
+              .collection('userMeal')
+              .doc(allMeals[i].id.toString())
+              .set(allMeals[i].toMap())
+              .then((value) {
+            isCheckedDinner = List<bool>.filled(334, false, growable: true);
+            //emit(SearchAddLunchSuccessState());
+           // getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+            calculateTotalFoodCalories();
+            getUserData();
+          }).catchError((error) {
+            emit(SearchAddLunchErrorState(error.toString()));
+            print(error.toString());
+          });
+        }
+
       }
     }
   }
 
-  void addRecipeToMeals({
+  void addRecipeToMeals(String id,{
     required num calories,
     required num carbs,
     required num fat,
     required num protein,
     required String? title,
+    required String? foodAr,
   }) {
     MealsModel model = MealsModel(
       Food: title,
       Measure: 'Follow the Recipe',
+      measureAr: 'اتبع الوصفة',
       Calories: calories,
       Carbs: carbs,
       Fat: fat,
       Protein: protein,
+      id: num.parse(id),
+      foodAr:foodAr ,
       //Date: DateFormat.yMMMEd().format(DateTime.now())
     );
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel!.uId)
         .collection('userMeal')
-        .add(model.toMap())
+        .doc(id)
+        .set(model.toMap())
         .then((value) {
       calculateTotalFoodCalories();
       getUserData();
 
-      getCompleteDiaryItems2();
+      //getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
     }).catchError((error) {
       emit(AddRecipeToMealErrorState(error.toString()));
       print(error.toString());
@@ -435,71 +554,57 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ChangeCheckBoxState());
   }
 
-  List<MealsModel> completeDiary = [];
 
   //List<String> completeDiaryId = [];
-  List<MealsModel> completeDiaryByDate = [];
+  //List<MealsModel> completeDiaryByDate = [];
 
   //List<String> completeDiaryByDateID = [];
 
+/*
   void getCompleteDiaryItems({DateTime? selectedDate}) {
-    emit(GetAllUsersMealsLoadingState());
+    //emit(GetAllUsersMealsLoading2State());
+      completeDiaryByDate = [];
+      completeDiaryByDate = completeDiary
+          .where((element) =>
+              element.Date!.year == selectedDate!.year &&
+              element.Date!.month == selectedDate.month &&
+              element.Date!.day == selectedDate.day)
+          .toList();
 
+    emit(GetAllUsersMealsSuccessState());
+  }
+*/
+  List<MealsModel> completeDiary = [];
+
+  void getCompleteDiaryItems2(String? selectedDate) {
+    emit(GetAllUsersMealsLoadingState());
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId!)
         .collection('userMeal')
+        .where('Date',isEqualTo: selectedDate)
         .snapshots()
         .listen((event) {
-      // completeDiaryId = [];
-      completeDiaryByDate = [];
+      completeDiary = [];
       event.docs.forEach((element) {
-        //completeDiaryId.add(element.id);
-        completeDiaryByDate = completeDiary
-            .where((element) =>
-                element.Date!.year == selectedDate!.year &&
-                element.Date!.month == selectedDate.month &&
-                element.Date!.day == selectedDate.day)
-            .toList();
-        print('hello ${completeDiaryByDate.length}');
-        print('hello ${completeDiary[0].Date}');
-      });
-      emit(GetAllUsersMealsSuccessState());
-    });
-  }
-
-  void getCompleteDiaryItems2() {
-    emit(GetAllUsersMealsLoadingState());
-    completeDiary = [];
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId!)
-        .collection('userMeal')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        completeDiary.add(MealsModel.fromJson(element.data()));
-      });
-
-      //print('hello ${completeDiary[0].Date}');
-      emit(GetAllUsersMealsSuccessState());
-    }).catchError((error) {
-      emit(GetAllUsersMealsErrorState(error.toString()));
-      print(error.toString());
+            completeDiary.add(MealsModel.fromJson(element.data()));
+          });
+          emit(GetAllUsersMealsSuccessState());
     });
   }
 
   // whare((element){element.Date==DateFormat.yMMMEd().format(DateTime.now())})
 
-  void deleteCompleteDiaryItem(String? id) {
-    FirebaseFirestore.instance
+  void deleteCompleteDiaryItem(String? id,{String? selectedDate}) {
+     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel!.uId)
         .collection('userMeal')
         .doc(id)
         .delete()
         .then((value) {
-      //getCompleteDiaryItems();
+      getCompleteDiaryItems2(selectedDate);
+      //getCompleteDiaryItems(selectedDate: selectedDate);
     }).catchError((error) {
       emit(GetAllUsersMealsErrorState(error.toString()));
       print(error.toString());
@@ -511,18 +616,18 @@ class HomeCubit extends Cubit<HomeStates> {
   int gaolGlass = 8;
   double countLiter = 0.0;
 
-  int addWaterGlass() {
+  int addWaterGlass(context) {
     if (counter < maximum) {
       counter++;
       if (counter == gaolGlass) {
         showToast(
-            text: 'Great job! You\'re reached your goal.',
+            text: AppLocalizations.of(context).translate("Great"),
             state: ToastStates.SUCCESS);
       }
       if (counter == gaolGlass + 1) {
         showToast(
             text:
-                'Remember to drink more if you\'re thirsty or if you exercise.',
+            AppLocalizations.of(context).translate("Remember"),
             state: ToastStates.NOTE);
       }
       userModel!.totalWater = counter;
@@ -566,6 +671,9 @@ class HomeCubit extends Cubit<HomeStates> {
     required String? status,
     required String? descriptionAr,
     required String? nameAr,
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
   }) {
     ProductModel model = ProductModel(
         name: name,
@@ -579,7 +687,11 @@ class HomeCubit extends Cubit<HomeStates> {
         //uId: uId1,
         status: status,
         descriptionAr: descriptionAr,
-        nameAr: nameAr);
+        nameAr: nameAr,
+      numOfRates: numOfRates,
+      averageRating:averageRating ,
+      totalRating: totalRating
+    );
 
     FirebaseFirestore.instance
         .collection('users')
@@ -599,8 +711,13 @@ class HomeCubit extends Cubit<HomeStates> {
           selectedQuantity: selectedQuantity,
           image: image,
           nameAr: nameAr,
-          descriptionAr: descriptionAr);
-      getCartItem();
+          descriptionAr: descriptionAr,
+        totalRating: totalRating,
+        averageRating: averageRating,
+        numOfRates: numOfRates,
+
+      );
+      //getCartItem();
       //emit(AddCartItemSuccessState());
     }).catchError((error) {
       emit(AddCartItemErrorState(error));
@@ -790,6 +907,7 @@ class HomeCubit extends Cubit<HomeStates> {
     String? prodId, {
     required String? name,
     String? image,
+    //String? userId,
     required double? currentPrice,
     required double? oldPrice,
     required double? discount,
@@ -800,6 +918,10 @@ class HomeCubit extends Cubit<HomeStates> {
     required String? status,
     required String? descriptionAr,
     required String? nameAr,
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
+         //bool? isFavorite,
   }) {
     ProductModel model = ProductModel(
       name: name,
@@ -814,6 +936,11 @@ class HomeCubit extends Cubit<HomeStates> {
       status: status,
       descriptionAr: descriptionAr,
       nameAr: nameAr,
+      totalRating: totalRating,
+      averageRating: averageRating,
+      numOfRates: numOfRates,
+      //isFavorite: isFavorite,
+      //userId: userModel!.uId,
     );
 
     FirebaseFirestore.instance
@@ -851,18 +978,9 @@ class HomeCubit extends Cubit<HomeStates> {
 
   int? calculateTotalFoodCalories() {
     totalFood = 0;
-    //completeDiaryByDate = [];
-    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-      totalFood = totalFood + (completeDiaryByDate[i].Calories)!.round();
+    for (int i = 0; i <= completeDiary.length - 1; i++) {
+      totalFood = totalFood + (completeDiary[i].Calories)!.round();
     }
-    // if (totalFood >= (userModel!.totalCalorie)!.round()) {
-    //   //totalFood = 0;
-    //   print('the biggest $totalFood');
-    //   return totalFood;
-    // } else {
-    //   print('the smallest $totalFood');
-    //   return totalFood;
-    // }
     return totalFood;
   }
 
@@ -874,24 +992,24 @@ class HomeCubit extends Cubit<HomeStates> {
 
   num calculateTotalProtein() {
     totalProtein = 0;
-    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-      totalProtein = totalProtein + (completeDiaryByDate[i].Protein)!.round();
+    for (int i = 0; i <= completeDiary.length - 1; i++) {
+      totalProtein = totalProtein + (completeDiary[i].Protein)!.round();
     }
     return totalProtein;
   }
 
   num calculateTotalCarbs() {
     totalCarbs = 0;
-    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-      totalCarbs = totalCarbs + (completeDiaryByDate[i].Carbs)!.round();
+    for (int i = 0; i <= completeDiary.length - 1; i++) {
+      totalCarbs = totalCarbs + (completeDiary[i].Carbs)!.round();
     }
     return totalCarbs;
   }
 
   num calculateTotalFats() {
     totalFats = 0;
-    for (int i = 0; i <= completeDiaryByDate.length - 1; i++) {
-      totalFats = totalFats + (completeDiaryByDate[i].Fat)!.round();
+    for (int i = 0; i <= completeDiary.length - 1; i++) {
+      totalFats = totalFats + (completeDiary[i].Fat)!.round();
     }
     return totalFats;
   }
@@ -977,6 +1095,9 @@ class HomeCubit extends Cubit<HomeStates> {
     required String status,
     required String nameAr,
     required String descriptionAr,
+    required num totalRating,
+    required num averageRating,
+    required num numOfRates,
   }) async {
     DocumentReference? orderForOneProduct;
     NewOrderModel createOrderForOneProduct = NewOrderModel(
@@ -1028,7 +1149,11 @@ class HomeCubit extends Cubit<HomeStates> {
           image: image,
           status: status,
           descriptionAr: descriptionAr,
-          nameAr: nameAr);
+          nameAr: nameAr,
+        totalRating: totalRating,
+        averageRating: averageRating,
+        numOfRates: numOfRates,
+      );
       getOrdersForUser();
     }).catchError((error) {
       emit(GetProductsErrorState(error.toString()));
@@ -1211,6 +1336,9 @@ class HomeCubit extends Cubit<HomeStates> {
     required String ingredients,
     required double protein,
     required String title,
+     //String? userId,
+    //required bool isFavorite,
+
     //5required double weight,
   }) {
     RecipeModel model = RecipeModel(
@@ -1229,7 +1357,9 @@ class HomeCubit extends Cubit<HomeStates> {
         title: title,
         titleAr: titleAr,
         ingredientsAr: ingredientsAr,
-        directionsAr: directionsAr
+        directionsAr: directionsAr,
+        //isFavorite: isFavorite,
+        //userId: userModel!.uId
         // weight:weight ,
         );
     FirebaseFirestore.instance
@@ -1298,6 +1428,216 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
+
+  List<bool> isFavorite = List<bool>.filled(50, false);
+
+  void changeFavorites(index)
+  {
+      isFavorite[index] = !isFavorite[index];
+      emit(AppChangeBottomSheetState());
+  }
+
+  void addRecipeToFavorites (
+      String id, {
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
+        required String recId,
+        required String image,
+        required double calories,
+        required double carbs,
+        required String category,
+        required String directions,
+        required String titleAr,
+        required String ingredientsAr,
+        required String directionsAr,
+        required double fats,
+        required String ingredients,
+        required double protein,
+        required String title,
+        required bool isFavorite,
+        //5required double weight,
+      }) {
+    RecipeModel model = RecipeModel(
+        totalRating: totalRating,
+        averageRating: averageRating,
+        numOfRates: numOfRates,
+        uId: recId,
+        image: image,
+        calories: calories,
+        carbs: carbs,
+        category: category,
+        directions: directions,
+        fats: fats,
+        ingredients: ingredients,
+        protein: protein,
+        title: title,
+        titleAr: titleAr,
+        ingredientsAr: ingredientsAr,
+        directionsAr: directionsAr,
+      //isFavorite: isFavorite,
+      //userId: userModel!.uId,
+      // weight:weight ,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesRecipe')
+        .doc(id)
+        .set(model.toMap())
+        .then((value) {
+      getFavoritesRecipes();
+      // emit(AddRecipeToFavoritesSuccessState());
+    }).catchError((error) {
+      emit(AddRecipeToFavoritesErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+  void deleteFavoritesRecipes(String? id)
+  {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesRecipe')
+        .doc(id)
+        .delete()
+        .then((value) {
+      getFavoritesRecipes();
+    }).catchError((error) {
+      emit(DeleteFavoritesRecipesErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+  List<RecipeModel> favoritesRecipes = [];
+  void getFavoritesRecipes() {
+    emit(GetFavoritesRecipesLoadingState());
+    {
+      favoritesRecipes=[];
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('favoritesRecipe')
+          .get()
+          .then((value) {
+        value.docs.forEach((element)
+        {
+          favoritesRecipes.add(RecipeModel.fromJson(element.data()));
+        });
+        emit(GetFavoritesRecipesSuccessState());
+      }).catchError((error){
+        print(error.toString());
+      });
+    }
+  }
+
+
+
+  List<bool> isFavoriteProduct = List<bool>.filled(50, false);
+
+  void changeFavoritesOfProduct({index})
+  {
+
+      isFavoriteProduct[index] = !isFavoriteProduct[index];
+      emit(AppChangeBottomIsFavoriteProductSheetState());
+  }
+
+
+
+  void addProductToFavorites(
+      String? prodId, {
+        required String? name,
+        required String? image,
+        required double? currentPrice,
+        required double? oldPrice,
+        required double? discount,
+        required int? quantity,
+        required int? selectedQuantity,
+        required String? description,
+        //required String? uId,
+        required String? status,
+        required String? descriptionAr,
+        required String? nameAr,
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
+       // bool? isFavorite,
+
+      }) {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      selectedQuantity: selectedQuantity,
+      //uId: uId,
+      status: status,
+      descriptionAr: descriptionAr,
+      nameAr: nameAr,
+      totalRating: totalRating,
+      averageRating: averageRating,
+      numOfRates: numOfRates,
+      //isFavorite: isFavorite,
+      //userId: userModel!.uId,
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesProducts')
+        .doc(prodId)
+        .set(model.toMap())
+        .then((value) {
+      getFavoritesProducts();
+    }).catchError((error) {
+      emit(AddProductToFavoritesErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+  void deleteFavoritesProducts(String? id) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesProducts')
+        .doc(id)
+        .delete()
+        .then((value) {
+      getFavoritesProducts();
+    }).catchError((error) {
+      emit(DeleteFavoritesProductsErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+  List<ProductModel> favoritesProducts = [];
+  void getFavoritesProducts() {
+    emit(GetFavoritesProductsLoadingState());
+    {
+      favoritesProducts=[];
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .collection('favoritesProducts')
+          .get()
+          .then((value) {
+        value.docs.forEach((element)
+        {
+          favoritesProducts.add(ProductModel.fromJson(element.data()));
+        });
+        emit(GetFavoritesProductsSuccessState());
+      }).catchError((error){
+        print(error.toString());
+      });
+    }
+  }
+
+
 /*List<OrderModel> orders = [];
   List<String> ordersId = [];
   void getOrdersId()
@@ -1325,7 +1665,6 @@ class HomeCubit extends Cubit<HomeStates> {
 
 // get data of image detection
 
-  List<MealsModel> imageDetectionData = [];
 
   /*void getImageDetectionData(String titleOfDetection) {
     emit(GetImageDetectionDataLoadingState());

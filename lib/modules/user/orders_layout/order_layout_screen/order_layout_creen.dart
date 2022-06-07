@@ -23,6 +23,7 @@ class _OrderLayoutScreenState extends State<OrderLayoutScreen> with TickerProvid
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    HomeCubit.get(context).getOrdersForUser();
     tabController!.addListener(() {
       setState(() {
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -9,8 +10,11 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:image/image.dart' as img;
+
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -87,14 +91,14 @@ class CameraScreenState extends State<CameraScreen> {
                         width: double.infinity,
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 8,
                       ),
                       outputs != null
-                          ? Text((outputs!.length>0 ?
-                      "${outputs![0]["label"]}" : 'take another pic please'
-                      ))
+                          ? defaultBodyText(context,
+                          text: outputs!.isNotEmpty ? "${outputs![0]["label"]}" : AppLocalizations.of(context).translate("take_another")
+                      )
                           : Container(),
-                      Stack(children: stackChildren),
+                      //Stack(children: stackChildren),
 
                       //((res) {return Text( "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",);}).toList(): [],),
                     ],
@@ -208,20 +212,42 @@ class CameraScreenState extends State<CameraScreen> {
                                 ],
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: defaultColor,
-                              child: IconButton(
-                                onPressed: () {
-                                  pickImage();
-                                  Navigator.pop(context, Container());
-                                },
-                                icon: const Icon(
-                                  IconBroken.Camera,
-                                  color: Colors.white,
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: defaultColor,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      pickImage();
+                                      Navigator.pop(context, Container());
+                                    },
+                                    icon: const Icon(
+                                      IconBroken.Camera,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: defaultColor,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      pickImageOfGallery();
+                                      Navigator.pop(context, Container());
+                                    },
+                                    icon: const Icon(
+                                      Iconsax.gallery,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -233,7 +259,7 @@ class CameraScreenState extends State<CameraScreen> {
               );
             },
             child: const Icon(
-              Icons.open_in_browser,
+                IconBroken.Camera
             ),
           ),
           bottomNavigationBar: Padding(
@@ -282,6 +308,15 @@ class CameraScreenState extends State<CameraScreen> {
   ImagePicker? picker = ImagePicker();
 
   Future? pickImage() async {
+    final image = await picker!.getImage(source: ImageSource.camera);
+    if (image == null) return null;
+    setState(() {
+      loading = true;
+      _image = File(image.path);
+    });
+    calssifyImage(_image!);
+  }
+  Future? pickImageOfGallery() async {
     final image = await picker!.getImage(source: ImageSource.gallery);
     if (image == null) return null;
     setState(() {
@@ -294,7 +329,7 @@ class CameraScreenState extends State<CameraScreen> {
   calssifyImage(File image) async {
     var output = await Tflite.runModelOnImage(
         path: image.path,
-        numResults: 2,
+        numResults: 27,
         threshold: .5,
         imageMean: 127.5,
         imageStd: 127.5);
@@ -303,6 +338,60 @@ class CameraScreenState extends State<CameraScreen> {
       outputs = output;
     });
   }
+
+  Future recognizeImageBinary(File image) async {
+    var imageBytes = await image.readAsBytesSync();
+    var bytes = imageBytes.buffer.asUint8List();
+    img.Image? oriImage = img.decodeJpg(bytes);
+    img.Image resizedImage = img.copyResize(oriImage!, height: 224, width: 224);
+    /*var imageBytes = (await rootBundle.load(image.path)).buffer;
+   img.Image? oriImage = img.decodeJpg(imageBytes.asUint8List());
+   img.Image resizedImage = img.copyResize(oriImage!, height: 224, width: 224);*/
+    var output = await Tflite.runModelOnBinary(
+      binary: imageToByteListFloat32(resizedImage, 224, 127.5, 127.5),
+      numResults: 27,
+      threshold: 0.05,
+    );
+    setState(() {
+      loading = false;
+      outputs = output;
+    });
+    print(outputs);
+  }
+  Uint8List imageToByteListFloat32(
+      img.Image image, int inputSize, double mean, double std) {
+    var convertedBytes = Float32List(1 * inputSize * inputSize * 3);
+    var buffer = Float32List.view(convertedBytes.buffer);
+    int pixelIndex = 0;
+    for (var i = 0; i < inputSize; i++) {
+      for (var j = 0; j < inputSize; j++) {
+        var pixel = image.getPixel(j, i);
+        buffer[pixelIndex++] = (img.getRed(pixel) - mean) / std;
+        buffer[pixelIndex++] = (img.getGreen(pixel) - mean) / std;
+        buffer[pixelIndex++] = (img.getBlue(pixel) - mean) / std;
+      }
+    }
+    return convertedBytes.buffer.asUint8List();
+  }
+
+  /*
+  Uint8List imageToByteListUint8(img.Image image, int inputSize) {
+    var convertedBytes = Uint8List(1 * inputSize * inputSize * 3);
+    var buffer = Uint8List.view(convertedBytes.buffer);
+    int pixelIndex = 0;
+    for (var i = 0; i < inputSize; i++) {
+      for (var j = 0; j < inputSize; j++) {
+        var pixel = image.getPixel(j, i);
+        buffer[pixelIndex++] = img.getRed(pixel);
+        buffer[pixelIndex++] = img.getGreen(pixel);
+        buffer[pixelIndex++] = img.getBlue(pixel);
+      }
+    }
+    return convertedBytes.buffer.asUint8List();
+  }
+  */
+
+
 
   Future loadModel() async {
     await Tflite.loadModel(

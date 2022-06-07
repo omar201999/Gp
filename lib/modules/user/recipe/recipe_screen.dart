@@ -68,7 +68,7 @@ class RecipeScreen extends StatelessWidget {
                        condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty && state is !GetAllBreakFastRecipeLoadingState,
                        builder: (context) => ListView.separated(
                          scrollDirection: Axis.horizontal,
-                         itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).breakfastRecipe[index],context),
+                         itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).breakfastRecipe[index],context,index),
                          separatorBuilder: (context,index) =>  SizedBox(width: 10,),
                          itemCount: AdminCubit.get(context).breakfastRecipe.length ,
                        ),
@@ -98,7 +98,7 @@ class RecipeScreen extends StatelessWidget {
                        condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
                        builder: (context) => ListView.separated(
                            scrollDirection: Axis.horizontal,
-                           itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).lunchRecipe[index],context),
+                           itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).lunchRecipe[index],context,index),
                            separatorBuilder: (context,index) =>  SizedBox(width: 10,),
                            itemCount: AdminCubit.get(context).lunchRecipe.length  ),
                        fallback: (context) => Center(child: CircularProgressIndicator()),
@@ -127,7 +127,7 @@ class RecipeScreen extends StatelessWidget {
                        condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState,
                        builder: (context) => ListView.separated(
                          scrollDirection: Axis.horizontal,
-                         itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).dinnerRecipe[index],context),
+                         itemBuilder:(context,index) => buildRecipeItem(AdminCubit.get(context).dinnerRecipe[index],context,index),
                          separatorBuilder: (context,index) =>  SizedBox(width: 10,),
                          itemCount: AdminCubit.get(context).dinnerRecipe.length,
                        ),

@@ -17,7 +17,9 @@ class SnacksScreen extends StatelessWidget {
       builder: (context,state)
       {
         var list = HomeCubit.get(context).searchSnacks;
-        return  buildSerachMealItem(list, context, title: AppLocalizations.of(context).translate("snacks"),//'Snacks',
+        var listOfEmptySearch = HomeCubit.get(context).allMeals;
+
+        return  buildSerachMealItem(list,listOfEmptySearch, context, title: AppLocalizations.of(context).translate("snacks"),//'Snacks',
           onChangedSearch: (value )
           {
             HomeCubit.get(context).getSearchSnacks(value,lan!);

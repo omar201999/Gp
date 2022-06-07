@@ -10,6 +10,13 @@ class ProductModel{
   int? quantity;
   int? selectedQuantity;
   String? status;
+  num? totalRating;
+  num? numOfRates;
+  num? averageRating;
+  //bool? isFavorite;
+  //String? userId;
+
+
 
   //String? uId;
 
@@ -24,7 +31,13 @@ class ProductModel{
     this.selectedQuantity,
     this.status,
     this.nameAr,
-    this.descriptionAr
+    this.descriptionAr,
+    this.totalRating,
+    this.numOfRates,
+    this.averageRating,
+    //this.isFavorite,
+    //this.userId,
+
 
     //this.uId,
   });
@@ -42,6 +55,11 @@ class ProductModel{
     selectedQuantity = json['selectedQuantity'];
     nameAr = json['nameAr'];
     descriptionAr = json['descriptionAr'];
+    totalRating=json['totalRating'];
+    numOfRates=json['numOfRates'];
+    averageRating=json['averageRating'];
+    //isFavorite=json['isFavorite'];
+    //userId=json['userId'];
 
 
 
@@ -62,6 +80,11 @@ class ProductModel{
       'selectedQuantity': selectedQuantity,
       'nameAr':nameAr,
       'descriptionAr':descriptionAr,
+      'totalRating' :totalRating,
+      'numOfRates' :numOfRates,
+      'averageRating' :averageRating,
+      //'isFavorite' :isFavorite,
+      //'userId' :userId,
 
     };
   }

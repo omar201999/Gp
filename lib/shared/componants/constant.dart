@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/main.dart';
 import 'package:gp/shared/cubit/cubit.dart';
-import 'package:gp/shared/localization/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> signOut(context)
 async{
   uId = '';
-  print(uId.toString());
+  //print(uId.toString());
   HomeCubit.get(context).userModel=null;
   //print( HomeCubit.get(context).userModel.toString());
   await FirebaseAuth.instance.signOut();

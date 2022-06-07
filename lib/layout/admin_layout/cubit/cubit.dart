@@ -148,6 +148,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String? titleAr,
     required String? ingredientsAr,
     required String? directionsAr,
+    //required bool? isFavorite,
     required String? uId,
 })
   {
@@ -177,7 +178,8 @@ class AdminCubit extends Cubit<AdminStates>
           uId: uId,
           directionsAr:directionsAr ,
             ingredientsAr:ingredientsAr ,
-          titleAr:titleAr
+          titleAr:titleAr,
+          //isFavorite: isFavorite
         );
       }).catchError((error)
       {
@@ -208,6 +210,7 @@ class AdminCubit extends Cubit<AdminStates>
     required String? ingredientsAr,
     required String? directionsAr,
     required String? uId,
+    //required bool? isFavorite,
     String? newRecipeImage,
 })
   {
@@ -229,7 +232,8 @@ class AdminCubit extends Cubit<AdminStates>
       titleAr:titleAr ,
       ingredientsAr:ingredientsAr ,
       directionsAr: directionsAr,
-      uId: uId
+      uId: uId,
+      //isFavorite: isFavorite
     );
 
     FirebaseFirestore.instance
@@ -333,7 +337,8 @@ class AdminCubit extends Cubit<AdminStates>
         totalRating:0 ,
       directionsAr: directionsAr,
       ingredientsAr:ingredientsAr ,
-      titleAr: titleAr
+      titleAr: titleAr,
+      //isFavorite: false
     );
     recipe = await FirebaseFirestore.instance
         .collection('recipes')
@@ -356,6 +361,7 @@ class AdminCubit extends Cubit<AdminStates>
       'titleAr' :model.titleAr,
       'directionsAr' :model.directionsAr,
       'ingredientsAr' :model.ingredientsAr,
+      //'isFavorite' :model.isFavorite,
     }).then((value){
       emit(CreateRecipeSuccessState());
     }).catchError((error)
@@ -450,11 +456,21 @@ class AdminCubit extends Cubit<AdminStates>
 
   List<RecipeModel> searchRecipe = [];
 
-  void getSearchRecipe(String value)
+  void getSearchRecipe(String value,lan)
   {
-    searchRecipe = [];
-    searchRecipe = allRecipe.where((element) => element.title!.toLowerCase().contains(value.toLowerCase())).toList();
-    emit(SearchRecipeSuccessState());
+    if(lan=='en')
+    {
+      searchRecipe = [];
+      searchRecipe = allRecipe.where((element) => element.title!.toLowerCase().contains(value.toLowerCase())).toList();
+      emit(SearchRecipeSuccessState());
+    }
+    else
+      {
+        searchRecipe = [];
+        searchRecipe = allRecipe.where((element) => element.titleAr!.contains(value)).toList();
+        emit(SearchRecipeSuccessState());
+      }
+
   }
 
 
@@ -504,6 +520,11 @@ class AdminCubit extends Cubit<AdminStates>
     required String? status ,
     required String? descriptionAr ,
     required String? nameAr ,
+    required num totalRating,
+    required num averageRating,
+    required num numOfRates,
+    //required bool isFavorite,
+
     //required String? uId,
   })
   {
@@ -527,6 +548,11 @@ class AdminCubit extends Cubit<AdminStates>
           nameAr: nameAr,
           //uId: uId,
           newProductImage: value,
+          totalRating: totalRating,
+          averageRating: averageRating,
+          numOfRates: numOfRates,
+            //isFavorite: isFavorite
+
         );
       }).catchError((error)
       {
@@ -551,6 +577,10 @@ class AdminCubit extends Cubit<AdminStates>
     required String? descriptionAr,
     required String? nameAr,
     String? newProductImage,
+    required num numOfRates,
+    required num averageRating,
+    required num totalRating,
+    //required bool isFavorite,
     //required String? uId,
   })
   {
@@ -565,7 +595,10 @@ class AdminCubit extends Cubit<AdminStates>
       status: status,
       descriptionAr:descriptionAr ,
       nameAr:nameAr ,
-
+      numOfRates:numOfRates,
+      averageRating:averageRating ,
+      totalRating: totalRating,
+      //isFavorite: isFavorite,
       //uId: uId,
 
     );
@@ -667,6 +700,10 @@ class AdminCubit extends Cubit<AdminStates>
         status: status,
       descriptionAr:descriptionAr ,
       nameAr: nameAr,
+      averageRating: 0 ,
+      numOfRates: 0 ,
+      totalRating:0 ,
+      //isFavorite: false,
 
     );
 

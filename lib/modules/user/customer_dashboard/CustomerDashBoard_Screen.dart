@@ -121,15 +121,6 @@ class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
                                   ),
                                 ],
                               ),
-                              TextButton(
-                                  onPressed: (){
-                                  },
-                                  child: defaultBodyText(
-                                      context,
-                                      text:  AppLocalizations.of(context).translate("add_weight"),//'add weight',
-                                      color: defaultColor
-                                  )
-                              )
                             ],
                           ),
                         ),

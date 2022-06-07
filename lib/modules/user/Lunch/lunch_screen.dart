@@ -22,8 +22,10 @@ class LunchScreen extends StatelessWidget {
       builder: (context,state)
       {
         var list = HomeCubit.get(context).searchLunch;
-        return  buildSerachMealItem(list, context,title: AppLocalizations.of(context).translate("lunch"),//'Lunch',
-            onChangedSearch: (value )
+        var listOfEmptySearch = HomeCubit.get(context).allMeals;
+
+        return  buildSerachMealItem(list,listOfEmptySearch, context,title: AppLocalizations.of(context).translate("lunch"),//'Lunch',
+            onChangedSearch: (value)
             {
               HomeCubit.get(context).getSearchLunch(value,lan!);
               },

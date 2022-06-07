@@ -18,6 +18,7 @@ import 'package:gp/models/user_model.dart';
 import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
+import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/modules/user/orders_layout/products_for_order_user.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
@@ -27,6 +28,8 @@ import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 AppBar buildAppBar({
   required String title,
@@ -233,11 +236,11 @@ Widget defaultBodyText(BuildContext context,{
 
 );
 
-Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
+Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, RecipeItemScreen(
-      recipeModel: model,
+      recipeModel: model, index: index,
     ));
   },
   child: Container(
@@ -473,6 +476,7 @@ Widget afterTitleOfRecipeItem(BuildContext context, {
   Color? color,
 }) => Expanded(
   child: Column(
+    mainAxisSize: MainAxisSize.min,
     children:
     [
       //defaultBodyText(context, text: percentage! ,color: color),
@@ -581,117 +585,107 @@ Widget myDivider() => Padding(
 
 );*/
 
-Widget buildNutritionItem(BuildContext context,{
-  required String title,
-  required String calorieText,
-  required String foodText,
-  required String remainingText,
-
-}) => defaultContainer(
+Widget buildHomeScreenProgressItem(BuildContext context) =>defaultContainer(
   context,
-
   child: Padding(
-    padding: const EdgeInsetsDirectional.all(10),
+    padding: const EdgeInsets.all(10.0),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-      [
-        defaultHeadLineText(
-          context,
-          text: title,
-        ),
-        SizedBox(
-          height: 15,
-        ),
+      children: [
         Row(
           children:
           [
             Expanded(
-
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children:
                 [
-
-                  defaultHeadLineText(context, text: calorieText,fontSize: 18),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate("goal"),//'Goal',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    bottom: 20
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children:
-                  [
-                    defaultHeadLineText(context, text: '-',fontSize: 25),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children:
-                [
-                  //18
-                  defaultHeadLineText(context, text: foodText,fontSize: 18),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  defaultHeadLineText(context, text: '${HomeCubit.get(context).calculateTotalFoodCalories()}'),
                   Text(
                     AppLocalizations.of(context).translate("food"),//'Food',
                     style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
                   ),
 
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    bottom: 20
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children:
-                  [
-                    defaultHeadLineText(context, text: '=',),
-                  ],
+            if(HomeCubit.get(context).calculateTotalFoodCalories()! / HomeCubit.get(context).userModel!.totalCalorie! >= 0 &&  HomeCubit.get(context).calculateTotalFoodCalories()! / HomeCubit.get(context).userModel!.totalCalorie! <= 1)
+              Expanded(
+                child: CircularPercentIndicator(
+                  radius: 60,
+                  animation: true,
+                  animationDuration: 1000,
+                  lineWidth: 5,
+                  percent: HomeCubit.get(context).calculateTotalFoodCalories()! / HomeCubit.get(context).userModel!.totalCalorie!,
+                  center: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                    [
+                      defaultHeadLineText(context, text:  '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).calculateTotalFoodCalories()!}',fontSize: 18),
+                      Text(
+                        AppLocalizations.of(context).translate("remaining"),//'Food',
+                        style: Theme.of(context).textTheme.caption,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+
+                      ),
+
+
+                    ],
+                  ),
+                  circularStrokeCap: CircularStrokeCap.butt,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
                 ),
               ),
-            ),
+            if(HomeCubit.get(context).calculateTotalFoodCalories()! / HomeCubit.get(context).userModel!.totalCalorie! > 1)
+              Expanded(
+                child: CircularPercentIndicator(
+                  radius: 60,
+                  animation: true,
+                  animationDuration: 1000,
+                  lineWidth: 5,
+                  percent:1,
+                  center: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                    [
+                      if(HomeCubit.get(context).calculateTotalFoodCalories()! < (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
+                        defaultHeadLineText(context, text:  '${HomeCubit.get(context).userModel!.totalCalorie! - HomeCubit.get(context).calculateTotalFoodCalories()!}',fontSize: 18),
+                      if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
+                        defaultHeadLineText(context, text:  '0',fontSize: 18),
+
+                      Text(
+                        AppLocalizations.of(context).translate("remaining"),//'Food',
+                        style: Theme.of(context).textTheme.caption,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+
+                    ],
+                  ),
+                  circularStrokeCap: CircularStrokeCap.butt,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+              ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children:
                 [
+                  if(HomeCubit.get(context).calculateTotalFoodCalories()! - HomeCubit.get(context).userModel!.totalCalorie! < 0)
+                    defaultHeadLineText(context, text: '0'),
+                  if(HomeCubit.get(context).calculateTotalFoodCalories()! - HomeCubit.get(context).userModel!.totalCalorie! >= 0)
+                    defaultHeadLineText(context, text: '${HomeCubit.get(context).calculateTotalFoodCalories()! - HomeCubit.get(context).userModel!.totalCalorie!}'),
                   Text(
-                    remainingText,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: defaultColor
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate("remaining"),//'Remaining',
-                    style: Theme.of(context).textTheme.caption!.copyWith(
-                      fontSize: 13
-                    ),
+                    AppLocalizations.of(context).translate("goal"),//'Food',
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
+
                   ),
 
                 ],
@@ -699,10 +693,320 @@ Widget buildNutritionItem(BuildContext context,{
             ),
           ],
         ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children:
+          [
+            Expanded(
+              child: defaultContainer(
+                context,
+                radius: 0,
+                child: Column(
+                  children:
+                  [
+                    defaultBodyText(context, text:  AppLocalizations.of(context).translate("Carbs")),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    if( HomeCubit.get(context).calculateTotalCarbs() / HomeCubit.get(context).userModel!.totalCarbs! >= 0 && HomeCubit.get(context).calculateTotalCarbs()/ HomeCubit.get(context).userModel!.totalCarbs! <= 1)
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        //width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent: HomeCubit.get(context).calculateTotalCarbs()/ HomeCubit.get(context).userModel!.totalCarbs! ,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    if( HomeCubit.get(context).calculateTotalCarbs() / HomeCubit.get(context).userModel!.totalCarbs! > 1)
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        //width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent: 1,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
 
+                    SizedBox(
+                      height: 5,
+                    ),
+                    defaultBodyText(context, text: '${HomeCubit.get(context).calculateTotalCarbs()} / ${HomeCubit.get(context).userModel!.totalCarbs!}${AppLocalizations.of(context).translate("g")}'),
+
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: defaultContainer(
+                context,
+                radius: 0,
+                child: Column(
+                  children:
+                  [
+                    defaultBodyText(context, text: AppLocalizations.of(context).translate("Protein")),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    if( HomeCubit.get(context).calculateTotalProtein()/ HomeCubit.get(context).userModel!.totalProtein! >= 0 && HomeCubit.get(context).calculateTotalProtein() / HomeCubit.get(context).userModel!.totalProtein! <= 1)
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        //width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent: HomeCubit.get(context).calculateTotalProtein()/ HomeCubit.get(context).userModel!.totalProtein! ,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    if((HomeCubit.get(context).userModel!.totalProtein! - HomeCubit.get(context).calculateTotalProtein()) / HomeCubit.get(context).userModel!.totalProtein! < 0)
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        //width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent: 1,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    defaultBodyText(context, text: '${HomeCubit.get(context).calculateTotalProtein()} / ${HomeCubit.get(context).userModel!.totalProtein!}${AppLocalizations.of(context).translate("g")}'),
+
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: defaultContainer(
+                context,
+                radius: 0,
+                child: Column(
+                  children:
+                  [
+                    defaultBodyText(context, text: AppLocalizations.of(context).translate("Fats")),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    if( HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats!>= 0 && HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! <= 1 )
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        // width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent:  HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! ,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    if(HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! >1)
+                      LinearPercentIndicator(
+                        animation: true,
+                        animationDuration: 500,
+                        curve: Curves.easeInOut,
+                        barRadius: const Radius.circular(15),
+                        // width: MediaQuery.of(context).size.width,
+                        lineHeight: 5,
+                        percent: 1,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    defaultBodyText(context, text: '${HomeCubit.get(context).calculateTotalFats()} / ${HomeCubit.get(context).userModel!.totalFats!}${AppLocalizations.of(context).translate("g")}'),
+
+                  ],
+                ),
+              ),
+            ),
+
+          ],
+        ),
       ],
     ),
   ),
+);
+
+
+
+
+Widget buildNutritionItem(BuildContext context) => Column(
+  children: [
+    Row(
+      children:
+      [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: AppCubit.get(context).constantColor5,
+          child: defaultBodyText(context, text: '${HomeCubit.get(context).userModel!.totalCarbs!}g',color: defaultColor),
+        ),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(start: 5),
+                child: defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Carbs")),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              if( HomeCubit.get(context).calculateTotalCarbs() / HomeCubit.get(context).userModel!.totalCarbs! >= 0 && HomeCubit.get(context).calculateTotalCarbs()/ HomeCubit.get(context).userModel!.totalCarbs! <= 1)
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent: HomeCubit.get(context).calculateTotalCarbs()/ HomeCubit.get(context).userModel!.totalCarbs! ,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+              if( HomeCubit.get(context).calculateTotalCarbs() / HomeCubit.get(context).userModel!.totalCarbs! > 1)
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent: 1,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+            ],
+          ),
+        ),
+        defaultBodyText(context, text: '${((HomeCubit.get(context).calculateTotalCarbs()/ HomeCubit.get(context).userModel!.totalCarbs!) * 100).toStringAsFixed(1)}%'),
+      ],
+    ),
+    SizedBox(
+      height: 15,
+    ),
+    Row(
+      children:
+      [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: AppCubit.get(context).constantColor5,
+          child: defaultBodyText(context, text: '${HomeCubit.get(context).userModel!.totalProtein!}g',color: defaultColor),
+
+        ),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(start: 5),
+                child: defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Protein")),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              if( HomeCubit.get(context).calculateTotalProtein()/ HomeCubit.get(context).userModel!.totalProtein! >= 0 && HomeCubit.get(context).calculateTotalProtein() / HomeCubit.get(context).userModel!.totalProtein! <= 1)
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent: HomeCubit.get(context).calculateTotalProtein()/ HomeCubit.get(context).userModel!.totalProtein! ,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+              if((HomeCubit.get(context).userModel!.totalProtein! - HomeCubit.get(context).calculateTotalProtein()) / HomeCubit.get(context).userModel!.totalProtein! < 0)
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent: 1,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+            ],
+          ),
+        ),
+        defaultBodyText(context, text: '${((HomeCubit.get(context).calculateTotalProtein() / HomeCubit.get(context).userModel!.totalProtein!) * 100).toStringAsFixed(1)}%'),
+      ],
+    ),
+    SizedBox(
+      height: 15,
+    ),
+    Row(
+      children:
+      [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: AppCubit.get(context).constantColor5,
+          child: defaultBodyText(context, text: '${HomeCubit.get(context).userModel!.totalFats}g',color: defaultColor),
+
+        ),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(start: 5),
+                child: defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Fats")),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              if( HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats!>= 0 && HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! <= 1 )
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent:  HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! ,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+              if(HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats! >1)
+                LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 500,
+                  curve: Curves.easeInOut,
+                  barRadius: const Radius.circular(15),
+                  //width: MediaQuery.of(context).size.width,
+                  lineHeight: 8,
+                  percent: 1,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
+            ],
+          ),
+        ),
+        defaultBodyText(context, text: '${((HomeCubit.get(context).calculateTotalFats() / HomeCubit.get(context).userModel!.totalFats!) * 100).toStringAsFixed(1)}%'),
+      ],
+    ),
+  ],
 );
 
 Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
@@ -883,9 +1187,12 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
       );
 
   },
-  child: defaultContainer(
-    context,
-
+  child:
+  Container(
+    decoration: BoxDecoration (
+      color: constantColor5,
+      borderRadius: BorderRadius.circular(15.0),
+    ),
     //color: constantColor5,
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -893,81 +1200,131 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
       children:
       [
         Stack(
-          alignment: AlignmentDirectional.bottomStart,
           children: [
-            Image(
-              image: NetworkImage('${model.image}'),
-              width: double.infinity,
-              //height: 180.0,
-              fit: BoxFit.cover,
-            ),
-            if (model.discount != 0)
-              Container(
-                  color: Colors.red,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 5.0
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context).translate("DISCOUNT"),//'DISCOUNT',
-                    style: TextStyle(
-                      fontSize: 8.0,
-                      color: Colors.white,
-                    ),
-                  )
+
+            Padding(
+              padding: const EdgeInsetsDirectional.only(
+                top: 20
               ),
-          ],
-        ),
-        Padding(
-          padding: /*EdgeInsetsDirectional.only(
-                start: 10,
-            ),*/
-          const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 6.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if(lan=='en')
-                defaultBodyText(context, text: '${model.name}',height: 1.3,maxLines: 2),
-              if(lan=='ar')
-                defaultBodyText(context, text: '${model.nameAr}',height: 1.3,maxLines: 2),
-              Row(
-                children:
-                [
-                  Text(
-                    '${model.currentPrice}',
-                    style: const TextStyle(
-                      fontSize: 13.0,
-                      color: defaultColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5.0,
-                  ),
-                  if (model.discount != 0)
-                    Text(
-                      '${model.oldPrice}',
-                      style: const TextStyle(
-                        fontSize: 10.0,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      SimpleShadow(
+                        child: Image(
+                          alignment: Alignment.center,
+                          image: NetworkImage('${model.image}'),
+                          width: 140.0,
+                          height: 140.0,
+                          fit: BoxFit.cover,
+                        ),
+                        opacity: 0.5,
+                        //color: Colors.blue,
+                        offset: Offset(1, 1),
+                        sigma: 8,
                       ),
-                    ),
-                  const Spacer(),
-                  if (model.quantity == 0)
-                     Text(
-                       AppLocalizations.of(context).translate("not_available"),//'Not available now',
-                      style: TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.red
-                      ),
-                    )
+                      if (model.discount != 0 && model.quantity != 0)
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(25)
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5.0
+                            ),
+                            child: Text(
+                              '${model.discount}% OFF',
+                              style: const TextStyle(
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.w900
+                              ),
+                            )
+                        ),
+                      if (model.quantity == 0)
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25)
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5.0
+                          ),
+                          child:Text(
+                            'Not available',
+                            style: TextStyle(
+                                fontSize: 10.0,
+                                color: Colors.red[800]
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
+            )
 
-            ],
-          ),
+          ],
+        ),
+
+        Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 10.0,
+            ),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 10.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${model.name}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          height: 1.3,
+                        ),
+                      ),
+                      Row(
+                        children:
+                        [
+                          Text(
+                            '${model.currentPrice}',
+                            style: const TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w900,
+                              color: defaultColor,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          if (model.discount != 0)
+                            Text(
+                              '${model.oldPrice}',
+                              style: const TextStyle(
+                                fontSize: 10.0,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                )
+            )
         ),
       ],
     ),
@@ -1083,7 +1440,7 @@ Widget buildMealItem(MealsModel model,context,{
 
   ),
 );
-Widget buildSerachMealItem (list,context,
+Widget buildSerachMealItem (list,listOfEmptySearch,context,
 {
   required List<bool> isChecked,
   required void Function()? function,
@@ -1171,8 +1528,22 @@ Widget buildSerachMealItem (list,context,
 
                     ),
                     separatorBuilder: (context,index) =>  SizedBox(height: 5,),
-                    itemCount: list.length),
-                fallback: (context) => Center(child: Container()),
+                    itemCount: list.length
+                ),
+                fallback: (context) => ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context,index) => buildMealItem(
+                      listOfEmptySearch[index],
+                      context,
+                      value: isChecked[index],
+                      onChanged: (value)
+                      {
+                        changeChekBox(value, index);
+                      },
+                    ),
+                    separatorBuilder: (context,index) =>  SizedBox(height: 5,),
+                    itemCount: listOfEmptySearch.length
+                ),
               ),
             ),
 
@@ -2398,5 +2769,4 @@ BarChartData randomData() {
     gridData: FlGridData(show: false),
   );
 }
-
 

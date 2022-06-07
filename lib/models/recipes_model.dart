@@ -17,6 +17,10 @@ class RecipeModel
   num? totalRating;
   num? numOfRates;
   num? averageRating;
+  //bool? isFavorite;
+  //String? userId;
+
+
 
   RecipeModel({
     this.uId,
@@ -35,6 +39,9 @@ class RecipeModel
     this.titleAr,
     this.directionsAr,
     this.ingredientsAr,
+    //this.isFavorite,
+    //this.userId,
+
   });
 
   RecipeModel.fromJson(Map<String, dynamic>? json){
@@ -55,6 +62,9 @@ class RecipeModel
     titleAr=json['titleAr'];
     directionsAr=json['directionsAr'];
     ingredientsAr=json['ingredientsAr'];
+    //isFavorite=json['isFavorite'];
+    //userId=json['userId'];
+
 
     //totalTime = json['totalTime'];
 
@@ -80,6 +90,9 @@ class RecipeModel
       'titleAr' :titleAr,
       'directionsAr' :directionsAr,
       'ingredientsAr' :ingredientsAr,
+      //'isFavorite' :isFavorite,
+      //userId' :userId,
+
 
       //'totalTime':totalTime
 

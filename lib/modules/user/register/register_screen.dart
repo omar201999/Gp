@@ -8,7 +8,6 @@ import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
-import 'package:gp/shared/network/local/cashe_helper.dart';
 
 class RegisterScreen extends StatelessWidget
 {
@@ -69,6 +68,7 @@ class RegisterScreen extends StatelessWidget
             }
             if (state is CreateUserSuccessState)
             {
+              uId=state.uId;
               navigateToAndReplacement(context, HomeLayout());
             /*  CacheHelper.saveData(
                 key: 'uId',

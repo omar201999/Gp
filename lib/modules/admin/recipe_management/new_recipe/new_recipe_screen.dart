@@ -24,6 +24,7 @@ class NewRecipeScreen extends StatelessWidget {
  var titleArController = TextEditingController();
  var ingredientsArController = TextEditingController();
  var directionsArController = TextEditingController();
+ var formKey = GlobalKey<FormState>();
 
  //var timeController = TextEditingController();
 
@@ -80,15 +81,17 @@ class NewRecipeScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      if(state is CreateRecipeLoadingState)
-                        const LinearProgressIndicator(),
-                      if(state is CreateRecipeLoadingState)
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                      /*defaultContainer(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                        children: [
+                          if(state is CreateRecipeLoadingState)
+                            const LinearProgressIndicator(),
+                          if(state is CreateRecipeLoadingState)
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                          /*defaultContainer(
                           height: 65,
                           child: defaultTextFormField(
                               controller: uIdController,
@@ -100,148 +103,198 @@ class NewRecipeScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),*/
-                      defaultContainer(
-                        context,
-                        height: 65,
-                        child: defaultTextFormField(
-                          type: TextInputType.text,
-                          controller: titleController,
-                          hintText: 'Title in English',
+                          defaultContainer(
+                            context,
+                            height: 65,
+                            child: defaultTextFormField(
+                              type: TextInputType.text,
+                              controller: titleController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter title of recipe';
+                                }
+                              },
+                              hintText: 'Title in English',
                               //prefixIcon: Icon(IconBroken.Search),
-                          ),
-                        ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
-                        height: 65,
-                        child: defaultTextFormField(
-                          type: TextInputType.text,
-                          controller: titleArController,
-                          hintText: 'Title in Arabic',
-                          //prefixIcon: Icon(IconBroken.Search),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
-
-                        height: 150,
-                         // color: constantColor5,
-                          child: defaultTextFormField(
-                                controller: ingredientsController,
-                                type: TextInputType.multiline,
-                                hintText: 'Enter Ingredients in English ... ',
-                                maxLines: 30,
-                              ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
-
-                        height: 150,
-                        // color: constantColor5,
-                        child: defaultTextFormField(
-                          controller: ingredientsArController,
-                          type: TextInputType.multiline,
-                          hintText: 'Enter Ingredients in  Arabic ... ',
-                          maxLines: 30,
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
-
-                        height: 150,
-                          //color: constantColor5,
-                          child: defaultTextFormField(
-                              controller: directionsController,
-                              type: TextInputType.multiline,
-                              hintText: 'Enter Directions in English ... ',
-                              maxLines: 30
                             ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
+                            height: 65,
+                            child: defaultTextFormField(
+                              type: TextInputType.text,
+                              controller: titleArController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter title of recipe';
+                                }
+                              },
+                              hintText: 'Title in Arabic',
+                              //prefixIcon: Icon(IconBroken.Search),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
 
-                        height: 150,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                            controller: directionsArController,
-                            type: TextInputType.multiline,
-                            hintText: 'Enter Directions in Arabic ... ',
-                            maxLines: 30
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
+                            height: 150,
+                            // color: constantColor5,
+                            child: defaultTextFormField(
+                              controller: ingredientsController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter ingredients of recipe';
+                                }
+                              },
+                              type: TextInputType.multiline,
+                              hintText: 'Enter Ingredients in English ... ',
+                              maxLines: 30,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
 
-                        height: 65,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.number,
-                          controller: carbsController,
-                          hintText: 'Carbs',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
+                            height: 150,
+                            // color: constantColor5,
+                            child: defaultTextFormField(
+                              controller: ingredientsArController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter ingredients of recipe';
+                                }
+                              },
+                              type: TextInputType.multiline,
+                              hintText: 'Enter Ingredients in  Arabic ... ',
+                              maxLines: 30,
+                            ),
+                          ),
 
-                        height: 65,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.number,
-                          controller: proteinController,
-                          hintText: 'Protein',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
 
-                        height: 65,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.number,
-                          controller: fatsController,
-                          hintText: 'Fats',
+                            height: 150,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                                controller: directionsController,
+                                validate: (value) {
+                                  if(value!.isEmpty) {
+                                    return 'Please enter directions of recipe';
+                                  }
+                                },
+                                type: TextInputType.multiline,
+                                hintText: 'Enter Directions in English ... ',
+                                maxLines: 30
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
 
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
+                            height: 150,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                                controller: directionsArController,
+                                validate: (value) {
+                                  if(value!.isEmpty) {
+                                    return 'Please enter directions of recipe';
+                                  }
+                                },
+                                type: TextInputType.multiline,
+                                hintText: 'Enter Directions in Arabic ... ',
+                                maxLines: 30
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
 
-                        height: 65,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.number,
-                          controller: calsController,
-                          hintText: 'Calories',
-                        ),
-                      ),
-                    /*  const SizedBox(
+                            height: 65,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                              type: TextInputType.number,
+                              controller: carbsController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter carbs of recipe';
+                                }
+                              },
+                              hintText: 'Carbs',
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
+
+                            height: 65,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                              type: TextInputType.number,
+                              controller: proteinController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter protein of recipe';
+                                }
+                              },
+                              hintText: 'Protein',
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
+
+                            height: 65,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                              type: TextInputType.number,
+                              controller: fatsController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter fats of recipe';
+                                }
+                              },
+                              hintText: 'Fats',
+
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          defaultContainer(
+                            context,
+
+                            height: 65,
+                            //color: constantColor5,
+                            child: defaultTextFormField(
+                              type: TextInputType.number,
+                              controller: calsController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter calories of recipe';
+                                }
+                              },
+                              hintText: 'Calories',
+                            ),
+                          ),
+                          /*  const SizedBox(
                         height: 10.0,
                       ),
                       defaultContainer(
@@ -255,10 +308,10 @@ class NewRecipeScreen extends StatelessWidget {
                           hintText: 'Weight',
                         ),
                       ),*/
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      /*SizedBox(
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          /*SizedBox(
                         height: 65,
                         child: TextFormField(
                           keyboardType: TextInputType.text,
@@ -278,24 +331,24 @@ class NewRecipeScreen extends StatelessWidget {
                         ),
                       ),*/
 
-                      if(AdminCubit.get(context).recipeImage != null)
-                        Stack(
-                          alignment: AlignmentDirectional.topEnd,
-                          children: [
-                            defaultContainer(
-                              context,
+                          if(AdminCubit.get(context).recipeImage != null)
+                            Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                defaultContainer(
+                                  context,
 
-                              height: 140.0,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.0),
-                                image: DecorationImage(
-                                  image: FileImage(recipeImage!),
-                                  fit: BoxFit.cover
-                                )
-                              ),
-                            ),
-                            /*IconButton(
+                                  height: 140.0,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      image: DecorationImage(
+                                          image: FileImage(recipeImage!),
+                                          fit: BoxFit.cover
+                                      )
+                                  ),
+                                ),
+                                /*IconButton(
                                 onPressed: () {
 
                                 },
@@ -307,25 +360,26 @@ class NewRecipeScreen extends StatelessWidget {
                                   ),
                                 )
                             )*/
-                          ],
-                        ),
-                      TextButton(
-                          onPressed: () {
-                             AdminCubit.get(context).getRecipeImage();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:  const [
-                              Icon(IconBroken.Image),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text('Add photo')
-                            ],
-                          )
+                              ],
+                            ),
+                          TextButton(
+                              onPressed: () {
+                                AdminCubit.get(context).getRecipeImage();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children:  const [
+                                  Icon(IconBroken.Image),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text('Add photo')
+                                ],
+                              )
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                  )
                 ),
               )
           );

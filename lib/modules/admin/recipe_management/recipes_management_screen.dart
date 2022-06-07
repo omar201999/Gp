@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/models/recipes_model.dart';
@@ -20,8 +21,7 @@ class RecipesManagementScreen extends StatelessWidget {
       {
         return Padding(
           padding: const EdgeInsets.all(20),
-          child: Center(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,9 +49,9 @@ class RecipesManagementScreen extends StatelessWidget {
                         prefix: IconBroken.Search,
                       ),
                     ),*/
-                  const SizedBox(
+                  /*const SizedBox(
                     height: 20.0,
-                  ),
+                  ),*/
                   Column(
                     children: [
                       Row(
@@ -72,15 +72,16 @@ class RecipesManagementScreen extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        height: 230,
+                        height: 270,
                         //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).breakfastRecipe.isNotEmpty && state is !GetAllBreakFastRecipeLoadingState,
                           builder: (context) => ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context, index),
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context ),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
-                            itemCount: AdminCubit.get(context).breakfastRecipe.length ,
+                            itemCount: 4
+                            //AdminCubit.get(context).breakfastRecipe.length ,
                           ),
                           fallback: (context) => const Center(child: CircularProgressIndicator()),
                         ),
@@ -115,15 +116,17 @@ class RecipesManagementScreen extends StatelessWidget {
                       ),
                       Container(
 
-                        height: 230,
+                        height: 270,
                         //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).lunchRecipe.length > 0 && state is !GetAllLunchRecipeLoadingState,
                           builder: (context) => ListView.separated(
                               scrollDirection: Axis.horizontal,
-                              itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context, index),
+                              itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context),
                               separatorBuilder: (context,index) =>  SizedBox(width: 10,),
-                              itemCount: AdminCubit.get(context).lunchRecipe.length  ),
+                              itemCount: 4
+                          ),
+                              // AdminCubit.get(context).lunchRecipe.length  ),
                           fallback: (context) => Center(child: CircularProgressIndicator()),
                         ),
                       ),
@@ -152,29 +155,30 @@ class RecipesManagementScreen extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        height: 230,
+                        height: 270,
                         //color: Colors.grey[50],
                         child: ConditionalBuilder(
                           condition: AdminCubit.get(context).dinnerRecipe.isNotEmpty && state is !GetAllDinnerRecipeLoadingState ,
                           builder: (context) => ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context, index),
+                            itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
-                            itemCount: AdminCubit.get(context).dinnerRecipe.length,
+                            itemCount: 4
+                            //AdminCubit.get(context).dinnerRecipe.length,
                           ),
                           fallback: (context) => const Center(child: CircularProgressIndicator()),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
+                  /*const SizedBox(
                     height: 10.0,
-                  ),
+                  ),*/
 
                 ],
               ),
             ),
-          ),
+
         );
       },
     );
@@ -182,75 +186,87 @@ class RecipesManagementScreen extends StatelessWidget {
 
 }
 
-Widget buildRecipe(RecipeModel model,context, index) => defaultGestureDetector(
+Widget buildRecipe(RecipeModel model,context ) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, EditRecipeScreen(recipeModel: model,));
   },
-  child: defaultContainer(
-    context,
-    height: 170,
-    width: 170,
-    //color: constantColor5,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-      [
-         Expanded(
-          flex: 4,
-          child: Image(
+    child: Container(
+      //constraints: const BoxConstraints.expand(),
+      decoration: BoxDecoration (
+        borderRadius: BorderRadius.circular(15.0),
+        image: DecorationImage (
             image: NetworkImage('${model.image}'),
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+            fit: BoxFit.cover
         ),
-         const SizedBox(
-          height: 4,
+      ),
+      height: 200,
+      width: 230,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.only(
+          top: 140,
+          start: 10,
+          end: 10,
+          bottom: 15,
         ),
-         Expanded(
+        child: Container(
+          color: Colors.black38.withOpacity(0.30),
           child: Padding(
-            padding: /*EdgeInsetsDirectional.only(
-                start: 10,
-            ),*/
-            const EdgeInsets.symmetric(
-              vertical: 2.0,
-              horizontal: 6.0,
-            ),
-            child: Text(
-              '${model.title!.toUpperCase()}',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  fontSize: 16
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 10,
-            ),
-            child: Row(
-              children:
-               [
-                Text(
-                  '${model.calories!.round()}',
-                  style: TextStyle(
-                    //letterSpacing: 1,
-                    fontSize: 12
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${model.title}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                          color: Colors.white
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text('cal'),
-              ],
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '${model.calories} Calories',
+                        style: const TextStyle(
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        IconBroken.Star,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Text(
+                        '${(model.averageRating)!.ceilToDouble()}',
+                        style: const TextStyle(
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ],
+                  )
+                ]
             ),
           ),
+        ).asGlass(
+          tintColor: Colors.transparent,
+          clipBorderRadius: BorderRadius.circular(20.0),
         ),
-      ],
-    ),
-  ),
+      ),
+    )
 );

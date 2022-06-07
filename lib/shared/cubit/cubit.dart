@@ -11,6 +11,9 @@ class AppCubit extends Cubit<AppStates>
 
   static AppCubit get(context) => BlocProvider.of(context);
    Color constantColor1 = Color(0xFFE3F4FB);
+   Color constantColor6 = Color(0xFFEEEEEE);
+   Color? scaffoldColor = Colors.grey[50];
+   Color shadowColor = Colors.black;
 
   bool isDark = false;
   void changeAppMode({fromCache}) {
@@ -22,12 +25,18 @@ class AppCubit extends Cubit<AppStates>
     CacheHelper.saveData(key: 'isDark', value: isDark).then((value) {
       if (isDark) {
         constantColor1 = HexColor('333739');
+        constantColor6 = Color(0xFFD6D6D6);
+        scaffoldColor = Color(0xff242526);
+        shadowColor = Colors.white;
         appMode = ThemeMode.dark;
         print('HexColor');
         emit(AppChangeModeState());
       }
       else {
         constantColor1 = Color(0xFFE3F4FB);
+        constantColor6 = Color(0xFFEEEEEE);
+        scaffoldColor = Colors.grey[50];
+        shadowColor = Colors.black;
         appMode = ThemeMode.light;
         print('Color(0xFFE3F4FB)');
         emit(AppChangeModeState());

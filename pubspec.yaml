@@ -50,12 +50,13 @@ dependencies:
   fluttertoast: ^8.0.8
   iconsax: ^0.0.8
   image_picker: ^0.7.4
-  fl_chart: ^0.45.0
+  fl_chart: ^0.51.0
   flutter_rating_bar: ^4.0.0
   flutter_facebook_auth: ^3.5.0
   google_sign_in: ^5.3.0
   flutter_signin_button: ^2.0.0
   glass: ^1.0.1+1
+  simple_shadow: ^0.3.0
 
 
 

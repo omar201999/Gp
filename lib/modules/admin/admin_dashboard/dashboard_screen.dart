@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/modules/admin/admin_dashboard/analysis_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
@@ -371,7 +372,9 @@ class DashboardScreen extends StatelessWidget {
                                 context,
                                 text: 'See All',
                                 isUpper: false,
-                                function: () {},
+                                function: () {
+                                  navigateTo(context, LineChartSample2());
+                                },
                               ),
                             ],
                           ),

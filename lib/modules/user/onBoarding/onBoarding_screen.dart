@@ -104,7 +104,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
             Padding(
               padding: const EdgeInsetsDirectional.only(
-                top: 780,
+                //top: 780,
+                top: 700,
                /* start: 20,
                 end: 20,*/
               ),

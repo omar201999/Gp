@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
@@ -12,9 +15,9 @@ import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
+import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
-import 'package:gp/modules/user/market/items/marketitem_screen.dart';
 import 'package:gp/modules/user/meal_item/meal_item_screen.dart';
 import 'package:gp/modules/user/orders_layout/products_for_order_user.dart';
 import 'package:gp/modules/user/recipe/recipe_item_screen.dart';
@@ -24,6 +27,7 @@ import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:intl/intl.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 AppBar buildAppBar({
   required String title,
   void Function()? onPressed,
@@ -151,15 +155,18 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 Widget defaultContainer(BuildContext context,{
   double? width,
   double? height,
-  double radius = 10,
+  double? radius,
+
   Clip clip = Clip.antiAliasWithSaveLayer,
-  //Color? color = constantColor1,
+  Color? color,
   Widget? child,
-  BoxDecoration? decoration ,
+  BoxDecoration? decoration,
+  EdgeInsets? padding ,
 }) => Container(
   width: width,
   height: height,
   clipBehavior: clip,
+  padding: padding,
   decoration: decoration??BoxDecoration(
     /*gradient:  LinearGradient(
       colors: [
@@ -169,8 +176,8 @@ Widget defaultContainer(BuildContext context,{
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
     ),*/
-    color: AppCubit.get(context).constantColor1,//HexColor('#4d4d4d')
-    borderRadius: BorderRadius.circular(radius),
+    color: color??AppCubit.get(context).constantColor1,//HexColor('#4d4d4d')
+    borderRadius: BorderRadius.circular(radius??10),
   ),
   child: child,
 );
@@ -233,7 +240,109 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
       recipeModel: model,
     ));
   },
-  child: defaultContainer(
+  child: Container(
+      decoration: BoxDecoration (
+        borderRadius: BorderRadius.circular(15.0),
+        image: DecorationImage (
+            image: NetworkImage('${model.image}'),
+            fit: BoxFit.cover
+        ),
+      ),
+      height: 200,
+      width: 230,
+      child: Padding(
+          padding: const EdgeInsetsDirectional.only(
+            top: 140,
+            start: 10,
+            end: 10,
+            bottom: 15,
+          ),
+          child: Container(
+            color: Colors.black38.withOpacity(0.30),
+            child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if(lan=='en')
+                          Expanded(
+                       child: Text(
+                         '${model.title}',
+                         overflow: TextOverflow.ellipsis,
+                         maxLines: 2,
+                         style: const TextStyle(
+                           fontWeight: FontWeight.bold,
+                           fontSize: 15.0,
+                           color: Colors.white
+                         ),
+                       ),
+                   ),
+                        if(lan=='ar')
+                          Expanded(
+                            child: Text(
+                              '${model.titleAr}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                   const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      children: [
+                        if(lan=='en')
+                          Text(
+                          '${model.calories} Calories',
+                           style: const TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                        if(lan=='ar')
+                          Text(
+                            '${model.calories} كالوري ',
+                            style: const TextStyle(
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        Spacer(),
+                        Icon(
+                            IconBroken.Star,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        Text(
+                          '${(model.averageRating)!.ceilToDouble()}',
+                          style: const TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    )
+                  ]
+              ),
+             ),
+           ).asGlass(
+            tintColor: Colors.transparent,
+            clipBorderRadius: BorderRadius.circular(20.0),
+          ),
+          ),
+      )
+
+  /*child: defaultContainer(
     context,
     height: 250,
     width: 180,
@@ -243,7 +352,7 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
-        Expanded(
+        /*Expanded(
           flex: 4,
           child: Image(
             image: NetworkImage('${model.image}'),
@@ -288,10 +397,11 @@ Widget buildRecipeItem(RecipeModel model,context) => defaultGestureDetector(
               ],
             ),
           ),
-        ),
+        ),*/
+
       ],
     ),
-  ),
+  ),*/
 );
 
 
@@ -595,13 +705,183 @@ Widget buildNutritionItem(BuildContext context,{
   ),
 );
 
-Widget buildmarket_item(ProductModel model, context, index) => defaultGestureDetector(
+Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, MarketItemScreen(
-      productModel: model,
-      index: index,
-    ));
+    navigateTo(context, EditProductScreen(productModel: model, index: index,));
+
+  },
+  child:
+  defaultContainer(
+    context,
+    decoration: BoxDecoration (
+      color: AppCubit.get(context).constantColor6,
+      borderRadius: BorderRadius.circular(15.0),
+    ),
+    //color: constantColor5,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+      [
+        Stack(
+          children: [
+
+            Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    top: 20,
+                    bottom: 5,
+                    end: 20,
+                    start: 20
+                ),
+                child: SimpleShadow(
+                  child: Image(
+                    image: NetworkImage('${model.image}'),
+                    width: 140.0,
+                    height: 140.0,
+                    fit: BoxFit.cover,
+                  ),
+                  opacity: 0.5,
+                  //color: Colors.blue,
+                  offset: Offset(1, 1),
+                  sigma: 8,
+                )
+            ),
+            if (model.discount != 0 && model.quantity != 0)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 10.0,
+                  top: 10.0,
+                ),
+                child: defaultContainer(
+                    context,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25)
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.0
+                    ),
+                    child: Text(
+                      '${model.discount}%'' ' +AppLocalizations.of(context).translate("off"),
+                      style: const TextStyle(
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.w900
+                      ),
+                    )
+                ),
+              ),
+            if (model.quantity == 0)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 10.0,
+                  top: 10.0,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(25)
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 5.0
+                  ),
+                  child:Text(
+                    //'Out of Stock',
+                    AppLocalizations.of(context).translate("not_available"),
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+
+          ],
+        ),
+
+        Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5.0,
+              horizontal: 10.0,
+            ),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 10.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(lan=='en')
+                        Text(
+                          '${model.name}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            height: 1.3,
+                          ),
+                        ),
+                      if(lan=='ar')
+                        Text(
+                          '${model.nameAr}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            height: 1.3,
+                          ),
+                        ),
+                      Row(
+                        children:
+                        [
+                          Text(
+                            '${model.currentPrice}',
+                            style: const TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w900,
+                              color: defaultColor,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          if (model.discount != 0)
+                            Text(
+                              '${model.oldPrice}',
+                              style: const TextStyle(
+                                fontSize: 10.0,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                )
+            )
+        ),
+      ],
+    ),
+  ),
+);
+
+/*Widget buildmarket_item(ProductModel model, context, index) => defaultGestureDetector(
+  onTap: ()
+  {
+      navigateTo(context, MarketItemScreen(
+        productModel: model,
+        index: index,
+      ),
+      );
+
   },
   child: defaultContainer(
     context,
@@ -692,7 +972,7 @@ Widget buildmarket_item(ProductModel model, context, index) => defaultGestureDet
       ],
     ),
   ),
-);
+);*/
 
 Widget buildMealItem(MealsModel model,context,{
   required bool? value,
@@ -1001,9 +1281,13 @@ indicator({
   required Color color,
   required String text,
   String? secondText,
+  String? thirdText,
+  String? detailsText,
+  Color detailsTextColor = Colors.grey,
   required bool isSquare,
   double? size = 16,
   Color? secondTextColor,
+  Color thirdTextColor = defaultColor,
   Color? textColor = const Color(0xff505050),
 }) => Row(
     children: [
@@ -1030,6 +1314,17 @@ indicator({
             ),
           ),
       ),
+      const SizedBox(
+        width: 8,
+      ),
+      Text(
+        '(' + detailsText! + ' g)',
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: detailsTextColor
+        ),
+      ),
 
       const Spacer(),
 
@@ -1039,6 +1334,18 @@ indicator({
             fontSize: 14,
             fontWeight: FontWeight.bold,
             color: secondTextColor
+        ),
+      ),
+      const SizedBox(
+        width: 20.0,
+      ),
+
+      Text(
+        thirdText!,
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: thirdTextColor
         ),
       ),
 
@@ -1058,6 +1365,19 @@ buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAm
       ),
     );
 
+buildPieChartItem2 (int nutritionInfo,context, radius, fontSize, index, totalAmount) =>
+    PieChartSectionData(
+      color: colors[index],
+      value: nutritionInfo/totalAmount*100*360,
+      title: ((nutritionInfo/totalAmount*100).round()).toString()+'%',
+      radius: radius,
+      titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white
+      ),
+    );
+
 
 List<Color> colors = [
   Color(0xff0293ee),
@@ -1065,6 +1385,11 @@ List<Color> colors = [
   Color(0xff845bef),
   Color(0xffef5bed),
   Color(0xff097eac),
+  Color(0xe8a7a7ad),
+  Color(0xff082ca7),
+  Color(0xff27ce21),
+  Color(0xffe8e224),
+  Color(0xff8e09ac),
   Color(0xe8a7a7ad),
   Color(0xff082ca7),
   Color(0xff27ce21),
@@ -1896,5 +2221,182 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
 
 String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(date));
 
+ List<Color> availableColors = const [
+  Colors.purpleAccent,
+  Colors.yellow,
+  Colors.lightBlue,
+  Colors.orange,
+  Colors.pink,
+  Colors.redAccent,
+];
+
+ Color barBackgroundColor = const Color(0xff72d8bf);
+ Duration animDuration = const Duration(milliseconds: 250);
+
+int touchedIndex = -1;
+
+bool isPlaying = false;
+
+BarChartGroupData makeGroupData(
+    int x,
+    double y, {
+      bool isTouched = false,
+      Color barColor = Colors.white,
+      double width = 22,
+      List<int> showTooltips = const [],
+    }) {
+  return BarChartGroupData(
+    x: x,
+    barRods: [
+      BarChartRodData(
+        toY: isTouched ? y + 1 : y,
+        color: isTouched ? Colors.yellow : barColor,
+        width: width,
+        borderSide: isTouched
+            ? BorderSide(color: Colors.yellow.shade600, width: 1)
+            : const BorderSide(color: Colors.white, width: 0),
+        backDrawRodData: BackgroundBarChartRodData(
+          show: true,
+          toY: 20,
+          color: barBackgroundColor,
+        ),
+      ),
+    ],
+    showingTooltipIndicators: showTooltips,
+  );
+}
+
+List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
+  switch (i) {
+    case 0:
+      return makeGroupData(0, 5, isTouched: i == touchedIndex);
+    case 1:
+      return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
+    case 2:
+      return makeGroupData(2, 5, isTouched: i == touchedIndex);
+    case 3:
+      return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
+    case 4:
+      return makeGroupData(4, 9, isTouched: i == touchedIndex);
+    case 5:
+      return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
+    case 6:
+      return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
+    default:
+      return throw Error();
+  }
+});
+
+
+Widget getTitles(double value, TitleMeta meta) {
+  const style = TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 14,
+  );
+  Widget text;
+  switch (value.toInt()) {
+    case 0:
+      text = const Text('M', style: style);
+      break;
+    case 1:
+      text = const Text('T', style: style);
+      break;
+    case 2:
+      text = const Text('W', style: style);
+      break;
+    case 3:
+      text = const Text('T', style: style);
+      break;
+    case 4:
+      text = const Text('F', style: style);
+      break;
+    case 5:
+      text = const Text('S', style: style);
+      break;
+    case 6:
+      text = const Text('S', style: style);
+      break;
+    default:
+      text = const Text('', style: style);
+      break;
+  }
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    space: 16,
+    child: text,
+  );
+}
+
+BarChartData randomData() {
+  return BarChartData(
+    barTouchData: BarTouchData(
+      enabled: false,
+    ),
+    titlesData: FlTitlesData(
+      show: true,
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          getTitlesWidget: getTitles,
+          reservedSize: 38,
+        ),
+      ),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: false,
+        ),
+      ),
+      topTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: false,
+        ),
+      ),
+      rightTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: false,
+        ),
+      ),
+    ),
+    borderData: FlBorderData(
+      show: false,
+    ),
+    barGroups: List.generate(7, (i) {
+      switch (i) {
+        case 0:
+          return makeGroupData(0, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 1:
+          return makeGroupData(1, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 2:
+          return makeGroupData(2, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 3:
+          return makeGroupData(3, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 4:
+          return makeGroupData(4, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 5:
+          return makeGroupData(5, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        case 6:
+          return makeGroupData(6, Random().nextInt(15).toDouble() + 6,
+              barColor: availableColors[
+              Random().nextInt(availableColors.length)]);
+        default:
+          return throw Error();
+      }
+    }),
+    gridData: FlGridData(show: false),
+  );
+}
 
 

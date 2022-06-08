@@ -1486,7 +1486,7 @@ List<RecipeModel> allRecipe = [];
         .doc(id)
         .set(model.toMap())
         .then((value) {
-      getFavoritesRecipes();
+      //getFavoritesRecipes();
       // emit(AddRecipeToFavoritesSuccessState());
     }).catchError((error) {
       emit(AddRecipeToFavoritesErrorState(error.toString()));
@@ -1514,20 +1514,19 @@ List<RecipeModel> allRecipe = [];
   void getFavoritesRecipes() {
     emit(GetFavoritesRecipesLoadingState());
     {
-      favoritesRecipes=[];
       FirebaseFirestore.instance
           .collection('users')
           .doc(uId)
           .collection('favoritesRecipe')
-          .get()
-          .then((value) {
-        value.docs.forEach((element)
+          .snapshots()
+          .listen((event)
+      {
+        favoritesRecipes=[];
+        event.docs.forEach((element)
         {
           favoritesRecipes.add(RecipeModel.fromJson(element.data()));
         });
         emit(GetFavoritesRecipesSuccessState());
-      }).catchError((error){
-        print(error.toString());
       });
     }
   }
@@ -1593,7 +1592,7 @@ List<RecipeModel> allRecipe = [];
         .doc(prodId)
         .set(model.toMap())
         .then((value) {
-      getFavoritesProducts();
+      //getFavoritesProducts();
     }).catchError((error) {
       emit(AddProductToFavoritesErrorState(error.toString()));
       print(error.toString());
@@ -1616,23 +1615,26 @@ List<RecipeModel> allRecipe = [];
   }
 
   List<ProductModel> favoritesProducts = [];
+  List<String> favoritesProductsId = [];
+
   void getFavoritesProducts() {
     emit(GetFavoritesProductsLoadingState());
     {
-      favoritesProducts=[];
       FirebaseFirestore.instance
           .collection('users')
           .doc(uId)
           .collection('favoritesProducts')
-          .get()
-          .then((value) {
-        value.docs.forEach((element)
+          .snapshots()
+          .listen((event)
+      {
+        favoritesProducts=[];
+        favoritesProductsId = [];
+        event.docs.forEach((element)
         {
+          favoritesProductsId.add(element.id);
           favoritesProducts.add(ProductModel.fromJson(element.data()));
         });
         emit(GetFavoritesProductsSuccessState());
-      }).catchError((error){
-        print(error.toString());
       });
     }
   }

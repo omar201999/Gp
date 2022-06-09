@@ -956,6 +956,60 @@ List<RecipeModel> allRecipe = [];
     });
   }
 
+  void updateFavoriteProduct(
+      String? prodId, {
+        required String? name,
+        String? image,
+        //String? userId,
+        required double? currentPrice,
+        required double? oldPrice,
+        required double? discount,
+        required int? quantity,
+        required int? selectedQuantity,
+        required String? description,
+        //required String? uId,
+        required String? status,
+        required String? descriptionAr,
+        required String? nameAr,
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
+        //bool? isFavorite,
+      }) {
+    ProductModel model = ProductModel(
+      name: name,
+      image: image,
+      description: description,
+      currentPrice: currentPrice,
+      oldPrice: oldPrice,
+      discount: discount,
+      quantity: quantity,
+      selectedQuantity: selectedQuantity,
+      //uId: uId,
+      status: status,
+      descriptionAr: descriptionAr,
+      nameAr: nameAr,
+      totalRating: totalRating,
+      averageRating: averageRating,
+      numOfRates: numOfRates,
+      //isFavorite: isFavorite,
+      //userId: userModel!.uId,
+    );
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesProducts')
+        .doc(prodId)
+        .update(model.toMap())
+        .then((value) {
+      emit(UpdateFavoriteProductSuccessState());
+    }).catchError((error) {
+      emit(UpdateFavoriteProductErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
   /* void addProductToOrders() {
     int i = 0;
     for (i; i < cart.length; i++) {
@@ -1370,6 +1424,61 @@ List<RecipeModel> allRecipe = [];
       emit(UpdateRecipeSuccessState());
     }).catchError((error) {
       emit(UpdateRecipeErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+  void updateFavoriteRecipe(
+      String Id, {
+        required num totalRating,
+        required num averageRating,
+        required num numOfRates,
+        required String uId1,
+        required String image,
+        required double calories,
+        required double carbs,
+        required String category,
+        required String directions,
+        required String titleAr,
+        required String ingredientsAr,
+        required String directionsAr,
+        required double fats,
+        required String ingredients,
+        required double protein,
+        required String title,
+        //String? userId,
+        //required bool isFavorite,
+
+        //5required double weight,
+      }) {
+    RecipeModel model = RecipeModel(
+      totalRating: totalRating,
+      averageRating: averageRating,
+      numOfRates: numOfRates,
+      uId: uId1,
+      image: image,
+      calories: calories,
+      carbs: carbs,
+      category: category,
+      directions: directions,
+      fats: fats,
+      ingredients: ingredients,
+      protein: protein,
+      title: title,
+      titleAr: titleAr,
+      ingredientsAr: ingredientsAr,
+      directionsAr: directionsAr,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favoritesRecipe')
+        .doc(Id)
+        .update(model.toMap())
+        .then((value) {
+      emit(UpdateFavoriteRecipeSuccessState());
+    }).catchError((error) {
+      emit(UpdateFavoriteRecipeErrorState(error.toString()));
       print(error.toString());
     });
   }

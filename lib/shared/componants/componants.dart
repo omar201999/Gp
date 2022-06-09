@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -214,7 +215,8 @@ Widget defaultBodyText(BuildContext context,{
   int? maxLines,
   double? height,
   double? letterSpacing,
-  TextOverflow? overflow
+  TextOverflow? overflow,
+  TextAlign? textAlign
 
 
 }) => Text(
@@ -228,6 +230,7 @@ Widget defaultBodyText(BuildContext context,{
     overflow: overflow,
   ),
   maxLines: maxLines,
+  textAlign: textAlign,
 
 );
 
@@ -336,7 +339,7 @@ Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
                     children:
                     [
                       RatingBar.builder(
-                        initialRating: (model.averageRating)!.roundToDouble(),
+                        initialRating: (model.averageRating)!.toDouble(),
                         direction: Axis.horizontal,
                         updateOnDrag: false,
                         itemSize: 25,
@@ -354,13 +357,15 @@ Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
                       SizedBox(
                         height: 10,
                       ),
-                      defaultHeadLineText(context, text: model.title!,
-                      maxLines: 2),
+                      if(lan=='en')
+                        defaultHeadLineText(context, text: model.title!, maxLines: 2),
+                      if(lan=='ar')
+                        defaultHeadLineText(context, text: model.titleAr!, maxLines: 2),
                       SizedBox(
                         height: 6,
                       ),
                       Text(
-                          'cooking healthy for radiant healthy',
+                        AppLocalizations.of(context).translate("cooking"),
                         style: Theme.of(context).textTheme.caption,
                       ),
                       SizedBox(
@@ -370,29 +375,28 @@ Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children:
                         [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: defaultColor,
-                                  child: Icon(
-                                    Icons.people,
-                                    color: Colors.white,
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: defaultColor,
+                                child: Icon(
+                                  Icons.people,
+                                  color: Colors.white,
 
-                                  )
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                    'reviews ${model.numOfRates!.toStringAsFixed(0)}',
-                                style: Theme.of(context).textTheme.caption
-                                ),
+                                )
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  '${model.numOfRates!.toStringAsFixed(0)} ${AppLocalizations.of(context).translate("reviews")} ',
+                              style: Theme.of(context).textTheme.caption
+                              ),
 
-                              ],
-                            ),
+                            ],
                           ),
+                          SizedBox(width: 5,),
                           Container(
                             width: 2,
                             height: 30,
@@ -487,10 +491,27 @@ Widget buildFavoriteProductItem(ProductModel model,context,index) => InkWell(
             child: Row(
               children:
               [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: AppCubit.get(context).constantColor5,
-                  backgroundImage: NetworkImage('${model.image}'),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppCubit.get(context).constantColor5,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SimpleShadow(
+                        child: Image(
+                          image: NetworkImage('${model.image}',),
+                          height: 100,
+                          width: 100,
+                          alignment: Alignment.center,
+                        ),
+                        opacity: 0.5,
+                        offset: Offset(1, 1),
+                        sigma: 8,
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 10,
@@ -520,13 +541,17 @@ Widget buildFavoriteProductItem(ProductModel model,context,index) => InkWell(
                         SizedBox(
                           height: 10,
                         ),
-                        defaultHeadLineText(context, text: model.name!,
+                        if(lan=='en')
+                          defaultHeadLineText(context, text: model.name!,
                             maxLines: 2),
+                        if(lan=='ar')
+                          defaultHeadLineText(context, text: model.nameAr!,
+                              maxLines: 2),
                         SizedBox(
                           height: 6,
                         ),
                         Text(
-                          model.description!,
+                          AppLocalizations.of(context).translate("Best_Product"),
                           style: Theme.of(context).textTheme.caption,
                         ),
                         SizedBox(
@@ -546,7 +571,7 @@ Widget buildFavoriteProductItem(ProductModel model,context,index) => InkWell(
                               width: 5,
                             ),
                             Text(
-                                'reviews ${model.numOfRates!.toStringAsFixed(0)}',
+                                ' ${model.numOfRates!.toStringAsFixed(0)} ${AppLocalizations.of(context).translate("reviews")}',
                                 style: Theme.of(context).textTheme.caption
                             ),
 
@@ -654,21 +679,48 @@ Widget buildHomeScreenItem(BuildContext context,{
 );
 
 
-Widget afterTitleOfRecipeItem(BuildContext context, {
-   String? percentage,
-  required String? numberOfGrams,
-  required String? nameOfType,
-  Color? color,
-}) => Expanded(
+Widget buildNutritionItemForRecipeItemScreen(context,
+{
+  required String? imagePath,
+  required String? numOFNutrition,
+  required String? typeOFNutrition,
+
+})=> Expanded(
   child: Column(
-    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children:
     [
-      //defaultBodyText(context, text: percentage! ,color: color),
-      defaultBodyText(context, text: numberOfGrams! ),
-      defaultBodyText(context, text: nameOfType! ),
+      Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children:
+            [
+              SvgPicture.asset(
+                imagePath!,
+                height: 30,
+                width: 30,
+                color: Colors.grey,
+              ),
+              SizedBox(height: 10,),
+              defaultBodyText(context, text: numOFNutrition!),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: BorderSide(color: (Colors.grey[400])!,width: 1)
+
+        ),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      defaultBodyText(context, text:typeOFNutrition!,)
     ],
   ),
+
 );
 
 Widget defaultTextButton( BuildContext context,{

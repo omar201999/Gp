@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass/glass.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -226,7 +227,7 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                               children: [
                                 defaultHeadLineText(context, text: AppLocalizations.of(context).translate("Rate This Recipe"),),
                                 RatingBar.builder(
-                                  initialRating: rating!,
+                                  initialRating: (widget.recipeModel.averageRating)!.toDouble(),
                                   //minRating: 1,
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
@@ -266,8 +267,37 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                                         ingredientsAr:widget.recipeModel.ingredientsAr!,
                                         titleAr: widget.recipeModel.titleAr!,
                                         //isFavorite: widget.recipeModel.isFavorite!,
-
                                       );
+                                      if(HomeCubit.get(context).favoritesRecipes.isNotEmpty)
+                                      {
+                                        for(int i=0;i < HomeCubit.get(context).favoritesRecipes.length;i++)
+                                        {
+                                          if(HomeCubit.get(context).favoritesRecipes[i].uId == widget.recipeModel.uId)
+                                          {
+                                            HomeCubit.get(context).updateFavoriteRecipe(
+                                              widget.recipeModel.uId!,
+                                              image: widget.recipeModel.image!,
+                                              calories: widget.recipeModel.calories!,
+                                              carbs: widget.recipeModel.carbs!,
+                                              category: widget.recipeModel.category!,
+                                              directions: widget.recipeModel.directions!,
+                                              fats: widget.recipeModel.fats!,
+                                              ingredients: widget.recipeModel.ingredients!,
+                                              protein: widget.recipeModel.protein!,
+                                              title: widget.recipeModel.title!,
+                                              //weight: widget.recipeModel.weight!,
+                                              averageRating: (widget.recipeModel.totalRating! + rating!) / (widget.recipeModel.numOfRates! + 1)  ,
+                                              numOfRates: widget.recipeModel.numOfRates! + 1 ,
+                                              totalRating:widget.recipeModel.totalRating! + rating!,
+                                              uId1: widget.recipeModel.uId!,
+                                              directionsAr: widget.recipeModel.directionsAr!,
+                                              ingredientsAr:widget.recipeModel.ingredientsAr!,
+                                              titleAr: widget.recipeModel.titleAr!,
+                                              //isFavorite: widget.recipeModel.isFavorite!,
+                                            );
+                                          }
+                                        }
+                                      }
                                     },
                                     text: 'Send'
                                 ),
@@ -277,60 +307,44 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
                         ],
                       ),
 
-                        const SizedBox(height: 15,),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            defaultHeadLineText(
-                                context, text:AppLocalizations.of(context).translate("Nutrition Per Serving")),// 'Nutrition Per Serving'),
-                            const SizedBox(height: 5,),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CircleAvatar(
-                                    backgroundColor: defaultColor,
-                                    radius: 40,
-                                    child: CircleAvatar(
-                                      radius: 35,
-                                      backgroundColor:Colors.white,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .center,
-                                        children:
-                                        [
-                                          defaultBodyText(context, text: '${widget.recipeModel.calories}',
-                                              fontWeight: FontWeight.bold,color: defaultColor),
-                                          defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
-                                              color: Colors.grey),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                afterTitleOfRecipeItem(context, //percentage: '17%',
-                                    numberOfGrams: '${widget.recipeModel.carbs}',
-                                    nameOfType: AppLocalizations.of(context).translate("Carbs"),//'Carbs',
-                                    color: Colors.grey),
-                                afterTitleOfRecipeItem(context, //percentage: '5%',
-                                    numberOfGrams: '${widget.recipeModel.protein}',
-                                    nameOfType: AppLocalizations.of(context).translate("Protein"),//'Proteins',
-                                    color: Colors.red),
-                                afterTitleOfRecipeItem(context, //percentage: '2%',
-                                    numberOfGrams: '${widget.recipeModel.fats}',
-                                    nameOfType: AppLocalizations.of(context).translate("Fats"),//'Fats',
-                                    color: defaultColor),
-
-                              ],
-                            )
+                        const SizedBox(height: 10,),
+                        defaultHeadLineText(
+                          context, text: AppLocalizations.of(context).translate("Nutrition Per Serving"),//'Nutrition Per Serving',
+                        ),
+                        Row(
+                          children:
+                          [
+                            //'${widget.recipeModel.carbs}g' AppLocalizations.of(context).translate("Carbs")
+                            buildNutritionItemForRecipeItemScreen(
+                                context,
+                              imagePath:  'assets/images/cereal-grain-svgrepo-com.svg',
+                              numOFNutrition: '${widget.recipeModel.carbs}${AppLocalizations.of(context).translate("g")}',
+                              typeOFNutrition: AppLocalizations.of(context).translate("Carbs2"),
+                            ),
+                            buildNutritionItemForRecipeItemScreen(
+                                context,
+                              imagePath:  'assets/images/avocado-svgrepo-com (1).svg',
+                              numOFNutrition: '${widget.recipeModel.protein}${AppLocalizations.of(context).translate("g")}',
+                              typeOFNutrition: AppLocalizations.of(context).translate("Protein1"),
+                            ),
+                            buildNutritionItemForRecipeItemScreen(
+                                context,
+                              imagePath:  'assets/images/fire-svgrepo-com.svg',
+                              numOFNutrition: '${widget.recipeModel.calories}${AppLocalizations.of(context).translate("g")}',
+                              typeOFNutrition: AppLocalizations.of(context).translate("cal1"),
+                            ),
+                            buildNutritionItemForRecipeItemScreen(
+                                context,
+                              imagePath: 'assets/images/pizza.svg',
+                              numOFNutrition: '${widget.recipeModel.fats}${AppLocalizations.of(context).translate("g")}',
+                              typeOFNutrition: AppLocalizations.of(context).translate("Fats1"),
+                            ),
                           ],
                         ),
 
                         const SizedBox(
                           height: 15,
                         ),
-
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

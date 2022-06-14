@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     HomeCubit.get(context).getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
     HomeCubit.get(context).getFavoritesRecipes();
-
+    HomeCubit.get(context).getAllCompleteDiary();
   }
 
   DateTime selectedDate = DateTime.now()  ;
@@ -118,6 +118,7 @@ class _HomePageState extends State<HomePage> {
                                   (e) => InkWell(
                                     onTap: ()
                                     {
+
                                       if(_current==0) {
                                         navigateTo(context, RecipeItemScreen(recipeModel: HomeCubit.get(context).allRecipe[1], index: 1,));
                                       }

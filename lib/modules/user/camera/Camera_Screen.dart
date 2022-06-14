@@ -115,37 +115,26 @@ class CameraScreenState extends State<CameraScreen> {
                         ),
                       ),
                     ),
-                        Row(
-                         children: [
-                          const SizedBox(
-                          width: 10.0,
-                         ),
-                         Container(
-                          height: 40.0,
-                          width: 40.0,
-                          child:IconButton(
-                            color: Colors.white,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon( IconBroken.Arrow___Left_2, size: 20, ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              top: 5,
+                              start: 10
                           ),
-                        ).asGlass(
-                          tintColor: Colors.black,
-                          clipBorderRadius: BorderRadius.circular(25.0),
-                        ),
-                         const SizedBox(
-                          width: 15.0,
-                        ),
-                         Text(
-                          AppLocalizations.of(context).translate("photo"),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            child: IconButton(
+                              color: Colors.white,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon( IconBroken.Arrow___Left_2, size: 20,),
+                            ),
+                          ).asGlass(
+                            tintColor: Colors.black,
+                            clipBorderRadius: BorderRadius.circular(25),
                           ),
                         ),
-                      ],
-                    )
                   ],
                 ),
                     SizedBox(

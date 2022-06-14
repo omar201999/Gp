@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/models/feedback_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/colors.dart';
@@ -84,20 +85,62 @@ class FeedBackItemScreen extends StatelessWidget
                 alignment: AlignmentDirectional.topStart,
                 children:
                 [
-                 Image(image: NetworkImage(feedBackModel.feedbackImage!)),
-                  IconButton(
-                    color: defaultColor,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(IconBroken.Arrow___Left_2,color: Colors.white,),
+                  Image(image: NetworkImage(feedBackModel.feedbackImage!)),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                        top: 5,
+                        start: 10
+                    ),
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      child: IconButton(
+                        color: defaultColor,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon( IconBroken.Arrow___Left_2, ),
+                      ),
+                    ).asGlass(
+                      tintColor: Colors.transparent,
+                      clipBorderRadius: BorderRadius.circular(50.0),
+                    ),
                   ),
                 ],
               ),
-              Padding(
+              if(feedBackModel.feedbackImage == null)
+                Row(
+                  children:
+                  [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                          top: 5,
+                          start: 10
+                      ),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        child: IconButton(
+                          color: defaultColor,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon( IconBroken.Arrow___Left_2, ),
+                        ),
+                      ).asGlass(
+                        tintColor: Colors.transparent,
+                        clipBorderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                  ],
+                ),
+
+
+                Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
+
                     defaultContainer(
                       context,
                       width: double.infinity,

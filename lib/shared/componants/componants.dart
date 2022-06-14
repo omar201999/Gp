@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -17,7 +16,6 @@ import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
-import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
@@ -829,7 +827,7 @@ Widget buildNutritionItemForRecipeItemScreen(context,
                 imagePath!,
                 height: 30,
                 width: 30,
-                color: Colors.grey,
+                color: AppCubit.get(context).cardRecipeItemIcon,
               ),
               SizedBox(height: 10,),
               defaultBodyText(context, text: numOFNutrition!),
@@ -841,6 +839,7 @@ Widget buildNutritionItemForRecipeItemScreen(context,
             side: BorderSide(color: (Colors.grey[400])!,width: 1)
 
         ),
+        color: AppCubit.get(context).cardRecipeItem,
       ),
       SizedBox(
         height: 10,
@@ -2040,7 +2039,7 @@ Widget  BuildUserItem (UserModel model,context)=> Padding(
 
 
 
-indicator({
+indicator(context,{
   required Color color,
   required String text,
   String? secondText,
@@ -2070,18 +2069,18 @@ indicator({
             text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: Theme.of(context).textTheme.caption,/*TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: textColor,
-            ),
+            )*/
           ),
       ),
       const SizedBox(
         width: 8,
       ),
       Text(
-        '(' + detailsText! + ' g)',
+        '(' + detailsText! + ' ${AppLocalizations.of(context).translate("g")})',
         style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
@@ -2179,17 +2178,17 @@ buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAm
     );
 
 buildPieChartItem2 (int nutritionInfo,context, radius, fontSize, index, totalAmount) =>
-    PieChartSectionData(
-      color: colors[index],
-      value: nutritionInfo/totalAmount*100*360,
-      title: ((nutritionInfo/totalAmount*100).round()).toString()+'%',
-      radius: radius,
-      titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.white
-      ),
-    );
+  PieChartSectionData(
+    color: colors[index],
+    value: nutritionInfo / totalAmount * 100 * 360,
+    title: ((nutritionInfo / totalAmount * 100).round()).toString() + '%',
+    radius: radius,
+    titleStyle: TextStyle(
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
+        color: Colors.white
+    ),
+  );
 
 
 List<Color> colors = [
@@ -2336,7 +2335,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       {
         if(direction == DismissDirection.endToStart)
         {
-          AdminCubit.get(context).updateStatusOfOrdres(
+          AdminCubit.get(context).updateStatusOfOrders(
             model.orderId!,
             status: 'canceled',
             userName:model.userName ,
@@ -2351,7 +2350,8 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
             dateTime:model.dateTime,
             productName: model.productName,
             quantity: model.quantity,
-            orderNumber: model.orderNumber
+            orderNumber: model.orderNumber,
+            month: model.month
           );
          /* if(model.status == 'new')
           {
@@ -2414,7 +2414,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
         }
         if(direction == DismissDirection.startToEnd)
         {
-          AdminCubit.get(context).updateStatusOfOrdres(
+          AdminCubit.get(context).updateStatusOfOrders(
             model.orderId!,
             status: 'confirmed',
             userName:model.userName ,
@@ -2429,7 +2429,9 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
             dateTime:model.dateTime,
             productName: model.productName,
             quantity: model.quantity,
-              orderNumber: model.orderNumber
+              orderNumber: model.orderNumber,
+              month: model.month
+
 
           );
          /* if(model.status == 'new')
@@ -2493,7 +2495,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       },
       background: Container(
         alignment: Alignment.centerLeft,
-        child: model.status == 'confirmed' ? SizedBox(width: 10,) : Padding(
+        child:Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Confirmed Order',color: Colors.white),
         ),
@@ -2505,7 +2507,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       ),
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
-        child: model.status == 'canceled' ? SizedBox(width: 10,) : Padding(
+        child:Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Canceled Order',color: Colors.white),
         ),
@@ -2534,7 +2536,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                         SizedBox(
                           height: 5,
                         ),
-                        defaultBodyText(context, text: 'User name is ${model.userEmail}'),
+                        defaultBodyText(context, text: 'User Email is ${model.userEmail}'),
                         SizedBox(
                           height: 5,
                         ),
@@ -2550,7 +2552,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                         SizedBox(
                           height: 5,
                         ),
-                        defaultBodyText(context, text: 'Data is ${convertToDataTime(model.dateTime!)} '),
+                        defaultBodyText(context, text: 'Date is ${convertToDataTime(model.dateTime!)} '),
                         if(model.productName != null)
                           SizedBox(
                             height: 5,
@@ -2565,11 +2567,12 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                   ),
                   Column(
                     children: [
+                      if(model.status=='canceled' || model.status=='new')
                       defaultTextButton(
                           context,
                           function: ()
                           {
-                            AdminCubit.get(context).updateStatusOfOrdres(
+                            AdminCubit.get(context).updateStatusOfOrders(
                               model.orderId!,
                               status: 'confirmed',
                               userName:model.userName ,
@@ -2584,7 +2587,9 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                               dateTime:model.dateTime,
                               productName: model.productName,
                               quantity: model.quantity,
-                                orderNumber: model.orderNumber
+                                orderNumber: model.orderNumber,
+                                month: model.month
+
 
                             );
                            /* if(model.status == 'new')
@@ -2687,11 +2692,12 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                           },
                           text: 'Confirmed',
                       ),
-                      defaultTextButton(
+                      if(model.status=='confirmed' || model.status=='new')
+                        defaultTextButton(
                         context,
                         function: () {
 
-                          AdminCubit.get(context).updateStatusOfOrdres(
+                          AdminCubit.get(context).updateStatusOfOrders(
                             model.orderId!,
                             status: 'canceled',
                             userName:model.userName ,
@@ -2706,7 +2712,9 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                             dateTime:model.dateTime,
                             productName: model.productName,
                             quantity: model.quantity,
-                              orderNumber: model.orderNumber
+                              orderNumber: model.orderNumber,
+                              month: model.month
+
 
                           );
                       /*    print(index);
@@ -2767,11 +2775,6 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
                               quantity: model.quantity,
                             );
                           }*/
-
-
-
-
-
                          /*if(model.cardItemList != null)
                           {
                             AdminCubit.get(context).updateStatusOfOrdres(
@@ -3033,7 +3036,7 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
 );
 
 
-String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(date));
+String convertToDataTime(String date) =>DateFormat('d MMMM y HH:mm',lan!).format(DateTime.parse(date));//DateFormat('d MMMM y').format(DateTime.now())
 
 
 

@@ -54,8 +54,8 @@ class PhotoDetails extends StatelessWidget
            ),
            extendBodyBehindAppBar: true,
            body: Container(
-             width: double.infinity,
-             height: double.infinity,
+             width: MediaQuery.of(context).size.width,
+             height:  MediaQuery.of(context).size.height,
              decoration: BoxDecoration(
                image: DecorationImage(
                  image: FileImage(image),
@@ -82,7 +82,7 @@ class PhotoDetails extends StatelessWidget
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
                              Padding(
-                               padding: const EdgeInsets.all(16.0),
+                               padding: const EdgeInsetsDirectional.only(top: 16),
                                child: Row(
                                  mainAxisAlignment: MainAxisAlignment.center,
                                  children: [
@@ -107,47 +107,73 @@ class PhotoDetails extends StatelessWidget
                                  ],
                                ),
                              ),
-                             Padding(
-                               padding: const EdgeInsets.symmetric(horizontal: 16),
-                               child: Row(
+                             Row(
+                               children:
+                               [
+                                 //'${widget.recipeModel.carbs}g' AppLocalizations.of(context).translate("Carbs")
+                                 buildNutritionItemForRecipeItemScreen(
+                                   context,
+                                   imagePath:  'assets/images/cereal-grain-svgrepo-com.svg',
+                                   numOFNutrition: '${HomeCubit.get(context).searchPredictedMeal[0].Carbs}${AppLocalizations.of(context).translate("g")}',
+                                   typeOFNutrition: AppLocalizations.of(context).translate("Carbs2"),
+                                 ),
+                                 buildNutritionItemForRecipeItemScreen(
+                                   context,
+                                   imagePath:  'assets/images/avocado-svgrepo-com (1).svg',
+                                   numOFNutrition: '${HomeCubit.get(context).searchPredictedMeal[0].Protein}${AppLocalizations.of(context).translate("g")}',
+                                   typeOFNutrition: AppLocalizations.of(context).translate("Protein1"),
+                                 ),
+                                 buildNutritionItemForRecipeItemScreen(
+                                   context,
+                                   imagePath:  'assets/images/fire-svgrepo-com.svg',
+                                   numOFNutrition: '${HomeCubit.get(context).searchPredictedMeal[0].Calories}${AppLocalizations.of(context).translate("g")}',
+                                   typeOFNutrition: AppLocalizations.of(context).translate("cal1"),
+                                 ),
+                                 buildNutritionItemForRecipeItemScreen(
+                                   context,
+                                   imagePath: 'assets/images/pizza.svg',
+                                   numOFNutrition: '${HomeCubit.get(context).searchPredictedMeal[0].Fat}${AppLocalizations.of(context).translate("g")}',
+                                   typeOFNutrition: AppLocalizations.of(context).translate("Fats1"),
+                                 ),
+                               ],
+                             ),
+                             /*Padding(
+                               padding: const EdgeInsets.symmetric(horizontal: 15),
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       defaultHeadLineText(
-                                           context,
-                                           text:'${AppLocalizations.of(context).translate("Protein")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
-                                           fontWeight: FontWeight.bold
-                                       ),
-                                       SizedBox(
-                                         height: 10,
-                                       ),
-                                       defaultHeadLineText(
-                                           context,
-                                           text:'${AppLocalizations.of(context).translate("cal")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
-                                           fontWeight: FontWeight.bold
-                                       ),
-                                       SizedBox(
-                                         height: 10,
-                                       ),
-                                       defaultHeadLineText(
-                                           context,
-                                           text:'${AppLocalizations.of(context).translate("Carbs")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
-                                           fontWeight: FontWeight.bold
-                                       ),
-                                       SizedBox(
-                                         height: 10,
-                                       ),
-                                       defaultHeadLineText(
-                                           context,
-                                           text:'${AppLocalizations.of(context).translate("Fats")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
-                                           fontWeight: FontWeight.bold
-                                       ),
-                                     ],
-                                   )
+                                   defaultHeadLineText(
+                                       context,
+                                       text:'${AppLocalizations.of(context).translate("Protein1")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
+                                       fontWeight: FontWeight.bold
+                                   ),
+                                   SizedBox(
+                                     height: 10,
+                                   ),
+                                   defaultHeadLineText(
+                                       context,
+                                       text:' ${AppLocalizations.of(context).translate("cal1")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
+                                       fontWeight: FontWeight.bold
+                                   ),
+                                   SizedBox(
+                                     height: 10,
+                                   ),
+                                   defaultHeadLineText(
+                                       context,
+                                       text:' ${AppLocalizations.of(context).translate("Carbs2")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                       fontWeight: FontWeight.bold
+                                   ),
+                                   SizedBox(
+                                     height: 10,
+                                   ),
+                                   defaultHeadLineText(
+                                       context,
+                                       text:' ${AppLocalizations.of(context).translate("Fats1")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
+                                       fontWeight: FontWeight.bold
+                                   ),
                                  ],
                                ),
-                             ),
+                             ),*/
                            ],
                          )
                      ),

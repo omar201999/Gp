@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/shared/componants/componants.dart';
-import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +13,7 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
+
 
   List<Color> gradientColors = [
     const Color(0xff1ea2cb),
@@ -212,7 +212,7 @@ class _AnalysisState extends State<Analysis> {
         text = '2';
         break;
       case 6:
-        text = '6';
+        text ='6';
         break;
       case 10:
         text = '10';

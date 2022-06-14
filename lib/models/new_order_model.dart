@@ -78,7 +78,7 @@ class NewOrderModel
       'orderNumber': orderNumber,
       'productNameAr': productNameAr,
       'cardItemList' : cardItemList?.map((e) => e.toMap()).toList(),//ProductModel?? []
-      'month' : month,
+      'month' : DateTime.now().month,
     };
   }
 }

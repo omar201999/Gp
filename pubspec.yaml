@@ -50,7 +50,6 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   glass: ^1.0.1+1
   simple_shadow: ^0.3.0
-  flutter_svg: ^1.0.2
 
 
   firebase_core: ^1.0.3

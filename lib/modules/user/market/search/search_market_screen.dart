@@ -74,13 +74,13 @@ class SearchMarketingscreen extends StatelessWidget
                     condition:  list.length > 0,
                     builder: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildProductSearchItem(list[index], context, index),
+                        itemBuilder: (context,index) => buildProduct(list[index], context, index),
                         separatorBuilder: (context,index) =>  SizedBox(height: 8,),
                         itemCount: list.length
                     ),
                     fallback: (context) => ListView.separated(
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildProductSearchItem(AdminCubit.get(context).products[index], context, index),
+                        itemBuilder: (context,index) => buildProduct(AdminCubit.get(context).products[index], context, index),
                         separatorBuilder: (context,index) =>  SizedBox(height: 8,),
                         itemCount: AdminCubit.get(context).products.length
                     ),

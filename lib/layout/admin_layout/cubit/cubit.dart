@@ -804,120 +804,42 @@ class AdminCubit extends Cubit<AdminStates>
   List<NewOrderModel> newOrders = [];
   List<NewOrderModel> confirmedOrders = [];
   List<NewOrderModel> canceledOrders = [];
-/*
-  List<String> ordersNewId = [];
-  List<String> ordersConfirmedId = [];
-  List<String> ordersCanceledId = [];
-*/
-
 
   void getOrders()
   {
-    /*.get()
-      .then((value)
-    {
-    for (var element in value.docs) {
-    orders.add(NewOrderModel.fromJson(element.data()));
-    }
-    emit(AdminGetAllOrdersSuccessState());
-    print(orders);
-    }).catchError((error) {
-  emit(AdminGetAllOrdersErrorState(error.toString()));
-  print(orders);
-  print(error.toString());
-  //print(orders);
-  });*/
     emit(AdminGetAllOrdersLoadingState());
     {
       newOrders = [];
       confirmedOrders = [];
       canceledOrders = [];
-     /* ordersNewId = [];
-      ordersConfirmedId = [];
-      ordersCanceledId = [];*/
       FirebaseFirestore.instance
           .collection('orders')
-          //.where('status', isEqualTo: status)
           .orderBy('dateTime',descending: true)
           .get()
           .then((value) {
             for (var element in value.docs) {
               if(element.get('status') == 'new')
               {
-                //ordersNewId.add(element.id);
                 newOrders.add(NewOrderModel.fromJson(element.data()));
               }
               else if(element.get('status') == 'confirmed') {
-               // ordersConfirmedId.add(element.id);
                 confirmedOrders.add(NewOrderModel.fromJson(element.data()));
               }
               else {
-               // ordersCanceledId.add(element.id);
                 canceledOrders.add(NewOrderModel.fromJson(element.data()));
               }
             }
 
-            //print(newOrders.toString());
-            //print(newOrders.length);
-            //print(newOrders[0].cardItemList);
-            //print(newOrders);
-           // print(newOrders[0].orderId);
-            //print(canceledOrders.length);
-            //print(confirmedOrders.length);
-            //getOrderId();
             emit(AdminGetAllOrdersSuccessState());
       }).catchError((error){
         emit(AdminGetAllOrdersErrorState(error.toString()));
         print(error.toString());
       });
-        /*  .snapshots()
-          .listen((event) {
-        newOrders = [];
-        confirmedOrders = [];
-        canceledOrders = [];
-        ordersId = [];
-        for (var element in event.docs) {
-          if(status == 'new') {
-            ordersId.add(element.id);
-            newOrders.add(NewOrderModel.fromJson(element.data()));
-          } else if(status == 'confirmed') {
-            ordersId.add(element.id);
-            confirmedOrders.add(NewOrderModel.fromJson(element.data()));
-          }
-          else {
-            ordersId.add(element.id);
-            canceledOrders.add(NewOrderModel.fromJson(element.data()));
-          }
-        }
-        print(ordersId.toString());
-        print(newOrders.length);
-        print(canceledOrders.length);
-        print(confirmedOrders.length);
-
-        emit(AdminGetAllNewOrdersSuccessState());
-      });*/
     }
   }
 
- /* List<String> ordersId = [];
-  void getOrderId()
-  {
-    ordersId = [];
-    FirebaseFirestore.instance
-        .collection('orders')
-        .get()
-        .then((value) {
-          value.docs.forEach((element)
-          {
-            ordersId.add(element.id);
-          });
-      print(ordersId.toString());
-    }).catchError((error){
-      print(error.toString());
-    });
-  }*/
 
- void updateStatusOfOrdres(String id,{
+ void updateStatusOfOrders(String id,{
   required String status,
    int? quantity,
    String? productName,
@@ -931,27 +853,10 @@ class AdminCubit extends Cubit<AdminStates>
    double? total,
    double? shipping,
    String? userEmail,
+   required int? month,
    List<dynamic>? cardItemList,
 })
   {
-/*
-    NewOrderModel model = NewOrderModel(
-      status: status,
-      quantity: quantity,
-      productName:productName,
-      dateTime: dateTime,
-      address:address ,
-      orderId: orderId,
-      phone:phone ,
-      shipping:shipping ,
-      total: total,
-      totalPrice: totalPrice,
-      userName:userName,
-      userEmail: userEmail,
-      cardItemList:cardItemList ,
-
-    );
-*/
     FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
@@ -970,6 +875,7 @@ class AdminCubit extends Cubit<AdminStates>
       'userEmail': userEmail,
       'orderNumber': orderNumber,
       'cardItemList' : cardItemList?.toList(),
+      'month' : month
     })
         .then((value) {
       getOrders();
@@ -1048,43 +954,6 @@ class AdminCubit extends Cubit<AdminStates>
     return noAchievementCount ;
   }
 
- /*
- List<ProductModel> productsOrders = [];
-  void getProductsOrders({
-    String? id
-  })
-  {
-    //emit(AdminGetAllOrdersLoadingState());
-    for(int i =0 ; i < orders.length; i++ )
-    {
-      productsOrders = [];
-      FirebaseFirestore.instance
-          .collection('orders')
-          .doc(ordersId[i])
-          .collection('products')
-          .get()
-          .then((value)
-      {
-        value.docs.forEach((element)
-        {
-          productsOrders.add(ProductModel.fromJson(element.data()));
-        });
-        for(int i=0; i<productsOrders.length;i++)
-        {
-          print(productsOrders[i].name);
-        }
-        emit(AdminGetAllProductsOrdersSuccessState());
-
-        print(productsOrders);
-        print(orders.length);
-        print(ordersId);
-      }).catchError((error) {
-        emit(AdminGetAllProductsOrdersErrorState(error.toString()));
-        print(error.toString());
-      });
-    }
-    }
-*/
 double countConfirmedOrders(int month) {
  double quantity = 0;
  for(int i = 0; i < confirmedOrders.length; i++) {

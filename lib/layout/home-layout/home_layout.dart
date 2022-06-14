@@ -37,6 +37,8 @@ class _HomeLayoutState extends State<HomeLayout> {
   void initState() {
     super.initState();
     HomeCubit.get(context).getUserData();
+    HomeCubit.get(context).getCartItem();
+
 }
   void _changeLanguage(Language language) async {
     Locale _locale = await setLocale(language.languageCode);

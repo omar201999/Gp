@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
-import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -60,7 +59,7 @@ class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
     List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
       return makeGroupData(
         i,
-        HomeCubit.get(context).calculateTotalCalOfCompleteDiaryOfDay(days[i]),
+        HomeCubit.get(context).calculateTotalCalOfCompleteDiaryOfDay(days[i]).toDouble(),
         userModel,
         isTouched: i == touchedIndex,
       );
@@ -205,7 +204,7 @@ class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
                                   color: AppCubit.get(context).shadowColor,
                                   offset: Offset(1, 1),
                                   sigma: 5,
-                                )
+                                ),
                               ],
                             ),
 
@@ -277,7 +276,7 @@ class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("goal"),color: defaultColor),//'Goal'
+                                        defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("Goal"),color: defaultColor),//'Goal'
                                         Spacer(),
                                         defaultTextButton(context, function: (){
                                           navigateTo(context, EditGoalScreen());
@@ -287,16 +286,17 @@ class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
                                     SizedBox(height: 20,),
                                     secondPart(
                                         context,
-                                        subHeadLine: AppLocalizations.of(context).translate("current_weight"),//'Current Weight' ,
-                                        subHeadLine2: '${userModel.weight}',
-                                        caption: '${AppLocalizations.of(context).translate("Gain")}${userModel.weeklyGoal} ${AppLocalizations.of(context).translate("kg per week")}'//'Gain ${userModel.weeklyGoal} kg per week'
+                                        subHeadLine: AppLocalizations.of(context).translate("goal_weight"),//'Current Weight' ,
+                                        subHeadLine2: '${userModel.goalWeight}',
+                                        caption: '${AppLocalizations.of(context).translate("Gain")} ${userModel.weeklyGoal} ${AppLocalizations.of(context).translate("kg per week")}'//'Gain ${userModel.weeklyGoal} kg per week'
                                     ),
                                     SizedBox(height: 20,),
                                     secondPart(
                                         context,
-                                        subHeadLine: AppLocalizations.of(context).translate("daliy_calories"),//'Daily Calories' ,
-                                        subHeadLine2: '${userModel.totalCalorie}g' ,
-                                        caption: '${AppLocalizations.of(context).translate("Carbs")} ${userModel.totalCarbs} , ${AppLocalizations.of(context).translate("Fats")} ${userModel.totalFats},${AppLocalizations.of(context).translate("Protein")} ${userModel.totalProtein}'
+                                        subHeadLine:'${userModel.totalCalorie}${AppLocalizations.of(context).translate("g")}',
+                                        //AppLocalizations.of(context).translate("cal"),//'Daily Calories' ,
+                                        subHeadLine2: AppLocalizations.of(context).translate("cal") ,
+                                        caption: '${AppLocalizations.of(context).translate("Carbs1")} ${userModel.totalCarbs} ,${AppLocalizations.of(context).translate("Fats1")} ${userModel.totalFats},${AppLocalizations.of(context).translate("Protein1")} ${userModel.totalProtein}'
                                     ),
                                   ],
                                 ),
@@ -433,7 +433,7 @@ Widget secondPart(BuildContext context , {
     Row(
       children: [
         defaultBodyText(context, text: '$subHeadLine'),
-        Spacer(),
+        SizedBox(width: 4,),
         defaultBodyText(context, text: '$subHeadLine2'),
       ],
     ),

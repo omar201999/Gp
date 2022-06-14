@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -44,6 +46,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             icon: IconBroken.Arrow___Left_2,
             onPressed: () {
               Navigator.pop(context);
+              HomeCubit.get(context).removeProfileImage();
             },
           ),
           body: SingleChildScrollView(
@@ -52,51 +55,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Column(
                 children: [
                   Container(
-                    height: 220,
+                    height: 150,
+                    width: double.infinity,
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Image(
-                            fit: BoxFit.cover,
-                            height: 180,
-                            width: double.infinity,
-                            image: NetworkImage(
-                                'https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1380'),
-                          ),
-                        ),
-                        CircleAvatar(
-                          radius: 52,
-                          backgroundColor: Colors.white,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 2),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: profileImage == null
-                                    ? NetworkImage('${model.profileImage}')
-                                    : FileImage(profileImage) as ImageProvider,
-                                radius: 50,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: defaultColor,
-                                radius: 15,
-                                child: IconButton(
-                                  onPressed: () {
-                                    HomeCubit.get(context).getProfileImage();
-                                  },
-                                  icon: Icon(
-                                    Icons.camera,
-                                    color: Colors.white,
-                                  ),
-                                  padding: EdgeInsets.zero,
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            SimpleShadow(
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 2),
+                                child: CircleAvatar(
+                                  backgroundImage: profileImage == null
+                                      ? NetworkImage('${model.profileImage}')
+                                      : FileImage(profileImage) as ImageProvider,
+                                  radius: 50,
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                              opacity: 0.5,
+                              color: AppCubit.get(context).shadowColor,
+                              offset: Offset(1, 1),
+                              sigma: 5,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: defaultColor,
+                              radius: 15,
+                              child: IconButton(
+                                onPressed: () {
+                                  HomeCubit.get(context).getProfileImage();
+                                },
+                                icon: Icon(
+                                  Icons.camera,
+                                  color: Colors.white,
+                                ),
+                                padding: EdgeInsets.zero,
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     ),

@@ -14,7 +14,7 @@ async{
   //print( HomeCubit.get(context).userModel.toString());
   await FirebaseAuth.instance.signOut();
   AppCubit.get(context).changeAppMode(fromCache: false);
-  MyApp.setLocale(context, Locale('en', 'US'));
+  MyApp.setLocale(context, Locale('en','US'));
   setLocale(english);
   getLocale();
   //print(AppCubit.get(context).isDark.toString());

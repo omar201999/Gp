@@ -110,10 +110,13 @@ class _AddInformationState extends State<AddInformation>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:
                             [
-                              Image(
-                                image: AssetImage('assets/images/male-gender-icon-14.jpg'),
-                                height: 90,
-                                width: 90,
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(top: 15),
+                                child: Image(
+                                  image: AssetImage('assets/images/male.png'),
+                                  height: 90,
+                                  width: 90,
+                                ),
                               ),
                               SizedBox(
                                 height: 15,
@@ -146,10 +149,13 @@ class _AddInformationState extends State<AddInformation>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:
                             [
-                              Image(
-                                image: AssetImage('assets/images/female.png'),
-                                height: 90,
-                                width: 90,
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(top: 15),
+                                child: Image(
+                                  image: AssetImage('assets/images/female.png'),
+                                  height: 90,
+                                  width: 90,
+                                ),
                               ),
                               SizedBox(
                                 height: 15,

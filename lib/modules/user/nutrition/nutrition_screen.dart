@@ -22,7 +22,6 @@ class NutritionScreen extends StatelessWidget
       (HomeCubit.get(context).calculateTotalCarbs()).toInt(),
       (HomeCubit.get(context).calculateTotalFats()).toInt(),
       (HomeCubit.get(context).calculateTotalProtein()).toInt(),
-
     ];
 
     List<String> gramsOfNut = [
@@ -32,9 +31,9 @@ class NutritionScreen extends StatelessWidget
     ];
 
     List<String> nameOfNut = [
-      'Carbohydrates',
-      'Fats',
-      'Protein'
+      AppLocalizations.of(context).translate("Carbohydrates"),
+      AppLocalizations.of(context).translate("Fats1"),
+      AppLocalizations.of(context).translate("Protein1"),
     ];
 
     List<String> goalOfNut = [
@@ -50,20 +49,37 @@ class NutritionScreen extends StatelessWidget
 
     List<PieChartSectionData> showingSections() {
       return List.generate(
-          allNutrition.length,
-              (index) {
-            int totalAmount = sumTotalEaten();
-            //final isTouched = index == touchedIndex;
-            const fontSize = 16.0;
-            const radius = 50.0;
-            return buildPieChartItem2(
-                allNutrition[index],
-                context,
-                radius,
-                fontSize,
-                index,
-                totalAmount
-            );
+          allNutrition.length, (index)
+      {
+        int totalAmount = sumTotalEaten();
+        //final isTouched = index == touchedIndex;
+        const fontSize = 16.0;
+        const radius = 50.0;
+        if(HomeCubit.get(context).calculateTotalCarbs()==0 && HomeCubit.get(context).calculateTotalFats()==0 && HomeCubit.get(context).calculateTotalProtein()==0)
+            {
+              return  PieChartSectionData(
+                color: Colors.grey,
+                value: 360,
+                title: '0',
+                radius: radius,
+                titleStyle: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white
+                ),
+              );
+            }
+        else
+          {
+        return buildPieChartItem2(
+            allNutrition[index],
+            context,
+            radius,
+            fontSize,
+            index,
+            totalAmount
+        );
+      }
           });
     }
 
@@ -105,7 +121,7 @@ class NutritionScreen extends StatelessWidget
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
-                              'Macros',
+                              AppLocalizations.of(context).translate("Macros"),
                               style: Theme.of(context).textTheme.headline1,
                             ),
                           ),
@@ -166,15 +182,19 @@ class NutritionScreen extends StatelessWidget
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [
+                                children:  [
                                   Text(
-                                    'Total',
+                                    AppLocalizations.of(context).translate("total"),
+                                    style: Theme.of(context).textTheme.bodyText1,
+
                                   ),
                                   SizedBox(
                                     width: 20.0,
                                   ),
                                   Text(
-                                      'Goal'
+                                      AppLocalizations.of(context).translate("Goal"),
+                                    style: Theme.of(context).textTheme.bodyText1,
+
                                   )
                                 ],
                               )
@@ -191,15 +211,38 @@ class NutritionScreen extends StatelessWidget
                               child: ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: allNutrition.length,
-                                  itemBuilder: (context, index) => indicator(
-                                      color: colors[index],
-                                      text: nameOfNut[index],
-                                      isSquare: true,
-                                      secondText: ((allNutrition[index]/totalEaten*100).round()).toString()+'%',
-                                      secondTextColor: colors[index],
-                                      detailsText: gramsOfNut[index],
-                                      thirdText: goalOfNut[index]
-                                  )
+                                  itemBuilder: (context, index)
+                                  {
+                                    if(HomeCubit.get(context).calculateTotalCarbs()==0 && HomeCubit.get(context).calculateTotalFats()==0 && HomeCubit.get(context).calculateTotalProtein()==0)
+                                    {
+                                      return indicator(
+                                        context,
+                                          color: colors[index],
+                                          text: nameOfNut[index],
+                                          isSquare: true,
+                                          secondText: '0',
+                                          secondTextColor: colors[index],
+                                          detailsText: gramsOfNut[index],
+                                          thirdText: goalOfNut[index]
+                                      );
+                                    }
+                                    else
+                                      {
+                                        return indicator(
+                                          context,
+                                            color: colors[index],
+                                            text: nameOfNut[index],
+                                            isSquare: true,
+                                            secondText: ((allNutrition[index]/totalEaten*100).round()).toString()+'%',
+                                            secondTextColor: colors[index],
+                                            detailsText: gramsOfNut[index],
+                                            thirdText: goalOfNut[index]
+                                        );
+                                      }
+
+                                  }
+
+
                               ),
                             ),
                           )

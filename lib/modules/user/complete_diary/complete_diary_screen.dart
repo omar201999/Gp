@@ -126,7 +126,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
     key: Key(model.Food!),
     onDismissed: (direction)
     {
-   /*   HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString());
+      HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString(),selectedDate: DateFormat('d MMMM y').format(selectedDate));
       ScaffoldMessenger.of(context)
           .showSnackBar(
           SnackBar(
@@ -134,7 +134,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
             content: defaultBodyText(context, text: AppLocalizations.of(context).translate("delete_diary_message")),
             duration: const Duration(seconds: 2),
           )
-      );*/
+      );
     },
 
     background: Container(
@@ -206,7 +206,7 @@ class _CompleteDiaryScreenState extends State<CompleteDiaryScreen> {
                   ),
                   onPressed: () {
                     HomeCubit.get(context).deleteCompleteDiaryItem(model.id.toString(),selectedDate: DateFormat('d MMMM y').format(selectedDate));
-                    print(HomeCubit.get(context).completeDiary.length);
+                    //print(HomeCubit.get(context).completeDiary.length);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(
                         SnackBar(

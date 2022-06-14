@@ -22,7 +22,6 @@ import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:intl/intl.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
@@ -64,16 +63,7 @@ List<RecipeModel> allRecipe = [];
     });
   }
 
-  List<MealsModel> totalCaloriesOfDay = [];
-  double calculateTotalCalOfCompleteDiaryOfDay(int day)
-  {
-    double totalCalOfDay = 0;
-    totalCaloriesOfDay = allCompleteDiary.where((element) => element.Date!.contains(day.toString())).toList();
-    for (int i = 0; i < totalCaloriesOfDay.length; i++) {
-      totalCalOfDay += totalCaloriesOfDay[i].Calories!;
-    }
-    return totalCalOfDay;
-  }
+
 
 
   void getUserData() {
@@ -237,8 +227,7 @@ List<RecipeModel> allRecipe = [];
     if (lan == 'en') {
       searchBreakFast = [];
       searchBreakFast = allMeals
-          .where((element) =>
-              element.Food!.toLowerCase().contains(value.toLowerCase()))
+          .where((element) => element.Food!.toLowerCase().contains(value.toLowerCase()))
           .toList();
       emit(SearchSuccessBreakFastState());
     } else {
@@ -622,6 +611,21 @@ List<RecipeModel> allRecipe = [];
           });
           emit(GetAllUsersMealsSuccessState());
     });
+  }
+
+
+
+
+
+  List<MealsModel> totalCaloriesOfDay = [];
+  num calculateTotalCalOfCompleteDiaryOfDay(int day)
+  {
+    num totalCalOfDay = 0;
+    totalCaloriesOfDay = allCompleteDiary.where((element) => element.Date!.contains(day.toString())).toList();
+    for (int i = 0; i < totalCaloriesOfDay.length; i++) {
+      totalCalOfDay += totalCaloriesOfDay[i].Calories!;
+    }
+    return totalCalOfDay;
   }
 
   // whare((element){element.Date==DateFormat.yMMMEd().format(DateTime.now())})
@@ -1063,7 +1067,8 @@ List<RecipeModel> allRecipe = [];
 
   int? calculateTotalFoodCalories() {
     totalFood = 0;
-    for (int i = 0; i <= completeDiary.length - 1; i++) {
+    for (int i = 0; i <= completeDiary.length - 1; i++)
+    {
       totalFood = totalFood + (completeDiary[i].Calories)!.round();
     }
     return totalFood;
@@ -1077,7 +1082,8 @@ List<RecipeModel> allRecipe = [];
 
   num calculateTotalProtein() {
     totalProtein = 0;
-    for (int i = 0; i <= completeDiary.length - 1; i++) {
+    for (int i = 0; i <= completeDiary.length - 1; i++)
+    {
       totalProtein = totalProtein + (completeDiary[i].Protein)!.round();
     }
     return totalProtein;
@@ -1085,7 +1091,8 @@ List<RecipeModel> allRecipe = [];
 
   num calculateTotalCarbs() {
     totalCarbs = 0;
-    for (int i = 0; i <= completeDiary.length - 1; i++) {
+    for (int i = 0; i <= completeDiary.length - 1; i++)
+    {
       totalCarbs = totalCarbs + (completeDiary[i].Carbs)!.round();
     }
     return totalCarbs;
@@ -1093,7 +1100,8 @@ List<RecipeModel> allRecipe = [];
 
   num calculateTotalFats() {
     totalFats = 0;
-    for (int i = 0; i <= completeDiary.length - 1; i++) {
+    for (int i = 0; i <= completeDiary.length - 1; i++)
+    {
       totalFats = totalFats + (completeDiary[i].Fat)!.round();
     }
     return totalFats;
@@ -1222,6 +1230,7 @@ List<RecipeModel> allRecipe = [];
       'status': createOrderForOneProduct.status,
       'userEmail': createOrderForOneProduct.userEmail,
       'productNameAr': createOrderForOneProduct.productNameAr,
+      'month' : createOrderForOneProduct.month,
     }).then((value) {
       updateProductForOneBuy(prodId,
           name: name,
@@ -1270,6 +1279,7 @@ List<RecipeModel> allRecipe = [];
       month: DateTime.now().month,
       dateTime: DateTime.now().toString(),
 
+
       /*
       name: e['name'],
       image: e['image'],
@@ -1303,6 +1313,7 @@ List<RecipeModel> allRecipe = [];
       'userEmail': createOrder.userEmail,
       'orderNumber': createOrder.orderNumber,
       'cardItemList': cart.map((e) => e.toMap()).toList(),
+      'month' : createOrder.month
     }).then((value) {
       getOrdersForUser();
       //emit(CreateOrderSuccessState());
@@ -1315,7 +1326,7 @@ List<RecipeModel> allRecipe = [];
   }
 
   void cancelOrder(String? id,
-      {String? name,
+   /*   {String? name,
       double? currentPrice,
       double? oldPrice,
       double? discount,
@@ -1325,7 +1336,8 @@ List<RecipeModel> allRecipe = [];
       String? status,
       String? descriptionAr,
       String? nameAr,
-      int? index}) {
+      int? index}*/
+      ) {
     FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
@@ -1352,6 +1364,10 @@ List<RecipeModel> allRecipe = [];
 
   void removeFeedBackImage() {
     feedBackImage = null;
+    emit(RemoveFeedBackImageState());
+  }
+  void removeProfileImage() {
+    profileImage = null;
     emit(RemoveFeedBackImageState());
   }
 

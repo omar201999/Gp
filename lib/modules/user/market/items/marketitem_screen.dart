@@ -421,7 +421,6 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
 
                           //if (productModel.quantity != 0)
                           Row(
-
                             children: [
                               Expanded(
                                 child:  Container(
@@ -510,7 +509,8 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                                              TextButton(
                                                                  onPressed: () {
                                                                    navigateTo(context, AddressAndPhoneChangeScreen());
-                                                                 }, child: Text(AppLocalizations.of(context).translate("change"))),//'change'))
+                                                                 }, child: Text(AppLocalizations.of(context).translate("change"))
+                                                             ),//'change'))
                                                            ],
                                                          ),
                                                        ],
@@ -746,7 +746,8 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               ),
                             ],
                           ),
-                       /*   defaultButton(
+
+                          /*   defaultButton(
                               context,
                               onPreesed: ()
                               {

@@ -25,7 +25,8 @@ class MealsModel {
     this.foodAr,
     this.measureAr,
     this.Date,
-    this.id
+    this.id,
+
   });
 
   MealsModel.fromJson(Map<String, dynamic>? json) {

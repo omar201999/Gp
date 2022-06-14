@@ -58,7 +58,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 onPressed: ()
                 {
                   Navigator.pop(context);
-                  //HomeCubit.get(context).removeFeedBackImage();
+                  HomeCubit.get(context).removeFeedBackImage();
                 },
                 actions: [
                   defaultTextButton(

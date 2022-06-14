@@ -6,6 +6,7 @@ import 'package:gp/layout/admin_layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class SearchRecipeScreen extends StatelessWidget {
 
@@ -23,8 +24,12 @@ class SearchRecipeScreen extends StatelessWidget {
 
         var list = AdminCubit.get(context).searchRecipe;
         return Scaffold(
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context).translate("search")),
+          appBar: buildAppBar(
+            title: AppLocalizations.of(context).translate("search"),
+            icon: IconBroken.Arrow___Left_2,
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -51,7 +56,7 @@ class SearchRecipeScreen extends StatelessWidget {
 
                   },
                   hintText: AppLocalizations.of(context).translate("search"),
-                  prefix: Icons.search,
+                  prefix: IconBroken.Search,
                 ),
                   SizedBox(
                     height: 20,

@@ -369,57 +369,55 @@ class EditRecipeScreen extends StatelessWidget {
                             defaultButton(
                               context,
                               onPreesed: () {
-                                print(recipeModel.numOfRates);
-                                print(recipeModel.averageRating);
-                                print(recipeModel.totalRating);
+                                //print(recipeModel.numOfRates);
+                                //print(recipeModel.averageRating);
+                                //print(recipeModel.totalRating);
                                 //print(recipeModel.uId);
-
-                            if(recipeImage == null)
-                            {
+                          if(formKey.currentState!.validate()) {
+                            if (recipeImage == null) {
                               AdminCubit.get(context).updateRecipe(
-                                  recipeModel.uId,
-                                  title: titleController.text,
-                                  ingredients: ingredientsController.text,
-                                  directions: directionsController.text,
-                                  carbs: double.parse(carbsController.text),
-                                  protein: double.parse(proteinController.text),
-                                  fats: double.parse(fatsController.text),
-                                  calories: double.parse(calsController.text),
-                                  //weight: double.parse(weightController.text),
-                                  category: recipeModel.category,
-                                  newRecipeImage:recipeModel.image,
-                                  numOfRates: recipeModel.numOfRates!,
-                                  averageRating: recipeModel.averageRating!,
-                                  totalRating: recipeModel.totalRating!,
-                                  uId: recipeModel.uId,
-                                  directionsAr: directionsArController.text,
-                                  titleAr: titleArController.text,
-                                  ingredientsAr: ingredientsArController.text,
+                                recipeModel.uId,
+                                title: titleController.text,
+                                ingredients: ingredientsController.text,
+                                directions: directionsController.text,
+                                carbs: double.parse(carbsController.text),
+                                protein: double.parse(proteinController.text),
+                                fats: double.parse(fatsController.text),
+                                calories: double.parse(calsController.text),
+                                //weight: double.parse(weightController.text),
+                                category: recipeModel.category,
+                                newRecipeImage: recipeModel.image,
+                                numOfRates: recipeModel.numOfRates!,
+                                averageRating: recipeModel.averageRating!,
+                                totalRating: recipeModel.totalRating!,
+                                uId: recipeModel.uId,
+                                directionsAr: directionsArController.text,
+                                titleAr: titleArController.text,
+                                ingredientsAr: ingredientsArController.text,
                               );
-                            } else
-                              {
-                                AdminCubit.get(context).uploadNewImage(
-                                    recipeModel.uId,
-                                    title: titleController.text,
-                                    ingredients: ingredientsController.text,
-                                    directions: directionsController.text,
-                                    carbs: double.parse(carbsController.text),
-                                    protein: double.parse(proteinController.text),
-                                    fats: double.parse(fatsController.text),
-                                    calories: double.parse(calsController.text),
-                                    //weight: double.parse(weightController.text),
-                                    category: recipeModel.category,
-                                    numOfRates: recipeModel.numOfRates!,
-                                    averageRating: recipeModel.averageRating!,
-                                    totalRating: recipeModel.totalRating!,
-                                    ingredientsAr:  ingredientsArController.text,
-                                    directionsAr: directionsArController.text,
-                                    uId: recipeModel.uId,
-                                    titleAr:  titleArController.text,
-                                  //isFavorite: recipeModel.isFavorite
-                                );
-                              }
-
+                            } else {
+                              AdminCubit.get(context).uploadNewImage(
+                                recipeModel.uId,
+                                title: titleController.text,
+                                ingredients: ingredientsController.text,
+                                directions: directionsController.text,
+                                carbs: double.parse(carbsController.text),
+                                protein: double.parse(proteinController.text),
+                                fats: double.parse(fatsController.text),
+                                calories: double.parse(calsController.text),
+                                //weight: double.parse(weightController.text),
+                                category: recipeModel.category,
+                                numOfRates: recipeModel.numOfRates!,
+                                averageRating: recipeModel.averageRating!,
+                                totalRating: recipeModel.totalRating!,
+                                ingredientsAr: ingredientsArController.text,
+                                directionsAr: directionsArController.text,
+                                uId: recipeModel.uId,
+                                titleAr: titleArController.text,
+                                //isFavorite: recipeModel.isFavorite
+                              );
+                            }
+                          }
                               },
                               text: 'UPDATE',
                               textStyle: Theme.of(context).textTheme.headline1!.copyWith(

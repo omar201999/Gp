@@ -56,7 +56,8 @@ class NewRecipeScreen extends StatelessWidget {
                     defaultTextButton(
                      context,
                       function: () {
-                         AdminCubit.get(context).uploadRecipeImage(
+                      if(formKey.currentState!.validate()) {
+                        AdminCubit.get(context).uploadRecipeImage(
                              title: titleController.text,
                              carbs: double.parse(carbsController.text),
                              protein: double.parse(proteinController.text),
@@ -72,6 +73,7 @@ class NewRecipeScreen extends StatelessWidget {
                              //uId:uIdController.text,
                              //totalTime: totalTime
                          );
+                       }
                          AdminCubit.get(context).removeRecipeImage();
                         },
                         text: 'Add',

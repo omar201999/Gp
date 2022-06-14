@@ -103,7 +103,8 @@ class _AddInformationState extends State<AddInformation>
                             isMale = true;
                           });
                         },
-                        child: Container(
+                        child: defaultContainer(
+                          context,
                           color: isMale ? Colors.blue : AppCubit.get(context).constantColor1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +138,8 @@ class _AddInformationState extends State<AddInformation>
                             isMale = false;
                           });
                         },
-                        child: Container(
+                        child: defaultContainer(
+                          context,
                           color: !isMale ? Colors.blue : AppCubit.get(context).constantColor1 ,
 
                           child: Column(
@@ -643,7 +645,7 @@ class _AddInformationState extends State<AddInformation>
                 ),*/
 
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
 
                    defaultTextFormField(
@@ -656,13 +658,12 @@ class _AddInformationState extends State<AddInformation>
                           return  AppLocalizations.of(context).translate("validate_weight"); //'please enter your Weight';
                         }
                       },
-                      label:  AppLocalizations.of(context).translate("weight"),//'Weight',
-                      border: OutlineInputBorder(),
+                      label:  AppLocalizations.of(context).translate("weight"),//'Weight'
                       hintText: AppLocalizations.of(context).translate("convert_weight"),//'Weight into Kg',
                   ),
 
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                  defaultTextFormField(
                     controller: heightController,
@@ -675,13 +676,12 @@ class _AddInformationState extends State<AddInformation>
                       }
                     },
                     label: AppLocalizations.of(context).translate("height"),//'Height',
-                   border: OutlineInputBorder(),
                     hintText: AppLocalizations.of(context).translate("convert_height"),//'Height into cm',
 
                   ),
 
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 defaultTextFormField(
                       controller: goalWeightController,
@@ -694,11 +694,10 @@ class _AddInformationState extends State<AddInformation>
                         }
                       },
                       label: AppLocalizations.of(context).translate("goal_weight"),//'Goal Weight',
-                     border:OutlineInputBorder(),
                       hintText: AppLocalizations.of(context).translate("convert_goal_weight"),//'Goal Weight into Kg',
                     ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                  defaultTextFormField(
                    controller: ageController,
@@ -711,13 +710,12 @@ class _AddInformationState extends State<AddInformation>
                      }
                    },
                    label: AppLocalizations.of(context).translate("age"),//'Age',
-                   border: OutlineInputBorder(),
                  ),
 
 
 
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 defaultButton(
                   context,

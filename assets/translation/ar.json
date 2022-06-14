@@ -93,14 +93,14 @@
   "yes":"نعم",
   "partially":"جزئياً",
   "no":"لا",
-  "FeedBack":"رايك اية في التطبيق ياسطا",
+  "Feedback":"رأيك",
   "delete_diary_message":"تم حذف الوجبة بنجاح",
   "please enter are you achieve your goal or not?":"من فضلك ادخل هل وصلت الى هدفك ام لا ؟",
   "FeedBack Send Successfully Thank You":"تم بعت الرسالة بنجاح",
   "Do You achieve our Goal ?":" هل وصلت الى هدفك ؟",
   "Rate This App":"قيم التطبيق",
-  "Tell Us Your FeedBack and any complaint" :"رايك اية في التطبيق بأمنة ورقولة ولو عندك مشكلة مالك ياصاحبي احكيلي ...",
-  "please enter your feedback":"متقول رايك ياسطا ",
+  "Tell Us Your FeedBack and any complaint" :"قُل رأيك و المشكلة التي واجهتك خلال استخدام تطبيقنا",
+  "please enter your feedback":"رجاءاً ادخل رأيك",
   "Please enter photo to explain your complaint":"من فضلك ادخل صورة لتوضيح مشكلتك",
   "Water Tracker": "متتبع شرب المياه",
   "price": " السعر ",
@@ -188,6 +188,11 @@
   "goal-weight-equal-current-weight" : "الوزن المرغوب يساوى الوزن الحالى يمكنك ان تعدل وزنك فقط",
 
   "reached-water-track-goal" : "عمل رائع انت وصلت لهدفك",
-  "remember-drink-more-water" : "تذكر انك تستطيع ان تشرب ماء اكثر اذا كنت بحاجة الى ذلك"
+  "remember-drink-more-water" : "تذكر انك تستطيع ان تشرب ماء اكثر اذا كنت بحاجة الى ذلك",
+
+  "popular_recipes" : "اشهر الوصفات",
+
+  "weekly_goal_calories": "هدفك الأسبوعي للسعرات الحرارية",
+  "updated_last_days": "مُحدثة آخر 7 أيام"
 
 }

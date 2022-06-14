@@ -49,20 +49,23 @@ class NewProductSrceen extends StatelessWidget {
                 defaultTextButton(
                   context,
                   function: () {
-
-                   AdminCubit.get(context).uploadProductImage(
-                      name: nameController.text,
-                      currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                      oldPrice: double.parse(oldPriceController.text),
-                      discount: double.parse(discountController.text),
-                      quantity: int.parse(quantityController.text),
-                      description: descriptionController.text,
-                      status: 'inStock',
-                     descriptionAr: descriptionArController.text,
-                     nameAr: nameArController.text,
-                      //uId: uIdController.text,
-                      //totalTime: totalTime
-                    );
+                   if(formKey.currentState!.validate()) {
+                AdminCubit.get(context).uploadProductImage(
+                  name: nameController.text,
+                  currentPrice: double.parse(oldPriceController.text) -
+                      (double.parse(oldPriceController.text) *
+                          double.parse(discountController.text) / 100),
+                  oldPrice: double.parse(oldPriceController.text),
+                  discount: double.parse(discountController.text),
+                  quantity: int.parse(quantityController.text),
+                  description: descriptionController.text,
+                  status: 'inStock',
+                  descriptionAr: descriptionArController.text,
+                  nameAr: nameArController.text,
+                  //uId: uIdController.text,
+                  //totalTime: totalTime
+                );
+              }
                    AdminCubit.get(context).removeProductImage();
 
                   },

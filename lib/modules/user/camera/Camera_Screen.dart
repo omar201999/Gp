@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/result_of_detection/photo_details.dart';
@@ -15,6 +16,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
 
+class CurvePainter extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0,size.height-40);
+    path.quadraticBezierTo(size.width / 4, size.height , size.width / 2, size.height);
+    path.quadraticBezierTo(size.width - (size.width / 4), size.height , size.width, size.height-40);
+    path.lineTo(size.width, 0);
+    return path;
+  }
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -68,42 +82,89 @@ class CameraScreenState extends State<CameraScreen> {
       builder: (context, state) {
         return Scaffold(
           key: scaffoldKey,
-          appBar: buildAppBar(
-            title: AppLocalizations.of(context).translate("photo"), //'Photo',
-            icon: IconBroken.Arrow___Left_2,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
           body: loading
               ? Container(
                   alignment: Alignment.center,
                   child: const CircularProgressIndicator(),
                 )
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Image(
-                        image: _image == null
-                            ? const NetworkImage(
-                                'https://clippingpathgreat.com/wp-content/uploads/2021/04/upload-files-1536x1061.jpg')
-                            : FileImage(_image!) as ImageProvider,
-                        width: double.infinity,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      outputs != null
-                          ? defaultBodyText(context,
-                          text: outputs!.isNotEmpty ? "${outputs![0]["label"]}" : AppLocalizations.of(context).translate("take_another")
-                      )
-                          : Container(),
-                      //Stack(children: stackChildren),
+              : SafeArea(
+                 child: SingleChildScrollView(
+                   child: Column(
+                   children: [
+                    Stack(
+                      alignment: Alignment.topLeft,
+                      children: [
+                        ClipPath(
+                         clipper: CurvePainter(),
+                         child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 400,
+                        decoration: BoxDecoration(
+                          color: AppCubit.get(context).constantColor5,
+                          image: _image == null ? const DecorationImage(
+                            //fit: BoxFit.fitWidth,
+                            //alignment: Alignment.center,
 
-                      //((res) {return Text( "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",);}).toList(): [],),
-                    ],
-                  ),
+                            image: const AssetImage('assets/images/uploadImage.png',),
+                          ) : DecorationImage(
+                            fit: BoxFit.cover,
+                            //width: double.infinity,
+                            //alignment: Alignment.center,
+                            image: FileImage(_image!) as ImageProvider,
+                          ),
+                        ),
+                      ),
+                    ),
+                        Row(
+                         children: [
+                          const SizedBox(
+                          width: 10.0,
+                         ),
+                         Container(
+                          height: 40.0,
+                          width: 40.0,
+                          child:IconButton(
+                            color: Colors.white,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon( IconBroken.Arrow___Left_2, size: 20, ),
+                          ),
+                        ).asGlass(
+                          tintColor: Colors.black,
+                          clipBorderRadius: BorderRadius.circular(25.0),
+                        ),
+                         const SizedBox(
+                          width: 15.0,
+                        ),
+                         Text(
+                          AppLocalizations.of(context).translate("photo"),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
+                    SizedBox(
+                  height: 8,
+                ),
+                    outputs != null
+                    ? defaultBodyText(context,
+                    text: outputs!.isNotEmpty ? "${outputs![0]["label"]}" : AppLocalizations.of(context).translate("take_another"),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 22
+                )
+                    : Container(),
+                //Stack(children: stackChildren),
+
+                //((res) {return Text( "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",);}).toList(): [],),
+              ],
+            ),
+           ),
+          ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               /*defaultContainer(
@@ -266,6 +327,7 @@ class CameraScreenState extends State<CameraScreen> {
             padding: const EdgeInsets.all(10.0),
             child: Material(
               color: defaultColor,
+              borderRadius: BorderRadius.circular(20.0),
               child: InkWell(
                 onTap: () {
                   if (_image != null && outputs != null) {

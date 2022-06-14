@@ -45,7 +45,7 @@ class _FavoriteProductsState extends State<FavoriteProducts> {
                     condition:  list.isNotEmpty ,
                     builder: (context) => ListView.separated(
                         physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildmarket_item(list[index],context,index),
+                        itemBuilder: (context,index) => buildProduct(list[index],context,index),
                         separatorBuilder: (context,index) =>  const SizedBox(height: 8,),
                         itemCount: list.length
                     ),

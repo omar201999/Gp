@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:glass/glass.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
@@ -27,6 +28,7 @@ import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -104,11 +106,24 @@ Widget defaultTextFormField({
     prefixIcon: Icon(
       prefix,
     ),
-    border: border??OutlineInputBorder(
+    /*border: border??OutlineInputBorder(
         borderRadius: borderRadius??BorderRadius.all(
           Radius.circular(15.0),
         ),
         borderSide: BorderSide.none
+    ),*/
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15.0),
+      borderSide: const BorderSide(
+        color: defaultColor,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15.0),
+      borderSide: BorderSide(
+        color: Colors.grey.shade300,
+        width: 2.0,
+      ),
     ),
 
   ),
@@ -255,93 +270,97 @@ Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetecto
       width: 230,
       child: Padding(
           padding: const EdgeInsetsDirectional.only(
-            top: 140,
+            //top: 140,
             start: 10,
             end: 10,
             bottom: 15,
           ),
-          child: Container(
-            color: Colors.black38.withOpacity(0.30),
-            child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 120,
+              color: Colors.black38.withOpacity(0.30),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if(lan=='en')
-                          Expanded(
-                       child: Text(
-                         '${model.title}',
-                         overflow: TextOverflow.ellipsis,
-                         maxLines: 2,
-                         style: const TextStyle(
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15.0,
-                           color: Colors.white
-                         ),
-                       ),
-                   ),
-                        if(lan=='ar')
-                          Expanded(
-                            child: Text(
-                              '${model.titleAr}',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                  color: Colors.white
-                              ),
+                    children: [
+                      if(lan=='en')
+                        Expanded(
+                          child: Text(
+                            '${model.title}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Colors.white
                             ),
                           ),
-                   const SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      children: [
-                        if(lan=='en')
-                          Text(
-                          '${model.calories} Calories',
-                           style: const TextStyle(
-                            //fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 12.0,
+                        ),
+                      if(lan=='ar')
+                        Expanded(
+                          child: Text(
+                            '${model.titleAr}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Colors.white
+                            ),
                           ),
                         ),
-                        if(lan=='ar')
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: [
+                          if(lan=='en')
+                            Text(
+                              '${model.calories} Calories',
+                              style: const TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          if(lan=='ar')
+                            Text(
+                              '${model.calories} كالوري ',
+                              style: const TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          Spacer(),
+                          Icon(
+                            IconBroken.Star,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
                           Text(
-                            '${model.calories} كالوري ',
+                            '${(model.averageRating)!.ceilToDouble()}',
                             style: const TextStyle(
                               //fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 12.0,
                             ),
                           ),
-                        Spacer(),
-                        Icon(
-                            IconBroken.Star,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(
-                          '${(model.averageRating)!.ceilToDouble()}',
-                          style: const TextStyle(
-                            //fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 12.0,
-                          ),
-                        ),
-                      ],
-                    )
-                  ]
+                        ],
+                      )
+                    ]
+                ),
               ),
-             ),
-           ).asGlass(
-            tintColor: Colors.transparent,
-            clipBorderRadius: BorderRadius.circular(20.0),
-          ),
+            ).asGlass(
+              tintColor: Colors.transparent,
+              clipBorderRadius: BorderRadius.circular(20.0),
+            ),
+          )
           ),
       )
 
@@ -431,7 +450,8 @@ Widget headOfRecipeItem(BuildContext context, {
 
 Widget buildHomeScreenItem(BuildContext context,{
   required Widget screen,
-  required IconData prefixIcon,
+  IconData? prefixIcon,
+  Widget? icon,
   IconData suffixIcon = Icons.add,
   required String text,
 
@@ -448,7 +468,7 @@ Widget buildHomeScreenItem(BuildContext context,{
       child: Row(
         children:
         [
-          Icon(
+          icon??Icon(
             prefixIcon,
           ),
           SizedBox(
@@ -1009,17 +1029,21 @@ Widget buildNutritionItem(BuildContext context) => Column(
   ],
 );
 
-Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
+/*Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
   onTap: ()
   {
-    navigateTo(context, EditProductScreen(productModel: model, index: index,));
+    navigateTo(context, MarketItemScreen(
+      productModel: model,
+      index: index,
+    ),
+    );
 
   },
   child:
   defaultContainer(
     context,
     decoration: BoxDecoration (
-      color: AppCubit.get(context).constantColor6,
+      color: AppCubit.get(context).constantColor5,
       borderRadius: BorderRadius.circular(15.0),
     ),
     //color: constantColor5,
@@ -1081,7 +1105,8 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
                   start: 10.0,
                   top: 10.0,
                 ),
-                child: Container(
+                child: defaultContainer(
+                  context,
                   decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(25)
@@ -1175,9 +1200,9 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
       ],
     ),
   ),
-);
+);*/
 
-/*Widget buildmarket_item(ProductModel model, context, index) => defaultGestureDetector(
+Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
   onTap: ()
   {
       navigateTo(context, MarketItemScreen(
@@ -1187,149 +1212,170 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
       );
 
   },
-  child:
-  Container(
-    decoration: BoxDecoration (
-      color: constantColor5,
-      borderRadius: BorderRadius.circular(15.0),
-    ),
-    //color: constantColor5,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-      [
-        Stack(
-          children: [
+  child: defaultContainer(
+      context,
+      decoration: BoxDecoration (
+        color: AppCubit.get(context).constantColor5,
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      //color: constantColor5,
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Stack(
+              children: [
 
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                top: 20
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(
-                    alignment: Alignment.topRight,
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                      top: 10
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SimpleShadow(
-                        child: Image(
-                          alignment: Alignment.center,
-                          image: NetworkImage('${model.image}'),
-                          width: 140.0,
-                          height: 140.0,
-                          fit: BoxFit.cover,
-                        ),
-                        opacity: 0.5,
-                        //color: Colors.blue,
-                        offset: Offset(1, 1),
-                        sigma: 8,
-                      ),
-                      if (model.discount != 0 && model.quantity != 0)
-                        Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5.0
-                            ),
-                            child: Text(
-                              '${model.discount}% OFF',
-                              style: const TextStyle(
-                                  fontSize: 10.0,
-                                  fontWeight: FontWeight.w900
+                      Stack(
+                        alignment: Alignment.topLeft,
+                        children: [
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: SimpleShadow(
+                              child: Image(
+                                alignment: Alignment.center,
+                                image: NetworkImage('${model.image}'),
+                                width: 140.0,
+                                height: 140.0,
+                                fit: BoxFit.cover,
                               ),
-                            )
-                        ),
-                      if (model.quantity == 0)
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(25)
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0
-                          ),
-                          child:Text(
-                            'Not available',
-                            style: TextStyle(
-                                fontSize: 10.0,
-                                color: Colors.red[800]
+                              opacity: 0.5,
+                              //color: Colors.blue,
+                              offset: Offset(1, 1),
+                              sigma: 8,
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-
-          ],
-        ),
-
-        Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 10.0,
-            ),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 10.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${model.name}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          height: 1.3,
-                        ),
-                      ),
-                      Row(
-                        children:
-                        [
-                          Text(
-                            '${model.currentPrice}',
-                            style: const TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w900,
-                              color: defaultColor,
+                          if (model.discount != 0 && model.quantity != 0)
+                            defaultContainer(
+                                context,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25)
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.0
+                                ),
+                                child: Text(
+                                  '${model.discount}%'' ' +AppLocalizations.of(context).translate("off"),
+                                  style: const TextStyle(
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w900
+                                  ),
+                                )
                             ),
-                          ),
-                          const SizedBox(
-                            width: 5.0,
-                          ),
-                          if (model.discount != 0)
-                            Text(
-                              '${model.oldPrice}',
-                              style: const TextStyle(
-                                fontSize: 10.0,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
+                          if (model.quantity == 0)
+                            defaultContainer(
+                              context,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(25)
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5.0
+                              ),
+                              child:Text(
+                                //'Out of Stock',
+                                AppLocalizations.of(context).translate("not_available"),
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                         ],
                       ),
-
                     ],
                   ),
                 )
+
+              ],
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: defaultContainer(
+                      context,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 10.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if(lan=='en')
+                              Text(
+                                '${model.name}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    height: 1.3,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            if(lan=='ar')
+                              Text(
+                                '${model.nameAr}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    height: 1.3,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            Row(
+                              children:
+                              [
+                                Text(
+                                  '${model.currentPrice}',
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: defaultColor,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                if (model.discount != 0)
+                                  Text(
+                                    '${model.oldPrice}',
+                                    style: const TextStyle(
+                                      fontSize: 10.0,
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                              ],
+                            ),
+
+                          ],
+                        ),
+                      ),
+              ),
             )
+          ],
         ),
-      ],
+      )
     ),
-  ),
-);*/
+);
 
 Widget buildMealItem(MealsModel model,context,{
   required bool? value,
@@ -1499,12 +1545,12 @@ Widget buildSerachMealItem (list,listOfEmptySearch,context,
               //color: constantColor5,
               child: defaultTextFormField(
                 type: TextInputType.text,
-                prefix: Icons.search,
+                prefix: IconBroken.Search,
                 hintText: AppLocalizations.of(context).translate("  "),//'Search',
-                border: InputBorder.none,
-                borderRadius: BorderRadius.all(
+                /*border: InputBorder.none,
+                //borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
-                ),
+                ),*/
                 onChanged: onChangedSearch,
               ),
             ),
@@ -1723,6 +1769,56 @@ indicator({
     ],
 );
 
+indicator2({
+  required Color color,
+  required String text,
+  String? secondText,
+  Color detailsTextColor = Colors.grey,
+  required bool isSquare,
+  double? size = 16,
+  Color? secondTextColor,
+  Color? textColor = const Color(0xff505050),
+}) => Row(
+  children: [
+    Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+        color: color,
+      ),
+    ),
+    const SizedBox(
+      width: 4,
+    ),
+    Expanded(
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: textColor,
+        ),
+      ),
+    ),
+
+    const Spacer(),
+
+    Text(
+      secondText!,
+      style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: secondTextColor
+      ),
+    ),
+
+
+  ],
+);
+
 buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAmount) =>
     PieChartSectionData(
       color: colors[index],
@@ -1817,28 +1913,33 @@ Widget drawerHeader(UserModel model) => DrawerHeader(
 
 Widget buildMenuItem(context,{
   required String text,
-  required IconData icon,
+  IconData? icon,
   required Function()? onClicked,
+  Color? selectedColor,
+  Widget? leading,
+  bool isSelected = false,
+
   //Color backgroundColor = Colors.white,
-  Color color = Colors.black54
+  Color color = Colors.grey
 }) => InkWell(
   onTap:onClicked ,
   child:   Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: defaultContainer (
-        context,
+      child: Container (
         //color: Colors.grey[50],
         child: ListTile(
-          leading: Icon(
+          leading: leading ?? Icon(
               icon,
-              color: color),
+              color: color
+          ),
           title: Text(
             text,
             style: TextStyle(
                 fontSize: 14
             ),
           ),
-
+          selected: isSelected,
+          selectedColor: selectedColor,
         ),
       )
   ),
@@ -2050,7 +2151,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       },
       background: Container(
         alignment: Alignment.centerLeft,
-        child:Padding(
+        child: model.status == 'confirmed' ? SizedBox(width: 10,) : Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Confirmed Order',color: Colors.white),
         ),
@@ -2062,7 +2163,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       ),
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
-        child:Padding(
+        child: model.status == 'canceled' ? SizedBox(width: 10,) : Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Canceled Order',color: Colors.white),
         ),
@@ -2592,25 +2693,13 @@ Widget  buildOrderItemUser (NewOrderModel model,context,index)=> Padding(
 
 String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(date));
 
- List<Color> availableColors = const [
-  Colors.purpleAccent,
-  Colors.yellow,
-  Colors.lightBlue,
-  Colors.orange,
-  Colors.pink,
-  Colors.redAccent,
-];
 
- Color barBackgroundColor = const Color(0xff72d8bf);
- Duration animDuration = const Duration(milliseconds: 250);
-
-int touchedIndex = -1;
-
-bool isPlaying = false;
 
 BarChartGroupData makeGroupData(
     int x,
-    double y, {
+    double y,
+    UserModel? model,
+    {
       bool isTouched = false,
       Color barColor = Colors.white,
       double width = 22,
@@ -2621,152 +2710,18 @@ BarChartGroupData makeGroupData(
     barRods: [
       BarChartRodData(
         toY: isTouched ? y + 1 : y,
-        color: isTouched ? Colors.yellow : barColor,
+        color: isTouched ? defaultColor : barColor,
         width: width,
         borderSide: isTouched
-            ? BorderSide(color: Colors.yellow.shade600, width: 1)
+            ? BorderSide(color: defaultColor, width: 1)
             : const BorderSide(color: Colors.white, width: 0),
         backDrawRodData: BackgroundBarChartRodData(
           show: true,
-          toY: 20,
-          color: barBackgroundColor,
+          toY: (model!.totalCalorie)!.toDouble(),
+          color: Colors.grey,
         ),
       ),
     ],
     showingTooltipIndicators: showTooltips,
   );
 }
-
-List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
-  switch (i) {
-    case 0:
-      return makeGroupData(0, 5, isTouched: i == touchedIndex);
-    case 1:
-      return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
-    case 2:
-      return makeGroupData(2, 5, isTouched: i == touchedIndex);
-    case 3:
-      return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
-    case 4:
-      return makeGroupData(4, 9, isTouched: i == touchedIndex);
-    case 5:
-      return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
-    case 6:
-      return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
-    default:
-      return throw Error();
-  }
-});
-
-
-Widget getTitles(double value, TitleMeta meta) {
-  const style = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 14,
-  );
-  Widget text;
-  switch (value.toInt()) {
-    case 0:
-      text = const Text('M', style: style);
-      break;
-    case 1:
-      text = const Text('T', style: style);
-      break;
-    case 2:
-      text = const Text('W', style: style);
-      break;
-    case 3:
-      text = const Text('T', style: style);
-      break;
-    case 4:
-      text = const Text('F', style: style);
-      break;
-    case 5:
-      text = const Text('S', style: style);
-      break;
-    case 6:
-      text = const Text('S', style: style);
-      break;
-    default:
-      text = const Text('', style: style);
-      break;
-  }
-  return SideTitleWidget(
-    axisSide: meta.axisSide,
-    space: 16,
-    child: text,
-  );
-}
-
-BarChartData randomData() {
-  return BarChartData(
-    barTouchData: BarTouchData(
-      enabled: false,
-    ),
-    titlesData: FlTitlesData(
-      show: true,
-      bottomTitles: AxisTitles(
-        sideTitles: SideTitles(
-          showTitles: true,
-          getTitlesWidget: getTitles,
-          reservedSize: 38,
-        ),
-      ),
-      leftTitles: AxisTitles(
-        sideTitles: SideTitles(
-          showTitles: false,
-        ),
-      ),
-      topTitles: AxisTitles(
-        sideTitles: SideTitles(
-          showTitles: false,
-        ),
-      ),
-      rightTitles: AxisTitles(
-        sideTitles: SideTitles(
-          showTitles: false,
-        ),
-      ),
-    ),
-    borderData: FlBorderData(
-      show: false,
-    ),
-    barGroups: List.generate(7, (i) {
-      switch (i) {
-        case 0:
-          return makeGroupData(0, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 1:
-          return makeGroupData(1, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 2:
-          return makeGroupData(2, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 3:
-          return makeGroupData(3, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 4:
-          return makeGroupData(4, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 5:
-          return makeGroupData(5, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        case 6:
-          return makeGroupData(6, Random().nextInt(15).toDouble() + 6,
-              barColor: availableColors[
-              Random().nextInt(availableColors.length)]);
-        default:
-          return throw Error();
-      }
-    }),
-    gridData: FlGridData(show: false),
-  );
-}
-

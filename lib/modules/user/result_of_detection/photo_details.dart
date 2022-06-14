@@ -3,6 +3,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
@@ -28,114 +29,253 @@ class PhotoDetails extends StatelessWidget
         return ConditionalBuilder(
           condition: HomeCubit.get(context).searchPredictedMeal.isNotEmpty,
          builder: (context) => Scaffold(
-           body: SingleChildScrollView(
-             child: Container(
-               child: Column(
-                 children: [
-                   Stack(
-                     children: [
-                       Image(
-                         image: FileImage(image),
-                         width: double.infinity,
-                       ),
-                       Padding(
-                         padding: const EdgeInsetsDirectional.only(
-                             top: 30
-                         ),
-                         child: IconButton(
-                           color: Colors.white,
-                           onPressed: () {
-                             Navigator.pop(context);
-                           },
-                           icon: const Icon( IconBroken.Arrow___Left_2 ),
-                         ),
-                       ),
-                     ],
-                   ),
-                   Padding(
-                     padding: const EdgeInsets.all(16.0),
+           appBar: AppBar(
+             leading: Padding(
+                 padding: EdgeInsetsDirectional.only(
+                   start: 8.0,
+                   top: 4.0
+                 ),
+               child: Container(
+                 child:IconButton(
+                   color: Colors.white,
+                   onPressed: () {
+                     Navigator.pop(context);
+                   },
+                   icon: const Icon( IconBroken.Arrow___Left_2 ),
+                 ),
+               ).asGlass(
+                 tintColor: Colors.transparent,
+                 clipBorderRadius: BorderRadius.circular(25.0),
+               ),
+             ),
+
+             backgroundColor: Colors.transparent,
+             elevation: 0.0,
+           ),
+           extendBodyBehindAppBar: true,
+           body: Container(
+             width: double.infinity,
+             height: double.infinity,
+             decoration: BoxDecoration(
+               image: DecorationImage(
+                 image: FileImage(image),
+                 fit: BoxFit.cover,
+               ),
+             ),
+             child: SafeArea(
+               child:  DraggableScrollableSheet(
+                   minChildSize: 0.1,
+                   maxChildSize: 0.5,
+                   builder: (context, scrollController) => SingleChildScrollView(
+                     controller: scrollController,
                      child: defaultContainer(
-                       context,
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           if(lan=='en')
+                         context,
+                         height: 420,
+                         decoration: const BoxDecoration(
+                             color: Colors.white70,
+                             borderRadius: BorderRadius.only(
+                               topRight: Radius.circular(20.0),
+                               topLeft: Radius.circular(20.0),
+                             )
+                         ),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
                              Padding(
-                             padding: const EdgeInsets.all(10.0),
-                             child: defaultHeadLineText(
-                               context,
-                               text: '${HomeCubit.get(context).searchPredictedMeal[0].Food}',
-                               fontSize: 30
-                             ),
-                           ),
-                           if(lan=='ar')
-                             Padding(
-                               padding: const EdgeInsets.all(10.0),
-                               child: defaultHeadLineText(
-                                   context,
-                                   text: '${HomeCubit.get(context).searchPredictedMeal[0].foodAr}',
-                                   fontSize: 30
+                               padding: const EdgeInsets.all(16.0),
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   if(lan=='en')
+                                     Padding(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: defaultHeadLineText(
+                                           context,
+                                           text: '${HomeCubit.get(context).searchPredictedMeal[0].Food}',
+                                           fontSize: 30
+                                       ),
+                                     ),
+                                   if(lan=='ar')
+                                     Padding(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: defaultHeadLineText(
+                                           context,
+                                           text: '${HomeCubit.get(context).searchPredictedMeal[0].foodAr}',
+                                           fontSize: 30
+                                       ),
+                                     ),
+                                 ],
                                ),
                              ),
-                         ],
-                       ),
+                             Padding(
+                               padding: const EdgeInsets.symmetric(horizontal: 16),
+                               child: Row(
+                                 children: [
+                                   Column(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       defaultHeadLineText(
+                                           context,
+                                           text:'${AppLocalizations.of(context).translate("Protein")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
+                                           fontWeight: FontWeight.bold
+                                       ),
+                                       SizedBox(
+                                         height: 10,
+                                       ),
+                                       defaultHeadLineText(
+                                           context,
+                                           text:'${AppLocalizations.of(context).translate("cal")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
+                                           fontWeight: FontWeight.bold
+                                       ),
+                                       SizedBox(
+                                         height: 10,
+                                       ),
+                                       defaultHeadLineText(
+                                           context,
+                                           text:'${AppLocalizations.of(context).translate("Carbs")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                           fontWeight: FontWeight.bold
+                                       ),
+                                       SizedBox(
+                                         height: 10,
+                                       ),
+                                       defaultHeadLineText(
+                                           context,
+                                           text:'${AppLocalizations.of(context).translate("Fats")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
+                                           fontWeight: FontWeight.bold
+                                       ),
+                                     ],
+                                   )
+                                 ],
+                               ),
+                             ),
+                           ],
+                         )
                      ),
-                   ),
-                   Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                     child: defaultContainer(
-                       context,
-                       child: Padding(
-                         padding: const EdgeInsets.all(10.0),
-                         child: Expanded(
-                           child: Row(
-                             children: [
-                               Column(
+                   )
+               ),
+             ),
+           )
+           /*Stack(
+               fit: StackFit.expand,
+               children: [
+                 Image(
+                   image: FileImage(image),
+                   //width: double.infinity,
+                   fit: BoxFit.cover,
+                 ),
+                 /*Padding(
+                         padding: const EdgeInsetsDirectional.only(
+                             top: 30,
+                             end: 480
+                         ),
+                         child: Container(
+                           height: 15,
+                           width: 15,
+                           child: IconButton(
+                             color: Colors.white,
+                             onPressed: () {
+                               Navigator.pop(context);
+                             },
+                             icon: const Icon( IconBroken.Arrow___Left_2 ),
+                           ),
+                         ).asGlass(
+                           tintColor: Colors.transparent,
+                           clipBorderRadius: BorderRadius.circular(25.0),
+                         )
+                     ),*/
+                 DraggableScrollableSheet(
+                         minChildSize: 0.1,
+                         maxChildSize: 0.6,
+                         builder: (context, scrollController) => SingleChildScrollView(
+                           controller: scrollController,
+                           child: defaultContainer(
+                               context,
+                               height: 468,
+                               decoration: const BoxDecoration(
+                                   color: Colors.white70,
+                                   borderRadius: BorderRadius.only(
+                                     topRight: Radius.circular(20.0),
+                                     topLeft: Radius.circular(20.0),
+                                   )
+                               ),
+                               child: Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   defaultHeadLineText(
-                                     context,
-                                     text:'${AppLocalizations.of(context).translate("Protein")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
-                                     fontWeight: FontWeight.w900
+                                   Padding(
+                                     padding: const EdgeInsets.all(16.0),
+                                     child: Row(
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       children: [
+                                         if(lan=='en')
+                                           Padding(
+                                             padding: const EdgeInsets.all(10.0),
+                                             child: defaultHeadLineText(
+                                                 context,
+                                                 text: '${HomeCubit.get(context).searchPredictedMeal[0].Food}',
+                                                 fontSize: 30
+                                             ),
+                                           ),
+                                         if(lan=='ar')
+                                           Padding(
+                                             padding: const EdgeInsets.all(10.0),
+                                             child: defaultHeadLineText(
+                                                 context,
+                                                 text: '${HomeCubit.get(context).searchPredictedMeal[0].foodAr}',
+                                                 fontSize: 30
+                                             ),
+                                           ),
+                                       ],
+                                     ),
                                    ),
-                                   SizedBox(
-                                     height: 10,
-                                   ),
-                                   defaultHeadLineText(
-                                     context,
-                                     text:'${AppLocalizations.of(context).translate("cal")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
-                                       fontWeight: FontWeight.w900
-                                   ),
-                                   SizedBox(
-                                     height: 10,
-                                   ),
-                                   defaultHeadLineText(
-                                     context,
-                                     text:'${AppLocalizations.of(context).translate("Carbs")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
-                                       fontWeight: FontWeight.w900
-                                   ),
-                                   SizedBox(
-                                     height: 10,
-                                   ),
-                                   defaultHeadLineText(
-                                     context,
-                                     text:'${AppLocalizations.of(context).translate("Fats")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
-                                       fontWeight: FontWeight.w900
+                                   Padding(
+                                     padding: const EdgeInsets.symmetric(horizontal: 16),
+                                     child: Row(
+                                       children: [
+                                         Column(
+                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                           children: [
+                                             defaultHeadLineText(
+                                                 context,
+                                                 text:'${AppLocalizations.of(context).translate("Protein")} : ${HomeCubit.get(context).searchPredictedMeal[0].Protein}',
+                                                 fontWeight: FontWeight.bold
+                                             ),
+                                             SizedBox(
+                                               height: 10,
+                                             ),
+                                             defaultHeadLineText(
+                                                 context,
+                                                 text:'${AppLocalizations.of(context).translate("cal")} : ${HomeCubit.get(context).searchPredictedMeal[0].Calories}',
+                                                 fontWeight: FontWeight.bold
+                                             ),
+                                             SizedBox(
+                                               height: 10,
+                                             ),
+                                             defaultHeadLineText(
+                                                 context,
+                                                 text:'${AppLocalizations.of(context).translate("Carbs")} : ${HomeCubit.get(context).searchPredictedMeal[0].Carbs}',
+                                                 fontWeight: FontWeight.bold
+                                             ),
+                                             SizedBox(
+                                               height: 10,
+                                             ),
+                                             defaultHeadLineText(
+                                                 context,
+                                                 text:'${AppLocalizations.of(context).translate("Fats")} : ${HomeCubit.get(context).searchPredictedMeal[0].Fat}',
+                                                 fontWeight: FontWeight.bold
+                                             ),
+                                           ],
+                                         )
+                                       ],
+                                     ),
                                    ),
                                  ],
                                )
-                             ],
                            ),
-                         ),
-                       ),
-
-                     ),
-                   ),
-                 ],
-               ),
-             ),
+                         )
+                     )
+               ],
+             ),*/
            ),
-         ),
             fallback: (context) => Center(child: CircularProgressIndicator())
         );
       },

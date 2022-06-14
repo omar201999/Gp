@@ -110,10 +110,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         defaultTextFormField(
                             type: TextInputType.text,
-                            label: AppLocalizations.of(context)
+                            hintText: AppLocalizations.of(context)
                                 .translate("product_name"),
                             //'Name',
-                            border: OutlineInputBorder(),
+                            //border: OutlineInputBorder(),
                             prefix: Icons.person,
                             controller: nameController,
                             validate: (value) {
@@ -127,8 +127,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         defaultTextFormField(
                             type: TextInputType.number,
-                            label: 'Age',
-                            border: OutlineInputBorder(),
+                            hintText: AppLocalizations.of(context).translate("age"),//'Age',
+                            //border: OutlineInputBorder(),
                             prefix: Icons.info_outline,
                             controller: ageController,
                             validate: (value) {
@@ -142,7 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         defaultTextFormField(
                             type: TextInputType.number,
-                            label: AppLocalizations.of(context)
+                            hintText: AppLocalizations.of(context)
                                 .translate("weight"),
                             border: OutlineInputBorder(),
                             prefix: Icons.accessibility_new_sharp,
@@ -158,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         defaultTextFormField(
                             type: TextInputType.number,
-                            label: AppLocalizations.of(context)
+                            hintText: AppLocalizations.of(context)
                                 .translate("goal_weight"),
                             //'Goal Weight',
                             border: OutlineInputBorder(),

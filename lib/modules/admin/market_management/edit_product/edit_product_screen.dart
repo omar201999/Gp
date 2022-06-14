@@ -313,51 +313,60 @@ class EditProductScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
+                        if(formKey.currentState!.validate()) {
+                          if (newProductImage == null) {
+                            AdminCubit.get(context).updateProduct(
+                              AdminCubit
+                                  .get(context)
+                                  .productsIDs[index],
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              currentPrice: double.parse(
+                                  oldPriceController.text) -
+                                  (double.parse(oldPriceController.text) *
+                                      double.parse(discountController.text) /
+                                      100),
+                              oldPrice: double.parse(oldPriceController.text),
+                              discount: double.parse(discountController.text),
+                              quantity: int.parse(quantityController.text),
+                              status: productModel.status,
 
-                            if(newProductImage == null)
-                            {
-                              AdminCubit.get(context).updateProduct(
-                                  AdminCubit.get(context).productsIDs[index],
-                                  name: nameController.text,
-                                  description: descriptionController.text,
-                                  currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                                  oldPrice: double.parse(oldPriceController.text),
-                                  discount: double.parse(discountController.text),
-                                  quantity : int.parse(quantityController.text),
-                                  status: productModel.status,
+                              //uId: productModel.uId,
+                              newProductImage: productModel.image,
+                              nameAr: nameArController.text,
+                              descriptionAr: descriptionArController.text,
+                              numOfRates: productModel.numOfRates!,
+                              averageRating: productModel.averageRating!,
+                              totalRating: productModel.totalRating!,
+                              //isFavorite: productModel.isFavorite!
+                            );
+                          } else {
+                            AdminCubit.get(context).uploadNewProductImage(
+                              AdminCubit
+                                  .get(context)
+                                  .productsIDs[index],
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              currentPrice: double.parse(
+                                  oldPriceController.text) -
+                                  (double.parse(oldPriceController.text) *
+                                      double.parse(discountController.text) /
+                                      100),
+                              oldPrice: double.parse(oldPriceController.text),
+                              discount: double.parse(discountController.text),
+                              quantity: int.parse(quantityController.text),
+                              status: productModel.status,
+                              nameAr: nameArController.text,
+                              descriptionAr: descriptionArController.text,
+                              numOfRates: productModel.numOfRates!,
+                              averageRating: productModel.averageRating!,
+                              totalRating: productModel.totalRating!,
+                              //isFavorite: productModel.isFavorite!
 
-                                //uId: productModel.uId,
-                                newProductImage:productModel.image,
-                                nameAr: nameArController.text,
-                                descriptionAr: descriptionArController.text,
-                                numOfRates: productModel.numOfRates!,
-                                averageRating: productModel.averageRating!,
-                                totalRating: productModel.totalRating!,
-                                //isFavorite: productModel.isFavorite!
-                              );
-
-                            } else
-                            {
-                              AdminCubit.get(context).uploadNewProductImage(
-                                  AdminCubit.get(context).productsIDs[index],
-                                  name: nameController.text,
-                                  description: descriptionController.text,
-                                  currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                                  oldPrice: double.parse(oldPriceController.text),
-                                  discount: double.parse(discountController.text),
-                                  quantity : int.parse(quantityController.text),
-                                  status: productModel.status,
-                                  nameAr: nameArController.text,
-                                  descriptionAr: descriptionArController.text,
-                                numOfRates: productModel.numOfRates!,
-                                averageRating: productModel.averageRating!,
-                                totalRating: productModel.totalRating!,
-                                  //isFavorite: productModel.isFavorite!
-
-                                  //uId: productModel.uId,
-                              );
-                            }
-
+                              //uId: productModel.uId,
+                            );
+                          }
+                        }
 
 
                           },

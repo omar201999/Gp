@@ -12,6 +12,7 @@ class AppCubit extends Cubit<AppStates>
   Color constantColor1 = Color(0xFFE3F4FB);
   Color constantColor5 = Color(0xFFEEEEEE);
   Color? scaffoldColor = Colors.grey[50];
+  Color defaultColor = Colors.blue;
   Color shadowColor = Colors.black;
 
   bool isDark = false;
@@ -28,6 +29,7 @@ class AppCubit extends Cubit<AppStates>
         scaffoldColor = Color(0xff242526);
         shadowColor = Colors.white;
         constantColor5 = Color(0xFFD6D6D6);
+        defaultColor = Colors.white;
         emit(AppChangeModeState());
       }
       else {
@@ -35,6 +37,7 @@ class AppCubit extends Cubit<AppStates>
         constantColor5 = Color(0xFFEEEEEE);
         scaffoldColor = Colors.grey[50];
         shadowColor = Colors.black;
+        defaultColor = Colors.blue;
         appMode = ThemeMode.light;
         emit(AppChangeModeState());
       }

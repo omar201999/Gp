@@ -25,7 +25,7 @@
   "no":"No",
   "Add":"Add",
   "kg per week":"kg per week",
-  "FeedBack":"FeedBack",
+  "Feedback":"Feedback",
   "please enter are you achieve your goal or not?":"please enter are you achieve your goal or not?",
   "FeedBack Send Successfully Thank You":"FeedBack Send Successfully Thank You",
   "Do You achieve our Goal ?":"Do You achieve our Goal ?",
@@ -50,7 +50,7 @@
   "dol":"$",
   "Great":"Great job! You're reached your goal.",
   "Remember":"Remember to drink more if you're thirsty or if you exercise.",
-  "search":"search",
+  "search":"Search",
   "Ingredients":"Ingredients",
   "Directions":"Directions",
   "DISCOUNT":"DISCOUNT",
@@ -182,5 +182,9 @@
   "goal-weight-smaller-current-weight" : "the goal weight smaller than current weight so you can only loss weight",
   "goal-weight-equal-current-weight" : "the goal weight equal than current weight so you can only maintain weight",
   "reached-water-track-goal" : "Great job! You\\'re reached your goal.",
-  "remember-drink-more-water" : "Remember to drink more if you\\'re thirsty or if you exercise."
+  "remember-drink-more-water" : "Remember to drink more if you\\'re thirsty or if you exercise.",
+  "popular_recipes": "Popular Recipes",
+  "weekly_goal_calories": "Your Weekly Goal Calories",
+  "updated_last_days": "Updated last 7 days"
+
 }

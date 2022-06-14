@@ -102,70 +102,78 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               itemCount: boarding.length,
             ),
           ),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                //top: 780,
-                top: 700,
-               /* start: 20,
-                end: 20,*/
-              ),
-              child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(
-                      width: 8.0,
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(canvasColor: Colors.transparent),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      //top: 780,
+                      start: 10,
+                      end: 10,
+                      top: 10,
+                      bottom: 10,
                     ),
-                    Container(
-                      height: 40,
-                      child: TextButton(
-                        onPressed: submit,
-                        child: const Text(
-                          'SKIP',
-                        ),
-                      ),
-                    ).asGlass(
-                      tintColor: Colors.transparent,
-                      clipBorderRadius: BorderRadius.circular(15.0),
-                    ),
-                    const SizedBox(
-                      width: 80.0,
-                    ),
-                     SmoothPageIndicator(
-                        controller: boardController,
-                        effect: const ExpandingDotsEffect(
-                          dotColor: Colors.grey,
-                          activeDotColor: defaultColor,
-                          dotHeight: 10.0,
-                          dotWidth: 10.0,
-                          spacing: 5.0,
-                          expansionFactor: 2,
-                        ),
-                        count: boarding.length,
-                      ),
-                    const Spacer(),
-                    defaultRawButton(
-                      onPressed: (){
-                        if(isLast) {
-                          submit();
-                        } else {
-                          boardController.nextPage(
-                            duration: const Duration(
-                              milliseconds: 750,
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Container(
+                            height: 40,
+                            child: TextButton(
+                              onPressed: submit,
+                              child: const Text(
+                                'SKIP',
+                              ),
                             ),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                          );
-                        }
+                          ).asGlass(
+                            tintColor: Colors.transparent,
+                            clipBorderRadius: BorderRadius.circular(15.0),
+                          ),
+                          const SizedBox(
+                            width: 80.0,
+                          ),
+                          SmoothPageIndicator(
+                            controller: boardController,
+                            effect: const ExpandingDotsEffect(
+                              dotColor: Colors.grey,
+                              activeDotColor: defaultColor,
+                              dotHeight: 10.0,
+                              dotWidth: 10.0,
+                              spacing: 5.0,
+                              expansionFactor: 2,
+                            ),
+                            count: boarding.length,
+                          ),
+                          const Spacer(),
+                          defaultRawButton(
+                            onPressed: (){
+                              if(isLast) {
+                                submit();
+                              } else {
+                                boardController.nextPage(
+                                  duration: const Duration(
+                                    milliseconds: 750,
+                                  ),
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                );
+                              }
 
-                      },
-                      icon: Icons.arrow_forward_ios,
-                    )
+                            },
+                            icon: Icons.arrow_forward_ios,
+                          )
 
 
-                  ]
-              ),
+                        ]
+                    ),
+                  ),
+                )
             )
         ],
-      )
+      ),
     );
   }
 
@@ -183,9 +191,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             top: 380,
             start: 20,
             end: 20,
-            bottom: 100,
+            bottom: 80
           ),
           child: Container(
+            height: 250,
             child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(

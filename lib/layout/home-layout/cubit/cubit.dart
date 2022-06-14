@@ -22,6 +22,7 @@ import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:intl/intl.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
@@ -44,6 +45,36 @@ List<RecipeModel> allRecipe = [];
 
     });
   }
+
+  List<MealsModel> allCompleteDiary = [];
+
+  void getAllCompleteDiary() {
+    emit(GetAllUsersMealsLoadingState());
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId!)
+        .collection('userMeal')
+        .snapshots()
+        .listen((event) {
+      allCompleteDiary = [];
+      event.docs.forEach((element) {
+        allCompleteDiary.add(MealsModel.fromJson(element.data()));
+      });
+      emit(GetAllUsersMealsSuccessState());
+    });
+  }
+
+  List<MealsModel> totalCaloriesOfDay = [];
+  double calculateTotalCalOfCompleteDiaryOfDay(int day)
+  {
+    double totalCalOfDay = 0;
+    totalCaloriesOfDay = allCompleteDiary.where((element) => element.Date!.contains(day.toString())).toList();
+    for (int i = 0; i < totalCaloriesOfDay.length; i++) {
+      totalCalOfDay += totalCaloriesOfDay[i].Calories!;
+    }
+    return totalCalOfDay;
+  }
+
 
   void getUserData() {
     emit(GetUserDataLoadingState());
@@ -1110,6 +1141,7 @@ List<RecipeModel> allRecipe = [];
       phone: userModel!.phone,
       address: userModel!.address,
       dateTime: DateTime.now().toString(),
+      month: DateTime.now().month,
       productName: productName,
       quantity: selectedQuantity,
       productNameAr: nameAr,
@@ -1181,6 +1213,7 @@ List<RecipeModel> allRecipe = [];
       shipping: 100,
       phone: userModel!.phone,
       address: userModel!.address,
+      month: DateTime.now().month,
       dateTime: DateTime.now().toString(),
 
       /*
@@ -1684,5 +1717,10 @@ List<RecipeModel> allRecipe = [];
           print(error) ;
     });
   }*/
+
+
+
+
 }
+
 

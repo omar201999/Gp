@@ -80,8 +80,7 @@ class RecipesManagementScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).breakfastRecipe[index],context ),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
-                            itemCount: 4
-                            //AdminCubit.get(context).breakfastRecipe.length ,
+                            itemCount: AdminCubit.get(context).breakfastRecipe.length ,
                           ),
                           fallback: (context) => const Center(child: CircularProgressIndicator()),
                         ),
@@ -124,9 +123,7 @@ class RecipesManagementScreen extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).lunchRecipe[index],context),
                               separatorBuilder: (context,index) =>  SizedBox(width: 10,),
-                              itemCount: 4
-                          ),
-                              // AdminCubit.get(context).lunchRecipe.length  ),
+                              itemCount: AdminCubit.get(context).lunchRecipe.length  ),
                           fallback: (context) => Center(child: CircularProgressIndicator()),
                         ),
                       ),
@@ -163,8 +160,7 @@ class RecipesManagementScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder:(context,index) => buildRecipe(AdminCubit.get(context).dinnerRecipe[index],context),
                             separatorBuilder: (context,index) =>  const SizedBox(width: 10,),
-                            itemCount: 4
-                            //AdminCubit.get(context).dinnerRecipe.length,
+                            itemCount: AdminCubit.get(context).dinnerRecipe.length,
                           ),
                           fallback: (context) => const Center(child: CircularProgressIndicator()),
                         ),

@@ -83,7 +83,7 @@ class BuyNowScreen extends StatelessWidget {
                                   style: Theme
                                       .of(context)
                                       .textTheme
-                                      .caption,
+                                      .caption!.copyWith(fontSize: 14),
                                   maxLines: 2,
 
                                 ),
@@ -95,7 +95,7 @@ class BuyNowScreen extends StatelessWidget {
                                   style: Theme
                                       .of(context)
                                       .textTheme
-                                      .caption,
+                                      .caption!.copyWith(fontSize: 14),
                                   maxLines: 2,
 
                                 ),
@@ -114,7 +114,7 @@ class BuyNowScreen extends StatelessWidget {
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 14),
                                 maxLines: 2,
 
                               ),
@@ -124,7 +124,7 @@ class BuyNowScreen extends StatelessWidget {
                                   style: Theme
                                       .of(context)
                                       .textTheme
-                                      .caption,
+                                      .caption!.copyWith(fontSize: 14),
                                   maxLines: 2,
 
                                 ),
@@ -243,12 +243,15 @@ class BuyNowScreen extends StatelessWidget {
                               defaultBodyText(
                                   context, text: AppLocalizations.of(context).translate("total_price"),//'Total Price : ',
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 '${(HomeCubit.get(context).calculateTotalPriceOfCartItems())} \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 12),
                                 maxLines: 2,
                               ),
                               /*if(productModel != null)
@@ -269,12 +272,15 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultBodyText(context, text: AppLocalizations.of(context).translate("price_shipping"),//'Shipping: ',
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 '100 \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 12),
                                 maxLines: 2,
                               ),
                             ],
@@ -283,13 +289,16 @@ class BuyNowScreen extends StatelessWidget {
                             children: [
                               defaultBodyText(context, text: AppLocalizations.of(context).translate("total"),//'Total  : ',
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 '${(HomeCubit.get(context)
                                     .calculateTotalPriceOfCartItems())  + 100} \$',
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 12),
                                 maxLines: 2,
                               ),
                             /*  if(productModel != null)
@@ -371,6 +380,9 @@ class BuyNowScreen extends StatelessWidget {
                           children: [
                             defaultBodyText(context, text: AppLocalizations.of(context).translate("product_name"),//'Name : ',
                             ),
+                            SizedBox(
+                              width: 5,
+                            ),
                             if(lan=='en')
                               Expanded(
                               child: Text(
@@ -378,7 +390,7 @@ class BuyNowScreen extends StatelessWidget {
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 12),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -390,7 +402,7 @@ class BuyNowScreen extends StatelessWidget {
                                 style: Theme
                                     .of(context)
                                     .textTheme
-                                    .caption,
+                                    .caption!.copyWith(fontSize: 12),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -401,12 +413,15 @@ class BuyNowScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             defaultBodyText(context, text: AppLocalizations.of(context).translate("quantity")),//'Quantity : '),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text(
                               '${model.selectedQuantity}',
                               style: Theme
                                   .of(context)
                                   .textTheme
-                                  .caption,
+                                  .caption!.copyWith(fontSize: 14),
                               maxLines: 2,
                             ),
                           ],
@@ -415,12 +430,15 @@ class BuyNowScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             defaultBodyText(context, text: AppLocalizations.of(context).translate("price_per_one")),//'Price per one : '),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text(
                               '${model.currentPrice} \$',
                               style: Theme
                                   .of(context)
                                   .textTheme
-                                  .caption,
+                                  .caption!.copyWith(fontSize: 12),
                               maxLines: 2,
                             ),
                           ],

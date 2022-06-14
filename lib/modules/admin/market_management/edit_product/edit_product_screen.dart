@@ -26,6 +26,8 @@ class EditProductScreen extends StatelessWidget {
   var discountController = TextEditingController();
   var quantityController = TextEditingController();
   var uIdController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
 
@@ -45,9 +47,9 @@ class EditProductScreen extends StatelessWidget {
             currentPriceController.text = '${productModel.currentPrice}';
           }*/
           nameController.text = productModel.name!;
-        //  nameArController.text = productModel.nameAr!;
+          nameArController.text = productModel.nameAr!;
           descriptionController.text = productModel.description!;
-         // descriptionArController.text = productModel.descriptionAr!;
+          descriptionArController.text = productModel.descriptionAr!;
           //currentPriceController.text = '${productModel.currentPrice}';
           oldPriceController.text = '${productModel.oldPrice}';
           discountController.text = '${productModel.discount}';
@@ -56,7 +58,9 @@ class EditProductScreen extends StatelessWidget {
           return Scaffold(
 
             body: SingleChildScrollView(
-              child: Column(
+              child: Form(
+                key: formKey,
+                child: Column(
                 children:
                 [
                   Stack(
@@ -152,9 +156,14 @@ class EditProductScreen extends StatelessWidget {
                           context,
                           height: 65,
                           child: defaultTextFormField(
-                            type: TextInputType.text,
-                            controller: nameController,
-                            //prefixIcon: Icon(IconBroken.Paper),
+                              type: TextInputType.text,
+                              controller: nameController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter name product';
+                                }
+                              },
+                              //prefixIcon: Icon(IconBroken.Paper),
                               border: InputBorder.none,
                               label: 'Name in English'
                           ),
@@ -168,6 +177,11 @@ class EditProductScreen extends StatelessWidget {
                           child: defaultTextFormField(
                               type: TextInputType.text,
                               controller: nameArController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter name product';
+                                }
+                              },
                               //prefixIcon: Icon(IconBroken.Paper),
                               border: InputBorder.none,
                               label: 'Name in Arabic'
@@ -183,6 +197,11 @@ class EditProductScreen extends StatelessWidget {
                           //color: constantColor5,
                           child: defaultTextFormField(
                               controller: descriptionController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter description';
+                                }
+                              },
                               type: TextInputType.multiline,
                               maxLines: 30,
                               border: InputBorder.none,
@@ -200,6 +219,11 @@ class EditProductScreen extends StatelessWidget {
                           //color: constantColor5,
                           child: defaultTextFormField(
                               controller: descriptionArController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter description';
+                                }
+                              },
                               type: TextInputType.multiline,
                               maxLines: 30,
                               border: InputBorder.none,
@@ -229,8 +253,13 @@ class EditProductScreen extends StatelessWidget {
                           height: 65,
                           //color: constantColor5,
                           child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: oldPriceController,
+                              type: TextInputType.number,
+                              controller: oldPriceController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter price';
+                                }
+                              },
                               border: InputBorder.none,
                               label: 'Old Price'
                           ),
@@ -244,8 +273,13 @@ class EditProductScreen extends StatelessWidget {
                           height: 65,
                           //color: constantColor5,
                           child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: discountController,
+                              type: TextInputType.number,
+                              controller: discountController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter discount';
+                                }
+                              },
                               border: InputBorder.none,
                               label: 'Discount'
 
@@ -261,8 +295,13 @@ class EditProductScreen extends StatelessWidget {
                           height: 65,
                           //color: constantColor5,
                           child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: quantityController,
+                              type: TextInputType.number,
+                              controller: quantityController,
+                              validate: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter quantity of product';
+                                }
+                              },
                               border: InputBorder.none,
                               label: 'Quantity'
 
@@ -274,51 +313,60 @@ class EditProductScreen extends StatelessWidget {
                         defaultButton(
                           context,
                           onPreesed: () {
+                        if(formKey.currentState!.validate()) {
+                          if (newProductImage == null) {
+                            AdminCubit.get(context).updateProduct(
+                              AdminCubit
+                                  .get(context)
+                                  .productsIDs[index],
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              currentPrice: double.parse(
+                                  oldPriceController.text) -
+                                  (double.parse(oldPriceController.text) *
+                                      double.parse(discountController.text) /
+                                      100),
+                              oldPrice: double.parse(oldPriceController.text),
+                              discount: double.parse(discountController.text),
+                              quantity: int.parse(quantityController.text),
+                              status: productModel.status,
 
-                            if(newProductImage == null)
-                            {
-                              AdminCubit.get(context).updateProduct(
-                                AdminCubit.get(context).productsIDs[index],
-                                name: nameController.text,
-                                description: descriptionController.text,
-                                currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                                oldPrice: double.parse(oldPriceController.text),
-                                discount: double.parse(discountController.text),
-                                quantity : int.parse(quantityController.text),
-                                status: productModel.status,
+                              //uId: productModel.uId,
+                              newProductImage: productModel.image,
+                              nameAr: nameArController.text,
+                              descriptionAr: descriptionArController.text,
+                              numOfRates: productModel.numOfRates!,
+                              averageRating: productModel.averageRating!,
+                              totalRating: productModel.totalRating!,
+                              //isFavorite: productModel.isFavorite!
+                            );
+                          } else {
+                            AdminCubit.get(context).uploadNewProductImage(
+                              AdminCubit
+                                  .get(context)
+                                  .productsIDs[index],
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              currentPrice: double.parse(
+                                  oldPriceController.text) -
+                                  (double.parse(oldPriceController.text) *
+                                      double.parse(discountController.text) /
+                                      100),
+                              oldPrice: double.parse(oldPriceController.text),
+                              discount: double.parse(discountController.text),
+                              quantity: int.parse(quantityController.text),
+                              status: productModel.status,
+                              nameAr: nameArController.text,
+                              descriptionAr: descriptionArController.text,
+                              numOfRates: productModel.numOfRates!,
+                              averageRating: productModel.averageRating!,
+                              totalRating: productModel.totalRating!,
+                              //isFavorite: productModel.isFavorite!
 
-                                //uId: productModel.uId,
-                                newProductImage:productModel.image,
-                                nameAr: nameArController.text,
-                                descriptionAr: descriptionArController.text,
-                                numOfRates: productModel.numOfRates!,
-                                averageRating: productModel.averageRating!,
-                                totalRating: productModel.totalRating!,
-                                //isFavorite: productModel.isFavorite!
-                              );
-
-                            } else
-                            {
-                              AdminCubit.get(context).uploadNewProductImage(
-                                  AdminCubit.get(context).productsIDs[index],
-                                  name: nameController.text,
-                                  description: descriptionController.text,
-                                  currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                                  oldPrice: double.parse(oldPriceController.text),
-                                  discount: double.parse(discountController.text),
-                                  quantity : int.parse(quantityController.text),
-                                  status: productModel.status,
-                                  nameAr: nameArController.text,
-                                  descriptionAr: descriptionArController.text,
-                                numOfRates: productModel.numOfRates!,
-                                averageRating: productModel.averageRating!,
-                                totalRating: productModel.totalRating!,
-                                  //isFavorite: productModel.isFavorite!
-
-                                  //uId: productModel.uId,
-                              );
-                            }
-
+                              //uId: productModel.uId,
+                            );
+                          }
+                        }
 
 
                           },
@@ -335,6 +383,7 @@ class EditProductScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
               ),
             ),
 

@@ -79,11 +79,10 @@ class _WaterTrackerScreenState extends State<WaterTrackerScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(
-                            '$counter',
-                            style: TextStyle(
-                                fontSize: 20
-                            ),
+                          defaultBodyText(
+                            context,
+                            text: '$counter',
+                            fontSize: 20,
                           ),
                           const SizedBox(
                             width: 10,

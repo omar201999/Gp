@@ -14,6 +14,7 @@ class NewOrderModel
   String? productNameAr;
   String? status;
   int? quantity;
+  int? month;
   //List<ProductModel>? cardItemList;
   List<dynamic>? cardItemList;
   NewOrderModel({
@@ -32,6 +33,7 @@ class NewOrderModel
     this.userEmail,
     this.orderNumber,
     this.productNameAr,
+    this.month,
   });
 
   NewOrderModel.fromJson(Map<String, dynamic>? json)
@@ -56,6 +58,7 @@ class NewOrderModel
     userEmail=json['userEmail'];
     orderNumber=json['orderNumber'];
     productNameAr=json['productNameAr'];
+    month = json['month'];
   }
   Map<String, dynamic> toMap()
   {
@@ -75,6 +78,7 @@ class NewOrderModel
       'orderNumber': orderNumber,
       'productNameAr': productNameAr,
       'cardItemList' : cardItemList?.map((e) => e.toMap()).toList(),//ProductModel?? []
+      'month' : month,
     };
   }
 }

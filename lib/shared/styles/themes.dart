@@ -6,7 +6,7 @@ ThemeData lightTheme = ThemeData(
   primarySwatch: defaultColor,
   scaffoldBackgroundColor: Colors.grey[50],
   appBarTheme:  AppBarTheme(
-    titleSpacing: 20,
+    titleSpacing: 15,
     elevation: 0,
     backgroundColor: Colors.grey[50],
 
@@ -53,7 +53,7 @@ ThemeData darkTheme = ThemeData(
   primarySwatch: defaultColor,
   scaffoldBackgroundColor:Color(0xff242526),// HexColor('#18191a'),//#1c1c1c
   appBarTheme: AppBarTheme(
-    titleSpacing: 20,
+    titleSpacing: 15,
     //backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Color(0xff242526),//HexColor('#18191a'),//#1c1c1c 0xff18191a

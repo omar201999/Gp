@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/main.dart';
 import 'package:gp/modules/user/buy_now/buy-now-screen.dart';
@@ -52,6 +53,10 @@ class _HomeLayoutState extends State<HomeLayout> {
       AppLocalizations.of(context).translate("recipe"),//'Recipe',
       AppLocalizations.of(context).translate("me"),//'Me'
     ];
+
+   // List<String> texts = ['first', 'second', 'third'];
+
+    // List<bool> isHighlighted = [true, false, false];
     return BlocConsumer<HomeCubit,HomeStates>(
       listener: (context, state)
       {
@@ -65,7 +70,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         //&& HomeCubit.get(context).userModel!.userActive != null
           condition: HomeCubit.get(context).userModel != null  ,
           builder: (context)=>Scaffold(
-          drawer:Drawer(
+           drawer:Drawer(
             child: ListView(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -78,53 +83,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                     child: drawerHeader(HomeCubit.get(context).userModel!),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SwitchListTile(
-                    value: AppCubit.get(context).isDark,
-                    onChanged: (value) {
-                      setState(() {
-                        AppCubit.get(context).changeAppMode(fromCache: value);
-                      });
-                    },
-                    title: defaultHeadLineText(context, text: AppLocalizations.of(context).translate("dark_mood")),//'Dark Mode'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 35),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      DropdownButton<Language>(
-                        iconSize: 30,
-                        hint: defaultHeadLineText(context,text: AppLocalizations.of(context).translate("change_language")),
-                        onChanged: (Language? language) {
-                          _changeLanguage(language!);
-                        },
-                        items: Language.languageList()
-                            .map<DropdownMenuItem<Language>>(
-                              (e) => DropdownMenuItem<Language>(
-                            value: e,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Text(
-                                  e.flag,
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                                Text(e.name)
-                              ],
-                            ),
-                          ),
-                        ).toList(),
-                      ),
-                    ],
-                  ),
-                ),
                   buildMenuItem(
                       context,
                     text: AppLocalizations.of(context).translate("buy_now"),//'Buy Now',
-                    icon: IconBroken.Buy,
+                    icon: Iconsax.card,
                     onClicked: () {
                       if(HomeCubit.get(context).cart.isNotEmpty)
                       {
@@ -153,7 +115,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                     context,
 
                     text: AppLocalizations.of(context).translate("complete_daily"),//'Complete Diary',
-                    icon: Icons.food_bank_outlined,
+                    leading: SvgPicture.asset(
+                      "assets/images/salad.svg",
+                      height: 25,
+                      width: 25,
+                      color: Colors.grey,
+                    ),
+
                     onClicked: () {
                       navigateTo(context, CompleteDiaryScreen());
                     }
@@ -162,7 +130,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                 buildMenuItem(
                     context,
                     text: AppLocalizations.of(context).translate("nutrition"),//'Nutrition',
-                    icon: Icons.health_and_safety,
+                    icon: Icons.food_bank_outlined,
+                    //Icons.health_and_safety,
                     onClicked: () {
                       navigateTo(context, NutritionScreen());
                     }
@@ -170,8 +139,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                 SizedBox(height: 5,),
                 buildMenuItem(
                     context,
-                    text:AppLocalizations.of(context).translate("FeedBack"),
-                    icon:Icons.feedback_outlined,
+                    text:AppLocalizations.of(context).translate("Feedback"),
+                    icon:Iconsax.message,
                     onClicked: () {
                       navigateTo(context, FeedbackScreen());
                     }
@@ -207,6 +176,49 @@ class _HomeLayoutState extends State<HomeLayout> {
                 const SizedBox(
                   height: 15,
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SwitchListTile(
+                    value: AppCubit.get(context).isDark,
+                    onChanged: (value) {
+                      setState(() {
+                        AppCubit.get(context).changeAppMode(fromCache: value);
+                      });
+                    },
+                    title: defaultHeadLineText(context, text: AppLocalizations.of(context).translate("dark_mood"), fontSize: 15),//'Dark Mode'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      DropdownButton<Language>(
+                        iconSize: 30,
+                        hint: defaultHeadLineText(context,text: AppLocalizations.of(context).translate("change_language"), fontSize: 15),
+                        onChanged: (Language? language) {
+                          _changeLanguage(language!);
+                        },
+                        items: Language.languageList()
+                            .map<DropdownMenuItem<Language>>(
+                              (e) => DropdownMenuItem<Language>(
+                            value: e,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Text(
+                                  e.flag,
+                                  style: TextStyle(fontSize: 30),
+                                ),
+                                Text(e.name)
+                              ],
+                            ),
+                          ),
+                        ).toList(),
+                      ),
+                    ],
+                  ),
+                ),
                 buildMenuItem(
                     context,
                     text: AppLocalizations.of(context).translate("log_out"),//' 🥺 Log Out ',
@@ -221,10 +233,31 @@ class _HomeLayoutState extends State<HomeLayout> {
               ],
             ),
           ),
-          appBar: AppBar(
-            title: Text(
-              titleAppBar[cubit.currentIndex],
+           appBar: AppBar(
+            automaticallyImplyLeading: false,
+
+            title: Row(
+              children: [
+                Builder(
+                 builder: (context) => IconButton(
+                  icon: SvgPicture.asset(
+                    "assets/images/drawer.svg",
+                    height: 20,
+                    width: 38,
+                    color: AppCubit.get(context).defaultColor,
+                  ),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
+               ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  titleAppBar[cubit.currentIndex],
+                ),
+        ]
             ),
+
             actions:
             [
               if(cubit.currentIndex == 1)
@@ -261,7 +294,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
             ],
           ),
-          bottomNavigationBar: BottomNavigationBar(
+           bottomNavigationBar: BottomNavigationBar(
             currentIndex: cubit.currentIndex ,
             onTap: (index)
             {

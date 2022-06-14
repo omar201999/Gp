@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:glass/glass.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
@@ -14,6 +17,7 @@ import 'package:gp/models/new_order_model.dart';
 import 'package:gp/models/product_model.dart';
 import 'package:gp/models/recipes_model.dart';
 import 'package:gp/models/user_model.dart';
+import 'package:gp/modules/admin/market_management/edit_product/edit_product_screen.dart';
 import 'package:gp/modules/admin/market_management/products_for_order.dart';
 import 'package:gp/modules/user/camera/Camera_Screen.dart';
 import 'package:gp/modules/user/market/items/marketitem_screen.dart';
@@ -103,11 +107,24 @@ Widget defaultTextFormField({
     prefixIcon: Icon(
       prefix,
     ),
-    border: border??OutlineInputBorder(
+    /*border: border??OutlineInputBorder(
         borderRadius: borderRadius??BorderRadius.all(
           Radius.circular(15.0),
         ),
         borderSide: BorderSide.none
+    ),*/
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15.0),
+      borderSide: const BorderSide(
+        color: defaultColor,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15.0),
+      borderSide: BorderSide(
+        color: Colors.grey.shade300,
+        width: 2.0,
+      ),
     ),
 
   ),
@@ -157,15 +174,18 @@ void navigateToAndReplacement (context , widget) => Navigator.pushAndRemoveUntil
 Widget defaultContainer(BuildContext context,{
   double? width,
   double? height,
-  double radius = 10,
+  double? radius,
+
   Clip clip = Clip.antiAliasWithSaveLayer,
-  //Color? color = constantColor1,
+  Color? color,
   Widget? child,
-  BoxDecoration? decoration ,
+  BoxDecoration? decoration,
+  EdgeInsets? padding ,
 }) => Container(
   width: width,
   height: height,
   clipBehavior: clip,
+  padding: padding,
   decoration: decoration??BoxDecoration(
     /*gradient:  LinearGradient(
       colors: [
@@ -175,8 +195,8 @@ Widget defaultContainer(BuildContext context,{
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
     ),*/
-    color: AppCubit.get(context).constantColor1,//HexColor('#4d4d4d')
-    borderRadius: BorderRadius.circular(radius),
+    color: color??AppCubit.get(context).constantColor1,//HexColor('#4d4d4d')
+    borderRadius: BorderRadius.circular(radius??10),
   ),
   child: child,
 );
@@ -241,7 +261,113 @@ Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetecto
       recipeModel: model, index: index,
     ));
   },
-  child: defaultContainer(
+  child: Container(
+      decoration: BoxDecoration (
+        borderRadius: BorderRadius.circular(15.0),
+        image: DecorationImage (
+            image: NetworkImage('${model.image}'),
+            fit: BoxFit.cover
+        ),
+      ),
+      height: 200,
+      width: 230,
+      child: Padding(
+          padding: const EdgeInsetsDirectional.only(
+            //top: 140,
+            start: 10,
+            end: 10,
+            bottom: 15,
+          ),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 120,
+              color: Colors.black38.withOpacity(0.30),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(lan=='en')
+                        Expanded(
+                          child: Text(
+                            '${model.title}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Colors.white
+                            ),
+                          ),
+                        ),
+                      if(lan=='ar')
+                        Expanded(
+                          child: Text(
+                            '${model.titleAr}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Colors.white
+                            ),
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: [
+                          if(lan=='en')
+                            Text(
+                              '${model.calories} Calories',
+                              style: const TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          if(lan=='ar')
+                            Text(
+                              '${model.calories} كالوري ',
+                              style: const TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          Spacer(),
+                          Icon(
+                            IconBroken.Star,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          Text(
+                            '${(model.averageRating)!.ceilToDouble()}',
+                            style: const TextStyle(
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ],
+                      )
+                    ]
+                ),
+              ),
+            ).asGlass(
+              tintColor: Colors.transparent,
+              clipBorderRadius: BorderRadius.circular(20.0),
+            ),
+          )
+          ),
+      )
+
+  /*child: defaultContainer(
     context,
     height: 250,
     width: 180,
@@ -251,7 +377,7 @@ Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetecto
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
-        Expanded(
+        /*Expanded(
           flex: 4,
           child: Image(
             image: NetworkImage('${model.image}'),
@@ -296,10 +422,11 @@ Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetecto
               ],
             ),
           ),
-        ),
+        ),*/
+
       ],
     ),
-  ),
+  ),*/
 );
 
 Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
@@ -463,9 +590,9 @@ Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
         )
       ],
     )
-    
-      
-   
+
+
+
   ),
 );
 
@@ -641,7 +768,8 @@ Widget headOfRecipeItem(BuildContext context, {
 
 Widget buildHomeScreenItem(BuildContext context,{
   required Widget screen,
-  required IconData prefixIcon,
+  IconData? prefixIcon,
+  Widget? icon,
   IconData suffixIcon = Icons.add,
   required String text,
 
@@ -658,7 +786,7 @@ Widget buildHomeScreenItem(BuildContext context,{
       child: Row(
         children:
         [
-          Icon(
+          icon??Icon(
             prefixIcon,
           ),
           SizedBox(
@@ -1246,18 +1374,21 @@ Widget buildNutritionItem(BuildContext context) => Column(
   ],
 );
 
-Widget buildmarket_item(ProductModel model,context, index) => defaultGestureDetector(
+/*Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
   onTap: ()
   {
     navigateTo(context, MarketItemScreen(
       productModel: model,
       index: index,
-    ));
+    ),
+    );
+
   },
   child:
-  Container(
+  defaultContainer(
+    context,
     decoration: BoxDecoration (
-      color: constantColor5,
+      color: AppCubit.get(context).constantColor5,
       borderRadius: BorderRadius.circular(15.0),
     ),
     //color: constantColor5,
@@ -1270,74 +1401,81 @@ Widget buildmarket_item(ProductModel model,context, index) => defaultGestureDete
           children: [
 
             Padding(
-              padding: const EdgeInsetsDirectional.only(
-                top: 20
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      SimpleShadow(
-                        child: Image(
-                          alignment: Alignment.center,
-                          image: NetworkImage('${model.image}'),
-                          width: 140.0,
-                          height: 140.0,
-                          fit: BoxFit.cover,
-                        ),
-                        opacity: 0.5,
-                        //color: Colors.blue,
-                        offset: Offset(1, 1),
-                        sigma: 8,
-                      ),
-                      if (model.discount != 0 && model.quantity != 0)
-                        Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5.0
-                            ),
-                            child: Text(
-                              '${model.discount}% OFF',
-                              style: const TextStyle(
-                                  fontSize: 10.0,
-                                  fontWeight: FontWeight.w900
-                              ),
-                            )
-                        ),
-                      if (model.quantity == 0)
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(25)
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0
-                          ),
-                          child:Text(
-                            'Not available',
-                            style: TextStyle(
-                                fontSize: 10.0,
-                                color: Colors.red[800]
-                            ),
-                          ),
-                        ),
-                    ],
+                padding: const EdgeInsetsDirectional.only(
+                    top: 20,
+                    bottom: 5,
+                    end: 20,
+                    start: 20
+                ),
+                child: SimpleShadow(
+                  child: Image(
+                    image: NetworkImage('${model.image}'),
+                    width: 140.0,
+                    height: 140.0,
+                    fit: BoxFit.cover,
                   ),
-                ],
+                  opacity: 0.5,
+                  //color: Colors.blue,
+                  offset: Offset(1, 1),
+                  sigma: 8,
+                )
+            ),
+            if (model.discount != 0 && model.quantity != 0)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 10.0,
+                  top: 10.0,
+                ),
+                child: defaultContainer(
+                    context,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25)
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.0
+                    ),
+                    child: Text(
+                      '${model.discount}%'' ' +AppLocalizations.of(context).translate("off"),
+                      style: const TextStyle(
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.w900
+                      ),
+                    )
+                ),
               ),
-            )
+            if (model.quantity == 0)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 10.0,
+                  top: 10.0,
+                ),
+                child: defaultContainer(
+                  context,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(25)
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 5.0
+                  ),
+                  child:Text(
+                    //'Out of Stock',
+                    AppLocalizations.of(context).translate("not_available"),
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
 
           ],
         ),
 
         Padding(
             padding: const EdgeInsets.symmetric(
-              vertical: 10,
+              vertical: 5.0,
               horizontal: 10.0,
             ),
             child: Container(
@@ -1353,15 +1491,26 @@ Widget buildmarket_item(ProductModel model,context, index) => defaultGestureDete
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${model.name}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          height: 1.3,
+                      if(lan=='en')
+                        Text(
+                          '${model.name}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            height: 1.3,
+                          ),
                         ),
-                      ),
+                      if(lan=='ar')
+                        Text(
+                          '${model.nameAr}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            height: 1.3,
+                          ),
+                        ),
                       Row(
                         children:
                         [
@@ -1396,6 +1545,181 @@ Widget buildmarket_item(ProductModel model,context, index) => defaultGestureDete
       ],
     ),
   ),
+);*/
+
+Widget buildProduct(ProductModel model, context, index) => defaultGestureDetector(
+  onTap: ()
+  {
+      navigateTo(context, MarketItemScreen(
+        productModel: model,
+        index: index,
+      ),
+      );
+
+  },
+  child: defaultContainer(
+      context,
+      decoration: BoxDecoration (
+        color: AppCubit.get(context).constantColor5,
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      //color: constantColor5,
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Stack(
+              children: [
+
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                      top: 10
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.topLeft,
+                        children: [
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: SimpleShadow(
+                              child: Image(
+                                alignment: Alignment.center,
+                                image: NetworkImage('${model.image}'),
+                                width: 140.0,
+                                height: 140.0,
+                                fit: BoxFit.cover,
+                              ),
+                              opacity: 0.5,
+                              //color: Colors.blue,
+                              offset: Offset(1, 1),
+                              sigma: 8,
+                            ),
+                          ),
+                          if (model.discount != 0 && model.quantity != 0)
+                            defaultContainer(
+                                context,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25)
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.0
+                                ),
+                                child: Text(
+                                  '${model.discount}%'' ' +AppLocalizations.of(context).translate("off"),
+                                  style: const TextStyle(
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w900
+                                  ),
+                                )
+                            ),
+                          if (model.quantity == 0)
+                            defaultContainer(
+                              context,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(25)
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5.0
+                              ),
+                              child:Text(
+                                //'Out of Stock',
+                                AppLocalizations.of(context).translate("not_available"),
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+
+              ],
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: defaultContainer(
+                      context,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 10.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if(lan=='en')
+                              Text(
+                                '${model.name}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    height: 1.3,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            if(lan=='ar')
+                              Text(
+                                '${model.nameAr}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    height: 1.3,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            Row(
+                              children:
+                              [
+                                Text(
+                                  '${model.currentPrice}',
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: defaultColor,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                if (model.discount != 0)
+                                  Text(
+                                    '${model.oldPrice}',
+                                    style: const TextStyle(
+                                      fontSize: 10.0,
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                              ],
+                            ),
+
+                          ],
+                        ),
+                      ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
 );
 
 
@@ -1567,12 +1891,12 @@ Widget buildSerachMealItem (list,listOfEmptySearch,context,
               //color: constantColor5,
               child: defaultTextFormField(
                 type: TextInputType.text,
-                prefix: Icons.search,
+                prefix: IconBroken.Search,
                 hintText: AppLocalizations.of(context).translate("  "),//'Search',
-                border: InputBorder.none,
-                borderRadius: BorderRadius.all(
+                /*border: InputBorder.none,
+                //borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
-                ),
+                ),*/
                 onChanged: onChangedSearch,
               ),
             ),
@@ -1720,9 +2044,13 @@ indicator({
   required Color color,
   required String text,
   String? secondText,
+  String? thirdText,
+  String? detailsText,
+  Color detailsTextColor = Colors.grey,
   required bool isSquare,
   double? size = 16,
   Color? secondTextColor,
+  Color thirdTextColor = defaultColor,
   Color? textColor = const Color(0xff505050),
 }) => Row(
     children: [
@@ -1749,6 +2077,17 @@ indicator({
             ),
           ),
       ),
+      const SizedBox(
+        width: 8,
+      ),
+      Text(
+        '(' + detailsText! + ' g)',
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: detailsTextColor
+        ),
+      ),
 
       const Spacer(),
 
@@ -1760,8 +2099,70 @@ indicator({
             color: secondTextColor
         ),
       ),
+      const SizedBox(
+        width: 20.0,
+      ),
+
+      Text(
+        thirdText!,
+        style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: thirdTextColor
+        ),
+      ),
 
     ],
+);
+
+indicator2({
+  required Color color,
+  required String text,
+  String? secondText,
+  Color detailsTextColor = Colors.grey,
+  required bool isSquare,
+  double? size = 16,
+  Color? secondTextColor,
+  Color? textColor = const Color(0xff505050),
+}) => Row(
+  children: [
+    Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+        color: color,
+      ),
+    ),
+    const SizedBox(
+      width: 4,
+    ),
+    Expanded(
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: textColor,
+        ),
+      ),
+    ),
+
+    const Spacer(),
+
+    Text(
+      secondText!,
+      style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: secondTextColor
+      ),
+    ),
+
+
+  ],
 );
 
 buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAmount) =>
@@ -1777,6 +2178,19 @@ buildPieChartItem (ProductModel model, context, radius, fontSize, index, totalAm
       ),
     );
 
+buildPieChartItem2 (int nutritionInfo,context, radius, fontSize, index, totalAmount) =>
+    PieChartSectionData(
+      color: colors[index],
+      value: nutritionInfo/totalAmount*100*360,
+      title: ((nutritionInfo/totalAmount*100).round()).toString()+'%',
+      radius: radius,
+      titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white
+      ),
+    );
+
 
 List<Color> colors = [
   Color(0xff0293ee),
@@ -1784,6 +2198,11 @@ List<Color> colors = [
   Color(0xff845bef),
   Color(0xffef5bed),
   Color(0xff097eac),
+  Color(0xe8a7a7ad),
+  Color(0xff082ca7),
+  Color(0xff27ce21),
+  Color(0xffe8e224),
+  Color(0xff8e09ac),
   Color(0xe8a7a7ad),
   Color(0xff082ca7),
   Color(0xff27ce21),
@@ -1840,28 +2259,29 @@ Widget drawerHeader(UserModel model) => DrawerHeader(
 
 Widget buildMenuItem(context,{
   required String text,
-  required IconData icon,
+  IconData? icon,
   required Function()? onClicked,
+  Widget? leading,
+
   //Color backgroundColor = Colors.white,
-  Color color = Colors.black54
+  Color color = Colors.grey
 }) => InkWell(
   onTap:onClicked ,
   child:   Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: defaultContainer (
-        context,
+      child: Container (
         //color: Colors.grey[50],
         child: ListTile(
-          leading: Icon(
+          leading: leading ?? Icon(
               icon,
-              color: color),
+              color: color
+          ),
           title: Text(
             text,
             style: TextStyle(
                 fontSize: 14
             ),
           ),
-
         ),
       )
   ),
@@ -2073,7 +2493,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       },
       background: Container(
         alignment: Alignment.centerLeft,
-        child:Padding(
+        child: model.status == 'confirmed' ? SizedBox(width: 10,) : Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Confirmed Order',color: Colors.white),
         ),
@@ -2085,7 +2505,7 @@ Widget  BuildOrderItem (NewOrderModel model,context,index)=> Padding(
       ),
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
-        child:Padding(
+        child: model.status == 'canceled' ? SizedBox(width: 10,) : Padding(
           padding: const EdgeInsets.all(8.0),
           child: defaultHeadLineText(context, text: 'Canceled Order',color: Colors.white),
         ),
@@ -2617,3 +3037,33 @@ String convertToDataTime(String date) => DateFormat('dd-MM-yyyy HH:mm').format(D
 
 
 
+BarChartGroupData makeGroupData(
+    int x,
+    double y,
+    UserModel? model,
+    {
+      bool isTouched = false,
+      Color barColor = Colors.white,
+      double width = 22,
+      List<int> showTooltips = const [],
+    }) {
+  return BarChartGroupData(
+    x: x,
+    barRods: [
+      BarChartRodData(
+        toY: isTouched ? y + 1 : y,
+        color: isTouched ? defaultColor : barColor,
+        width: width,
+        borderSide: isTouched
+            ? BorderSide(color: defaultColor, width: 1)
+            : const BorderSide(color: Colors.white, width: 0),
+        backDrawRodData: BackgroundBarChartRodData(
+          show: true,
+          toY: (model!.totalCalorie)!.toDouble(),
+          color: Colors.grey,
+        ),
+      ),
+    ],
+    showingTooltipIndicators: showTooltips,
+  );
+}

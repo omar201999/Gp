@@ -1085,5 +1085,14 @@ class AdminCubit extends Cubit<AdminStates>
     }
     }
 */
+double countConfirmedOrders(int month) {
+ double quantity = 0;
+ for(int i = 0; i < confirmedOrders.length; i++) {
+   if (confirmedOrders[i].month == month) {
+       quantity++;
+   }
+ }
+  return quantity;
+}
 
 }

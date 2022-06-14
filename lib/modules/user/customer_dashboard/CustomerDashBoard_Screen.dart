@@ -1,26 +1,167 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
+import 'package:gp/models/meals_model.dart';
 import 'package:gp/models/user_model.dart';
 import 'package:gp/shared/componants/componants.dart';
+import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 import '../edit_goal/edit_goal_screen.dart';
 import '../edit_profile/edit_profile_screen.dart';
 
-class CustomerDashBoardScreen extends StatelessWidget {
+class CustomerDashBoardScreen extends StatefulWidget {
 
+  @override
+  State<StatefulWidget> createState() => CustomerDashBoardScreenState();
+}
+
+class CustomerDashBoardScreenState extends  State<CustomerDashBoardScreen> {
+
+  @override
+  void initState()
+  {
+    super.initState();
+    HomeCubit.get(context).getAllCompleteDiary();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    UserModel? userModel = HomeCubit.get(context).userModel;
+
+    int touchedIndex = -1;
+    List<int> days = [
+      DateTime.now().subtract(const Duration(days:7)).day,
+      DateTime.now().subtract(const Duration(days:6)).day,
+      DateTime.now().subtract(const Duration(days:5)).day,
+      DateTime.now().subtract(const Duration(days:4)).day,
+      DateTime.now().subtract(const Duration(days:3)).day,
+      DateTime.now().subtract(const Duration(days:2)).day,
+      DateTime.now().subtract(const Duration(days:1)).day,
+    ];
+
+    List<String> daysName = [
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:7))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:6))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:5))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:4))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:3))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:2))),
+      DateFormat('E',lan!).format(DateTime.now().subtract(const Duration(days:1))),
+    ];
+
+    List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
+      return makeGroupData(
+        i,
+        HomeCubit.get(context).calculateTotalCalOfCompleteDiaryOfDay(days[i]),
+        userModel,
+        isTouched: i == touchedIndex,
+      );
+
+    });
+
+
+
+    Widget getTitles(double value, TitleMeta meta) {
+      const style = TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      );
+      Widget text = Text(
+        daysName[value.toInt()],
+        style: style,
+
+      );
+
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        space: 16,
+        child: text,
+      );
+    }
+
+    BarChartData mainBarData() {
+      return BarChartData(
+        groupsSpace: 20.0,
+        alignment: BarChartAlignment.spaceBetween,
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Colors.black38,
+              //Colors.blueGrey,
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                String weekDay = daysName[group.x.toInt()];
+                return BarTooltipItem(
+                  weekDay + '\n',
+                  const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: (rod.toY - 1).toString(),
+                      style: const TextStyle(
+                        color: defaultColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          touchCallback: (FlTouchEvent event, barTouchResponse) {
+            setState(() {
+              if (!event.isInterestedForInteractions ||
+                  barTouchResponse == null ||
+                  barTouchResponse.spot == null) {
+                touchedIndex = -1;
+                return;
+              }
+              touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
+            });
+          },
+        ),
+        titlesData: FlTitlesData(
+          show: true,
+          rightTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: getTitles,
+              reservedSize: 38,
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: false,
+            ),
+          ),
+        ),
+        borderData: FlBorderData(
+          show: false,
+        ),
+        barGroups: showingGroups(),
+        gridData: FlGridData(show: false),
+      );
+    }
+
+
     return BlocConsumer<HomeCubit,HomeStates>(
       listener: (context,stat){},
       builder: (context,state){
-
-        UserModel? userModel = HomeCubit.get(context).userModel;
-
 
         return Scaffold(
           body: SingleChildScrollView(
@@ -29,128 +170,227 @@ class CustomerDashBoardScreen extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: 400,
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
+                    Column(
                         children: [
-                          Align(
+                          Container(
+                            height: 150,
+                            width: double.infinity,
+                            //color: AppCubit.get(context).scaffoldColor,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                /*Align(
                             alignment: Alignment.topCenter,
-                            child: Image(
+                            child:
+                             Image(
                               fit: BoxFit.cover,
-                              height: 350,
-                              width: MediaQuery.of(context).size.width,
-                              image: AssetImage('assets/images/logo.png'),
+                              height: 180,
+                              width: double.infinity,
+                              image: NetworkImage('https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1380'),
+                             )
+                           ),
+                              CircleAvatar(
+                              radius: 52,
+                              backgroundColor: AppCubit,
+                            ),*/
+                                SimpleShadow(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 2),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage('${userModel?.profileImage}'),
+                                      radius: 50,
+                                    ),
+                                  ),
+                                  opacity: 0.5,
+                                  color: AppCubit.get(context).shadowColor,
+                                  offset: Offset(1, 1),
+                                  sigma: 5,
+                                )
+                              ],
                             ),
+
                           ),
-                          CircleAvatar(
-                            radius: 52,
-                            backgroundColor: Colors.white,
+                          SizedBox(
+                            height: 10,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 2),
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage('${userModel?.profileImage}'),
-                              radius: 50,
-                            ),
+
+                          defaultHeadLineText(context, text: '${userModel?.name}'),
+                          //defaultBodyText(context, text: '${userModel?.email}', fontSize: 12, color: Colors.grey),
+
+                          SizedBox(
+                            height: 20,
                           ),
+
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Column(
-                      children: [
-                        defaultHeadLineText(context, text: '${userModel?.name}'),
 
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        top: 5,
-                        start: 20,
-                        end: 20,
-                        bottom: 10,
-                      ),
-                      child: defaultContainer(
-                        context,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("goal_weight"),color: defaultColor),
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Stack(
-                                    alignment: Alignment.center,
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                              top: 15,
+                              start: 20,
+                              end: 20,
+                              bottom: 10,
+                            ),
+                            child: defaultContainer(
+                              context,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("goal_weight"),color: defaultColor),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor: defaultColor,
+                                              radius: 35,
+                                            ),
+                                            CircleAvatar(
+                                              child: defaultHeadLineText(context, text: '${userModel!.goalWeight}',color: defaultColor),
+                                              backgroundColor: Colors.white,
+                                              radius: 30,
+                                            ),
+
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: defaultContainer(
+                              context,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("goal"),color: defaultColor),//'Goal'
+                                        Spacer(),
+                                        defaultTextButton(context, function: (){
+                                          navigateTo(context, EditGoalScreen());
+                                        }, text: AppLocalizations.of(context).translate("edit_goal"))//'Edit Goal')
+                                      ],
+                                    ),
+                                    SizedBox(height: 20,),
+                                    secondPart(
+                                        context,
+                                        subHeadLine: AppLocalizations.of(context).translate("current_weight"),//'Current Weight' ,
+                                        subHeadLine2: '${userModel.weight}',
+                                        caption: '${AppLocalizations.of(context).translate("Gain")}${userModel.weeklyGoal} ${AppLocalizations.of(context).translate("kg per week")}'//'Gain ${userModel.weeklyGoal} kg per week'
+                                    ),
+                                    SizedBox(height: 20,),
+                                    secondPart(
+                                        context,
+                                        subHeadLine: AppLocalizations.of(context).translate("daliy_calories"),//'Daily Calories' ,
+                                        subHeadLine2: '${userModel.totalCalorie}g' ,
+                                        caption: '${AppLocalizations.of(context).translate("Carbs")} ${userModel.totalCarbs} , ${AppLocalizations.of(context).translate("Fats")} ${userModel.totalFats},${AppLocalizations.of(context).translate("Protein")} ${userModel.totalProtein}'
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Container(
+                              height: 450,
+                              width: double.infinity,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                                  color: AppCubit.get(context).constantColor1,
+                                  //Color(0xff81e5cd),
+                                  child: Stack(
                                     children: [
-                                      CircleAvatar(
-                                        backgroundColor: defaultColor,
-                                        radius: 35,
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: <Widget>[
+                                            Text(
+                                              AppLocalizations.of(context).translate("weekly_goal_calories"),
+                                              style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20.0),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                             Text(
+                                               AppLocalizations.of(context).translate("updated_last_days"),
+                                              style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+                                              /*TextStyle(
+                                                  color: Colors.white,
+                                                  //Color(0xff379982),
+                                                  fontSize: 16,
+                                                  //fontWeight: FontWeight.bold
+                                                 ),*/
+                                            ),
+                                            const SizedBox(
+                                              height: 38,
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                child: BarChart(
+                                                  mainBarData(),
+                                                  //swapAnimationDuration: animDuration,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      CircleAvatar(
-                                        child: defaultHeadLineText(context, text: '${userModel!.goalWeight}',color: defaultColor),
-                                        backgroundColor: Colors.white,
-                                        radius: 30,
+                                      /*Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          isPlaying ? Icons.pause : Icons.play_arrow,
+                                          color: const Color(0xff0f4a3c),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            isPlaying = !isPlaying;
+                                            if (isPlaying) {
+                                              refreshState();
+                                            }
+                                          });
+                                        },
                                       ),
-
+                                    ),
+                                  )*/
                                     ],
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                              ) ,
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: defaultContainer(
-                        context,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  defaultHeadLineText(context, text:  AppLocalizations.of(context).translate("goal"),color: defaultColor),//'Goal'
-                                  Spacer(),
-                                  defaultTextButton(context, function: (){
-                                    navigateTo(context, EditGoalScreen());
-                                  }, text: AppLocalizations.of(context).translate("edit_goal"))//'Edit Goal')
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-                              secondPart(
-                                  context,
-                                  subHeadLine: AppLocalizations.of(context).translate("current_weight"),//'Current Weight' ,
-                                  subHeadLine2: '${userModel.weight}',
-                                  caption: '${AppLocalizations.of(context).translate("Gain")}${userModel.weeklyGoal} ${AppLocalizations.of(context).translate("kg per week")}'//'Gain ${userModel.weeklyGoal} kg per week'
-                              ),
-                              SizedBox(height: 20,),
-                              secondPart(
-                                  context,
-                                  subHeadLine: AppLocalizations.of(context).translate("daliy_calories"),//'Daily Calories' ,
-                                  subHeadLine2: '${userModel.totalCalorie}g' ,
-                                  caption: '${AppLocalizations.of(context).translate("Carbs")} ${userModel.totalCarbs} , ${AppLocalizations.of(context).translate("Fats")} ${userModel.totalFats},${AppLocalizations.of(context).translate("Protein")} ${userModel.totalProtein}'
-                              ),
-                            ],
+                          SizedBox(
+                            height: 30,
                           ),
-                        ),
-                      ),
-                    ),
-
                   ],
                 ),
-                SizedBox(
-                  height: 30,
-                ),
+
+
 
               ],
             ),
@@ -165,7 +405,20 @@ class CustomerDashBoardScreen extends StatelessWidget {
         );
       },
     );
+
   }
+
+
+  /*Future<dynamic> refreshState() async {
+    setState(() {});
+    await Future<dynamic>.delayed(
+        animDuration + const Duration(milliseconds: 50));
+    if (isPlaying) {
+      await refreshState();
+    }
+  }*/
+
+
 }
 
 

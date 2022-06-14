@@ -41,7 +41,7 @@ class _MarketingScreenState extends State<MarketingScreen> {
                  childAspectRatio: 1 / 1.50,
                  children: List.generate(
                    AdminCubit.get(context).products.length,
-                       (index) => buildmarket_item(AdminCubit.get(context).products[index], context, index),
+                       (index) => buildProduct(AdminCubit.get(context).products[index], context, index),
                  ),
                ),
              ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/modules/admin/admin_dashboard/analysis_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:iconsax/iconsax.dart';
@@ -22,35 +23,6 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    int totalAmount = 0;
-    int sumTotalAmountProducts(){
-      totalAmount = 0;
-      for( int index = 0; index < AdminCubit.get(context).products.length; index++ ){
-        totalAmount = totalAmount + (AdminCubit.get(context).products[index].quantity!).toInt();
-      }
-      return totalAmount;
-    }
-
-    List<PieChartSectionData> showingSections() {
-      return List.generate(
-          AdminCubit.get(context).products.length,
-              (index) {
-            int totalAmount = sumTotalAmountProducts();
-            //final isTouched = index == touchedIndex;
-            const fontSize = 16.0;
-            const radius = 50.0;
-            return buildPieChartItem(
-                AdminCubit.get(context).products[index],
-                context,
-                radius,
-                fontSize,
-                index,
-                totalAmount
-            );
-          });
-    }
-
 
 
     return BlocConsumer<AdminCubit, AdminStates>(
@@ -270,7 +242,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            width: 5,
+                            width: 15,
                           ),
                           Expanded(
                             child: defaultContainer(
@@ -308,149 +280,79 @@ class DashboardScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: defaultContainer(
-                              context,
-
-                              //color: constantColor1,
-                              height: 170,
-                              //width: 140,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start,
-                                  children: [
-
-                                    const SizedBox(
-                                      height: 5.0,
-                                    ),
-                                     Expanded(
-                                       child: Text(
-                                        'Users that No Achieve Their Goal is ${AdminCubit.get(context).noAchievement()}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black45,
-                                        ),
-                                    ),
-                                     ),
-                                    defaultHeadLineText(
-                                        context,
-                                        text: '${((AdminCubit.get(context).noAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
 
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                          ),
-                          child: Row(
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: defaultContainer(
+                        context,
+
+                        //color: constantColor1,
+                        height: 100,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment
+                                .start,
                             children: [
+
                               const SizedBox(
-                                width: 10,
+                                height: 5.0,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Users that No Achieve Their Goal is ${AdminCubit.get(context).noAchievement()}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black45,
+                                  ),
+                                ),
                               ),
                               defaultHeadLineText(
                                   context,
-                                  text: 'Analytics'
-                              ),
-                              const Spacer(),
-                              defaultTextButton(
-                                context,
-                                text: 'See All',
-                                isUpper: false,
-                                function: () {},
-                              ),
+                                  text: '${((AdminCubit.get(context).noAchievement() / AdminCubit.get(context).feedback.length) * 100).toStringAsFixed(2)} %'
+                              )
                             ],
                           ),
                         ),
-                        Padding(
+                      ),
+                    ),
+                    Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
+                            horizontal: 15.0,
                           ),
-                          child: AspectRatio(
-                            aspectRatio: 1.3,
-                            child: Card(
-                              color: Colors.grey[50],
+                          child: InkWell(
+                            onTap: () {
+                              navigateTo(context, Analysis());
+                            },
+                            child: defaultContainer(
+                              context,
+                              height: 50,
                               child: Row(
                                 children: [
                                   const SizedBox(
-                                    height: 18,
+                                    width: 10,
                                   ),
-                                  Expanded(
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: PieChart(
-                                        PieChartData(
-                                          /*pieTouchData: PieTouchData(
-                                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                             setState(() {
-                                               if (!event.isInterestedForInteractions ||
-                                                    pieTouchResponse == null ||
-                                                    pieTouchResponse.touchedSection == null) {
-                                                    touchedIndex = -1;
-                                                        return;
-                                               }
-                                             touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                                         });
-                                    }),*/
-                                          // centerSpaceRadius: double.infinity,
-                                            borderData: FlBorderData(
-                                              show: false,
-                                            ),
-                                            sectionsSpace: 0,
-                                            centerSpaceRadius: 40,
-                                            sections: showingSections()
-                                        ),
-                                      ),
-                                    ),
+                                  defaultHeadLineText(
+                                      context,
+                                      text: 'Analysis Charts'
                                   ),
+                                  const Spacer(),
+                                  const Icon(IconBroken.Arrow___Right_2),
                                   const SizedBox(
-                                    height: 10,
-                                  ),
-
+                                    width: 5.0,
+                                  )
                                 ],
                               ),
                             ),
-                          ),
+                          )
                         ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 15
-                          ),
-                          child: Container(
-                            color: Colors.grey[50],
-                            height: 200,
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: AdminCubit.get(context).products.length,
-                                itemBuilder: (context, index) => indicator(
-                                    color: colors[index],
-                                    text: '${AdminCubit.get(context).products[index].name}',
-                                    isSquare: true,
-                                    secondText: ((AdminCubit.get(context).products[index].quantity!/totalAmount*100).ceil()).toString()+'%',
-                                    secondTextColor: colors[index]
-                                )
-                            ),
-                          ),
-                        )
-                      ],
-
-                    ),
+                    const SizedBox(
+                      height: 15.0,
+                    )
                   ],
                 ),
               ),

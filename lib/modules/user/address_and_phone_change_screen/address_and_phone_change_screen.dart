@@ -44,10 +44,10 @@ class AddressAndPhoneChangeScreen extends StatelessWidget {
                 children:
                 [
                   defaultTextFormField(
-                      color: AppCubit.get(context).constantColor1,
+                      color: AppCubit.get(context).constantColor5,
                       type: TextInputType.text,
-                      label: ' Address',
-                      border: OutlineInputBorder(),
+                      hintText: AppLocalizations.of(context).translate("address"),//' Address',
+                      //border: OutlineInputBorder(),
                       prefix:Icons.home,
                       controller: addressController,
                       //hintText: AppLocalizations.of(context).translate("validate_address"),
@@ -60,10 +60,10 @@ class AddressAndPhoneChangeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10,),
                   defaultTextFormField(
-                    color: AppCubit.get(context).constantColor1,
+                    color: AppCubit.get(context).constantColor5,
                       type: TextInputType.phone,
-                      label: 'Phone',
-                      border: OutlineInputBorder(),
+                      hintText: AppLocalizations.of(context).translate("phone"),//'Phone',
+                      //border: OutlineInputBorder(),
                       prefix: Icons.phone,
                       controller: phoneController,
                       //hintText: AppLocalizations.of(context).translate("validate_phone"),

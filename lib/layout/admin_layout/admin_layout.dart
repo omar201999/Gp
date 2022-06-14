@@ -48,9 +48,16 @@ class AdminLayout extends StatelessWidget {
                           onPressed: () {
                             navigateTo(context,FeedBackManagementScreen());
                           },
-                          icon: const Icon(Icons.feedback_outlined),
+                          icon: const Icon(Iconsax.message),
                         ),
-                        defaultBodyText(context, text: '${AdminCubit.get(context).feedback.length}',color: defaultColor,fontSize: 12),
+                        Positioned(
+                          right: 0,
+                          child:CircleAvatar(
+                               backgroundColor: defaultColor,
+                               minRadius: 10,
+                               child: defaultBodyText(context, text: '${AdminCubit.get(context).feedback.length}',color: Colors.white,fontSize: 10),
+                    ),
+                  )
 
                       ],
                     ),
@@ -96,7 +103,7 @@ class AdminLayout extends StatelessWidget {
                       end: 5
                     ),
                     child: Stack(
-                      alignment: AlignmentDirectional.topEnd,
+                      //alignment: AlignmentDirectional.topEnd,
 
                       children: [
                         IconButton(
@@ -104,10 +111,20 @@ class AdminLayout extends StatelessWidget {
                           onPressed: () {
                             navigateTo(context, OrderLayoutScreen());
                           },
-                          icon: Icon(Icons.notification_important),
+                          icon: Icon(
+                            IconBroken.Notification,
+                            size: 30,
+                          ),
 
                         ),
-                        defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length}',color: defaultColor,fontSize: 16),
+                        Positioned(
+                            right: 0,
+                            child: CircleAvatar(
+                              backgroundColor: defaultColor,
+                              minRadius: 10,
+                              child: defaultBodyText(context, text: '${AdminCubit.get(context).newOrders.length}',color: Colors.white,fontSize: 10),
+                            )
+                        )
 
                       ],
                     ),

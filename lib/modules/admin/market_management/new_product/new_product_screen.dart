@@ -17,6 +17,7 @@ class NewProductSrceen extends StatelessWidget {
   var discountController = TextEditingController();
   var quantityController = TextEditingController();
   //var uIdController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
 
   //var timeController = TextEditingController();
@@ -48,20 +49,23 @@ class NewProductSrceen extends StatelessWidget {
                 defaultTextButton(
                   context,
                   function: () {
-
-                   AdminCubit.get(context).uploadProductImage(
-                      name: nameController.text,
-                      currentPrice: double.parse(oldPriceController.text) - (double.parse(oldPriceController.text)*double.parse(discountController.text)/100),
-                      oldPrice: double.parse(oldPriceController.text),
-                      discount: double.parse(discountController.text),
-                      quantity: int.parse(quantityController.text),
-                      description: descriptionController.text,
-                      status: 'inStock',
-                     descriptionAr: descriptionArController.text,
-                     nameAr: nameArController.text,
-                      //uId: uIdController.text,
-                      //totalTime: totalTime
-                    );
+                   if(formKey.currentState!.validate()) {
+                AdminCubit.get(context).uploadProductImage(
+                  name: nameController.text,
+                  currentPrice: double.parse(oldPriceController.text) -
+                      (double.parse(oldPriceController.text) *
+                          double.parse(discountController.text) / 100),
+                  oldPrice: double.parse(oldPriceController.text),
+                  discount: double.parse(discountController.text),
+                  quantity: int.parse(quantityController.text),
+                  description: descriptionController.text,
+                  status: 'inStock',
+                  descriptionAr: descriptionArController.text,
+                  nameAr: nameArController.text,
+                  //uId: uIdController.text,
+                  //totalTime: totalTime
+                );
+              }
                    AdminCubit.get(context).removeProductImage();
 
                   },
@@ -72,17 +76,19 @@ class NewProductSrceen extends StatelessWidget {
 
             ),
             body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    if(state is CreateProductLoadingState)
-                      const LinearProgressIndicator(),
-                    if(state is CreateProductLoadingState)
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                    /*defaultContainer(
+                child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        if(state is CreateProductLoadingState)
+                          const LinearProgressIndicator(),
+                        if(state is CreateProductLoadingState)
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                        /*defaultContainer(
                       context,
                       height: 65,
                       child: defaultTextFormField(
@@ -95,64 +101,84 @@ class NewProductSrceen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),*/
-                    defaultContainer(
-                      context,
-                      height: 65,
-                      child: defaultTextFormField(
-                        type: TextInputType.text,
-                        controller: nameController,
-                        hintText: 'Name in English',
-                        //prefixIcon: Icon(IconBroken.Paper),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    defaultContainer(
-                      context,
-                      height: 65,
-                      child: defaultTextFormField(
-                        type: TextInputType.text,
-                        controller: nameArController,
-                        hintText: 'Name in Arabic',
-                        //prefixIcon: Icon(IconBroken.Paper),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    defaultContainer(
-                      context,
-                      height: 150,
-                      //color: constantColor5,
-                      child: defaultTextFormField(
-                        controller: descriptionController,
-                        type: TextInputType.multiline,
-                        maxLines: 30,
-                        hintText: 'Enter Description in English ... ',
+                        defaultContainer(
+                          context,
+                          height: 65,
+                          child: defaultTextFormField(
+                            type: TextInputType.text,
+                            controller: nameController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter name product';
+                              }
+                            },
+                            hintText: 'Name in English',
+                            //prefixIcon: Icon(IconBroken.Paper),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+                          height: 65,
+                          child: defaultTextFormField(
+                            type: TextInputType.text,
+                            controller: nameArController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter name product';
+                              }
+                            },
+                            hintText: 'Name in Arabic',
+                            //prefixIcon: Icon(IconBroken.Paper),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+                          height: 150,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: descriptionController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter description';
+                              }
+                            },
+                            type: TextInputType.multiline,
+                            maxLines: 30,
+                            hintText: 'Enter Description in English ... ',
 
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    defaultContainer(
-                      context,
-                      height: 150,
-                      //color: constantColor5,
-                      child: defaultTextFormField(
-                        controller: descriptionArController,
-                        type: TextInputType.multiline,
-                        maxLines: 30,
-                        hintText: 'Enter Description in Arabic... ',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+                          height: 150,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            controller: descriptionArController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter description';
+                              }
+                            },
+                            type: TextInputType.multiline,
+                            maxLines: 30,
+                            hintText: 'Enter Description in Arabic... ',
 
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
 
-                    /*defaultContainer(
+                        /*defaultContainer(
                       context,
                       height: 65,
                       //color: constantColor5,
@@ -165,68 +191,83 @@ class NewProductSrceen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),*/
-                    defaultContainer(
-                      context,
+                        defaultContainer(
+                          context,
 
-                      height: 65,
-                      //color: constantColor5,
-                      child: defaultTextFormField(
-                        type: TextInputType.number,
-                        controller: oldPriceController,
-                        hintText: 'Price',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    defaultContainer(
-                      context,
-
-                      height: 65,
-                      //color: constantColor5,
-                      child: defaultTextFormField(
-                        type: TextInputType.number,
-                        controller: discountController,
-                        hintText: 'Discount',
-
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-
-                    defaultContainer(
-                      context,
-
-                      height: 65,
-                      //color: constantColor5,
-                      child: defaultTextFormField(
-                        type: TextInputType.number,
-                        controller: quantityController,
-                        hintText: 'Quantity',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-
-                    if(AdminCubit.get(context).productImage != null)
-                      Stack(
-                        alignment: AlignmentDirectional.topEnd,
-                        children: [
-                          defaultContainer(
-                            context,
-                            height: 140.0,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.0),
-                                image: DecorationImage(
-                                    image: FileImage(productImage!),
-                                    fit: BoxFit.cover
-                                )
-                            ),
+                          height: 65,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            type: TextInputType.number,
+                            controller: oldPriceController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter price';
+                              }
+                            },
+                            hintText: 'Price',
                           ),
-                          /*IconButton(
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        defaultContainer(
+                          context,
+
+                          height: 65,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            type: TextInputType.number,
+                            controller: discountController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter discount';
+                              }
+                            },
+                            hintText: 'Discount',
+
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+
+                        defaultContainer(
+                          context,
+
+                          height: 65,
+                          //color: constantColor5,
+                          child: defaultTextFormField(
+                            type: TextInputType.number,
+                            controller: quantityController,
+                            validate: (value) {
+                              if(value!.isEmpty) {
+                                return 'Please enter quantity of product';
+                              }
+                            },
+                            hintText: 'Quantity',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+
+                        if(AdminCubit.get(context).productImage != null)
+                          Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            children: [
+                              defaultContainer(
+                                context,
+                                height: 140.0,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    image: DecorationImage(
+                                        image: FileImage(productImage!),
+                                        fit: BoxFit.cover
+                                    )
+                                ),
+                              ),
+                              /*IconButton(
                                 onPressed: () {
 
                                 },
@@ -238,26 +279,27 @@ class NewProductSrceen extends StatelessWidget {
                                   ),
                                 )
                             )*/
-                        ],
-                      ),
-                    TextButton(
-                        onPressed: () {
-                          AdminCubit.get(context).getProductImage();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(IconBroken.Image),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text('Add photo')
-                          ],
-                        )
+                            ],
+                          ),
+                        TextButton(
+                            onPressed: () {
+                              AdminCubit.get(context).getProductImage();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(IconBroken.Image),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text('Add photo')
+                              ],
+                            )
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+              )
             )
         );
       },

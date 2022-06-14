@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/modules/user/Lunch/lunch_screen.dart';
@@ -14,6 +15,7 @@ import 'package:gp/modules/user/snacks/snacks_screen.dart';
 import 'package:gp/modules/user/water_tracker/water_tracker_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
+import 'package:gp/shared/cubit/cubit.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 import 'package:gp/shared/styles/icon_broken.dart';
 import 'package:intl/intl.dart';
@@ -91,9 +93,22 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      defaultHeadLineText(context, text: AppLocalizations.of(context).translate("popular_recipes"), fontSize: 22, color: Colors.blue.withOpacity(0.9)),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  ),
                   Container(
                     height: 300,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CarouselSlider(
@@ -221,7 +236,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   buildHomeScreenItem(
                     context,
-                    prefixIcon: Icons.water_rounded,
+                    icon: SvgPicture.asset(
+                        "assets/images/glass.svg",
+                        height: 20,
+                        width: 38,
+                        color: AppCubit.get(context).shadowColor,
+                      ),
+                    //Icons.water_rounded,
                     text: AppLocalizations.of(context)
                         .translate("Water Tracker"), //'Water Tracker',
                     screen: WaterTrackerScreen(),

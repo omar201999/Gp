@@ -13,6 +13,10 @@ class AppCubit extends Cubit<AppStates>
   Color cardRecipeItem = Colors.white;
   Color cardRecipeItemIcon = Colors.grey;
   Color constantColor5 = Color(0xFFEEEEEE);
+  Color? scaffoldColor = Colors.grey[50];
+  Color defaultColor = Colors.blue;
+  Color shadowColor = Colors.black;
+
   bool isDark = false;
   void changeAppMode({fromCache}) {
     if (fromCache == null) {
@@ -23,10 +27,13 @@ class AppCubit extends Cubit<AppStates>
     CacheHelper.saveData(key: 'isDark', value: isDark).then((value) {
       if (isDark) {
         constantColor1 =Color(0xff3a3b3c);// HexColor('#242526');//333739 0xff242526 0xff3a3b3c
+        appMode = ThemeMode.dark;
+        scaffoldColor = Color(0xff242526);
+        shadowColor = Colors.white;
         constantColor5 = Color(0xFFD6D6D6);
         cardRecipeItem = Color(0xff3a3b3c);
         cardRecipeItemIcon = Colors.white;
-        appMode = ThemeMode.dark;
+        defaultColor = Colors.white;
         emit(AppChangeModeState());
       }
       else {
@@ -34,6 +41,9 @@ class AppCubit extends Cubit<AppStates>
         constantColor5 = Color(0xFFEEEEEE);
         cardRecipeItem = Colors.white;
         cardRecipeItemIcon = Colors.grey;
+        scaffoldColor = Colors.grey[50];
+        shadowColor = Colors.black;
+        defaultColor = Colors.blue;
         appMode = ThemeMode.light;
         emit(AppChangeModeState());
       }

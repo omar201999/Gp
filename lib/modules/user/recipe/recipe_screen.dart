@@ -3,10 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp/layout/admin_layout/cubit/cubit.dart';
 import 'package:gp/layout/admin_layout/cubit/states.dart';
+import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
 
-class RecipeScreen extends StatelessWidget {
+class RecipeScreen extends StatefulWidget {
+  @override
+  State<RecipeScreen> createState() => _RecipeScreenState();
+}
+
+class _RecipeScreenState extends State<RecipeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    HomeCubit.get(context).getFavoritesRecipes();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -144,5 +155,4 @@ class RecipeScreen extends StatelessWidget {
     },
     );
   }
-
 }

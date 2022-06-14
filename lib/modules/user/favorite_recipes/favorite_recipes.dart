@@ -31,6 +31,7 @@ class _FavoriteRecipesState extends State<FavoriteRecipes> {
 
         var list = HomeCubit.get(context).favoritesRecipes;
         return Scaffold(
+
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).translate("Favorite Recipes")),
           ),
@@ -44,7 +45,7 @@ class _FavoriteRecipesState extends State<FavoriteRecipes> {
                     condition:  list.isNotEmpty  ,
                     builder: (context) => ListView.separated(
                         physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context,index) => buildRecipeItem(list[index],context,index),
+                        itemBuilder: (context,index) => buildFavoriteRecipeItem(list[index],context,index),
                         separatorBuilder: (context,index) =>  const SizedBox(height: 8,),
                         itemCount: list.length
                     ),

@@ -37,10 +37,25 @@ class UpdateUserDataErrorState extends HomeStates{}
 
 class UpdateRecipeSuccessState extends HomeStates{}
 
+
+class UpdateFavoriteRecipeSuccessState extends HomeStates{}
+
+class UpdateFavoriteProductSuccessState extends HomeStates{}
+
 class UpdateRecipeErrorState extends HomeStates{
   final String error;
 
   UpdateRecipeErrorState(this.error);
+}
+class UpdateFavoriteRecipeErrorState extends HomeStates{
+  final String error;
+
+  UpdateFavoriteRecipeErrorState(this.error);
+}
+class UpdateFavoriteProductErrorState extends HomeStates{
+  final String error;
+
+  UpdateFavoriteProductErrorState(this.error);
 }
 class AddRecipeToFavoritesSuccessState extends HomeStates{}
 

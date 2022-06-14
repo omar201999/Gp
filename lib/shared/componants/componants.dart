@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:glass/glass.dart';
@@ -234,7 +235,8 @@ Widget defaultBodyText(BuildContext context,{
   int? maxLines,
   double? height,
   double? letterSpacing,
-  TextOverflow? overflow
+  TextOverflow? overflow,
+  TextAlign? textAlign
 
 
 }) => Text(
@@ -248,6 +250,7 @@ Widget defaultBodyText(BuildContext context,{
     overflow: overflow,
   ),
   maxLines: maxLines,
+  textAlign: textAlign,
 
 );
 
@@ -426,6 +429,321 @@ Widget buildRecipeItem(RecipeModel model,context,index) => defaultGestureDetecto
   ),*/
 );
 
+Widget buildFavoriteRecipeItem(RecipeModel model,context,index) => InkWell(
+  onTap: ()
+  {
+    navigateTo(context, RecipeItemScreen(
+      recipeModel: model, index: index,
+    ));
+  },
+  child:  Card(
+    color: AppCubit.get(context).constantColor1,
+    elevation: 5,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children:
+            [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                    '${model.image}'
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                    [
+                      RatingBar.builder(
+                        initialRating: (model.averageRating)!.toDouble(),
+                        direction: Axis.horizontal,
+                        updateOnDrag: false,
+                        itemSize: 25,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating)
+                        {
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      if(lan=='en')
+                        defaultHeadLineText(context, text: model.title!, maxLines: 2),
+                      if(lan=='ar')
+                        defaultHeadLineText(context, text: model.titleAr!, maxLines: 2),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        AppLocalizations.of(context).translate("cooking"),
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                        [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: defaultColor,
+                                child: Icon(
+                                  Icons.people,
+                                  color: Colors.white,
+
+                                )
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  '${model.numOfRates!.toStringAsFixed(0)} ${AppLocalizations.of(context).translate("reviews")} ',
+                              style: Theme.of(context).textTheme.caption
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(width: 5,),
+                          Container(
+                            width: 2,
+                            height: 30,
+                            color:Colors.grey,//#FF5A53#ED2C47#FE617E
+                          ),
+                          SizedBox(width: 5,),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: defaultColor,
+                                    child: Icon(
+                                      Iconsax.flash_1,
+                                      color: Colors.white,
+                                    )
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                    '${model.calories}',
+                                    style: Theme.of(context).textTheme.caption
+                                ),
+
+                              ],
+                            ),
+                          ),
+
+
+                        ],
+                      ),
+                    ],
+                  )
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: defaultColor,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+             bottomLeft:  Radius.circular(20),
+            )
+
+          ),
+          child: Center(
+            child: IconButton(
+              onPressed: ()
+              {
+                HomeCubit.get(context).deleteFavoritesRecipes(model.uId);
+
+              },
+              icon:Icon(
+                Icons.remove,
+                color: Colors.white,
+
+              ),
+            ),
+          ),
+        )
+      ],
+    )
+
+
+
+  ),
+);
+
+
+Widget buildFavoriteProductItem(ProductModel model,context,index) => InkWell(
+  onTap: ()
+  {
+    navigateTo(context, MarketItemScreen(
+      productModel: model, index: index,
+    ));
+  },
+  child:  Card(
+      color: AppCubit.get(context).constantColor1,
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children:
+              [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppCubit.get(context).constantColor5,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SimpleShadow(
+                        child: Image(
+                          image: NetworkImage('${model.image}',),
+                          height: 100,
+                          width: 100,
+                          alignment: Alignment.center,
+                        ),
+                        opacity: 0.5,
+                        offset: Offset(1, 1),
+                        sigma: 8,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                      [
+                        RatingBar.builder(
+                          initialRating: (model.averageRating)!.roundToDouble(),
+                          direction: Axis.horizontal,
+                          updateOnDrag: false,
+                          itemSize: 25,
+                          allowHalfRating: false,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating)
+                          {
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if(lan=='en')
+                          defaultHeadLineText(context, text: model.name!,
+                            maxLines: 2),
+                        if(lan=='ar')
+                          defaultHeadLineText(context, text: model.nameAr!,
+                              maxLines: 2),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          AppLocalizations.of(context).translate("Best_Product"),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                                radius: 20,
+                                backgroundColor: defaultColor,
+                                child: Icon(
+                                  Icons.people,
+                                  color: Colors.white,
+                                )
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                                ' ${model.numOfRates!.toStringAsFixed(0)} ${AppLocalizations.of(context).translate("reviews")}',
+                                style: Theme.of(context).textTheme.caption
+                            ),
+
+                          ],
+                        )
+                      ],
+                    )
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+                color: defaultColor,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  bottomLeft:  Radius.circular(20),
+                )
+
+            ),
+            child: Center(
+              child: IconButton(
+                onPressed: ()
+                {
+                  HomeCubit.get(context).deleteFavoritesProducts(HomeCubit.get(context).favoritesProductsId[index]);
+
+                },
+                icon:Icon(
+                  Icons.remove,
+                  color: Colors.white,
+
+                ),
+              ),
+            ),
+          )
+        ],
+      )
+
+
+
+  ),
+);
+
 
 
 Widget headOfRecipeItem(BuildContext context, {
@@ -489,21 +807,48 @@ Widget buildHomeScreenItem(BuildContext context,{
 );
 
 
-Widget afterTitleOfRecipeItem(BuildContext context, {
-   String? percentage,
-  required String? numberOfGrams,
-  required String? nameOfType,
-  Color? color,
-}) => Expanded(
+Widget buildNutritionItemForRecipeItemScreen(context,
+{
+  required String? imagePath,
+  required String? numOFNutrition,
+  required String? typeOFNutrition,
+
+})=> Expanded(
   child: Column(
-    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children:
     [
-      //defaultBodyText(context, text: percentage! ,color: color),
-      defaultBodyText(context, text: numberOfGrams! ),
-      defaultBodyText(context, text: nameOfType! ),
+      Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children:
+            [
+              SvgPicture.asset(
+                imagePath!,
+                height: 30,
+                width: 30,
+                color: Colors.grey,
+              ),
+              SizedBox(height: 10,),
+              defaultBodyText(context, text: numOFNutrition!),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: BorderSide(color: (Colors.grey[400])!,width: 1)
+
+        ),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      defaultBodyText(context, text:typeOFNutrition!,)
     ],
   ),
+
 );
 
 Widget defaultTextButton( BuildContext context,{
@@ -1373,9 +1718,10 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
             )
           ],
         ),
-      )
+      ),
     ),
 );
+
 
 Widget buildMealItem(MealsModel model,context,{
   required bool? value,
@@ -1915,9 +2261,7 @@ Widget buildMenuItem(context,{
   required String text,
   IconData? icon,
   required Function()? onClicked,
-  Color? selectedColor,
   Widget? leading,
-  bool isSelected = false,
 
   //Color backgroundColor = Colors.white,
   Color color = Colors.grey
@@ -1938,8 +2282,6 @@ Widget buildMenuItem(context,{
                 fontSize: 14
             ),
           ),
-          selected: isSelected,
-          selectedColor: selectedColor,
         ),
       )
   ),

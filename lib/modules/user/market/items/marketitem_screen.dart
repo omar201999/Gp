@@ -6,6 +6,7 @@ import 'package:glass/glass.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
+import 'package:gp/modules/user/address_and_phone_change_screen/address_and_phone_change_screen.dart';
 import 'package:gp/modules/user/cart/cart_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
@@ -220,7 +221,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                             [
                               Expanded(
                                 child: RatingBar.builder(
-                                  initialRating: rating!,
+                                  initialRating: (productModel.averageRating)!.toDouble(),
                                   itemSize: 25,
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
@@ -239,7 +240,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                               ),
                               Row(
                                 children: [
-                                  defaultBodyText(context, text: '(${productModel.averageRating!.toStringAsFixed(2)} ${AppLocalizations.of(context).translate("Avg rating")})'),
+                                  defaultBodyText(context, text: '(${productModel.averageRating!.toStringAsFixed(1)} ${AppLocalizations.of(context).translate("Avg rating")})'),
                                   IconButton(
                                     padding: EdgeInsetsDirectional.only(
                                       start: 15
@@ -262,10 +263,36 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                           averageRating: (productModel.totalRating! + rating!) / (productModel.numOfRates! + 1),
                                           numOfRates: productModel.numOfRates! + 1 ,
                                           totalRating: productModel.totalRating! + rating!,
-
                                           //uId: productModel.uId
-
                                         );
+                                        if(HomeCubit.get(context).favoritesProducts.isNotEmpty)
+                                        {
+                                          for(int i=0;i < HomeCubit.get(context).favoritesProducts.length;i++)
+                                          {
+                                            if(HomeCubit.get(context).favoritesProducts[i].name == widget.productModel.name)
+                                            {
+                                              HomeCubit.get(context).updateFavoriteProduct(
+                                                HomeCubit.get(context).productsIDs[index],
+                                                quantity: productModel.quantity,
+                                                selectedQuantity: productModel.selectedQuantity,
+                                                name: productModel.name,
+                                                image: productModel.image,
+                                                status:productModel.status,
+                                                oldPrice: productModel.oldPrice,
+                                                currentPrice: productModel.currentPrice,
+                                                discount: productModel.discount,
+                                                description: productModel.description,
+                                                nameAr: productModel.nameAr,
+                                                descriptionAr:productModel.descriptionAr,
+                                                averageRating: (productModel.totalRating! + rating!) / (productModel.numOfRates! + 1),
+                                                numOfRates: productModel.numOfRates! + 1 ,
+                                                totalRating: productModel.totalRating! + rating!,
+                                                //uId: productModel.uId
+                                              );
+                                            }
+                                          }
+                                        }
+
                                       },
                                       icon: Icon(
                                           IconBroken.Send,
@@ -420,6 +447,76 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children:
                                                   [
+                                                     Column(
+                                                       children: [
+                                                         Row(
+                                                           crossAxisAlignment: CrossAxisAlignment.center,
+                                                           children: [
+                                                             defaultHeadLineText(context, text: '${AppLocalizations.of(context).translate("address")} : '),//'Address : '),
+                                                             SizedBox(width: 5,),
+                                                             if(HomeCubit.get(context).userModel!.address != null)
+                                                               Expanded(
+                                                                 child: Text(
+                                                                   HomeCubit.get(context).userModel!.address!,
+                                                                   style: Theme
+                                                                       .of(context)
+                                                                       .textTheme
+                                                                       .caption,
+                                                                   maxLines: 2,
+
+                                                                 ),
+                                                               ),
+                                                             if(HomeCubit.get(context).userModel!.address == null)
+                                                               Expanded(
+                                                                 child: Text(
+                                                                   AppLocalizations.of(context).translate("validate_address"),//'Pleas enter your address ',
+                                                                   style: Theme
+                                                                       .of(context)
+                                                                       .textTheme
+                                                                       .caption,
+                                                                   maxLines: 2,
+
+                                                                 ),
+                                                               ),
+                                                           ],
+                                                         ),
+                                                         SizedBox(height: 10,),
+                                                         Row(
+                                                           crossAxisAlignment: CrossAxisAlignment.center,
+                                                           children: [
+                                                             defaultHeadLineText(context, text:'${ AppLocalizations.of(context).translate("phone")} : '),//'Phone : '),
+                                                             SizedBox(width: 5,),
+                                                             if(HomeCubit.get(context).userModel!.phone != null)
+                                                               Text(
+                                                                 HomeCubit.get(context).userModel!.phone!,
+                                                                 style: Theme
+                                                                     .of(context)
+                                                                     .textTheme
+                                                                     .caption,
+                                                                 maxLines: 2,
+
+                                                               ),
+                                                             if(HomeCubit.get(context).userModel!.phone == null)
+                                                               Text(
+                                                                 AppLocalizations.of(context).translate("validate_phone"),//'Please enter your phone',
+                                                                 style: Theme
+                                                                     .of(context)
+                                                                     .textTheme
+                                                                     .caption,
+                                                                 maxLines: 2,
+
+                                                               ),
+                                                             Spacer(),
+                                                             TextButton(
+                                                                 onPressed: () {
+                                                                   navigateTo(context, AddressAndPhoneChangeScreen());
+                                                                 }, child: Text(AppLocalizations.of(context).translate("change"))),//'change'))
+                                                           ],
+                                                         ),
+                                                       ],
+                                                     ),
+
+                                                    SizedBox(height: 5,),
                                                     defaultHeadLineText(
                                                       context,
                                                       //AppLocalizations.of(context).translate("  "),//

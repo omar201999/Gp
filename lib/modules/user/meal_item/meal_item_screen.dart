@@ -3,7 +3,6 @@ import 'package:gp/models/meals_model.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/componants/constant.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
-import 'package:gp/shared/styles/colors.dart';
 
 class MealItemScreen extends StatelessWidget {
   MealsModel mealsModel;
@@ -70,42 +69,35 @@ class MealItemScreen extends StatelessWidget {
                        ),
                        const SizedBox(height: 5,),
                        Row(
-                         children: [
-                           Expanded(
-                             child: CircleAvatar(
-                               backgroundColor: defaultColor,
-                               radius: 40,
-                               child: CircleAvatar(
-                                 radius: 35,
-                                 backgroundColor: Colors.white,
-                                 child: Column(
-                                   mainAxisAlignment: MainAxisAlignment
-                                       .center,
-                                   children:
-                                   [
-                                     defaultBodyText(context, text: '${mealsModel.Calories}',
-                                         fontWeight: FontWeight.bold,color: defaultColor),
-                                     defaultBodyText(context, text: AppLocalizations.of(context).translate("cal"),//'Cal',
-                                         color: Colors.grey),
-                                   ],
-                                 ),
-                               ),
-                             ),
+                         children:
+                         [
+                           //'${widget.recipeModel.carbs}g' AppLocalizations.of(context).translate("Carbs")
+                           buildNutritionItemForRecipeItemScreen(
+                             context,
+                             imagePath:  'assets/images/cereal-grain-svgrepo-com.svg',
+                             numOFNutrition: '${mealsModel.Carbs}${AppLocalizations.of(context).translate("g")}',
+                             typeOFNutrition: AppLocalizations.of(context).translate("Carbs2"),
                            ),
-                           afterTitleOfRecipeItem(context,
-                               numberOfGrams: '${mealsModel.Carbs}',
-                               nameOfType: '${AppLocalizations.of(context).translate("Carbs1")} ${AppLocalizations.of(context).translate("g")}',//'Carbs',
-                               color: Colors.grey),
-                           afterTitleOfRecipeItem(context,
-                               numberOfGrams: '${mealsModel.Protein}',
-                               nameOfType:'${AppLocalizations.of(context).translate("Protein")} ${AppLocalizations.of(context).translate("g")}',// 'Proteins',
-                               color: Colors.red),
-                           afterTitleOfRecipeItem(context,
-                               numberOfGrams: '${mealsModel.Fat}',
-                               nameOfType: '${AppLocalizations.of(context).translate("Fats")} ${AppLocalizations.of(context).translate("g")}',//'Fats',
-                               color: defaultColor),
+                           buildNutritionItemForRecipeItemScreen(
+                             context,
+                             imagePath:  'assets/images/avocado-svgrepo-com (1).svg',
+                             numOFNutrition: '${mealsModel.Protein}${AppLocalizations.of(context).translate("g")}',
+                             typeOFNutrition: AppLocalizations.of(context).translate("Protein1"),
+                           ),
+                           buildNutritionItemForRecipeItemScreen(
+                             context,
+                             imagePath:  'assets/images/fire-svgrepo-com.svg',
+                             numOFNutrition: '${mealsModel.Calories}${AppLocalizations.of(context).translate("g")}',
+                             typeOFNutrition: AppLocalizations.of(context).translate("cal1"),
+                           ),
+                           buildNutritionItemForRecipeItemScreen(
+                             context,
+                             imagePath: 'assets/images/pizza.svg',
+                             numOFNutrition: '${mealsModel.Fat}${AppLocalizations.of(context).translate("g")}',
+                             typeOFNutrition: AppLocalizations.of(context).translate("Fats1"),
+                           ),
                          ],
-                       )
+                       ),
                      ],
                    ),
 

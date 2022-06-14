@@ -10,6 +10,8 @@ class AppCubit extends Cubit<AppStates>
 
   static AppCubit get(context) => BlocProvider.of(context);
   Color constantColor1 = Color(0xFFE3F4FB);
+  Color cardRecipeItem = Colors.white;
+  Color cardRecipeItemIcon = Colors.grey;
   Color constantColor5 = Color(0xFFEEEEEE);
   Color? scaffoldColor = Colors.grey[50];
   Color defaultColor = Colors.blue;
@@ -29,12 +31,16 @@ class AppCubit extends Cubit<AppStates>
         scaffoldColor = Color(0xff242526);
         shadowColor = Colors.white;
         constantColor5 = Color(0xFFD6D6D6);
+        cardRecipeItem = Color(0xff3a3b3c);
+        cardRecipeItemIcon = Colors.white;
         defaultColor = Colors.white;
         emit(AppChangeModeState());
       }
       else {
         constantColor1 = Color(0xFFE3F4FB);
         constantColor5 = Color(0xFFEEEEEE);
+        cardRecipeItem = Colors.white;
+        cardRecipeItemIcon = Colors.grey;
         scaffoldColor = Colors.grey[50];
         shadowColor = Colors.black;
         defaultColor = Colors.blue;

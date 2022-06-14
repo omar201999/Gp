@@ -40,6 +40,8 @@ class _HomePageState extends State<HomePage> {
   {
     super.initState();
     HomeCubit.get(context).getCompleteDiaryItems2(DateFormat('d MMMM y').format(DateTime.now()));
+    HomeCubit.get(context).getFavoritesRecipes();
+
   }
 
   DateTime selectedDate = DateTime.now()  ;

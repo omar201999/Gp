@@ -9,6 +9,7 @@ ThemeData lightTheme = ThemeData(
     titleSpacing: 15,
     elevation: 0,
     backgroundColor: Colors.grey[50],
+
     iconTheme: const IconThemeData(
       color: defaultColor,
     ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass/glass.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
@@ -405,7 +404,6 @@ class _RecipeItemScreenState extends State<RecipeItemScreen>
               {
                 HomeCubit.get(context).addRecipeToMeals(
                   widget.recipeModel.uId!,
-
                   title: widget.recipeModel.title,
                     calories: (widget.recipeModel.calories)!.round(),
                     carbs: (widget.recipeModel.carbs)!.round(),

@@ -26,6 +26,7 @@ class PhotoDetails extends StatelessWidget
       builder: (context,state)
       {
         print(HomeCubit.get(context).searchPredictedMeal);
+        var list=HomeCubit.get(context).searchPredictedMeal;
         return ConditionalBuilder(
           condition: HomeCubit.get(context).searchPredictedMeal.isNotEmpty,
          builder: (context) => Scaffold(
@@ -180,7 +181,37 @@ class PhotoDetails extends StatelessWidget
                    )
                ),
              ),
-           )
+           ),
+           floatingActionButton: FloatingActionButton.extended(
+             foregroundColor: Colors.white,
+             onPressed: ()
+             {
+               if(HomeCubit.get(context).calculateTotalFoodCalories()! >= (HomeCubit.get(context).userModel!.totalCalorie)!.round() )
+               {
+                 //AppLocalizations.of(context).translate("  "),//
+                 showToast(text: '${AppLocalizations.of(context).translate("validate_Food")} ${HomeCubit.get(context).userModel!.totalCalorie} ${AppLocalizations.of(context).translate("and your total food is")} ${HomeCubit.get(context).totalFood} ', state: ToastStates.WARNING);
+               }
+               else
+               {
+                 HomeCubit.get(context).addRecipeToMeals(
+                   list[0].id.toString(),
+                   title: list[0].Food,
+                   calories: list[0].Calories!,
+                   carbs: list[0].Carbs!,
+                   fat: list[0].Fat!,
+                   protein: list[0].Protein!,
+                   foodAr:list[0].foodAr,
+                   Grams: list[0].Grams,
+                   measure: list[0].Measure,
+                   measureAr: list[0].measureAr
+                 );
+                 showToast(text: '${AppLocalizations.of(context).translate("Add_successfully")} ', state: ToastStates.SUCCESS);
+               }
+             },
+             label: Text(AppLocalizations.of(context).translate("Add to yours Meal")),//'Add to yours Meal'),
+
+           ),
+
            /*Stack(
                fit: StackFit.expand,
                children: [

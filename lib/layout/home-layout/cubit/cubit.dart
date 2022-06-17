@@ -192,6 +192,7 @@ List<RecipeModel> allRecipe = [];
       userActive: true,
     );
 
+    emit(UpdateUserDataLoadingState());
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel!.uId)
@@ -205,7 +206,6 @@ List<RecipeModel> allRecipe = [];
   }
 
   List<MealsModel> allMeals = [];
-
 
   void getAllMeals() {
     FirebaseFirestore.instance.collection('meals').snapshots().listen((event) {
@@ -533,20 +533,24 @@ List<RecipeModel> allRecipe = [];
     required num calories,
     required num carbs,
     required num fat,
+     num? Grams,
     required num protein,
     required String? title,
+     String? measure,
+     String? measureAr,
     required String? foodAr,
   }) {
     MealsModel model = MealsModel(
       Food: title,
-      Measure: 'Follow the Recipe',
-      measureAr: 'اتبع الوصفة',
+      Measure: measure??'Follow the Recipe',
+      measureAr: measureAr??'اتبع الوصفة',
       Calories: calories,
       Carbs: carbs,
       Fat: fat,
       Protein: protein,
       id: num.parse(id),
-      foodAr:foodAr ,
+      foodAr:foodAr,
+      Grams: Grams,
       //Date: DateFormat.yMMMEd().format(DateTime.now())
     );
     FirebaseFirestore.instance
@@ -1273,7 +1277,7 @@ List<RecipeModel> allRecipe = [];
       userEmail: userModel!.email,
       total: total,
       totalPrice: totalPrice,
-      shipping: 100,
+      shipping: 30,
       phone: userModel!.phone,
       address: userModel!.address,
       month: DateTime.now().month,

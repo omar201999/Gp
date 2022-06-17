@@ -59,6 +59,7 @@ class LoginScreen extends StatelessWidget
                         defaultHeadLineText(
                           context,
                           text: AppLocalizations.of(context).translate("login"),
+                          fontSize: 25
                         ),
                         const SizedBox(
                           height: 10,
@@ -67,6 +68,7 @@ class LoginScreen extends StatelessWidget
                         defaultBodyText(
                           context,
                           text: AppLocalizations.of(context).translate("LOGIN now to be Hulk"),
+                          fontSize: 18
                         ),
                         const SizedBox(
                           height: 30.0,

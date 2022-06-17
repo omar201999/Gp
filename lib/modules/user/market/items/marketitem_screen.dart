@@ -508,7 +508,11 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                                              Spacer(),
                                                              TextButton(
                                                                  onPressed: () {
+                                                                   Navigator.pop(context);
+
                                                                    navigateTo(context, AddressAndPhoneChangeScreen());
+
+
                                                                  }, child: Text(AppLocalizations.of(context).translate("change"))
                                                              ),//'change'))
                                                            ],
@@ -556,6 +560,7 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                                             numOfRates: productModel.numOfRates!,
                                                             averageRating: productModel.averageRating!,
                                                             totalRating: productModel.totalRating!,
+
 
                                                           );
                                                           HomeCubit.get(context).initSelectedQuantity();

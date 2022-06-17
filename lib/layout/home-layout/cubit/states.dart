@@ -33,6 +33,8 @@ class RemoveFeedBackImageState extends HomeStates {}
 
 class UpdateUserDataSuccessState extends HomeStates{}
 
+class UpdateUserDataLoadingState extends HomeStates{}
+
 class UpdateUserDataErrorState extends HomeStates{}
 
 class UpdateRecipeSuccessState extends HomeStates{}

@@ -43,6 +43,12 @@ class AddressAndPhoneChangeScreen extends StatelessWidget {
               child: Column(
                 children:
                 [
+                  if(state is UpdateUserDataLoadingState)
+                    LinearProgressIndicator(),
+                  if(state is UpdateUserDataLoadingState)
+                    SizedBox(
+                      height: 10,
+                    ),
                   defaultTextFormField(
                       color: AppCubit.get(context).constantColor5,
                       type: TextInputType.text,

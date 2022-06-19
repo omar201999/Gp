@@ -114,7 +114,7 @@ class NutritionScreen extends StatelessWidget
                     SizedBox(
                       height: 15,
                     ),
-                    //if(HomeCubit.get(context).calculateTotalFats().toInt() != 0 || HomeCubit.get(context).calculateTotalCarbs().toInt() != 0 || HomeCubit.get(context).calculateTotalProtein().toInt() != 0)
+                    if(HomeCubit.get(context).calculateTotalFats().toInt() != 0 || HomeCubit.get(context).calculateTotalCarbs().toInt() != 0 || HomeCubit.get(context).calculateTotalProtein().toInt() != 0)
                       Column (
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

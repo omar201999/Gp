@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/main.dart';
@@ -331,7 +332,22 @@ class _HomeLayoutState extends State<HomeLayout> {
 
             ],
           ),
-          body: cubit.bodyScreen[cubit.currentIndex],
+          body: OfflineBuilder(connectivityBuilder: (
+              BuildContext context,
+              ConnectivityResult connectivity,
+              Widget child,
+              ) {
+            final bool connected = connectivity != ConnectivityResult.none;
+            if(connected){
+              return cubit.bodyScreen[cubit.currentIndex];
+            }
+            else {
+              return noInterNetConnected(context) ;
+            }
+          },
+            child: const Center(child: CircularProgressIndicator()),
+          ),
+            //
         ),
           fallback: (context) => const Scaffold(
               backgroundColor: Colors.white,
@@ -345,4 +361,17 @@ class _HomeLayoutState extends State<HomeLayout> {
     );
 
   }
+
+Widget noInterNetConnected(BuildContext context) => Padding(
+  padding: const EdgeInsets.all(20.0),
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      defaultHeadLineText(context, text: 'can\'t connect ... check network'),
+      const SizedBox(height: 20,),
+      Image.asset('assets/images/offline.png',),
+    ],
+  ),
+);
+
 }

@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/models/product_model.dart';
@@ -66,23 +67,38 @@ class _CartScreenState extends State<CartScreen> {
                 label:  Text(AppLocalizations.of(context).translate("buy_now")),//'Buy Now'),
 
               ),
-              body: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => BuildCartItem(HomeCubit.get(context).cart[index],context,index),
-                        separatorBuilder: (context, index) => SizedBox(height: 5,),
-                        itemCount: HomeCubit.get(context).cart.length,
+              body:OfflineBuilder(connectivityBuilder: (
+                  BuildContext context,
+                  ConnectivityResult connectivity,
+                  Widget child,
+                  ) {
+                final bool connected = connectivity != ConnectivityResult.none;
+                if(connected){
+                  return SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) => BuildCartItem(HomeCubit.get(context).cart[index],context,index),
+                            separatorBuilder: (context, index) => SizedBox(height: 5,),
+                            itemCount: HomeCubit.get(context).cart.length,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                }
+                else {
+                  return noInterNetConnected(context) ;
+                }
+              },
+                child: const Center(child: CircularProgressIndicator()),
               ),
+
             ),
               fallback: (context) => Scaffold(
                 appBar: buildAppBar(
@@ -214,6 +230,17 @@ class _CartScreenState extends State<CartScreen> {
           height: 10,
         ),
 
+      ],
+    ),
+  );
+  Widget noInterNetConnected(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        defaultHeadLineText(context, text: 'can\'t connect ... check network'),
+        const SizedBox(height: 20,),
+        Image.asset('assets/images/offline.png',),
       ],
     ),
   );

@@ -56,7 +56,3 @@ Locale _locale(String languageCode) {
       return Locale(english, 'US');
   }
 }
-
-
-
-

@@ -50,8 +50,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   glass: ^1.0.1+1
   simple_shadow: ^0.3.0
-
-
+  flutter_offline: ^2.1.0
   firebase_core: ^1.0.3
   firebase_auth: ^1.0.3
   cloud_firestore: ^1.0.4

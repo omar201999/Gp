@@ -1590,8 +1590,8 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
                               child: Image(
                                 alignment: Alignment.center,
                                 image: NetworkImage('${model.image}'),
-                                width: 140.0,
-                                height: 140.0,
+                                width: 130.0,
+                                height: 120.0,
                                 fit: BoxFit.cover,
                               ),
                               opacity: 0.5,

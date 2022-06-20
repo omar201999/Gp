@@ -274,6 +274,8 @@ class DeleteFavoritesRecipesErrorState extends HomeStates
   DeleteFavoritesRecipesErrorState(this.error);
 }
 
+class DeleteMealSuccessState extends HomeStates {}
+
 // for water tracker
 
 class AddWaterGlassState extends HomeStates{}

@@ -38,7 +38,7 @@ class _MarketingScreenState extends State<MarketingScreen> {
                  physics: const NeverScrollableScrollPhysics(),
                  mainAxisSpacing: 10,
                  crossAxisSpacing: 10,
-                 childAspectRatio: 1 / 1.50,
+                 childAspectRatio: 2 / 3,
                  children: List.generate(
                    AdminCubit.get(context).products.length,
                        (index) => buildProduct(AdminCubit.get(context).products[index], context, index),

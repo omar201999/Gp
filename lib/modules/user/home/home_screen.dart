@@ -284,14 +284,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          fallback: (context) => const Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                  child: Image(
-                      image: AssetImage('assets/images/logo.png')
-                  )
-              )
-          ),
+          fallback: (context) => Center(child: CircularProgressIndicator())
         );
       },
     );

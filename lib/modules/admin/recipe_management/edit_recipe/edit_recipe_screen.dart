@@ -141,12 +141,7 @@ class EditRecipeScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           children: [
-                            defaultContainer(
-                              context,
-
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            defaultTextFormField(
                                 type: TextInputType.text,
                                 controller: titleController,
                                 validate: (value) {
@@ -158,16 +153,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Title in English',
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            defaultContainer(
-                              context,
 
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            defaultTextFormField(
                                 type: TextInputType.text,
                                 controller: titleArController,
                                 validate: (value) {
@@ -179,15 +169,13 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Title in Arabic',
                               ),
-                            ),
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
 
-                            defaultContainer(
-                              context,
+                           Container(
 
-                              height: 150,
+                             height: 150,
                               //color: constantColor5,
                               child: defaultTextFormField(
                                 controller: ingredientsController,
@@ -201,16 +189,13 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Ingredients in English',
 
-                              ),
-                            ),
+                              ),),
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
 
-                            defaultContainer(
-                              context,
-
-                              height: 150,
+                            Container(
+                               height: 150,
                               //color: constantColor5,
                               child: defaultTextFormField(
                                 controller: ingredientsArController,
@@ -224,14 +209,12 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Ingredients in Arabic',
 
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            defaultContainer(
-                              context,
+                              ),),
 
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Container(
                               height: 150,
                               //color: constantColor5,
                               child: defaultTextFormField(
@@ -245,14 +228,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 maxLines: 30,
                                 border: InputBorder.none,
                                 label: 'Directions in English',
-                              ),
-                            ),
+                              ),),
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
-                            defaultContainer(
-                              context,
-
+                            Container(
                               height: 150,
                               //color: constantColor5,
                               child: defaultTextFormField(
@@ -266,17 +246,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 maxLines: 30,
                                 border: InputBorder.none,
                                 label: 'Directions in Arabic',
-                              ),
-                            ),
+                              ),),
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
-                            defaultContainer(
-                              context,
-
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            defaultTextFormField(
                                 type: TextInputType.number,
                                 controller: carbsController,
                                 validate: (value) {
@@ -287,16 +261,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Carbs',
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            defaultContainer(
-                              context,
 
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            defaultTextFormField(
                                 type: TextInputType.number,
                                 controller: proteinController,
                                 validate: (value) {
@@ -307,16 +276,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Protein',
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            defaultContainer(
-                              context,
 
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            defaultTextFormField(
                                 type: TextInputType.number,
                                 controller: fatsController,
                                 validate: (value) {
@@ -327,16 +291,11 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Fats',
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            defaultContainer(
-                              context,
 
-                              height: 65,
-                              //color: constantColor5,
-                              child: defaultTextFormField(
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            defaultTextFormField(
                                 type: TextInputType.number,
                                 controller: calsController,
                                 validate: (value) {
@@ -347,24 +306,9 @@ class EditRecipeScreen extends StatelessWidget {
                                 border: InputBorder.none,
                                 label: 'Calories',
                               ),
-                            ),
-                            /*const SizedBox(
-                          height: 10.0,
-                        ),
-                        defaultContainer(
-                          context,
 
-                          height: 65,
-                          //color: constantColor5,
-                          child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: weightController,
-                            border: InputBorder.none,
-                            label: 'Weight',
-                          ),
-                        ),*/
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
                             defaultButton(
                               context,

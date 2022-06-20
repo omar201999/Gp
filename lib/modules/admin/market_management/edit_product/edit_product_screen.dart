@@ -139,23 +139,8 @@ class EditProductScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
-                        /*defaultContainer(
-                          context,
-                          height: 65,
-                          child: defaultTextFormField(
-                            controller: uIdController,
-                            type: TextInputType.number,
-                            border: InputBorder.none,
-                            label: 'Uid'
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),*/
-                        defaultContainer(
-                          context,
-                          height: 65,
-                          child: defaultTextFormField(
+
+                        defaultTextFormField(
                               type: TextInputType.text,
                               controller: nameController,
                               validate: (value) {
@@ -167,14 +152,11 @@ class EditProductScreen extends StatelessWidget {
                               border: InputBorder.none,
                               label: 'Name in English'
                           ),
-                        ),
+
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
-                        defaultContainer(
-                          context,
-                          height: 65,
-                          child: defaultTextFormField(
+                        defaultTextFormField(
                               type: TextInputType.text,
                               controller: nameArController,
                               validate: (value) {
@@ -186,15 +168,11 @@ class EditProductScreen extends StatelessWidget {
                               border: InputBorder.none,
                               label: 'Name in Arabic'
                           ),
-                        ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
-                        defaultContainer(
-                          context,
-
+                        Container(
                           height: 150,
-                          //color: constantColor5,
                           child: defaultTextFormField(
                               controller: descriptionController,
                               validate: (value) {
@@ -210,13 +188,10 @@ class EditProductScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
-                        defaultContainer(
-                          context,
-
+                        Container(
                           height: 150,
-                          //color: constantColor5,
                           child: defaultTextFormField(
                               controller: descriptionArController,
                               validate: (value) {
@@ -228,31 +203,12 @@ class EditProductScreen extends StatelessWidget {
                               maxLines: 30,
                               border: InputBorder.none,
                               label: 'Description in Arabic'
-                          ),
-                        ),
+                          ),),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
 
-                        /*defaultContainer(
-                          height: 65,
-                          color: constantColor5,
-                          child: defaultTextFormField(
-                            type: TextInputType.number,
-                            controller: currentPriceController,
-                              border: InputBorder.none,
-                              label: 'Current Price'
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),*/
-                        defaultContainer(
-                          context,
-
-                          height: 65,
-                          //color: constantColor5,
-                          child: defaultTextFormField(
+                        defaultTextFormField(
                               type: TextInputType.number,
                               controller: oldPriceController,
                               validate: (value) {
@@ -263,16 +219,10 @@ class EditProductScreen extends StatelessWidget {
                               border: InputBorder.none,
                               label: 'Old Price'
                           ),
-                        ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
-                        defaultContainer(
-                          context,
-
-                          height: 65,
-                          //color: constantColor5,
-                          child: defaultTextFormField(
+                        defaultTextFormField(
                               type: TextInputType.number,
                               controller: discountController,
                               validate: (value) {
@@ -284,17 +234,11 @@ class EditProductScreen extends StatelessWidget {
                               label: 'Discount'
 
                           ),
-                        ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
 
-                        defaultContainer(
-                          context,
-
-                          height: 65,
-                          //color: constantColor5,
-                          child: defaultTextFormField(
+                        defaultTextFormField(
                               type: TextInputType.number,
                               controller: quantityController,
                               validate: (value) {
@@ -306,9 +250,8 @@ class EditProductScreen extends StatelessWidget {
                               label: 'Quantity'
 
                           ),
-                        ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         defaultButton(
                           context,

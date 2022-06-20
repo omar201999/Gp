@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp/modules/user/login/login_screen.dart';
 import 'package:gp/modules/user/onBoarding/onBoarding_screen.dart';
 import 'package:gp/modules/user/register/register_screen.dart';
 import 'package:gp/shared/componants/componants.dart';
@@ -751,7 +752,12 @@ class _AddInformationState extends State<AddInformation>
                     },
                 ),
 
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    defaultTextButton(context, function: () => navigateTo(context, LoginScreen()), text: 'Back to Login page', isUpper: false),
+                  ],
+                )
               ],
             ),
           ),

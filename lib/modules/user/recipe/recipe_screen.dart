@@ -29,7 +29,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
     builder: (context,state)
     {
      return Padding(
-       padding: const EdgeInsets.all(20),
+       padding: const EdgeInsets.symmetric(horizontal: 20),
        child: Center(
          child: SingleChildScrollView(
            physics: const BouncingScrollPhysics(),
@@ -38,31 +38,13 @@ class _RecipeScreenState extends State<RecipeScreen> {
              children:
              [
 
-               /*
-                  SizedBox(
-                    height: 65,
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                          hintText: 'Search',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
-                              ),
-                              borderSide: BorderSide.none
-                          ),
-                          prefixIcon: Icon(IconBroken.Search),
-                          filled: true,
-                          fillColor: constantColor5
-                      ),
-                    ),
-                  ),
-*/
                Column(
                  children: [
+                   const SizedBox(
+                     height: 15.0,
+                   ),
                    Row(
                      children: [
-                       //headOfRecipeItem(context,head: 'Snacks'),
                        defaultHeadLineText(
                          context,
                          text:  AppLocalizations.of(context).translate("breakfast"),//'Breakfast',
@@ -89,7 +71,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                  ],
                ),
                const SizedBox(
-                 height: 10.0,
+                 height: 15.0,
                ),
                Column(
                  children: [
@@ -102,6 +84,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                        ),
 
                      ],
+                   ),
+                   const SizedBox(
+                     height: 10.0,
                    ),
                    Container(
                      height: 280,
@@ -118,7 +103,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                  ],
                ),
                const SizedBox(
-                 height: 10.0,
+                 height: 15.0,
                ),
                Column(
                  children: [
@@ -131,6 +116,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                        ),
 
                      ],
+                   ),
+                   const SizedBox(
+                     height: 10.0,
                    ),
                    Container(
                      height: 280,
@@ -146,6 +134,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                      ),
                    ),
                  ],
+               ),
+               const SizedBox(
+                 height: 15.0,
                ),
              ],
            ),

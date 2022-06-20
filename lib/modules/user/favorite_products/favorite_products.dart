@@ -5,6 +5,7 @@ import 'package:gp/layout/home-layout/cubit/cubit.dart';
 import 'package:gp/layout/home-layout/cubit/states.dart';
 import 'package:gp/shared/componants/componants.dart';
 import 'package:gp/shared/localization/app_localization%20.dart';
+import 'package:gp/shared/styles/icon_broken.dart';
 
 class FavoriteProducts extends StatefulWidget {
 
@@ -34,6 +35,11 @@ class _FavoriteProductsState extends State<FavoriteProducts> {
         return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).translate("Favorite Products")),
+            leading: IconButton(
+              icon: const Icon(IconBroken.Arrow___Left_2),
+              onPressed: () {
+                Navigator.pop(context);
+              },)
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),

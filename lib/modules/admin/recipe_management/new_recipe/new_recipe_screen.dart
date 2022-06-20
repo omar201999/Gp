@@ -121,7 +121,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -139,7 +139,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -159,7 +159,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -180,7 +180,7 @@ class NewRecipeScreen extends StatelessWidget {
                           ),
 
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -200,7 +200,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -220,7 +220,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -239,7 +239,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -258,7 +258,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -278,7 +278,7 @@ class NewRecipeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 20.0,
                           ),
                           defaultContainer(
                             context,
@@ -296,42 +296,11 @@ class NewRecipeScreen extends StatelessWidget {
                               hintText: 'Calories',
                             ),
                           ),
-                          /*  const SizedBox(
-                        height: 10.0,
-                      ),
-                      defaultContainer(
-                        context,
 
-                        height: 65,
-                        //color: constantColor5,
-                        child: defaultTextFormField(
-                          type: TextInputType.number,
-                          controller: weightController,
-                          hintText: 'Weight',
-                        ),
-                      ),*/
                           const SizedBox(
                             height: 20.0,
                           ),
-                          /*SizedBox(
-                        height: 65,
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: categoryController,
-                          decoration: const InputDecoration(
-                              hintText: 'Category',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: BorderSide.none
-                              ),
-                              //prefixIcon: Icon(IconBroken.Paper),
-                              filled: true,
-                              fillColor: constantColor5
-                          ),
-                        ),
-                      ),*/
+
 
                           if(AdminCubit.get(context).recipeImage != null)
                             Stack(

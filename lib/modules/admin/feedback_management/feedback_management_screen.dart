@@ -20,7 +20,7 @@ class FeedBackManagementScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: buildAppBar(
-            title: 'FeedBack',
+            title: 'Feedback',
             icon: IconBroken.Arrow___Left_2,
             onPressed: ()
             {

@@ -117,7 +117,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         defaultContainer(
                           context,
@@ -135,7 +135,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         defaultContainer(
                           context,
@@ -155,7 +155,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         defaultContainer(
                           context,
@@ -175,7 +175,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
 
                         /*defaultContainer(
@@ -208,7 +208,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         defaultContainer(
                           context,
@@ -228,7 +228,7 @@ class NewProductSrceen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
 
                         defaultContainer(

@@ -22,8 +22,8 @@ import 'shared/localization/app_localization .dart';
 import 'shared/styles/themes.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-   print('on background message');
-   print(message.data.toString());
+   //print('on background message');
+  // print(message.data.toString());
 
    //showToast(text: 'on background message', state: ToastStates.NOTE);
 }

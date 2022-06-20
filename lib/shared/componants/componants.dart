@@ -1583,15 +1583,14 @@ Widget buildProduct(ProductModel model, context, index) => defaultGestureDetecto
                       Stack(
                         alignment: Alignment.topLeft,
                         children: [
-
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: SimpleShadow(
                               child: Image(
                                 alignment: Alignment.center,
                                 image: NetworkImage('${model.image}'),
-                                width: 130.0,
-                                height: 120.0,
+                                width: 140,
+                                height: 140,
                                 fit: BoxFit.cover,
                               ),
                               opacity: 0.5,

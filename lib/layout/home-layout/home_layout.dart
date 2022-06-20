@@ -362,9 +362,8 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   }
 
-Widget noInterNetConnected(BuildContext context) => Padding(
-  padding: const EdgeInsets.all(20.0),
-  child: Column(
+Widget noInterNetConnected(BuildContext context) => Center(
+  child:   Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

@@ -55,11 +55,11 @@ class NutritionScreen extends StatelessWidget
         //final isTouched = index == touchedIndex;
         const fontSize = 16.0;
         const radius = 50.0;
-        if(HomeCubit.get(context).calculateTotalCarbs()==0 && HomeCubit.get(context).calculateTotalFats()==0 && HomeCubit.get(context).calculateTotalProtein()==0)
-            {
+       if(HomeCubit.get(context).calculateTotalCarbs()==0 && HomeCubit.get(context).calculateTotalFats()==0 && HomeCubit.get(context).calculateTotalProtein()==0)
+        {
               return  PieChartSectionData(
                 color: Colors.grey,
-                value: 360,
+                value: 100,
                 title: '0',
                 radius: radius,
                 titleStyle: TextStyle(
@@ -68,9 +68,8 @@ class NutritionScreen extends StatelessWidget
                     color: Colors.white
                 ),
               );
-            }
-        else
-          {
+}
+       else {
         return buildPieChartItem2(
             allNutrition[index],
             context,
@@ -114,7 +113,6 @@ class NutritionScreen extends StatelessWidget
                     SizedBox(
                       height: 15,
                     ),
-                    if(HomeCubit.get(context).calculateTotalFats().toInt() != 0 || HomeCubit.get(context).calculateTotalCarbs().toInt() != 0 || HomeCubit.get(context).calculateTotalProtein().toInt() != 0)
                       Column (
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

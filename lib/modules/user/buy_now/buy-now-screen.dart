@@ -490,8 +490,7 @@ class BuyNowScreen extends StatelessWidget {
         ),
       );
 
-  Widget noInterNetConnected(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(20.0),
+  Widget noInterNetConnected(BuildContext context) => Center(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

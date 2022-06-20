@@ -568,10 +568,9 @@ class _MarketItemScreenState extends State<MarketItemScreen> {
                                                               state: ToastStates.SUCCESS);
                                                         }
 
-                                                        if(HomeCubit.get(context).userModel!.address == null && HomeCubit.get(context).userModel!.phone == null && HomeCubit.get(context).userModel!.address == "" && HomeCubit.get(context).userModel!.phone == "")
+                                                        if(HomeCubit.get(context).userModel!.address == null && HomeCubit.get(context).userModel!.phone == null )
                                                         {
-                                                          showToast(text: AppLocalizations.of(context).translate("validate_phone_and_address"),//'please enter your address and your phone',
-                                                              state: ToastStates.ERROR);
+                                                          showToast(text: AppLocalizations.of(context).translate("validate_phone_and_address"),state: ToastStates.ERROR);
                                                         }
 
                                                         //}

@@ -493,6 +493,7 @@ class BuyNowScreen extends StatelessWidget {
   Widget noInterNetConnected(BuildContext context) => Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         defaultHeadLineText(context, text: 'can\'t connect ... check network'),

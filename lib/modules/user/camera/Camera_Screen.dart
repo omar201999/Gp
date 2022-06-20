@@ -345,7 +345,10 @@ class CameraScreenState extends State<CameraScreen> {
                       style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: Colors.white,
                           ),
+
                     ),
+
+
                   ),
                 ),
               ),

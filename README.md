@@ -7,7 +7,7 @@ the user can follow her health by charts that used in our app
 
 ## Table of contents
 - ### [main packages used](https://github.com/Atevaz/health_partner/blob/master/README.md#main-packages-used-1)
-- ### [Folde
+- ### [Folder structure](https://github.com/Atevaz/health_partner/blob/master/README.md#folder-structure-1)
 - ### [Screenshots](https://github.com/Atevaz/health_partner/blob/master/README.md#screenshots-1)
 - ### [Demo video](https://github.com/Atevaz/health_partner/blob/master/README.md#Demo)
 
@@ -126,5 +126,3 @@ images.githubusercontent.com/101355785/194051152-e10850bd-0b62-4587-90cd-5885eaf
 ## Demo
 
 https://www.youtube.com/watch?v=FR8rsPSzJb4&ab_channel=omaressam
-
-r structure](https://github.com/Atevaz/health_partner/blob/master/README.md#folder-structure-1)

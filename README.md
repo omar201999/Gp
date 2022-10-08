@@ -6,10 +6,10 @@ the user can buy from market off app healthy products,
 the user can follow her health by charts that used in our app
 
 ## Table of contents
-- ### [main packages used](https://github.com/omar201999/Gp/blob/master/README.md#main-packages-used-1)
-- ### [Folder structure](https://github.com/omar201999/Gp/blob/master/README.md#folder-structure-1)
-- ### [Screenshots](https://github.com/omar201999/Gp/blob/master/README.md#screenshots-1)
-- ### [Demo video](https://github.com/omar201999/Gp/blob/master/README.md#Demo)
+- ### [main packages used](https://github.com/omar201999/Gp/blob/main/README.md#main-packages-used-1)
+- ### [Folder structure](https://github.com/omar201999/Gp/blob/main/README.md#folder-structure-1)
+- ### [Screenshots](https://github.com/omar201999/Gp/blob/main/README.md#screenshots-1)
+- ### [Demo video](https://github.com/omar201999/Gp/blob/main/README.md#Demo)
 
 ## Main packages used
 - [firebase_core](https://pub.dev/packages/firebase_core) to make integration database
